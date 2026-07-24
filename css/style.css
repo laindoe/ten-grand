@@ -208,14 +208,32 @@ a {
 
 .section--manual {
   text-align: center;
+  padding: 0 var(--section-padding-x) 60px;
   border-top: 1px solid var(--color-card-border);
 }
 
+/* Full-bleed within the section so the bottom rule touches the site
+   frame's left/right edges, while the row inside stays inset to the
+   normal content column via matching horizontal padding. */
 .manual__header {
-  width: 100%;
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x)) 60px;
+  padding: 0 var(--section-padding-x);
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.manual__header-row {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
   max-width: var(--content-max-width);
-  margin: 0 auto 60px;
+  margin: 0 auto;
+}
+
+.manual__header-col {
+  flex: 1;
   text-align: left;
+  padding: 24px 0 32px;
 }
 
 .manual__eyebrow {
@@ -224,21 +242,15 @@ a {
   margin-bottom: 24px;
 }
 
-.manual__header-row {
-  display: flex;
-  align-items: stretch;
-  gap: 24px;
-  padding-bottom: 32px;
-  border-bottom: 1px solid var(--color-card-border);
-}
-
 .manual__headline {
-  flex: 1;
+  text-align: left;
   font-size: clamp(1.5rem, 6vw, 2rem);
   font-weight: 400;
   line-height: 1.15;
 }
 
+/* No padding/height set — stretches with its siblings to span the
+   row's full height, so it touches the border above and below. */
 .manual__header-divider {
   width: 1px;
   background: var(--color-card-border);
@@ -247,6 +259,8 @@ a {
 .manual__header-desc {
   width: 100px;
   flex-shrink: 0;
+  padding: 24px 0 32px;
+  text-align: left;
   font-size: 0.85rem;
   line-height: 1.4;
   color: var(--color-text);
