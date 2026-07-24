@@ -1,0 +1,360 @@
+/* ============================================================
+   TEN GRAND — base styles
+   Colors/fonts are placeholders (CSS variables below) until real
+   values come from Figma. Swap the :root block and font import
+   and the rest of the site follows automatically.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap');
+
+:root {
+  /* Matches the intro screenshot: near-black bg, white type & hairline borders */
+  --color-bg: #0a0a0a;
+  --color-card: transparent;
+  --color-card-border: rgba(255, 255, 255, 0.85);
+  --color-text: #f5f5f0;
+  --color-text-muted: rgba(245, 245, 240, 0.7);
+  --color-accent: #d94f30;
+
+  /* TODO: replace --font-display with the real logotype face once known */
+  --font-display: 'Bodoni Moda', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --card-radius: 18px;
+  --section-padding-x: clamp(20px, 6vw, 60px);
+  --content-max-width: 480px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------- Nav ---------- */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: stretch;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.nav__logo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  padding: 16px 0;
+  color: var(--color-text);
+}
+
+.nav__divider {
+  width: 1px;
+  background: var(--color-card-border);
+}
+
+.nav__menu {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 4vw, 28px);
+  flex-wrap: wrap;
+  padding: 16px 12px;
+}
+
+.nav__menu a {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* ---------- Layout / section shell ---------- */
+
+.section {
+  position: relative;
+  padding: 100px var(--section-padding-x) 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.card {
+  width: 100%;
+  max-width: var(--content-max-width);
+  background: var(--color-card);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--card-radius);
+  padding: clamp(28px, 6vw, 48px) clamp(24px, 5vw, 40px);
+}
+
+/* ---------- Scroll reveal ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Intro section ---------- */
+
+.section--intro {
+  text-align: center;
+}
+
+.intro__logo {
+  margin: 0 auto 40px;
+  font-family: var(--font-display);
+  line-height: 0.85;
+}
+
+.intro__logo-line {
+  display: block;
+  font-size: clamp(3rem, 15vw, 4.5rem);
+  font-weight: 400;
+}
+
+.intro__logo-line--grand {
+  margin-top: 0.05em;
+}
+
+.intro__logo-sub {
+  display: block;
+  margin-top: 0.5em;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: var(--color-text-muted);
+}
+
+.intro__headline {
+  font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  max-width: 22ch;
+  margin: 0 auto 40px;
+}
+
+.intro__icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 40px;
+  color: var(--color-text);
+}
+
+.intro__explainer {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 34ch;
+  margin: 0 auto;
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 40px;
+  border: 2px solid var(--color-text-muted);
+  border-radius: 12px;
+}
+
+.scroll-cue span {
+  display: block;
+  width: 4px;
+  height: 8px;
+  margin: 6px auto 0;
+  border-radius: 2px;
+  background: var(--color-text-muted);
+  animation: scroll-cue-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scroll-cue-bounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(10px); opacity: 0.3; }
+}
+
+/* ---------- Supply chain (scrolly) section ---------- */
+
+.section--supply-chain {
+  padding: 0;
+  min-height: auto;
+  display: block;
+}
+
+.supply-chain__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px var(--section-padding-x) 60px;
+}
+
+.supply-chain__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  margin-bottom: 28px;
+}
+
+.supply-chain__steps {
+  list-style: none;
+}
+
+.step {
+  padding: 14px 0;
+  border-top: 1px solid var(--color-card-border);
+  opacity: 0.35;
+  transform: translateY(6px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+
+.step:first-child {
+  border-top: none;
+}
+
+.step__label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+
+.step__body {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s var(--ease-out);
+}
+
+.step.is-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.step.is-active .step__label {
+  color: var(--color-accent);
+}
+
+.step.is-active .step__body {
+  max-height: 100px;
+}
+
+.supply-chain__scroller {
+  position: relative;
+}
+
+.scroller__trigger {
+  height: 100vh;
+}
+
+/* ---------- Footer ---------- */
+
+.section--footer {
+  text-align: center;
+}
+
+.footer__logo {
+  margin-bottom: 32px;
+  transform: scale(0.6);
+  transform-origin: center top;
+  margin-top: -24px;
+}
+
+.footer__email {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  text-decoration: none;
+}
+
+.footer__tagline {
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.footer__social {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+
+.footer__social a {
+  text-decoration: none;
+  color: var(--color-text-muted);
+  transition: color 0.3s var(--ease-out);
+}
+
+.footer__social a:hover {
+  color: var(--color-text);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .step,
+  .step__body,
+  .scroll-cue span {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

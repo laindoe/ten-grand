@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ten Grand</title>
+  <meta name="description" content="Ten Grand — a scrollytelling site." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="nav" id="top">
+    <div class="nav__inner">
+      <a class="nav__logo-box" href="#top" aria-label="Ten Grand home">
+        <!-- Placeholder mark: swap for the real exported "N" logomark asset -->
+        <svg class="nav__logo-mark" width="13" height="30" viewBox="0 0 13 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0 L13 9 V0 M0 9 L13 21 V30 L0 21 Z" stroke="currentColor" stroke-width="1" fill="none"/>
+        </svg>
+      </a>
+      <span class="nav__divider" aria-hidden="true"></span>
+      <nav class="nav__menu" aria-label="Primary">
+        <a href="#intro">ABOUT</a>
+        <a href="#supply-chain">ENGINE</a>
+        <a href="#supply-chain">PILLARS</a>
+        <a href="#contact">CONTACT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ SECTION 1: INTRO ============ -->
+    <section class="section section--intro" id="intro">
+      <div class="card reveal">
+        <!-- Wordmark approximated with type; swap for the real exported logo asset when available -->
+        <div class="intro__logo" aria-label="Ten Grand Company">
+          <span class="intro__logo-line">TEN</span>
+          <span class="intro__logo-line intro__logo-line--grand">GRAND</span>
+          <span class="intro__logo-sub">COMPANY</span>
+        </div>
+
+        <h1 class="intro__headline">The creative supply chain for intellectual property</h1>
+
+        <div class="intro__icon" aria-hidden="true">
+          <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="29" cy="29" r="15" stroke="currentColor" stroke-width="1"/>
+            <line x1="29" y1="0" x2="29" y2="58" stroke="currentColor" stroke-width="1"/>
+            <line x1="0" y1="29" x2="58" y2="29" stroke="currentColor" stroke-width="1"/>
+          </svg>
+        </div>
+
+        <p class="intro__explainer">
+          Building systems that move ideas from imagination to impact, by
+          utilizing cutting edge technology and cultural evidence to ease
+          divine sparks down the production pipeline.
+        </p>
+      </div>
+
+      <div class="scroll-cue reveal" aria-hidden="true">
+        <span></span>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2: CREATIVE SUPPLY CHAIN (scrolly) ============ -->
+    <section class="section section--supply-chain" id="supply-chain">
+      <div class="supply-chain__sticky">
+        <div class="card">
+          <h2 class="supply-chain__title">WHAT IS A CREATIVE SUPPLY CHAIN?</h2>
+          <ol class="supply-chain__steps" id="supply-chain-steps">
+            <li class="step" data-step="idea">
+              <span class="step__label">IDEA</span>
+              <p class="step__body">The divine spark. The creation that your heart desires.</p>
+            </li>
+            <li class="step" data-step="validation">
+              <span class="step__label">VALIDATION</span>
+              <p class="step__body">The divine spark. The creation that your heart desires.</p>
+            </li>
+            <li class="step" data-step="development">
+              <span class="step__label">DEVELOPMENT</span>
+              <p class="step__body">The divine spark. The creation that your heart desires.</p>
+            </li>
+            <li class="step" data-step="launch">
+              <span class="step__label">LAUNCH</span>
+              <p class="step__body">The divine spark. The creation that your heart desires.</p>
+            </li>
+            <li class="step" data-step="impact">
+              <span class="step__label">IMPACT</span>
+              <p class="step__body">The divine spark. The creation that your heart desires.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Scroll-driven progression triggers: one per step, height controls scroll distance -->
+      <div class="supply-chain__scroller" id="supply-chain-scroller">
+        <div class="scroller__trigger" data-step="idea"></div>
+        <div class="scroller__trigger" data-step="validation"></div>
+        <div class="scroller__trigger" data-step="development"></div>
+        <div class="scroller__trigger" data-step="launch"></div>
+        <div class="scroller__trigger" data-step="impact"></div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 3: FOOTER / CONTACT ============ -->
+    <footer class="section section--footer" id="contact">
+      <div class="card reveal">
+        <!-- Wordmark approximated with type; swap for the real exported logo asset when available -->
+        <div class="intro__logo footer__logo" aria-label="Ten Grand Company">
+          <span class="intro__logo-line">TEN</span>
+          <span class="intro__logo-line intro__logo-line--grand">GRAND</span>
+          <span class="intro__logo-sub">COMPANY</span>
+        </div>
+        <a class="footer__email" href="mailto:info@tengrand.co">info@tengrand.co</a>
+        <p class="footer__tagline">the grand scheme</p>
+        <div class="footer__social">
+          <a href="#" aria-label="YouTube">YT</a>
+          <a href="#" aria-label="LinkedIn">LI</a>
+          <a href="#" aria-label="Instagram">IG</a>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
