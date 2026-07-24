@@ -203,16 +203,47 @@ a {
 
 .section--manual {
   text-align: center;
-  padding-top: 90px;
+}
+
+.manual__header {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto 60px;
+  text-align: left;
 }
 
 .manual__eyebrow {
-  width: 100%;
-  max-width: var(--content-max-width);
-  margin: 0 auto 80px;
-  text-align: left;
   font-size: 0.8rem;
   letter-spacing: 0.03em;
+  margin-bottom: 24px;
+}
+
+.manual__header-row {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.manual__headline {
+  flex: 1;
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.manual__header-divider {
+  width: 1px;
+  background: var(--color-card-border);
+}
+
+.manual__header-desc {
+  width: 100px;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-text);
 }
 
 .manual__steps {
