@@ -12,18 +12,19 @@
   <header class="nav" id="top">
     <div class="nav__inner">
       <a class="nav__logo-box" href="#top" aria-label="Ten Grand home">
-        <!-- Placeholder mark: swap for the real exported "N" logomark asset -->
-        <svg class="nav__logo-mark" width="13" height="30" viewBox="0 0 13 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0 L13 9 V0 M0 9 L13 21 V30 L0 21 Z" stroke="currentColor" stroke-width="1" fill="none"/>
-        </svg>
+        <span class="nav__logo-mark">
+          <img src="assets/images/logo-white.png" alt="" />
+        </span>
       </a>
       <span class="nav__divider" aria-hidden="true"></span>
       <nav class="nav__menu" aria-label="Primary">
-        <a href="#intro">ABOUT</a>
+        <a href="#intro">MANUAL</a>
         <a href="#supply-chain">ENGINE</a>
-        <a href="#supply-chain">PILLARS</a>
-        <a href="#contact">CONTACT</a>
+        <a href="#supply-chain">FUEL</a>
+        <a href="#supply-chain">DIRECTOR</a>
       </nav>
+      <span class="nav__divider" aria-hidden="true"></span>
+      <a class="nav__connect" href="#contact">CONNECT</a>
     </div>
   </header>
 
@@ -32,21 +33,18 @@
     <!-- ============ SECTION 1: INTRO ============ -->
     <section class="section section--intro" id="intro">
       <div class="card reveal">
-        <!-- Wordmark approximated with type; swap for the real exported logo asset when available -->
-        <div class="intro__logo" aria-label="Ten Grand Company">
-          <span class="intro__logo-line">TEN</span>
-          <span class="intro__logo-line intro__logo-line--grand">GRAND</span>
-          <span class="intro__logo-sub">COMPANY</span>
-        </div>
+        <img
+          class="intro__logo"
+          src="assets/images/logo-white.png"
+          alt="Ten Grand Company"
+          width="233"
+          height="129"
+        />
 
-        <h1 class="intro__headline">The creative supply chain for intellectual property</h1>
+        <h1 class="intro__headline">THE CREATIVE SUPPLY CHAIN FOR INTELLECTUAL PROPERTY</h1>
 
         <div class="intro__icon" aria-hidden="true">
-          <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="29" cy="29" r="15" stroke="currentColor" stroke-width="1"/>
-            <line x1="29" y1="0" x2="29" y2="58" stroke="currentColor" stroke-width="1"/>
-            <line x1="0" y1="29" x2="58" y2="29" stroke="currentColor" stroke-width="1"/>
-          </svg>
+          <img src="assets/images/icon-target.svg" alt="" width="58" height="58" />
         </div>
 
         <p class="intro__explainer">
@@ -104,12 +102,13 @@
     <!-- ============ SECTION 3: FOOTER / CONTACT ============ -->
     <footer class="section section--footer" id="contact">
       <div class="card reveal">
-        <!-- Wordmark approximated with type; swap for the real exported logo asset when available -->
-        <div class="intro__logo footer__logo" aria-label="Ten Grand Company">
-          <span class="intro__logo-line">TEN</span>
-          <span class="intro__logo-line intro__logo-line--grand">GRAND</span>
-          <span class="intro__logo-sub">COMPANY</span>
-        </div>
+        <img
+          class="intro__logo footer__logo"
+          src="assets/images/logo-white.png"
+          alt="Ten Grand Company"
+          width="233"
+          height="129"
+        />
         <a class="footer__email" href="mailto:info@tengrand.co">info@tengrand.co</a>
         <p class="footer__tagline">the grand scheme</p>
         <div class="footer__social">
