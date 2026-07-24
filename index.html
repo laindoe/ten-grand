@@ -20,13 +20,14 @@
       </a>
       <span class="nav__divider" aria-hidden="true"></span>
       <nav class="nav__menu" aria-label="Primary">
-        <a href="#intro">MANUAL</a>
-        <a href="#supply-chain">ENGINE</a>
-        <a href="#supply-chain">FUEL</a>
-        <a href="#supply-chain">DIRECTOR</a>
+        <a href="#manual">MANUAL</a>
+        <!-- TODO: point at real sections once the engine/fuel/director frames are built -->
+        <a href="#">ENGINE</a>
+        <a href="#">FUEL</a>
+        <a href="#">DIRECTOR</a>
       </nav>
       <span class="nav__divider" aria-hidden="true"></span>
-      <a class="nav__connect" href="#contact">CONNECT</a>
+      <a class="nav__connect" href="#">CONNECT</a>
     </div>
   </header>
 
@@ -58,65 +59,33 @@
 
     </section>
 
-    <!-- ============ SECTION 2: CREATIVE SUPPLY CHAIN (scrolly) ============ -->
-    <section class="section section--supply-chain" id="supply-chain">
-      <div class="supply-chain__sticky">
-        <div class="card">
-          <h2 class="supply-chain__title">WHAT IS A CREATIVE SUPPLY CHAIN?</h2>
-          <ol class="supply-chain__steps" id="supply-chain-steps">
-            <li class="step" data-step="idea">
-              <span class="step__label">IDEA</span>
-              <p class="step__body">The divine spark. The creation that your heart desires.</p>
-            </li>
-            <li class="step" data-step="validation">
-              <span class="step__label">VALIDATION</span>
-              <p class="step__body">The divine spark. The creation that your heart desires.</p>
-            </li>
-            <li class="step" data-step="development">
-              <span class="step__label">DEVELOPMENT</span>
-              <p class="step__body">The divine spark. The creation that your heart desires.</p>
-            </li>
-            <li class="step" data-step="launch">
-              <span class="step__label">LAUNCH</span>
-              <p class="step__body">The divine spark. The creation that your heart desires.</p>
-            </li>
-            <li class="step" data-step="impact">
-              <span class="step__label">IMPACT</span>
-              <p class="step__body">The divine spark. The creation that your heart desires.</p>
-            </li>
-          </ol>
-        </div>
-      </div>
+    <!-- ============ SECTION 2: MANUAL ============ -->
+    <section class="section section--manual" id="manual">
+      <p class="manual__eyebrow">TG-10000 MANUAL</p>
 
-      <!-- Scroll-driven progression triggers: one per step, height controls scroll distance -->
-      <div class="supply-chain__scroller" id="supply-chain-scroller">
-        <div class="scroller__trigger" data-step="idea"></div>
-        <div class="scroller__trigger" data-step="validation"></div>
-        <div class="scroller__trigger" data-step="development"></div>
-        <div class="scroller__trigger" data-step="launch"></div>
-        <div class="scroller__trigger" data-step="impact"></div>
-      </div>
+      <ol class="manual__steps">
+        <li class="manual-step reveal" data-step="idea">
+          <img class="manual-step__icon" src="assets/images/icon-idea.svg" alt="" width="58" height="58" />
+          <span class="manual-step__label manual-step__label--idea">IDEA</span>
+          <p class="manual-step__body">The divine spark. The creation that your heart desires</p>
+        </li>
+        <li class="manual-step reveal" data-step="validation">
+          <img class="manual-step__icon" src="assets/images/icon-validation.svg" alt="" width="47" height="50" />
+          <span class="manual-step__label manual-step__label--validation">VALIDATION</span>
+          <p class="manual-step__body">The divine spark. The creation that your heart desires</p>
+        </li>
+        <li class="manual-step reveal" data-step="development">
+          <img class="manual-step__icon" src="assets/images/icon-development.svg" alt="" width="45" height="46" />
+          <span class="manual-step__label manual-step__label--development">DEVELOPMENT</span>
+          <p class="manual-step__body">The divine spark. The creation that your heart desires</p>
+        </li>
+        <li class="manual-step reveal" data-step="launch">
+          <img class="manual-step__icon" src="assets/images/icon-launch.svg" alt="" width="55" height="54" />
+          <span class="manual-step__label manual-step__label--launch">LAUNCH</span>
+          <p class="manual-step__body">The divine spark. The creation that your heart desires</p>
+        </li>
+      </ol>
     </section>
-
-    <!-- ============ SECTION 3: FOOTER / CONTACT ============ -->
-    <footer class="section section--footer" id="contact">
-      <div class="card reveal">
-        <img
-          class="intro__logo footer__logo"
-          src="assets/images/logo-white.png"
-          alt="Ten Grand Company"
-          width="233"
-          height="129"
-        />
-        <a class="footer__email" href="mailto:info@tengrand.co">info@tengrand.co</a>
-        <p class="footer__tagline">the grand scheme</p>
-        <div class="footer__social">
-          <a href="#" aria-label="YouTube">YT</a>
-          <a href="#" aria-label="LinkedIn">LI</a>
-          <a href="#" aria-label="Instagram">IG</a>
-        </div>
-      </div>
-    </footer>
 
   </main>
 
