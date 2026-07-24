@@ -19,7 +19,7 @@
   --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  --card-radius: 18px;
+  --frame-margin: 8px;
   --section-padding-x: clamp(20px, 6vw, 60px);
   --content-max-width: 480px;
 
@@ -53,13 +53,19 @@ a {
   color: inherit;
 }
 
+/* ---------- Site frame ---------- */
+/* One continuous outline around the whole site, square corners. */
+
+.site-frame {
+  margin: var(--frame-margin);
+  border: 1px solid var(--color-card-border);
+}
+
 /* ---------- Nav ---------- */
 
 .nav {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 100;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-card-border);
@@ -131,7 +137,7 @@ a {
 
 .section {
   position: relative;
-  padding: 100px var(--section-padding-x) 60px;
+  padding: 60px var(--section-padding-x);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -142,9 +148,6 @@ a {
 .card {
   width: 100%;
   max-width: var(--content-max-width);
-  background: var(--color-card);
-  border: 1px solid var(--color-card-border);
-  border-radius: var(--card-radius);
   padding: clamp(28px, 6vw, 48px) clamp(24px, 5vw, 40px);
 }
 
@@ -196,32 +199,6 @@ a {
   margin: 0 auto;
 }
 
-.scroll-cue {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 24px;
-  height: 40px;
-  border: 2px solid var(--color-text-muted);
-  border-radius: 12px;
-}
-
-.scroll-cue span {
-  display: block;
-  width: 4px;
-  height: 8px;
-  margin: 6px auto 0;
-  border-radius: 2px;
-  background: var(--color-text-muted);
-  animation: scroll-cue-bounce 1.6s ease-in-out infinite;
-}
-
-@keyframes scroll-cue-bounce {
-  0%, 100% { transform: translateY(0); opacity: 1; }
-  50% { transform: translateY(10px); opacity: 0.3; }
-}
-
 /* ---------- Supply chain (scrolly) section ---------- */
 
 .section--supply-chain {
@@ -231,13 +208,15 @@ a {
 }
 
 .supply-chain__sticky {
+  /* Also sticky-to-top like nav, and nav renders above it (z-index),
+     so pad the top enough to clear the nav bar's rendered height. */
   position: sticky;
   top: 0;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px var(--section-padding-x) 60px;
+  padding: 90px var(--section-padding-x) 60px;
 }
 
 .supply-chain__title {
@@ -347,8 +326,7 @@ a {
   }
   .reveal,
   .step,
-  .step__body,
-  .scroll-cue span {
+  .step__body {
     transition: none !important;
     animation: none !important;
     opacity: 1 !important;
