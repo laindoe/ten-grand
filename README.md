@@ -8,7 +8,7 @@ static files served directly, ready for GitHub Pages.
 ```
 index.html          Page markup, all sections
 css/style.css        Styles, CSS variables for colors/fonts/spacing
-js/main.js           Scroll animations (reveal-on-scroll + scrollytelling)
+js/main.js           Scroll animations (reveal-on-scroll)
 assets/images/       Exported logo/icon assets go here
 assets/fonts/        Any self-hosted font files go here
 ```
@@ -17,33 +17,24 @@ assets/fonts/        Any self-hosted font files go here
 
 1. **Intro** (`#intro`) — nav, wordmark, headline, target icon, explainer
    paragraph. Built from the Figma "intro" frame.
-2. **Creative supply chain** (`#supply-chain`) — scrollytelling sequence:
-   a sticky card with 5 steps (IDEA → VALIDATION → DEVELOPMENT → LAUNCH →
-   IMPACT) that highlight one at a time as you scroll. Currently
-   placeholder copy — structure only, mirroring the repeated Figma frames.
-3. **Footer / contact** (`#contact`) — logo, email, tagline, social links.
+2. **Manual** (`#manual`) — "TG-10000 MANUAL" eyebrow + 4 stacked steps
+   (IDEA / VALIDATION / DEVELOPMENT / LAUNCH), each with its own icon and
+   color, fading in on scroll. Built from the Figma "manual" frame.
+
+Nav items ENGINE / FUEL / DIRECTOR / CONNECT are stubs pointing at `#`
+until those Figma frames are built out.
 
 ## Known placeholders (TODO before this looks "real")
 
-- **Wordmark logo** ("TEN GRAND / COMPANY") and the small nav **"N" mark**
-  are approximated with type/SVG, not the real exported Figma assets.
-  Drop real files into `assets/images/` and swap the markup in
-  `index.html` (`.intro__logo`, `.nav__logo-mark`) once exported.
-- **Fonts**: using Bodoni Moda (display) + Inter (body) as a close visual
-  match. Update the `@import` and `--font-display` / `--font-body`
-  variables in `css/style.css` if the real typefaces are different.
-- **Supply chain section copy/images**: only the first ("intro") section
-  content is final; the supply-chain step body copy and the `IMG_3829`
-  photo from the Figma file still need to be pulled in.
+- **Step body copy**: all four manual steps currently share the same
+  placeholder text ("The divine spark...") — that's what's authored in
+  Figma today, update here once real per-step copy exists.
 
 ## Animation approach
 
 - `.reveal` elements fade/slide in once via `IntersectionObserver`
-  (see `js/main.js`). Cheap, no library.
-- The supply-chain section uses `position: sticky` on the content card
-  plus tall (100vh) trigger divs, observed with `IntersectionObserver`
-  to swap the active step as you scroll — the classic scrollytelling
-  pattern (no Scrollama/GSAP dependency).
+  (see `js/main.js`). Cheap, no library. Used on the intro card and
+  each manual step.
 - Respects `prefers-reduced-motion`.
 
 ## Running locally
