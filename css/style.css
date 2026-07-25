@@ -682,17 +682,6 @@ a {
   font-size: 2rem;
 }
 
-.connect__scheme-title {
-  font-size: 2rem;
-  margin-bottom: 8px;
-}
-
-.connect__scheme-tagline {
-  font-size: 0.8rem;
-  letter-spacing: 0.03em;
-  color: var(--color-text-muted);
-}
-
 /* ---------- Modal ---------- */
 
 .modal {
