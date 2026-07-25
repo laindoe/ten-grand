@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N — Ten Grand Technology</title>
+<style>
+  :root{
+    --ink:#161616;
+    --paper:#F5F4F2;
+    --dim:#7a7a78;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background:transparent;
+    color:var(--paper);
+    font-family:"Futura","Avenir Next","Century Gothic","Trebuchet MS",sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    -webkit-tap-highlight-color:transparent;
+    overflow:hidden;
+  }
+  .label{
+    display:none;
+    font-size:11px;
+    letter-spacing:0.5em;
+    text-indent:0.5em;
+    text-transform:uppercase;
+    color:var(--dim);
+    height:16px;
+    text-align:center;
+  }
+  .stage{
+    width:min(90vmin,600px);
+    height:min(90vmin,600px);
+    cursor:pointer;
+  }
+  svg{width:100%;height:100%;display:block;}
+  .progress{
+    display:none;
+    width:min(78vmin,520px);
+    height:1px;
+    background:#2c2c2b;
+    position:relative;
+    cursor:pointer;
+  }
+  .progress::after{
+    content:"";
+    position:absolute;
+    inset:-8px 0;
+  }
+  .progress-fill{
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:0%;
+    background:var(--paper);
+  }
+  .tagline{
+    display:none;
+    margin-top:26px;
+    font-size:11px;
+    letter-spacing:0.42em;
+    text-indent:0.42em;
+    color:var(--dim);
+    text-align:center;
+  }
+  .hint{
+    display:none;
+    margin-top:10px;
+    font-size:9px;
+    letter-spacing:0.3em;
+    text-indent:0.3em;
+    color:#3d3d3c;
+    text-transform:uppercase;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hint{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="label" id="phaseLabel">Ten Grand Technology</div>
+
+<div class="stage" id="stage" role="img" aria-label="The N logomark morphing into a web app browser window with a scrolling content feed, then a phone app with icons popping in, then back to the N">
+  <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="webClip">
+        <rect x="205" y="215" width="190" height="225"/>
+      </clipPath>
+    </defs>
+    <g id="mark" fill="#F5F4F2">
+      <!-- verticals: N sides -> browser frame sides -> phone frame sides -->
+      <rect id="barL" x="210.9" y="80" width="5" height="440"/>
+      <rect id="barR" x="384.1" y="80" width="5" height="440"/>
+      <!-- morphing beams: N diagonal halves -> browser top/bottom edges -> phone top/bottom edges -->
+      <polygon id="m1"/>
+      <polygon id="m2"/>
+
+      <!-- browser chrome -->
+      <rect id="chromeDivider" x="190" y="195" width="220" height="3" opacity="0"/>
+      <g id="chromeDots" opacity="0">
+        <circle cx="213" cy="175" r="5"/>
+        <circle cx="231" cy="175" r="5"/>
+        <circle cx="249" cy="175" r="5"/>
+      </g>
+
+      <!-- whole page scrolls together: hero, headline/subhead, then a two-column grid -->
+      <g id="webRows" clip-path="url(#webClip)"></g>
+
+      <!-- phone app -->
+      <rect id="phoneNotch" x="280" y="178" width="40" height="8" rx="4" opacity="0"/>
+      <rect id="phoneHome" x="275" y="380" width="50" height="5" rx="2.5" opacity="0"/>
+      <g id="phoneIcons"></g>
+    </g>
+  </svg>
+</div>
+
+<div class="progress" id="progress"><div class="progress-fill" id="fill"></div></div>
+
+<div class="tagline">aMASS Comm(unity)</div>
+<div class="hint">Tap mark to pause</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- beam geometry: 5-point polygons ----------
+  var B1 = {
+    N:  [[211.2,80],[218.8,80],[388.8,257.3],[388.8,297.9],[211.2,111.9]],
+    BR: [[190,150],[410,150],[410,150],[410,156],[190,156]],
+    PA: [[241,155],[359,155],[359,155],[359,163],[241,163]]
+  };
+  var B2 = {
+    N:  [[211.2,304.6],[388.8,490.6],[388.8,520],[378.9,520],[211.2,344.7]],
+    BR: [[190,444],[410,444],[410,450],[190,450],[190,450]],
+    PA: [[241,397],[359,397],[359,405],[241,405],[241,405]]
+  };
+
+  // vertical bar states: {dx from center, y, h, w}
+  var BN  = {dx:86.6, y:80,  h:440, w:5};  // logo position
+  var BBr = {dx:110,  y:150, h:300, w:6};  // browser frame sides
+  var BPh = {dx:55,   y:155, h:250, w:8};  // phone frame sides (shorter, true proportions)
+
+  // ---------- timeline (ms) ----------
+  var T = {
+    holdN1:      [0,     700 ],
+    toBrowser:   [700,   1900],
+    chromeIn:    [1700,  2100],
+    webScroll:   [1900,  3900],
+    toPhone:     [3900,  4800],
+    browserOut:  [3500,  3900],
+    phoneChrome: [4500,  4900],
+    phoneIn:     [4700,  5500],
+    holdPhone:   [5500,  6300],
+    phoneOut:    [6300,  6700],
+    toN:         [6800,  7900],
+    holdN2:      [7900,  9400]
+  };
+  var TOTAL = 9400;
+  var ROW_SPEED = 0.14; // px/ms -- faster still, whole page moves briskly
+
+  // ---------- helpers ----------
+  function seg(t, r){
+    if (t <= r[0]) return 0;
+    if (t >= r[1]) return 1;
+    return (t - r[0]) / (r[1] - r[0]);
+  }
+  function easeInOut(p){
+    return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2;
+  }
+  function easeOut(p){
+    return 1 - Math.pow(1 - p, 3);
+  }
+  function easeOutBack(p){
+    var c1 = 1.70158, c3 = c1 + 1;
+    return 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2);
+  }
+  function lerp(a, b, p){ return a + (b - a) * p; }
+  function mod(n, m){ return ((n % m) + m) % m; }
+  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+  function lerpPts(A, B, p){
+    var out = [];
+    for (var i = 0; i < A.length; i++){
+      out.push([lerp(A[i][0],B[i][0],p), lerp(A[i][1],B[i][1],p)]);
+    }
+    return out;
+  }
+  function ptsAttr(pts){
+    return pts.map(function(pt){ return pt[0] + "," + pt[1]; }).join(" ");
+  }
+  function fadeInOut(t, inRange, outRange){
+    var s = 0;
+    if (t >= inRange[0] && t < outRange[0]) s = easeOut(Math.min(1, seg(t, inRange)));
+    else if (t >= outRange[0] && t < outRange[1]) s = 1 - easeOut(seg(t, outRange));
+    return clamp(s, 0, 1);
+  }
+
+  // ---------- dom ----------
+  var $ = function(id){ return document.getElementById(id); };
+  var m1 = $("m1"), m2 = $("m2");
+  var barL = $("barL"), barR = $("barR");
+  var chromeDivider = $("chromeDivider"), chromeDots = $("chromeDots");
+  var webRowsGroup = $("webRows");
+  var phoneNotch = $("phoneNotch"), phoneHome = $("phoneHome"), phoneIconsGroup = $("phoneIcons");
+  var label = $("phaseLabel");
+  var fillEl = $("fill");
+  var stage = $("stage");
+  var progressEl = $("progress");
+
+  // one long page strip: hero, headline/subhead, then 7 rows of two-column content.
+  // Everything has a fixed position on the strip and the whole strip scrolls linearly --
+  // no wraparound, so nothing can ever re-enter and collide with the hero.
+  var pageItems = [
+    {x:205, w:190, y:0,   h:110, type:'img',  hero:true}, // hero
+    {x:205, w:150, y:120, h:7,   type:'line'},            // headline
+    {x:205, w:110, y:132, h:6,   type:'line'}             // subhead
+  ];
+  var ROW_START = 155, ROW_BLOCK = 135, ROW_COUNT = 7;
+  for (var ti = 0; ti < ROW_COUNT; ti++){
+    var base = ROW_START + ti * ROW_BLOCK;
+    [205, 310].forEach(function(colX){
+      pageItems.push({x:colX, w:85, y:base,     h:90, type:'img'});
+      pageItems.push({x:colX, w:65, y:base+98,  h:6,  type:'line'});
+      pageItems.push({x:colX, w:45, y:base+109, h:6,  type:'line'});
+    });
+  }
+  pageItems.forEach(function(el){
+    var rr = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rr.setAttribute("x", el.x);
+    rr.setAttribute("rx", el.type === 'img' ? 6 : 3);
+    webRowsGroup.appendChild(rr);
+    el.el = rr;
+  });
+
+  // phone icon grid: 2 cols x 3 rows, each its own group for staggered pop-in
+  var iconDefs = [
+    {cx:278,cy:228},{cx:322,cy:228},
+    {cx:278,cy:283},{cx:322,cy:283},
+    {cx:278,cy:338},{cx:322,cy:338}
+  ];
+  var iconEls = iconDefs.map(function(n, idx){
+    var g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("opacity", "0");
+    var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rect.setAttribute("x", n.cx - 17);
+    rect.setAttribute("y", n.cy - 17);
+    rect.setAttribute("width", 34);
+    rect.setAttribute("height", 34);
+    rect.setAttribute("rx", 8);
+    g.appendChild(rect);
+    phoneIconsGroup.appendChild(g);
+    return {el:g, cx:n.cx, cy:n.cy, idx:idx};
+  });
+
+  function setBars(b){
+    barL.setAttribute("x", 300 - b.dx - b.w/2);
+    barR.setAttribute("x", 300 + b.dx - b.w/2);
+    [barL, barR].forEach(function(el){
+      el.setAttribute("y", b.y);
+      el.setAttribute("height", b.h);
+      el.setAttribute("width", b.w);
+    });
+  }
+  function lerpBar(A, B, p){
+    return { dx:lerp(A.dx,B.dx,p), y:lerp(A.y,B.y,p), h:lerp(A.h,B.h,p), w:lerp(A.w,B.w,p) };
+  }
+
+  function labelFor(t){
+    if (t < T.toBrowser[0]) return "Ten Grand Technology";
+    if (t < T.toPhone[0])   return "Web";
+    if (t < T.toN[0])       return "App";
+    return "Ten Grand Technology";
+  }
+
+  // ---------- render ----------
+  function render(t){
+    // beams: N -> browser edges -> phone edges -> N
+    var from = "N", to = "N", p = 0;
+    if (t >= T.toBrowser[0] && t < T.toBrowser[1]){
+      from = "N"; to = "BR"; p = easeInOut(seg(t, T.toBrowser));
+    } else if (t >= T.toBrowser[1] && t < T.toPhone[0]){
+      from = "BR"; to = "BR";
+    } else if (t >= T.toPhone[0] && t < T.toPhone[1]){
+      from = "BR"; to = "PA"; p = easeInOut(seg(t, T.toPhone));
+    } else if (t >= T.toPhone[1] && t < T.toN[0]){
+      from = "PA"; to = "PA";
+    } else if (t >= T.toN[0] && t < T.toN[1]){
+      from = "PA"; to = "N"; p = easeInOut(seg(t, T.toN));
+    }
+    m1.setAttribute("points", ptsAttr(lerpPts(B1[from], B1[to], p)));
+    m2.setAttribute("points", ptsAttr(lerpPts(B2[from], B2[to], p)));
+
+    // bars: N -> browser sides -> phone sides -> N
+    var b = BN;
+    if (t >= T.toBrowser[0] && t < T.toBrowser[1]) b = lerpBar(BN, BBr, easeInOut(seg(t, T.toBrowser)));
+    else if (t >= T.toBrowser[1] && t < T.toPhone[0]) b = BBr;
+    else if (t >= T.toPhone[0] && t < T.toPhone[1]) b = lerpBar(BBr, BPh, easeInOut(seg(t, T.toPhone)));
+    else if (t >= T.toPhone[1] && t < T.toN[0]) b = BPh;
+    else if (t >= T.toN[0] && t < T.toN[1]) b = lerpBar(BPh, BN, easeInOut(seg(t, T.toN)));
+    setBars(b);
+
+    // browser chrome: dots + divider
+    var chromeS = fadeInOut(t, T.chromeIn, T.browserOut);
+    chromeDivider.setAttribute("opacity", chromeS);
+    chromeDots.setAttribute("opacity", chromeS);
+
+    // the whole page strip scrolls at one constant speed -- hero included
+    var feedS = fadeInOut(t, [T.chromeIn[0], T.chromeIn[0] + 400], T.browserOut);
+    var scrollOffset = ROW_SPEED * Math.max(0, t - T.webScroll[0]);
+    pageItems.forEach(function(el){
+      var top = 215 + el.y - scrollOffset;
+      el.el.setAttribute("y", top);
+      el.el.setAttribute("height", el.h);
+      el.el.setAttribute("width", el.w);
+      if (el.hero){
+        el.el.setAttribute("opacity", feedS);
+        return;
+      }
+      var center = top + el.h/2;
+      var vis = clamp(Math.min((440 - center)/40, (center - 215)/40, 1), 0, 1);
+      el.el.setAttribute("opacity", vis * feedS * (el.type === 'line' ? 0.55 : 1));
+    });
+
+    // phone chrome: notch + home indicator
+    var phoneChromeS = fadeInOut(t, T.phoneChrome, T.phoneOut);
+    phoneNotch.setAttribute("opacity", phoneChromeS);
+    phoneHome.setAttribute("opacity", phoneChromeS);
+
+    // phone icons: pop in one by one, fade out together
+    iconEls.forEach(function(n){
+      var inStart = T.phoneIn[0] + n.idx * 140;
+      var s = 0;
+      if (t >= inStart && t < T.phoneOut[0]){
+        s = easeOutBack(Math.min(1, (t - inStart) / 380));
+      } else if (t >= T.phoneOut[0] && t < T.phoneOut[1]){
+        s = 1 - easeInOut(seg(t, T.phoneOut));
+      }
+      s = Math.max(0, s);
+      n.el.setAttribute("opacity", Math.min(1, s * 1.3));
+      n.el.setAttribute("transform",
+        "translate(" + (n.cx * (1 - s)) + " " + (n.cy * (1 - s)) + ") scale(" + s + ")");
+    });
+
+    label.textContent = labelFor(t);
+    fillEl.style.width = (t / TOTAL * 100) + "%";
+  }
+
+  // ---------- loop ----------
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var playing = !reduced;
+  var startTime = null;
+  var pausedAt = 0;
+
+  function frame(now){
+    if (startTime === null) startTime = now - pausedAt;
+    var t = (now - startTime) % TOTAL;
+    render(t);
+    pausedAt = t;
+    if (playing) requestAnimationFrame(frame);
+  }
+
+  stage.addEventListener("click", function(){
+    playing = !playing;
+    if (playing){
+      startTime = null;
+      requestAnimationFrame(frame);
+    }
+  });
+
+  progressEl.addEventListener("click", function(e){
+    var rect = progressEl.getBoundingClientRect();
+    var frac = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    pausedAt = frac * TOTAL;
+    startTime = null;
+    if (!playing) render(pausedAt);
+    else requestAnimationFrame(frame);
+  });
+
+  render(0);
+  if (playing) requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
