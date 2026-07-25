@@ -366,6 +366,11 @@ a {
 .engine__schematic {
   position: relative;
   width: 100%;
+  /* Lets the HTML-overlaid labels (02/03) size in cqw units below, so
+     they scale in lockstep with the raster image instead of drifting
+     out of sync with module 01's baked-in text as the viewport (and
+     therefore the image's rendered width) changes. */
+  container-type: inline-size;
 }
 
 .engine__schematic img {
@@ -407,17 +412,19 @@ a {
   align-items: center;
 }
 
-/* Sizes/weight matched to module 01's baked-in label (22.1px number,
-   15px name, both Inter Regular) so all three modules read as one
-   consistent system rather than each looking like a different scale. */
+/* Sized in cqw (% of the schematic image's own rendered width) to
+   match module 01's baked-in label proportions exactly — 22.102px and
+   15px respectively, against the image's native 347px width — instead
+   of a fixed rem size that only matched at one viewport width and
+   drifted apart (bigger/smaller than "GRANDURE") at others. */
 .engine__module-label-num {
-  font-size: 1.38rem;
+  font-size: 6.37cqw;
   font-weight: 400;
   line-height: 1.2;
 }
 
 .engine__module-label-name {
-  font-size: 0.94rem;
+  font-size: 4.32cqw;
   font-weight: 400;
   line-height: 1.3;
 }
