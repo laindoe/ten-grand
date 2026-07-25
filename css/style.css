@@ -412,11 +412,12 @@ a {
   align-items: center;
 }
 
-/* Sized in cqw (% of the schematic image's own rendered width) to
-   match module 01's baked-in label proportions exactly — 22.102px and
-   15px respectively, against the image's native 347px width — instead
-   of a fixed rem size that only matched at one viewport width and
-   drifted apart (bigger/smaller than "GRANDURE") at others. */
+/* Sized in cqw (% of the schematic image's own rendered width),
+   matching the module's original Figma spec (22.102px/15px against
+   the image's native 347px width) so all three module labels — now
+   all real HTML text, not raster — scale identically at any viewport
+   instead of a fixed rem size drifting out of proportion with the
+   image around it. */
 .engine__module-label-num {
   font-size: 6.37cqw;
   font-weight: 400;
@@ -436,17 +437,6 @@ a {
   margin-top: 8px;
   width: 20px;
   color: var(--color-text-muted);
-}
-
-/* Standalone version (module 01's number/name are baked into the
-   schematic image, so this arrow is positioned on its own to match). */
-.engine__module-arrow--standalone {
-  position: absolute;
-  left: 47.76%;
-  top: var(--label-top);
-  transform: translateX(-50%);
-  pointer-events: none;
-  margin: 0;
 }
 
 /* ---------- Modal ---------- */
