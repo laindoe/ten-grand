@@ -499,6 +499,93 @@ a {
   color: var(--color-text);
 }
 
+/* ---------- Director section ---------- */
+
+.section--director {
+  text-align: center;
+  border-top: 1px solid var(--color-card-border);
+}
+
+.director__eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 16px;
+}
+
+.director__headline {
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.director__photo-frame {
+  position: relative;
+  width: 200px;
+  margin: 0 auto 40px;
+  padding: 28px 36px;
+}
+
+.director__photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.director__bracket {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  color: var(--color-text);
+}
+
+.director__bracket--tl {
+  top: 0;
+  left: 0;
+}
+
+.director__bracket--tr {
+  top: 0;
+  right: 0;
+  transform: rotate(90deg);
+}
+
+.director__bracket--bl {
+  bottom: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.director__bracket--br {
+  bottom: 0;
+  right: 0;
+  transform: rotate(180deg);
+}
+
+.director__name {
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 400;
+}
+
+.director__title {
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 400;
+  margin-bottom: 32px;
+}
+
+.director__icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 40px;
+}
+
+.director__cta {
+  display: inline-block;
+  border: 1px solid var(--color-card-border);
+  padding: 16px 32px;
+  font-size: 1.1rem;
+}
+
 /* ---------- Modal ---------- */
 
 .modal {
