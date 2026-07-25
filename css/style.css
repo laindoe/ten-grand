@@ -148,6 +148,10 @@ a {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  /* Clears the sticky nav on anchor-jump/scrollIntoView so section
+     content (esp. a section-header flush against the top) isn't
+     hidden underneath it. */
+  scroll-margin-top: 64px;
 }
 
 .card {
@@ -204,25 +208,21 @@ a {
   margin: 0 auto;
 }
 
-/* ---------- Manual section ---------- */
-
-.section--manual {
-  text-align: center;
-  padding: 0 var(--section-padding-x) 60px;
-  border-top: 1px solid var(--color-card-border);
-}
+/* ---------- Shared section header ----------
+   Eyebrow + headline + vertical divider + short description + rule,
+   used at the top of any content-heavy section (manual, engine, ...). */
 
 /* Full-bleed within the section so the bottom rule touches the site
    frame's left/right edges, while the row inside stays inset to the
    normal content column via matching horizontal padding. */
-.manual__header {
+.section-header {
   width: calc(100% + 2 * var(--section-padding-x));
   margin: 0 calc(-1 * var(--section-padding-x)) 60px;
   padding: 0 var(--section-padding-x);
   border-bottom: 1px solid var(--color-card-border);
 }
 
-.manual__header-row {
+.section-header__row {
   display: flex;
   align-items: stretch;
   gap: 24px;
@@ -230,33 +230,37 @@ a {
   margin: 0 auto;
 }
 
-.manual__header-col {
+.section-header__col {
   flex: 1;
   text-align: left;
   padding: 24px 0 32px;
 }
 
-.manual__eyebrow {
+.section-eyebrow {
   font-size: 0.8rem;
   letter-spacing: 0.03em;
   margin-bottom: 24px;
 }
 
-.manual__headline {
+.section-headline {
   text-align: left;
   font-size: clamp(1.5rem, 6vw, 2rem);
   font-weight: 400;
   line-height: 1.15;
 }
 
+.section-headline--lg {
+  font-size: clamp(1.5rem, 6vw, 2.25rem);
+}
+
 /* No padding/height set — stretches with its siblings to span the
    row's full height, so it touches the border above and below. */
-.manual__header-divider {
+.section-header__divider {
   width: 1px;
   background: var(--color-card-border);
 }
 
-.manual__header-desc {
+.section-header__desc {
   width: 100px;
   flex-shrink: 0;
   padding: 24px 0 32px;
@@ -264,6 +268,14 @@ a {
   font-size: 0.85rem;
   line-height: 1.4;
   color: var(--color-text);
+}
+
+/* ---------- Manual section ---------- */
+
+.section--manual {
+  text-align: center;
+  padding: 0 var(--section-padding-x) 60px;
+  border-top: 1px solid var(--color-card-border);
 }
 
 .manual__steps {
@@ -307,6 +319,161 @@ a {
   line-height: 1.5;
   max-width: 290px;
   margin: 0 auto;
+}
+
+/* ---------- Engine section ---------- */
+
+.section--engine {
+  text-align: center;
+  padding: 0 var(--section-padding-x) 60px;
+  border-top: 1px solid var(--color-card-border);
+}
+
+.engine__diagram {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.engine__diagram-label {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.engine__idea-icon {
+  margin-top: 24px;
+}
+
+.engine__impact-icon {
+  width: 180px;
+  height: auto;
+  margin-top: -8px;
+}
+
+.engine__schematic {
+  position: relative;
+  width: 100%;
+}
+
+.engine__schematic img {
+  width: 100%;
+  height: auto;
+}
+
+.engine__module-hotspot {
+  position: absolute;
+  left: 6%;
+  width: 88%;
+  top: var(--hotspot-top);
+  bottom: calc(100% - var(--hotspot-bottom));
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.engine__module-hotspot:hover,
+.engine__module-hotspot:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
+  outline: none;
+}
+
+.engine__module-label {
+  position: absolute;
+  left: 50%;
+  top: var(--label-top);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.engine__module-label-num {
+  display: block;
+  font-size: 1.1rem;
+}
+
+.engine__module-label-name {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Modal ---------- */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--section-padding-x);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s var(--ease-out), visibility 0s 0.25s;
+}
+
+.modal.is-open {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s var(--ease-out);
+}
+
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.modal__panel {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-card-border);
+  padding: 36px 28px 32px;
+  text-align: left;
+  transform: translateY(16px);
+  transition: transform 0.25s var(--ease-out);
+}
+
+.modal.is-open .modal__panel {
+  transform: translateY(0);
+}
+
+.modal__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal__title {
+  font-size: 1.15rem;
+  font-weight: 400;
+  margin-bottom: 16px;
+  padding-right: 24px;
+}
+
+.modal__body {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 /* ---------- Reduced motion ---------- */

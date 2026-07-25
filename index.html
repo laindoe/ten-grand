@@ -21,8 +21,8 @@
       <span class="nav__divider" aria-hidden="true"></span>
       <nav class="nav__menu" aria-label="Primary">
         <a href="#manual">MANUAL</a>
-        <!-- TODO: point at real sections once the engine/fuel/director frames are built -->
-        <a href="#">ENGINE</a>
+        <a href="#engine">ENGINE</a>
+        <!-- TODO: point at real sections once the fuel/director frames are built -->
         <a href="#">FUEL</a>
         <a href="#">DIRECTOR</a>
       </nav>
@@ -61,14 +61,14 @@
 
     <!-- ============ SECTION 2: MANUAL ============ -->
     <section class="section section--manual" id="manual">
-      <div class="manual__header reveal">
-        <div class="manual__header-row">
-          <div class="manual__header-col">
-            <p class="manual__eyebrow">TG-10000 MANUAL</p>
-            <h2 class="manual__headline">TURN YOUR IDEAS INTO INTELLECTUAL PROPERTY</h2>
+      <div class="section-header reveal">
+        <div class="section-header__row">
+          <div class="section-header__col">
+            <p class="section-eyebrow">TG-10000 MANUAL</p>
+            <h2 class="section-headline">TURN YOUR IDEAS INTO INTELLECTUAL PROPERTY</h2>
           </div>
-          <span class="manual__header-divider" aria-hidden="true"></span>
-          <p class="manual__header-desc">Build the systems and assets through specialists</p>
+          <span class="section-header__divider" aria-hidden="true"></span>
+          <p class="section-header__desc">Build the systems and assets through specialists</p>
         </div>
       </div>
 
@@ -96,8 +96,96 @@
       </ol>
     </section>
 
+    <!-- ============ SECTION 3: ENGINE ============ -->
+    <section class="section section--engine" id="engine">
+      <div class="section-header reveal">
+        <div class="section-header__row">
+          <div class="section-header__col">
+            <p class="section-eyebrow">TG-10000 ENGINE</p>
+            <h2 class="section-headline section-headline--lg">THE MACHINE THAT TURNS IDEAS TO IMPACT</h2>
+          </div>
+          <span class="section-header__divider" aria-hidden="true"></span>
+          <p class="section-header__desc">Build the systems and assets through specialists</p>
+        </div>
+      </div>
+
+      <div class="engine__diagram">
+        <p class="engine__diagram-label">IDEA</p>
+        <img
+          class="engine__idea-icon reveal"
+          src="assets/images/icon-idea-target.svg"
+          alt=""
+          width="58"
+          height="86"
+        />
+
+        <div class="engine__schematic reveal">
+          <img
+            src="assets/images/engine-schematic.png"
+            alt="Engine schematic: three modules, GRANDURE, GRAND SIGNAL, and GRANDSTREAM, connected in sequence from idea to impact"
+            width="347"
+            height="795"
+          />
+
+          <button
+            type="button"
+            class="engine__module-hotspot"
+            style="--hotspot-top: 1.67%; --hotspot-bottom: 26.7%;"
+            data-modal-title="01 GRANDURE — MAKE IT REAL"
+            data-modal-body="Build the systems and assets through industry standard workflows and digital specialists."
+            aria-label="Learn more about module 01, GRANDURE"
+          ></button>
+
+          <div class="engine__module-label" style="--label-top: 49.22%;">
+            <span class="engine__module-label-num">02</span>
+            <span class="engine__module-label-name">GRAND SIGNAL</span>
+          </div>
+          <button
+            type="button"
+            class="engine__module-hotspot"
+            style="--hotspot-top: 36.71%; --hotspot-bottom: 61.74%;"
+            data-modal-title="02 GRAND SIGNAL — GET YOUR DAY ONES"
+            data-modal-body="Build the systems and assets through industry standard workflows and digital specialists."
+            aria-label="Learn more about module 02, GRAND SIGNAL"
+          ></button>
+
+          <div class="engine__module-label" style="--label-top: 84.27%;">
+            <span class="engine__module-label-num">03</span>
+            <span class="engine__module-label-name">GRANDSTREAM</span>
+          </div>
+          <button
+            type="button"
+            class="engine__module-hotspot"
+            style="--hotspot-top: 71.75%; --hotspot-bottom: 96.79%;"
+            data-modal-title="03 GRANDSTREAM — SHARE IT WITH THE WORLD"
+            data-modal-body="Build the systems and assets through industry standard workflows and digital specialists."
+            aria-label="Learn more about module 03, GRANDSTREAM"
+          ></button>
+        </div>
+
+        <img
+          class="engine__impact-icon reveal"
+          src="assets/images/icon-impact-globe.png"
+          alt=""
+          width="222"
+          height="220"
+        />
+        <p class="engine__diagram-label">IMPACT</p>
+      </div>
+    </section>
+
   </main>
 
+  </div>
+
+  <!-- Shared modal for engine module details -->
+  <div class="modal" id="engine-modal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="engine-modal-title">
+      <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
+      <h3 class="modal__title" id="engine-modal-title"></h3>
+      <p class="modal__body"></p>
+    </div>
   </div>
 
   <script src="js/main.js"></script>
