@@ -338,17 +338,20 @@ a {
   align-items: center;
 }
 
+/* The schematic's mechanical centerline sits at 47.76% of its own
+   width, not exactly 50% (per Figma: centerline x=165.72 of 347px
+   total) — align every free-standing diagram element (both text
+   labels and the icon/globe images) to that same line, centered first
+   then nudged by the 2.24% delta, so they all read as directly
+   above/below the machine's column instead of the diagram's literal
+   midpoint. */
 .engine__diagram-label {
   font-size: 1.5rem;
   font-weight: 400;
+  position: relative;
+  left: -2.24%;
 }
 
-/* The schematic's mechanical centerline sits at 47.76% of its own
-   width, not exactly 50% (per Figma: centerline x=165.72 of 347px
-   total) — align the free-standing icon/globe to that same line,
-   centered first then nudged by the 2.24% delta, so they read as
-   directly above/below the machine's column instead of the diagram's
-   literal midpoint. */
 .engine__idea-icon {
   margin-top: 24px;
   position: relative;
