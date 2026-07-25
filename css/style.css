@@ -352,6 +352,16 @@ a {
   left: -2.24%;
 }
 
+/* Matches the visual gap between "IDEA" and the star icon below it
+   (24px margin-top on .engine__idea-icon). Needs a larger margin here
+   than a flat 24px because line-height leading around the text eats
+   into the apparent gap on this side (icon-then-label, instead of
+   label-then-icon) — tuned empirically via measured bounding boxes so
+   the two gaps match instead of just copying the same margin value. */
+.engine__diagram-label--after-icon {
+  margin-top: 48px;
+}
+
 .engine__idea-icon {
   margin-top: 24px;
   position: relative;
