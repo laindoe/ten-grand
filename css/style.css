@@ -393,34 +393,41 @@ a {
   outline: none;
 }
 
+/* Flex column + align-items:center is used instead of text-align, so
+   centering doesn't depend on the label's shrink-to-fit width lining
+   up correctly with its children — robust regardless of content. */
 .engine__module-label {
   position: absolute;
   left: 47.76%;
   top: var(--label-top);
   transform: translate(-50%, -50%);
   pointer-events: none;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Sizes/weight matched to module 01's baked-in label (22.1px number,
+   15px name, both Inter Regular) so all three modules read as one
+   consistent system rather than each looking like a different scale. */
 .engine__module-label-num {
-  display: block;
-  font-size: 1.4rem;
+  font-size: 1.38rem;
   font-weight: 400;
-  margin-bottom: 2px;
+  line-height: 1.2;
 }
 
 .engine__module-label-name {
-  display: block;
-  font-size: 0.75rem;
+  font-size: 0.94rem;
   font-weight: 400;
-  letter-spacing: 0.02em;
+  line-height: 1.3;
 }
 
-/* Small chevron under each module's label signaling it opens a modal. */
+/* Small thin right-pointing arrow under each module's label, signaling
+   it opens a modal. */
 .engine__module-arrow {
-  display: block;
-  margin: 6px auto 0;
-  width: 14px;
+  display: flex;
+  margin-top: 8px;
+  width: 20px;
   color: var(--color-text-muted);
 }
 
