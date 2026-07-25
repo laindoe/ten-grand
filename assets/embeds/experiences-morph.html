@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N — Ten Grand Experiences</title>
+<style>
+  :root{
+    --ink:#161616;
+    --paper:#F5F4F2;
+    --dim:#7a7a78;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background:transparent;
+    color:var(--paper);
+    font-family:"Futura","Avenir Next","Century Gothic","Trebuchet MS",sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    -webkit-tap-highlight-color:transparent;
+    overflow:hidden;
+  }
+  .label{
+    display:none;
+    font-size:11px;
+    letter-spacing:0.5em;
+    text-indent:0.5em;
+    text-transform:uppercase;
+    color:var(--dim);
+    height:16px;
+    text-align:center;
+  }
+  .stage{
+    width:min(90vmin,600px);
+    height:min(90vmin,600px);
+    cursor:pointer;
+  }
+  svg{width:100%;height:100%;display:block;}
+  .progress{
+    display:none;
+    width:min(78vmin,520px);
+    height:1px;
+    background:#2c2c2b;
+    position:relative;
+    cursor:pointer;
+  }
+  .progress::after{
+    content:"";
+    position:absolute;
+    inset:-8px 0;
+  }
+  .progress-fill{
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:0%;
+    background:var(--paper);
+  }
+  .tagline{
+    display:none;
+    margin-top:26px;
+    font-size:11px;
+    letter-spacing:0.42em;
+    text-indent:0.42em;
+    color:var(--dim);
+    text-align:center;
+  }
+  .hint{
+    display:none;
+    margin-top:10px;
+    font-size:9px;
+    letter-spacing:0.3em;
+    text-indent:0.3em;
+    color:#3d3d3c;
+    text-transform:uppercase;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hint{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="label" id="phaseLabel">Ten Grand Experiences</div>
+
+<div class="stage" id="stage" role="img" aria-label="The N logomark becomes a ticket, rips in half; the right half falls away, the left half rotates upright, thickens, and rebuilds the N">
+  <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <g id="mark" fill="#F5F4F2">
+      <!-- N verticals -->
+      <rect id="barL"/>
+      <rect id="barR"/>
+      <!-- N diagonals <-> ticket top/bottom edges -->
+      <polygon id="m1"/>
+      <polygon id="m2"/>
+    </g>
+
+    <!-- notched ticket sides: the bite is carved into the shape itself -->
+    <g fill="#F5F4F2">
+      <path id="sideNL" opacity="0"/>
+      <path id="sideNR" opacity="0"/>
+    </g>
+
+    <!-- assembled-ticket decorations (primitive era) -->
+    <g fill="#161616">
+      <g id="ripDashes" opacity="0" fill="#F5F4F2">
+        <rect x="297.5" y="252" width="5" height="10"/>
+        <rect x="297.5" y="270" width="5" height="10"/>
+        <rect x="297.5" y="288" width="5" height="10"/>
+        <rect x="297.5" y="306" width="5" height="10"/>
+        <rect x="297.5" y="324" width="5" height="10"/>
+        <rect x="297.5" y="342" width="5" height="10"/>
+      </g>
+    </g>
+
+    <!-- LEFT ticket half: rips, then rigid-rotates 90deg clockwise -->
+    <g id="halfL" opacity="0">
+      <g fill="#F5F4F2">
+        <rect x="180" y="240" width="120" height="8"/>
+        <rect x="180" y="352" width="120" height="8"/>
+        <path id="halfLside"/>
+      </g>
+      <path id="tearL" fill="none" stroke="#F5F4F2" stroke-width="8"/>
+    </g>
+
+    <!-- RIGHT ticket half: rips and falls away -->
+    <g id="halfR" opacity="0">
+      <g fill="#F5F4F2">
+        <rect x="300" y="240" width="120" height="8"/>
+        <rect x="300" y="352" width="120" height="8"/>
+        <path id="halfRside"/>
+      </g>
+      <path id="tearR" fill="none" stroke="#F5F4F2" stroke-width="8"/>
+    </g>
+  </svg>
+</div>
+
+<div class="progress" id="progress"><div class="progress-fill" id="fill"></div></div>
+
+<div class="tagline">aMASS Comm(unity)</div>
+<div class="hint">Tap mark to pause</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- beam states: 5-point polygons ----------
+  // m1: top diagonal <-> ticket top edge <-> square top <-> thick band <-> N
+  var B1 = {
+    N:  [[211.2,80],[218.8,80],[388.8,257.3],[388.8,297.9],[211.2,111.9]],
+    TK: [[180,240],[420,240],[420,240],[420,248],[180,248]],
+    SQ: [[240,240],[360,240],[360,240],[360,248],[240,248]],
+    TH: [[240,240],[360,240],[360,240],[360,276],[240,276]]
+  };
+  var B2 = {
+    N:  [[211.2,304.6],[388.8,490.6],[388.8,520],[378.9,520],[211.2,344.7]],
+    TK: [[180,352],[420,352],[420,360],[180,360],[180,360]],
+    SQ: [[240,352],[360,352],[360,360],[240,360],[240,360]],
+    TH: [[240,324],[360,324],[360,360],[240,360],[240,360]]
+  };
+
+  // ---------- bar states: per-bar {x, y, h, w} ----------
+  var BAR = {
+    NL:  {x:210.9, y:80,  h:440, w:5},
+    NR:  {x:384.1, y:80,  h:440, w:5},
+    // ticket sides
+    TKL: {x:180, y:240, h:120, w:8},
+    TKR: {x:412, y:240, h:120, w:8},
+    // square-frame sides (after the left half's rotation)
+    SQL: {x:240, y:240, h:120, w:8},
+    SQR: {x:352, y:240, h:120, w:8}
+  };
+
+  // ---------- timeline (ms) ----------
+  var T = {
+    holdN1:     [0,     700 ],
+    toTicket:   [700,   1900],
+    notchesIn:  [2000,  2400],
+    dashesIn:   [2400,  2900],
+    holdTicket: [2900,  3300],
+    rip:        [3300,  3700],
+    fallR:      [3700,  4600],
+    leftRotate: [4300,  5600],
+    thicken:    [5600,  6200],
+    slant:      [6100,  7100],
+    barsExtend: [6100,  7100],
+    holdN2:     [7500, 10100]
+  };
+  var TOTAL = 10100;
+
+  // ---------- helpers ----------
+  function seg(t, r){
+    if (t <= r[0]) return 0;
+    if (t >= r[1]) return 1;
+    return (t - r[0]) / (r[1] - r[0]);
+  }
+  function easeInOut(p){
+    return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2;
+  }
+  function easeOut(p){
+    return 1 - Math.pow(1 - p, 3);
+  }
+  function easeIn(p){
+    return p*p*p;
+  }
+  function lerp(a, b, p){ return a + (b - a) * p; }
+  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+  function lerpPts(A, B, p){
+    var out = [];
+    for (var i = 0; i < A.length; i++){
+      out.push([lerp(A[i][0],B[i][0],p), lerp(A[i][1],B[i][1],p)]);
+    }
+    return out;
+  }
+  function ptsAttr(pts){
+    return pts.map(function(pt){ return pt[0] + "," + pt[1]; }).join(" ");
+  }
+  function lerpRect(A, B, p){
+    return { x:lerp(A.x,B.x,p), y:lerp(A.y,B.y,p), h:lerp(A.h,B.h,p), w:lerp(A.w,B.w,p) };
+  }
+  function setRect(el, r, o){
+    el.setAttribute("x", r.x);
+    el.setAttribute("y", r.y);
+    el.setAttribute("width", r.w);
+    el.setAttribute("height", r.h);
+    el.setAttribute("opacity", o);
+  }
+  // vertical zigzag tear path with plumb ends: the first and last segments are
+  // vertical so the stroke's butt caps sit flush against the ticket's horizontal
+  // edges -- clean corners at both ends. amp eases to 0 to smooth the tear out.
+  function tearPath(cx, amp){
+    var pts = [
+      [cx, 240], [cx, 248],
+      [cx + amp, 258], [cx - amp, 269], [cx + amp, 279],
+      [cx - amp, 290], [cx + amp, 300], [cx - amp, 310],
+      [cx + amp, 321], [cx - amp, 331], [cx + amp, 342],
+      [cx, 352], [cx, 360]
+    ];
+    var d = "M " + pts[0][0] + " " + pts[0][1];
+    for (var i = 1; i < pts.length; i++){
+      d += " L " + pts[i][0] + " " + pts[i][1];
+    }
+    return d;
+  }
+  // ticket side with a semicircular bite carved into its outer edge;
+  // r animates 0 -> 14 (punch in) and back (smooth out). At r=0 it equals
+  // the plain side bar exactly, so swaps are pixel-identical.
+  function sidePath(xO, dirIn, r){
+    var xI = xO + 8 * dirIn;
+    if (r < 0.6){
+      return "M" + xO + " 240 L" + xI + " 240 L" + xI + " 360 L" + xO + " 360 Z";
+    }
+    var rI = r + 8;                                  // inner detour radius
+    var phiI = Math.acos(8 / rI);                    // inner intersection angle
+    var base = dirIn > 0 ? 0 : Math.PI;              // bulge direction
+    function arc(radius, thFrom, thTo){
+      var s = "";
+      for (var i = 0; i <= 10; i++){
+        var th = thFrom + (thTo - thFrom) * i / 10;
+        s += " L" + (xO + radius * Math.cos(th)) + " " + (300 + radius * Math.sin(th));
+      }
+      return s;
+    }
+    var aI = Math.sqrt(Math.max(0, rI * rI - 64));
+    var d = "M" + xO + " 240"
+          + " L" + xI + " 240"
+          + " L" + xI + " " + (300 - aI)
+          + arc(rI, base - dirIn * phiI, base + dirIn * phiI)  // inner edge detours around
+          + " L" + xI + " 360"
+          + " L" + xO + " 360"
+          + " L" + xO + " " + (300 + r)
+          + arc(r, base + dirIn * Math.PI / 2, base - dirIn * Math.PI / 2) // outer edge follows the bite
+          + " Z";
+    return d;
+  }
+
+  // ---------- dom ----------
+  var $ = function(id){ return document.getElementById(id); };
+  var m1 = $("m1"), m2 = $("m2");
+  var barL = $("barL"), barR = $("barR");
+  var sideNL = $("sideNL"), sideNR = $("sideNR");
+  var ripDashes = $("ripDashes");
+  var halfL = $("halfL"), halfR = $("halfR");
+  var tearL = $("tearL"), tearR = $("tearR");
+  var halfLside = $("halfLside"), halfRside = $("halfRside");
+  var label = $("phaseLabel");
+  var fillEl = $("fill");
+  var stage = $("stage");
+  var progressEl = $("progress");
+
+  tearL.setAttribute("d", tearPath(296, 8));
+  tearR.setAttribute("d", tearPath(304, -8));
+  halfLside.setAttribute("d", sidePath(180, 1, 11));
+  halfRside.setAttribute("d", sidePath(420, -1, 11));
+
+  function labelFor(t){
+    if (t < T.toTicket[0])  return "Ten Grand Experiences";
+    if (t < T.slant[1])     return "Admit One";
+    return "Ten Grand Experiences";
+  }
+
+  // ---------- render ----------
+  function render(t){
+    var primO = (t >= T.rip[0] && t < T.leftRotate[1]) ? 0 : 1;
+
+    // ----- beams -----
+    var pts1, pts2;
+    if (t < T.toTicket[0]){
+      pts1 = B1.N; pts2 = B2.N;
+    } else if (t < T.toTicket[1]){
+      var tp = easeInOut(seg(t, T.toTicket));
+      pts1 = lerpPts(B1.N, B1.TK, tp);
+      pts2 = lerpPts(B2.N, B2.TK, tp);
+    } else if (t < T.rip[0]){
+      pts1 = B1.TK; pts2 = B2.TK;
+    } else if (t < T.thicken[0]){
+      // hidden during the rip and rotation; parked at the square state
+      pts1 = B1.SQ; pts2 = B2.SQ;
+    } else if (t < T.slant[0]){
+      var thp = easeInOut(seg(t, T.thicken));
+      pts1 = lerpPts(B1.SQ, B1.TH, thp);
+      pts2 = lerpPts(B2.SQ, B2.TH, thp);
+    } else if (t < T.slant[1]){
+      var sp = easeInOut(seg(t, T.slant));
+      pts1 = lerpPts(B1.TH, B1.N, sp);
+      pts2 = lerpPts(B2.TH, B2.N, sp);
+    } else {
+      pts1 = B1.N; pts2 = B2.N;
+    }
+    m1.setAttribute("points", ptsAttr(pts1));
+    m2.setAttribute("points", ptsAttr(pts2));
+    m1.setAttribute("opacity", primO);
+    m2.setAttribute("opacity", primO);
+
+    // ----- bars -----
+    var bL, bR, bO = primO;
+    if (t < T.toTicket[0]){
+      bL = BAR.NL; bR = BAR.NR;
+    } else if (t < T.toTicket[1]){
+      var bp = easeInOut(seg(t, T.toTicket));
+      bL = lerpRect(BAR.NL, BAR.TKL, bp);
+      bR = lerpRect(BAR.NR, BAR.TKR, bp);
+    } else if (t < T.notchesIn[0]){
+      bL = BAR.TKL; bR = BAR.TKR;
+    } else if (t < T.rip[0]){
+      // the notched side paths render the sides during this window
+      bL = BAR.TKL; bR = BAR.TKR; bO = 0;
+    } else if (t < T.barsExtend[0]){
+      // parked at square-frame sides while hidden / after swap
+      bL = BAR.SQL; bR = BAR.SQR;
+    } else if (t < T.barsExtend[1]){
+      var ep = easeInOut(seg(t, T.barsExtend));
+      bL = lerpRect(BAR.SQL, BAR.NL, ep);
+      bR = lerpRect(BAR.SQR, BAR.NR, ep);
+    } else {
+      bL = BAR.NL; bR = BAR.NR;
+    }
+    setRect(barL, bL, bO);
+    setRect(barR, bR, bO);
+
+    // ----- notched ticket sides + perforation (primitive era only) -----
+    var deco = (t >= T.rip[0]) ? 0 : 1;
+    var sidesOn = (t >= T.notchesIn[0] && t < T.rip[0]) ? 1 : 0;
+    if (sidesOn){
+      var nr = 11 * easeOut(seg(t, T.notchesIn));
+      sideNL.setAttribute("d", sidePath(180, 1, nr));
+      sideNR.setAttribute("d", sidePath(420, -1, nr));
+    }
+    sideNL.setAttribute("opacity", sidesOn);
+    sideNR.setAttribute("opacity", sidesOn);
+    var dashO = easeOut(Math.min(1, seg(t, T.dashesIn))) * deco;
+    ripDashes.setAttribute("opacity", dashO);
+
+    // ----- ripped halves -----
+    var hLo = 0, hRo = 0, hLt = "", hRt = "";
+    if (t >= T.rip[0] && t < T.leftRotate[1]){
+      hLo = 1;
+      var jp = easeOut(seg(t, T.rip));
+      var lTx = -10 * jp, lTy = 2 * jp, lRot = -3 * jp;
+      var rTx = 12 * jp,  rTy = 8 * jp, rRot = 5 * jp;
+
+      // right half falls away
+      if (t >= T.fallR[0]){
+        var fp = easeIn(seg(t, T.fallR));
+        rTx = 12 + 85 * fp;
+        rTy = 8 + 215 * fp;
+        rRot = 5 + 48 * fp;
+        hRo = 1 - fp;
+      } else {
+        hRo = 1;
+      }
+
+      // left half: rigid clockwise quarter-turn about its center (240, 300)
+      if (t >= T.leftRotate[0]){
+        var rp = easeInOut(seg(t, T.leftRotate));
+        lRot = -3 + 93 * rp;             // -3 -> 90
+        lTx = -10 * (1 - rp) + 60 * rp;  // jolt eases out; half travels to center
+        lTy = 2 * (1 - rp);
+        // tear and notch both smooth flat in the final stretch of the turn
+        var smooth = clamp((rp - 0.8) / 0.2, 0, 1);
+        tearL.setAttribute("d", tearPath(296, 8 * (1 - smooth)));
+        halfLside.setAttribute("d", sidePath(180, 1, 11 * (1 - smooth)));
+      } else {
+        tearL.setAttribute("d", tearPath(296, 8));
+        halfLside.setAttribute("d", sidePath(180, 1, 11));
+      }
+
+      hLt = "translate(" + lTx + " " + lTy + ") rotate(" + lRot + " 240 300)";
+      hRt = "translate(" + rTx + " " + rTy + ") rotate(" + rRot + " 360 300)";
+    }
+    halfL.setAttribute("opacity", hLo);
+    halfR.setAttribute("opacity", clamp(hRo, 0, 1));
+    halfL.setAttribute("transform", hLt);
+    halfR.setAttribute("transform", hRt);
+
+    label.textContent = labelFor(t);
+    fillEl.style.width = (t / TOTAL * 100) + "%";
+  }
+
+  // ---------- loop ----------
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var playing = !reduced;
+  var startTime = null;
+  var pausedAt = 0;
+
+  function frame(now){
+    if (startTime === null) startTime = now - pausedAt;
+    var t = (now - startTime) % TOTAL;
+    render(t);
+    pausedAt = t;
+    if (playing) requestAnimationFrame(frame);
+  }
+
+  stage.addEventListener("click", function(){
+    playing = !playing;
+    if (playing){
+      startTime = null;
+      requestAnimationFrame(frame);
+    }
+  });
+
+  progressEl.addEventListener("click", function(e){
+    var rect = progressEl.getBoundingClientRect();
+    var frac = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    pausedAt = frac * TOTAL;
+    startTime = null;
+    if (!playing) render(pausedAt);
+    else requestAnimationFrame(frame);
+  });
+
+  render(0);
+  if (playing) requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N — Ten Grand Entertainment</title>
+<style>
+  :root{
+    --ink:#161616;
+    --paper:#F5F4F2;
+    --dim:#7a7a78;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background:transparent;
+    color:var(--paper);
+    font-family:"Futura","Avenir Next","Century Gothic","Trebuchet MS",sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    -webkit-tap-highlight-color:transparent;
+    overflow:hidden;
+  }
+  .label{
+    display:none;
+    font-size:11px;
+    letter-spacing:0.5em;
+    text-indent:0.5em;
+    text-transform:uppercase;
+    color:var(--dim);
+    height:16px;
+    text-align:center;
+  }
+  .stage{
+    width:min(90vmin,600px);
+    height:min(90vmin,600px);
+    cursor:pointer;
+  }
+  svg{width:100%;height:100%;display:block;}
+  .progress{
+    display:none;
+    width:min(78vmin,520px);
+    height:1px;
+    background:#2c2c2b;
+    position:relative;
+    cursor:pointer;
+  }
+  .progress::after{
+    content:"";
+    position:absolute;
+    inset:-8px 0;
+  }
+  .progress-fill{
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:0%;
+    background:var(--paper);
+  }
+  .tagline{
+    display:none;
+    margin-top:26px;
+    font-size:11px;
+    letter-spacing:0.42em;
+    text-indent:0.42em;
+    color:var(--dim);
+    text-align:center;
+  }
+  .hint{
+    display:none;
+    margin-top:10px;
+    font-size:9px;
+    letter-spacing:0.3em;
+    text-indent:0.3em;
+    color:#3d3d3c;
+    text-transform:uppercase;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hint{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="label" id="phaseLabel">Ten Grand Entertainment</div>
+
+<div class="stage" id="stage" role="img" aria-label="The N logomark morphing into a running film strip, a music staff with a melody, a phone with a scrolling social feed, then back to the N">
+  <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="filmClip">
+        <rect x="112" y="180" width="376" height="240"/>
+      </clipPath>
+      <clipPath id="phoneClip">
+        <rect x="196" y="116" width="208" height="368"/>
+      </clipPath>
+    </defs>
+    <g id="mark" fill="#F5F4F2">
+      <!-- verticals -->
+      <rect id="barL" x="210.9" y="80" width="5" height="440"/>
+      <rect id="barR" x="384.1" y="80" width="5" height="440"/>
+      <!-- morphing beams: logo diagonals -> film rails -> staff lines -> phone top/bottom -->
+      <polygon id="m1"/>
+      <polygon id="m2"/>
+      <!-- frame dividers between the rails (the scene cells) -->
+      <g id="dividers" clip-path="url(#filmClip)"></g>
+      <!-- middle staff lines -->
+      <rect id="s1" y="257.5" height="5" x="300" width="0"/>
+      <rect id="s2" y="297.5" height="5" x="300" width="0"/>
+      <rect id="s3" y="337.5" height="5" x="300" width="0"/>
+      <!-- melody -->
+      <g id="notes"></g>
+      <!-- social feed inside the phone -->
+      <g id="feed" clip-path="url(#phoneClip)"></g>
+    </g>
+    <!-- perforations punched into rails -->
+    <g id="perfs" fill="#161616" clip-path="url(#filmClip)"></g>
+  </svg>
+</div>
+
+<div class="progress" id="progress"><div class="progress-fill" id="fill"></div></div>
+
+<div class="tagline">aMASS Comm(unity)</div>
+<div class="hint">Tap mark to pause</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- beam geometry: 5-point polygons, traced from the source logo ----------
+  // m1 point order: TL, TR, TR', BR, BL   (TR' collapses into TR when rectangular)
+  // m2 point order: TL, TR, BR, BL', BL   (BL' collapses into BL when rectangular)
+  var B1 = {
+    N:  [[211.2,80],[218.8,80],[388.8,257.3],[388.8,297.9],[211.2,111.9]],
+    R:  [[112,192],[488,192],[488,192],[488,238],[112,238]],
+    ST: [[117.5,217.5],[482.5,217.5],[482.5,217.5],[482.5,222.5],[117.5,222.5]],
+    PH: [[188,108],[412,108],[412,108],[412,116],[188,116]]
+  };
+  var B2 = {
+    N:  [[211.2,304.6],[388.8,490.6],[388.8,520],[378.9,520],[211.2,344.7]],
+    R:  [[112,362],[488,362],[488,408],[112,408],[112,408]],
+    ST: [[117.5,377.5],[482.5,377.5],[482.5,382.5],[117.5,382.5],[117.5,382.5]],
+    PH: [[188,484],[412,484],[412,492],[188,492],[188,492]]
+  };
+
+  // vertical bar states: {dx from center, y, h, w}
+  var BN = {dx:86.6, y:80, h:440, w:5};    // logo / staff position
+  var BF = {dx:180, y:192, h:216, w:16};   // film-frame position (flush with rail edges)
+  var BS = {dx:180, y:217.5, h:165, w:5};  // staff barlines (flush with outer staff lines)
+  var BP = {dx:108, y:108, h:384, w:8};    // phone edges (flush with top/bottom beams)
+
+  // ---------- timeline (ms) ----------
+  var T = {
+    holdN1:      [0,     900 ],
+    straighten:  [900,   2100],
+    perfIn:      [2100,  2900],
+    dividersIn:  [2900,  3400],
+    play:        [3400,  6400],
+    perfOut:     [6500,  7050],
+    toStaff:     [7100,  8300],
+    linesIn:     [7400,  8600],
+    noteIn:      [8300,  9100],
+    holdStaff:   [9100, 10300],
+    noteOut:     [10300, 10800],
+    linesOut:    [10300, 11100],
+    toPhone:     [11200, 12400],
+    feedIn:      [12400, 13200],
+    feedScroll:  [13200, 15200],
+    feedOut:     [15200, 15700],
+    toN:         [15800, 17200],
+    holdN2:      [17200, 19500]
+  };
+  var TOTAL = 19500;
+  var SCROLL_DIST = 600;  // film: multiple of both pattern periods, lands realigned
+  var FEED_DIST = 348;    // feed: two posts scroll by
+
+  // ---------- helpers ----------
+  function seg(t, r){
+    if (t <= r[0]) return 0;
+    if (t >= r[1]) return 1;
+    return (t - r[0]) / (r[1] - r[0]);
+  }
+  function easeInOut(p){
+    return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2;
+  }
+  function easeOut(p){
+    return 1 - Math.pow(1 - p, 3);
+  }
+  function easeOutBack(p){
+    var c1 = 1.70158, c3 = c1 + 1;
+    return 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2);
+  }
+  function lerp(a, b, p){ return a + (b - a) * p; }
+  function mod(n, m){ return ((n % m) + m) % m; }
+  function lerpPts(A, B, p){
+    var out = [];
+    for (var i = 0; i < A.length; i++){
+      out.push([lerp(A[i][0],B[i][0],p), lerp(A[i][1],B[i][1],p)]);
+    }
+    return out;
+  }
+  function ptsAttr(pts){
+    return pts.map(function(pt){ return pt[0] + "," + pt[1]; }).join(" ");
+  }
+
+  // ---------- dom ----------
+  var $ = function(id){ return document.getElementById(id); };
+  var m1 = $("m1"), m2 = $("m2");
+  var barL = $("barL"), barR = $("barR");
+  var mids = [$("s1"), $("s2"), $("s3")];
+  var notesGroup = $("notes");
+  var perfsGroup = $("perfs");
+  var dividersGroup = $("dividers");
+  var feedGroup = $("feed");
+  var label = $("phaseLabel");
+  var fillEl = $("fill");
+  var stage = $("stage");
+  var progressEl = $("progress");
+
+  // perforations: 10 per rail tiling every 50px (wraps over a 500px period)
+  var perfRects = [];
+  [215,385].forEach(function(cy){
+    for (var i = 0; i < 10; i++){
+      var r = document.createElementNS("http://www.w3.org/2000/svg","rect");
+      perfsGroup.appendChild(r);
+      perfRects.push({el:r, cx:100 + i*50, cy:cy, i:i});
+    }
+  });
+
+  // frame dividers: 4 bars tiling every 150px (wraps over a 600px period)
+  var dividerRects = [];
+  for (var d = 0; d < 4; d++){
+    var dr = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    dividersGroup.appendChild(dr);
+    dividerRects.push({el:dr, cx:175 + d*150});
+  }
+  var DIV_W = 14, DIV_TOP = 238, DIV_BOT = 362;
+
+  // melody: quarter notes stepping across the staff (staff lines y 220..380, spacing 40)
+  var noteDefs = [
+    {cx:180, cy:340},
+    {cx:265, cy:300},
+    {cx:350, cy:280},
+    {cx:435, cy:320}
+  ];
+  var noteEls = noteDefs.map(function(n){
+    var g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("fill", "#F5F4F2");
+    g.setAttribute("opacity", "0");
+    var stem = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    stem.setAttribute("x", n.cx + 10);
+    stem.setAttribute("y", n.cy - 72);
+    stem.setAttribute("width", 4);
+    stem.setAttribute("height", 70);
+    var head = document.createElementNS("http://www.w3.org/2000/svg","ellipse");
+    head.setAttribute("cx", n.cx);
+    head.setAttribute("cy", n.cy);
+    head.setAttribute("rx", 14);
+    head.setAttribute("ry", 10);
+    head.setAttribute("transform", "rotate(-18 " + n.cx + " " + n.cy + ")");
+    g.appendChild(stem);
+    g.appendChild(head);
+    notesGroup.appendChild(g);
+    return {el:g, cx:n.cx, cy:n.cy};
+  });
+
+  // social feed: 4 post blocks tiling every 174px (wraps over a 696px period)
+  // each block: image card + two text lines, in block-local coords (y 0..156)
+  var FEED_PERIOD = 174, FEED_WRAP = 696;
+  var feedBlocks = [];
+  for (var k = 0; k < 4; k++){
+    var g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("opacity", "0");
+    var img = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    img.setAttribute("x", 214); img.setAttribute("y", 0);
+    img.setAttribute("width", 172); img.setAttribute("height", 110);
+    img.setAttribute("rx", 6);
+    var l1 = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    l1.setAttribute("x", 214); l1.setAttribute("y", 124);
+    l1.setAttribute("width", 172); l1.setAttribute("height", 8);
+    l1.setAttribute("rx", 4);
+    var l2 = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    l2.setAttribute("x", 214); l2.setAttribute("y", 148);
+    l2.setAttribute("width", 118); l2.setAttribute("height", 8);
+    l2.setAttribute("rx", 4);
+    g.appendChild(img); g.appendChild(l1); g.appendChild(l2);
+    feedGroup.appendChild(g);
+    feedBlocks.push({el:g, k:k});
+  }
+
+  function setBars(b){
+    barL.setAttribute("x", 300 - b.dx - b.w/2);
+    barR.setAttribute("x", 300 + b.dx - b.w/2);
+    [barL, barR].forEach(function(el){
+      el.setAttribute("y", b.y);
+      el.setAttribute("height", b.h);
+      el.setAttribute("width", b.w);
+    });
+  }
+  function lerpBar(A, B, p){
+    return { dx:lerp(A.dx,B.dx,p), y:lerp(A.y,B.y,p), h:lerp(A.h,B.h,p), w:lerp(A.w,B.w,p) };
+  }
+
+  function labelFor(t){
+    if (t < T.straighten[0]) return "Ten Grand Entertainment";
+    if (t < T.perfOut[1])    return "Film & Shows";
+    if (t < T.toPhone[0])    return "Music";
+    if (t < T.toN[0])        return "Media";
+    return "Ten Grand Entertainment";
+  }
+
+  // ---------- render ----------
+  function render(t){
+    // beams: N -> rails -> staff outer lines -> phone top/bottom -> N
+    var from = "N", to = "N", p = 0;
+    if (t >= T.straighten[0] && t < T.straighten[1]){
+      from = "N"; to = "R"; p = easeInOut(seg(t, T.straighten));
+    } else if (t >= T.straighten[1] && t < T.toStaff[0]){
+      from = "R"; to = "R";
+    } else if (t >= T.toStaff[0] && t < T.toStaff[1]){
+      from = "R"; to = "ST"; p = easeInOut(seg(t, T.toStaff));
+    } else if (t >= T.toStaff[1] && t < T.toPhone[0]){
+      from = "ST"; to = "ST";
+    } else if (t >= T.toPhone[0] && t < T.toPhone[1]){
+      from = "ST"; to = "PH"; p = easeInOut(seg(t, T.toPhone));
+    } else if (t >= T.toPhone[1] && t < T.toN[0]){
+      from = "PH"; to = "PH";
+    } else if (t >= T.toN[0] && t < T.toN[1]){
+      from = "PH"; to = "N"; p = easeInOut(seg(t, T.toN));
+    }
+    m1.setAttribute("points", ptsAttr(lerpPts(B1[from], B1[to], p)));
+    m2.setAttribute("points", ptsAttr(lerpPts(B2[from], B2[to], p)));
+
+    // bars: N -> film frame -> staff barlines -> phone edges -> N
+    var b = BN;
+    if (t >= T.straighten[0] && t < T.straighten[1]) b = lerpBar(BN, BF, easeInOut(seg(t, T.straighten)));
+    else if (t >= T.straighten[1] && t < T.toStaff[0]) b = BF;
+    else if (t >= T.toStaff[0] && t < T.toStaff[1]) b = lerpBar(BF, BS, easeInOut(seg(t, T.toStaff)));
+    else if (t >= T.toStaff[1] && t < T.toPhone[0]) b = BS;
+    else if (t >= T.toPhone[0] && t < T.toPhone[1]) b = lerpBar(BS, BP, easeInOut(seg(t, T.toPhone)));
+    else if (t >= T.toPhone[1] && t < T.toN[0]) b = BP;
+    else if (t >= T.toN[0] && t < T.toN[1]) b = lerpBar(BP, BN, easeInOut(seg(t, T.toN)));
+    setBars(b);
+
+    // the strip runs: shared scroll offset, eased so it starts and settles smoothly
+    var offset = SCROLL_DIST * easeInOut(seg(t, T.play));
+
+    // perforations: staggered punch-in, scroll with the strip, fade out realigned
+    perfRects.forEach(function(pr){
+      var s = 0;
+      var inStart = T.perfIn[0] + pr.i * 50;
+      if (t >= inStart && t < T.perfOut[0]){
+        s = easeOutBack(Math.min(1, (t - inStart) / 350));
+      } else if (t >= T.perfOut[0] && t < T.perfOut[1]){
+        s = 1 - easeOut(seg(t, T.perfOut));
+      }
+      s = Math.max(0, s);
+      var half = 12.5 * s;
+      var x = 100 + mod(pr.cx - 100 - offset, 500);
+      pr.el.setAttribute("x", x - half);
+      pr.el.setAttribute("y", pr.cy - half);
+      pr.el.setAttribute("width", half * 2);
+      pr.el.setAttribute("height", half * 2);
+    });
+
+    // dividers: grow between the rails, scroll with the strip, fade with the perfs
+    dividerRects.forEach(function(dr){
+      var s = 0;
+      if (t >= T.dividersIn[0] && t < T.perfOut[0]){
+        s = easeOut(seg(t, T.dividersIn));
+      } else if (t >= T.perfOut[0] && t < T.perfOut[1]){
+        s = 1 - easeOut(seg(t, T.perfOut));
+      }
+      s = Math.max(0, s);
+      var x = 25 + mod(dr.cx - 25 - offset, 600);
+      var fullH = DIV_BOT - DIV_TOP;
+      var h = fullH * s;
+      var yMid = (DIV_TOP + DIV_BOT) / 2;
+      dr.el.setAttribute("x", x - DIV_W/2);
+      dr.el.setAttribute("y", yMid - h/2);
+      dr.el.setAttribute("width", DIV_W);
+      dr.el.setAttribute("height", h);
+    });
+
+    // middle staff lines: grow from center, staggered
+    mids.forEach(function(el, i){
+      var s = 0;
+      var inStart = T.linesIn[0] + i * 160;
+      var outStart = T.linesOut[0] + i * 120;
+      if (t >= inStart && t < T.linesOut[0]){
+        s = easeOut(Math.min(1, (t - inStart) / 600));
+      } else if (t >= outStart && t < outStart + 500){
+        s = 1 - easeInOut((t - outStart) / 500);
+      } else if (t >= outStart + 500){
+        s = 0;
+      } else if (t >= T.linesOut[0]){
+        s = 1;
+      }
+      s = Math.max(0, Math.min(1, s));
+      el.setAttribute("width", 365 * s);
+      el.setAttribute("x", 300 - 182.5 * s);
+    });
+
+    // melody: notes pop in left to right, slip out together
+    noteEls.forEach(function(n, i){
+      var ns = 0;
+      var inStart = T.noteIn[0] + i * 220;
+      if (t >= inStart && t < T.noteOut[0]){
+        ns = easeOutBack(Math.min(1, (t - inStart) / 420));
+      } else if (t >= T.noteOut[0] && t < T.noteOut[1]){
+        ns = 1 - easeInOut(seg(t, T.noteOut));
+      }
+      ns = Math.max(0, ns);
+      n.el.setAttribute("opacity", Math.min(1, ns * 1.4));
+      n.el.setAttribute("transform",
+        "translate(" + (n.cx * (1 - ns)) + " " + (n.cy * (1 - ns)) + ") scale(" + ns + ")");
+    });
+
+    // feed: posts pop in top to bottom, scroll upward, fade before the return
+    var feedOffset = FEED_DIST * easeInOut(seg(t, T.feedScroll));
+    feedBlocks.forEach(function(fb){
+      var fs = 0;
+      var inStart = T.feedIn[0] + fb.k * 180;
+      if (t >= inStart && t < T.feedOut[0]){
+        fs = easeOut(Math.min(1, (t - inStart) / 350));
+      } else if (t >= T.feedOut[0] && t < T.feedOut[1]){
+        fs = 1 - easeOut(seg(t, T.feedOut));
+      }
+      fs = Math.max(0, fs);
+      var y = -60 + mod(fb.k * FEED_PERIOD + 200 - feedOffset, FEED_WRAP);
+      fb.el.setAttribute("opacity", fs);
+      fb.el.setAttribute("transform", "translate(0 " + y + ")");
+    });
+
+    label.textContent = labelFor(t);
+    fillEl.style.width = (t / TOTAL * 100) + "%";
+  }
+
+  // ---------- loop ----------
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var playing = !reduced;
+  var startTime = null;
+  var pausedAt = 0;
+
+  function frame(now){
+    if (startTime === null) startTime = now - pausedAt;
+    var t = (now - startTime) % TOTAL;
+    render(t);
+    pausedAt = t;
+    if (playing) requestAnimationFrame(frame);
+  }
+
+  stage.addEventListener("click", function(){
+    playing = !playing;
+    if (playing){
+      startTime = null;
+      requestAnimationFrame(frame);
+    }
+  });
+
+  progressEl.addEventListener("click", function(e){
+    var rect = progressEl.getBoundingClientRect();
+    var frac = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    pausedAt = frac * TOTAL;
+    startTime = null;
+    if (!playing) render(pausedAt);
+    else requestAnimationFrame(frame);
+  });
+
+  render(0);
+  if (playing) requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
