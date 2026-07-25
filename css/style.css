@@ -682,6 +682,17 @@ a {
   font-size: 2rem;
 }
 
+.connect__social--links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.connect__social-link {
+  padding: 12px;
+  cursor: pointer;
+}
+
 /* ---------- Modal ---------- */
 
 .modal {
