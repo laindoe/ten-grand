@@ -447,20 +447,22 @@ a {
 
 .section--fuel {
   text-align: center;
-  padding: 0 var(--section-padding-x) 60px;
+  padding: 0 0 60px;
   border-top: 1px solid var(--color-card-border);
 }
 
+/* Full-bleed like .section-header, so each category's divider touches
+   the site frame's left/right edges instead of stopping at the
+   content column width — the category's own padding keeps its
+   content (title/morph/desc) inset to the normal column. */
 .fuel__categories {
   width: 100%;
-  max-width: var(--content-max-width);
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
 
 .fuel__category {
-  padding: 56px 0;
+  padding: 56px var(--section-padding-x);
 }
 
 .fuel__category + .fuel__category {
