@@ -114,28 +114,23 @@ a {
   background: var(--color-card-border);
 }
 
-.nav__menu {
+.nav__item {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(6px, 2vw, 16px);
   padding: 16px 8px;
-}
-
-.nav__menu a,
-.nav__connect {
-  font-size: clamp(0.55rem, 2.4vw, 0.7rem);
+  font-size: clamp(0.5rem, 2.2vw, 0.7rem);
   letter-spacing: 0.02em;
   text-decoration: none;
+  text-align: center;
   color: var(--color-text);
   white-space: nowrap;
 }
 
-.nav__connect {
-  display: flex;
-  align-items: center;
-  padding: 16px 20px;
+.nav__item--inverse {
+  background: var(--color-text);
+  color: var(--color-bg);
 }
 
 /* ---------- Layout / section shell ---------- */
