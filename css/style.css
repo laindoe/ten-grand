@@ -334,10 +334,6 @@ a {
   margin-bottom: 12px;
 }
 
-.dilemma__toll-box {
-  border: 1px solid var(--color-card-border);
-}
-
 .dilemma__toll-stripe {
   height: 14px;
   background-image: repeating-linear-gradient(
@@ -347,11 +343,10 @@ a {
     var(--color-card-border) 5px,
     var(--color-card-border) 6px
   );
-  border-bottom: 1px solid var(--color-card-border);
 }
 
 .dilemma__toll-box .dilemma__list {
-  padding: 16px 12px;
+  padding: 16px 0 0;
 }
 
 .dilemma__road {
