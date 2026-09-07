@@ -402,6 +402,111 @@ a {
   line-height: 1.5;
 }
 
+/* ---------- Distance Between Us section ---------- */
+
+.section--distance {
+  min-height: auto;
+  padding: 0 var(--section-padding-x) 60px;
+  border-top: 1px solid var(--color-card-border);
+}
+
+/* Full-bleed, same technique as .dilemma__header. */
+.distance__header {
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
+  padding: 24px var(--section-padding-x) 32px;
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.distance__headline {
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 12px 0 20px;
+}
+
+.distance__subhead {
+  font-size: clamp(1rem, 4vw, 1.15rem);
+  line-height: 1.4;
+  max-width: 36ch;
+}
+
+/* Text column stacks above the visual column on narrow viewports and
+   sits beside it once there's room for both — no explicit breakpoint,
+   the flex-wrap does the work. */
+.distance__body {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.distance__text {
+  flex: 1 1 240px;
+}
+
+.distance__text-heading {
+  font-size: clamp(1.25rem, 5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.distance__text-p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 34ch;
+}
+
+.distance__text-p + .distance__text-p {
+  margin-top: 24px;
+}
+
+.distance__visual {
+  position: relative;
+  flex: 2 1 280px;
+  aspect-ratio: 4 / 5;
+}
+
+.distance__point {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.distance__drift {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation-name: distance-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.distance__label {
+  font-size: clamp(0.65rem, 2.6vw, 0.85rem);
+  white-space: nowrap;
+}
+
+.distance__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text);
+}
+
+@keyframes distance-drift {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(var(--dx), var(--dy));
+  }
+}
+
 /* ---------- Engine section ---------- */
 
 .section--engine {
@@ -859,5 +964,8 @@ body.modal-open {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+  .distance__drift {
+    animation: none !important;
   }
 }
