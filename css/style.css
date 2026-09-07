@@ -281,18 +281,9 @@ a {
 /* Full-bleed, same technique as .section-header. */
 .dilemma__header {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x)) 32px;
   padding: 24px var(--section-padding-x) 32px;
   border-bottom: 1px solid var(--color-card-border);
-}
-
-/* Positioning context for the road overlay below, and the source of
-   the 32px gap that used to live on .dilemma__header's margin — the
-   overlay needs the gap inside this box so the road lines can start
-   right at the header's border instead of stopping below the gap. */
-.dilemma__grid-wrap {
-  position: relative;
-  padding-top: 32px;
 }
 
 .dilemma__headline {
@@ -357,25 +348,6 @@ a {
   padding: 0 clamp(4px, 1.5vw, 12px);
   border-left: 1px solid var(--color-card-border);
   border-right: 1px solid var(--color-card-border);
-}
-
-/* Reserves the gutter's width in the grid without being seen —
-   the visible lines are the full-height overlay below. */
-.dilemma__road--spacer {
-  visibility: hidden;
-}
-
-/* Spans the full height of .dilemma__grid-wrap (the 32px gap plus
-   the grid), so the road lines start right at the header's border
-   instead of stopping below the gap — but no further, so they never
-   cross into the header text above. */
-.dilemma__road--overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: -1;
 }
 
 .dilemma__road-line--solid {
