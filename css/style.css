@@ -278,6 +278,12 @@ a {
   border-top: 1px solid var(--color-card-border);
 }
 
+/* Positioning context for the full-height road overlay, which spans
+   from the top of the header to the bottom of the grid. */
+.dilemma__body {
+  position: relative;
+}
+
 /* Full-bleed, same technique as .section-header. */
 .dilemma__header {
   width: calc(100% + 2 * var(--section-padding-x));
@@ -312,6 +318,10 @@ a {
   padding: 0 clamp(4px, 2vw, 16px) 32px;
 }
 
+.dilemma__column--industry {
+  padding-left: clamp(16px, 6vw, 32px);
+}
+
 .dilemma__route-title {
   font-size: clamp(1rem, 4.5vw, 1.25rem);
   font-weight: 400;
@@ -344,6 +354,25 @@ a {
   padding: 0 clamp(4px, 1.5vw, 12px);
   border-left: 1px solid var(--color-card-border);
   border-right: 1px solid var(--color-card-border);
+}
+
+/* Reserves the gutter's width in the grid without being seen —
+   the visible lines are the full-height overlay below. */
+.dilemma__road--spacer {
+  visibility: hidden;
+}
+
+/* Spans the full height of .dilemma__body (header + grid), so the
+   road lines run from the top of the section down to the bottom of
+   the grid instead of stopping at the grid's own top edge. Sits
+   behind the header/grid text via a negative z-index. */
+.dilemma__road--overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: -1;
 }
 
 .dilemma__road-line--solid {
