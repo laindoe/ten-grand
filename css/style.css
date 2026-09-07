@@ -268,7 +268,12 @@ a {
 
 /* ---------- Creator's Dilemma section ---------- */
 
+/* min-height: auto (see .section--director) so the section sizes to
+   its content instead of .section's 100vh + centering, which was
+   leaving large, viewport-dependent gaps above the header and below
+   the footer. */
 .section--dilemma {
+  min-height: auto;
   padding: 0 var(--section-padding-x) 60px;
   border-top: 1px solid var(--color-card-border);
 }
@@ -311,15 +316,12 @@ a {
   font-size: clamp(1rem, 4.5vw, 1.25rem);
   font-weight: 400;
   line-height: 1.25;
-  padding-bottom: 12px;
   margin-bottom: 20px;
-  border-bottom: 1px solid var(--color-card-border);
-  /* Rule is a short underline, not the column's full width. */
-  width: fit-content;
 }
 
 .dilemma__list {
-  list-style: none;
+  list-style: disc;
+  padding-left: 1.1em;
   font-size: clamp(0.68rem, 2.7vw, 0.9rem);
   line-height: 1.9;
 }
@@ -344,9 +346,18 @@ a {
   border-right: 1px solid var(--color-card-border);
 }
 
-.dilemma__road-line {
+.dilemma__road-line--solid {
   width: 0;
-  border-left: 1px dashed var(--color-text-muted);
+  border-left: 1px solid var(--color-card-border);
+}
+
+.dilemma__road-line--dashed {
+  width: 1px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-text-muted) 0 6px,
+    transparent 6px 18px
+  );
 }
 
 .dilemma__footer {
