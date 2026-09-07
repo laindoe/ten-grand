@@ -299,6 +299,14 @@ a {
   max-width: 32ch;
 }
 
+/* Positioning context for the road overlay below — scoped to just
+   the grid (not the header or footer) so the overlay's top:-32px /
+   bottom:0 land exactly on the header's border and the grid's own
+   bottom, without reaching into either the header or footer text. */
+.dilemma__grid-wrap {
+  position: relative;
+}
+
 .dilemma__grid {
   width: 100%;
   max-width: var(--content-max-width);
@@ -348,6 +356,26 @@ a {
   padding: 0 clamp(4px, 1.5vw, 12px);
   border-left: 1px solid var(--color-card-border);
   border-right: 1px solid var(--color-card-border);
+}
+
+/* Reserves the gutter's width in the grid without being seen — the
+   visible lines are the overlay below. */
+.dilemma__road--spacer {
+  visibility: hidden;
+}
+
+/* -32px matches .dilemma__header's margin-bottom exactly, so the
+   overlay's top lands precisely on the header's border line — no
+   further, so it never reaches into the header text. bottom:0 is
+   the grid's own bottom, since .dilemma__grid-wrap contains only
+   the grid (not the footer), so this never reaches the footer text
+   either. */
+.dilemma__road--overlay {
+  position: absolute;
+  top: -32px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .dilemma__road-line--solid {
