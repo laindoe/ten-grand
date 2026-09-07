@@ -266,55 +266,117 @@ a {
   color: var(--color-text);
 }
 
-/* ---------- Manual section ---------- */
+/* ---------- Creator's Dilemma section ---------- */
 
-.section--manual {
-  text-align: center;
+.section--dilemma {
   padding: 0 var(--section-padding-x) 60px;
   border-top: 1px solid var(--color-card-border);
 }
 
-.manual__steps {
+/* Full-bleed, same technique as .section-header. */
+.dilemma__header {
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x)) 32px;
+  padding: 24px var(--section-padding-x) 32px;
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.dilemma__headline {
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 12px 0 20px;
+}
+
+.dilemma__subhead {
+  font-size: 1rem;
+  line-height: 1.4;
+  max-width: 32ch;
+}
+
+.dilemma__grid {
   width: 100%;
   max-width: var(--content-max-width);
   margin: 0 auto;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
 }
 
-.manual-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+.dilemma__column {
+  padding: 0 clamp(4px, 2vw, 16px) 32px;
 }
 
-.manual-step__icon {
-  margin: 0 auto 20px;
-  width: auto;
-  height: auto;
-}
-
-.manual-step__label {
-  display: block;
-  font-size: 1.5rem;
+.dilemma__route-title {
+  font-size: clamp(1rem, 4.5vw, 1.25rem);
   font-weight: 400;
+  line-height: 1.25;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-card-border);
+  /* Rule is a short underline, not the column's full width. */
+  width: fit-content;
+}
+
+.dilemma__list {
+  list-style: none;
+  font-size: clamp(0.68rem, 2.7vw, 0.9rem);
+  line-height: 1.9;
+}
+
+.dilemma__toll {
+  margin-top: 32px;
+}
+
+.dilemma__toll-label {
+  font-size: clamp(0.75rem, 3vw, 0.9rem);
+  letter-spacing: 0.03em;
   margin-bottom: 12px;
 }
 
-.manual-step__label--idea { color: #fffb1d; }
-.manual-step__label--validation { color: #ff09d6; }
-.manual-step__label--development { color: #00d9ff; }
-.manual-step__label--launch { color: #06f81a; }
+.dilemma__toll-box {
+  border: 1px solid var(--color-card-border);
+}
 
-.manual-step__body {
-  color: var(--color-text);
+.dilemma__toll-stripe {
+  height: 14px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0,
+    transparent 5px,
+    var(--color-card-border) 5px,
+    var(--color-card-border) 6px
+  );
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.dilemma__toll-box .dilemma__list {
+  padding: 16px 12px;
+}
+
+.dilemma__road {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(6px, 2vw, 16px);
+  padding: 0 clamp(4px, 1.5vw, 12px);
+  border-left: 1px solid var(--color-card-border);
+  border-right: 1px solid var(--color-card-border);
+}
+
+.dilemma__road-line {
+  width: 0;
+  border-left: 1px dashed var(--color-text-muted);
+}
+
+.dilemma__footer {
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x));
+  padding: 40px var(--section-padding-x) 0;
+  border-top: 1px solid var(--color-card-border);
+  text-align: center;
   font-size: 1rem;
   line-height: 1.5;
-  max-width: 290px;
-  margin: 0 auto;
 }
 
 /* ---------- Engine section ---------- */
