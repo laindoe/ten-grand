@@ -431,20 +431,18 @@ a {
   max-width: 36ch;
 }
 
-/* Text column stacks above the visual column on narrow viewports and
-   sits beside it once there's room for both — no explicit breakpoint,
-   the flex-wrap does the work. */
+/* This site never renders wider than --content-max-width, so the
+   text and visual columns always stack full-width in practice —
+   plain block flow instead of a flex row that would need extra
+   rules to fight for the divider's full-bleed width below. */
 .distance__body {
   width: 100%;
   max-width: var(--content-max-width);
   margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
 }
 
 .distance__text {
-  flex: 1 1 240px;
+  margin-bottom: 40px;
 }
 
 .distance__text-heading {
@@ -464,10 +462,12 @@ a {
   margin-top: 24px;
 }
 
-/* flex-basis: 100% forces this onto its own row, below the text
-   column, regardless of how .distance__body wraps. */
+/* Full-bleed, same technique as .dilemma__header, so it reaches the
+   site frame's edges instead of stopping at .distance__body's own
+   content width. */
 .distance__divider {
-  flex-basis: 100%;
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
   height: 1px;
   background: var(--color-card-border);
 }
