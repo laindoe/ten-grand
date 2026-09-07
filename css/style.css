@@ -334,21 +334,6 @@ a {
   margin-bottom: 12px;
 }
 
-.dilemma__toll-stripe {
-  height: 14px;
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent 0,
-    transparent 5px,
-    var(--color-card-border) 5px,
-    var(--color-card-border) 6px
-  );
-}
-
-.dilemma__toll-box .dilemma__list {
-  padding: 16px 0 0;
-}
-
 .dilemma__road {
   display: flex;
   align-items: stretch;
