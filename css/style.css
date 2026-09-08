@@ -1026,11 +1026,13 @@ a {
    inconsistent gap between the top border and the stem depending on
    viewport height. padding-top stays 0 so the stem touches the border
    with no gap at all, matching the design. */
+/* No border-top here — this section now sits directly under Amass's
+   Decentralized Culture block, which already supplies the divider
+   via its own border-bottom; adding another produced a doubled line. */
 .section--quote {
   text-align: center;
   min-height: auto;
   padding: 0 var(--section-padding-x) 60px;
-  border-top: 1px solid var(--color-card-border);
 }
 
 .quote__stem {
@@ -1045,7 +1047,7 @@ a {
 }
 
 .quote__text {
-  font-size: clamp(1.75rem, 9vw, 2.5rem);
+  font-size: clamp(1.5rem, 7.5vw, 2rem);
   font-weight: 400;
   line-height: 1.25;
   max-width: 330px;
