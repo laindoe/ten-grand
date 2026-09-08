@@ -1011,13 +1011,15 @@ a {
 }
 
 .director__name {
-  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-size: clamp(0.9rem, 4vw, 1.15rem);
   font-weight: 400;
+  white-space: nowrap;
 }
 
 .director__title {
-  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-size: clamp(0.85rem, 3vw, 1rem);
   font-weight: 400;
+  font-style: italic;
   margin-bottom: 32px;
 }
 
