@@ -1048,8 +1048,9 @@ a {
   font-size: clamp(1.75rem, 9vw, 2.5rem);
   font-weight: 400;
   line-height: 1.25;
-  max-width: 280px;
+  max-width: 330px;
   margin: 40px auto;
+  overflow-wrap: break-word;
 }
 
 /* ---------- Connect section ---------- */
