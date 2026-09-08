@@ -1,0 +1,62 @@
+content:
+  - name: transmissions
+    label: Transmissions
+    type: collection
+    path: _posts
+    format: yaml-frontmatter
+    filename: "{year}-{month}-{day}-{fields.title}.md"
+    view:
+      fields: [title, date, series, format, featured]
+    fields:
+      - name: layout
+        label: Layout
+        type: string
+        default: transmission
+        hidden: true
+      - name: title
+        label: Title
+        type: string
+      - name: date
+        label: Date
+        type: date
+      - name: series
+        label: Series
+        description: "Optional. Leave blank if this transmission isn't part of a recurring series."
+        type: string
+        required: false
+      - name: format
+        label: Format
+        description: "Essay, Video Essay, Feature, Profile, Case Study, Documentary, etc."
+        type: string
+      - name: pillars
+        label: TEME Pillars
+        type: select
+        list: true
+        options:
+          values:
+            - Technology
+            - Entertainment
+            - Merchandise
+            - Experiences
+      - name: featured_image
+        label: Featured Image
+        type: image
+      - name: excerpt
+        label: Excerpt
+        description: "Short description shown on cards and in the featured block."
+        type: text
+      - name: featured
+        label: Featured on archive page
+        type: boolean
+        default: false
+      - name: sample
+        label: Sample content (shows a SAMPLE badge)
+        type: boolean
+        default: false
+      - name: body
+        label: Body
+        type: rich-text
+
+media:
+  input: assets/images
+  output: /assets/images
