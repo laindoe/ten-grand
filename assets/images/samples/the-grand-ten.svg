@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="Progress never sits still.">
+  <defs>
+    <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1a0b26"/>
+      <stop offset="50%" stop-color="#7a2b8f"/>
+      <stop offset="100%" stop-color="#e0457a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g3)"/>
+  <rect x="0" y="0" width="800" height="450" fill="#000" opacity="0.15"/>
+  <text x="60" y="220" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="700" fill="#ffffff">PROGRESS</text>
+  <text x="60" y="270" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="700" fill="#ffffff">NEVER SITS</text>
+  <text x="60" y="320" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="700" fill="#ffffff">STILL.</text>
+</svg>

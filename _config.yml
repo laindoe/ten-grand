@@ -1,0 +1,22 @@
+title: Ten Grand
+description: "Ten Grand — a scrollytelling site."
+baseurl: "/ten-grand"
+url: "https://laindoe.github.io"
+
+markdown: kramdown
+
+# Clean URLs for every transmission: /transmissions/<slug>/
+permalink: /transmissions/:slug/
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: transmission
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="A brighter tomorrow.">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2b1330"/>
+      <stop offset="45%" stop-color="#c43d4e"/>
+      <stop offset="75%" stop-color="#f2924a"/>
+      <stop offset="100%" stop-color="#ffe3a3"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g1)"/>
+  <rect x="0" y="0" width="800" height="450" fill="#000" opacity="0.18"/>
+  <text x="60" y="220" font-family="Inter, Arial, sans-serif" font-size="46" font-weight="700" fill="#ffffff" letter-spacing="0.5">A</text>
+  <text x="60" y="272" font-family="Inter, Arial, sans-serif" font-size="46" font-weight="700" fill="#ffffff" letter-spacing="0.5">BRIGHTER</text>
+  <text x="60" y="324" font-family="Inter, Arial, sans-serif" font-size="46" font-weight="700" fill="#ffffff" letter-spacing="0.5">TOMORROW.</text>
+</svg>

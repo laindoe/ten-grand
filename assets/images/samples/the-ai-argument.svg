@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="Intelligence amplifies humanity.">
+  <defs>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050b16"/>
+      <stop offset="55%" stop-color="#123a6b"/>
+      <stop offset="100%" stop-color="#3fc7e8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g2)"/>
+  <circle cx="620" cy="225" r="150" fill="none" stroke="#8fe9ff" stroke-width="2" opacity="0.55"/>
+  <circle cx="620" cy="225" r="95" fill="none" stroke="#8fe9ff" stroke-width="2" opacity="0.4"/>
+  <text x="60" y="196" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700" fill="#ffffff">INTELLIGENCE</text>
+  <text x="60" y="244" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700" fill="#ffffff">AMPLIFIES</text>
+  <text x="60" y="292" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700" fill="#ffffff">HUMANITY.</text>
+</svg>
