@@ -1,0 +1,391 @@
+/* ============================================================
+   TEN GRAND — Transmissions archive + post pages
+   Reuses tokens/classes from style.css (colors, .site-frame, .nav,
+   .section-eyebrow, .site-footer). Adds a wider content column since
+   this page needs a real desktop layout, unlike the mobile-only
+   scrollytelling sections on the homepage.
+   ============================================================ */
+
+:root {
+  --archive-max-width: 1100px;
+}
+
+main {
+  display: block;
+}
+
+/* ---------- Shared wide container ---------- */
+
+.archive-header,
+.archive-filters,
+.archive-featured,
+.archive-grid-section,
+.transmission-post {
+  width: 100%;
+  max-width: var(--archive-max-width);
+  margin: 0 auto;
+  padding: 40px var(--section-padding-x);
+  box-sizing: border-box;
+}
+
+/* ---------- Archive header ---------- */
+
+.archive-header {
+  border-bottom: 1px solid var(--color-card-border);
+  padding-bottom: 32px;
+}
+
+.archive-header__title {
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.archive-header__subtitle {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  max-width: 50ch;
+}
+
+/* ---------- Filters ---------- */
+
+.archive-filters {
+  border-bottom: 1px solid var(--color-card-border);
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.archive-filters__pillars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.archive-filter-btn {
+  flex: 1 1 auto;
+  min-width: fit-content;
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-card-border);
+  padding: 14px 20px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.archive-filter-btn.is-active {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.archive-filters__row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.archive-select,
+.archive-search {
+  width: 100%;
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-card-border);
+  padding: 14px 20px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  border-radius: 0;
+}
+
+.archive-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-text) 50%), linear-gradient(135deg, var(--color-text) 50%, transparent 50%);
+  background-position: calc(100% - 22px) center, calc(100% - 16px) center;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.archive-select option {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.archive-search::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ---------- Sample badge / pillar tags (shared) ---------- */
+
+.sample-badge {
+  display: inline-block;
+  background: var(--color-accent);
+  color: var(--color-text);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  margin-bottom: 12px;
+}
+
+.pillar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.pillar-tag {
+  border: 1px solid var(--color-card-border);
+  padding: 6px 12px;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Featured transmission ---------- */
+
+.archive-featured {
+  border-bottom: 1px solid var(--color-card-border);
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.archive-featured__label {
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 20px;
+}
+
+.featured-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-card-border);
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.featured-card__image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-card);
+  background-size: cover;
+  background-position: center;
+}
+
+.featured-card__text {
+  padding: 28px clamp(20px, 4vw, 40px) 32px;
+}
+
+.featured-card__title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 6px 0 10px;
+}
+
+.featured-card__excerpt {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 12px 0 20px;
+  max-width: 60ch;
+}
+
+/* ---------- All transmissions grid ---------- */
+
+.archive-grid-section {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.archive-grid-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.archive-grid-section__label {
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+}
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px 24px;
+}
+
+.transmission-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-card-border);
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.transmission-card__image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-card);
+  background-size: cover;
+  background-position: center;
+}
+
+.transmission-card__body {
+  padding: 20px 24px 24px;
+}
+
+.transmission-card__date {
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+}
+
+.transmission-card__series {
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: var(--color-accent);
+  margin-top: 4px;
+}
+
+.transmission-card__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 8px 0 4px;
+}
+
+.transmission-card__format {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.transmission-card__excerpt {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+
+.transmission-card__cta {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.archive-empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 40px 0;
+}
+
+/* ---------- Individual transmission post ---------- */
+
+.transmission-post {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.transmission-post__back {
+  display: inline-block;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.transmission-post__back--bottom {
+  margin-top: 40px;
+  margin-bottom: 0;
+}
+
+.transmission-post__series {
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.transmission-post__title {
+  font-size: clamp(1.75rem, 6vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.transmission-post__meta-row {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+}
+
+.transmission-post__meta-sep {
+  margin: 0 8px;
+}
+
+.transmission-post__image {
+  width: 100%;
+  height: auto;
+  margin: 32px 0;
+  border: 1px solid var(--color-card-border);
+}
+
+.transmission-post__body {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  max-width: 70ch;
+}
+
+.transmission-post__body p {
+  margin-bottom: 24px;
+}
+
+.transmission-post__body h2,
+.transmission-post__body h3 {
+  margin: 40px 0 16px;
+  font-weight: 700;
+}
+
+/* ---------- Desktop ---------- */
+
+@media (min-width: 760px) {
+  .archive-filters__pillars {
+    flex-wrap: nowrap;
+  }
+
+  .archive-filters__row {
+    flex-direction: row;
+  }
+
+  .archive-select,
+  .archive-search {
+    width: 50%;
+  }
+
+  .featured-card {
+    flex-direction: row;
+  }
+
+  .featured-card__image {
+    width: 55%;
+    aspect-ratio: auto;
+  }
+
+  .featured-card__text {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .archive-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

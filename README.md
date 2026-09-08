@@ -54,4 +54,45 @@ Once this is merged to `main`:
 3. Branch: **main**, folder: **/ (root)**
 4. Save — the site will publish at `https://<user>.github.io/ten-grand/`
 
-`.nojekyll` is included so GitHub Pages serves the files as-is.
+GitHub Pages builds this repo with Jekyll automatically (no `.nojekyll`,
+no custom Actions workflow needed) — see the Transmissions section below.
+
+## Transmissions (Jekyll-powered archive)
+
+`/transmissions/` is a Jekyll blog/archive, not a static page:
+
+```
+_config.yml               Site config, baseurl, post permalinks
+_includes/nav.html          Shared nav, reused by every page
+_includes/site-footer.html  Shared footer
+_layouts/transmission.html  Layout for a single transmission's page
+transmissions.html         The archive page (filters + featured + grid)
+_posts/YYYY-MM-DD-slug.md   One file per transmission
+css/transmissions.css      Styles for the archive/post pages only
+js/transmissions.js        Vanilla JS client-side filtering (pillar/series/search)
+```
+
+To add a real transmission, drop a new file in `_posts/` following the
+`YYYY-MM-DD-slug.md` naming convention, with front matter like:
+
+```yaml
+---
+layout: transmission
+title: "Post Title"
+date: 2026-09-08
+series: "The Grand Ten"   # optional
+format: "Essay"
+pillars:
+  - Technology
+  - Entertainment
+featured_image: "/assets/images/example.jpg"
+excerpt: "Short description of the transmission."
+featured: false
+---
+```
+
+The 3 posts currently in `_posts/` are sample content (`sample: true`,
+tagged with a visible "SAMPLE" badge) — replace or remove them once real
+transmissions are ready. `index.html` itself now has empty Jekyll front
+matter (`---\n---`) so it can use the shared nav/footer includes; its
+markup and behavior are otherwise unchanged.

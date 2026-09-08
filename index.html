@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,23 +13,7 @@
 
   <div class="site-frame">
 
-  <header class="nav" id="top">
-    <div class="nav__inner">
-      <a class="nav__logo-box" href="#top" aria-label="Ten Grand home">
-        <span class="nav__logo-mark">
-          <img src="assets/images/logo-white.png" alt="" />
-        </span>
-      </a>
-      <span class="nav__divider" aria-hidden="true"></span>
-      <a class="nav__item" href="#philosophy">PHILOSOPHY</a>
-      <span class="nav__divider" aria-hidden="true"></span>
-      <a class="nav__item" href="/transmissions">TRANSMISSIONS</a>
-      <span class="nav__divider" aria-hidden="true"></span>
-      <a class="nav__item" href="#director">DIRECTOR</a>
-      <span class="nav__divider" aria-hidden="true"></span>
-      <a class="nav__item nav__item--inverse" href="https://canva.link/e4rcd0xi20snlkw" target="_blank" rel="noopener">THE GRAND SCHEME</a>
-    </div>
-  </header>
+{% include nav.html %}
 
   <main>
 
@@ -617,9 +603,7 @@
 
   </div>
 
-  <footer class="site-footer">
-    <p class="site-footer__copyright">&copy; 2026 Ten Grand Company. Copywritten so don&rsquo;t copy me.</p>
-  </footer>
+{% include site-footer.html %}
 
   <!-- Shared modal for engine module details -->
   <div class="modal" id="engine-modal" aria-hidden="true">

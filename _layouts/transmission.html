@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ page.title }} — Ten Grand Transmissions</title>
+  <meta name="description" content="{{ page.excerpt | strip_html | strip_newlines | truncatewords: 30 }}" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}" />
+  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}" />
+</head>
+<body>
+
+  <div class="site-frame">
+
+{% include nav.html %}
+
+  <main>
+    <article class="transmission-post">
+      <a class="transmission-post__back" href="{{ '/transmissions/' | relative_url }}">&larr; ALL TRANSMISSIONS</a>
+
+      {% if page.sample %}<p class="sample-badge">SAMPLE — REPLACE BEFORE LAUNCH</p>{% endif %}
+
+      <header class="transmission-post__meta">
+        {% if page.series %}<p class="transmission-post__series">{{ page.series | upcase }}</p>{% endif %}
+        <h1 class="transmission-post__title">{{ page.title | upcase }}</h1>
+        <div class="transmission-post__meta-row">
+          <span>{{ page.date | date: "%B %d, %Y" | upcase }}</span>
+          {% if page.format %}
+          <span class="transmission-post__meta-sep" aria-hidden="true">&middot;</span>
+          <span>{{ page.format | upcase }}</span>
+          {% endif %}
+        </div>
+        {% if page.pillars %}
+        <div class="pillar-tags">
+          {% for pillar in page.pillars %}<span class="pillar-tag">{{ pillar | upcase }}</span>{% endfor %}
+        </div>
+        {% endif %}
+      </header>
+
+      {% if page.featured_image %}
+      <img class="transmission-post__image" src="{{ page.featured_image | relative_url }}" alt="" />
+      {% endif %}
+
+      <div class="transmission-post__body">
+        {{ content }}
+      </div>
+
+      <a class="transmission-post__back transmission-post__back--bottom" href="{{ '/transmissions/' | relative_url }}">&larr; BACK TO TRANSMISSIONS</a>
+    </article>
+  </main>
+
+  </div>
+
+{% include site-footer.html %}
+
+</body>
+</html>
