@@ -1183,6 +1183,7 @@ a {
 .connect__social-link {
   padding: 12px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 /* ---------- Modal ---------- */
