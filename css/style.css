@@ -718,10 +718,11 @@ a {
 }
 
 /* Full-bleed, same technique as .distance__footer, so the top rule
-   reaches the site frame's edges. */
+   reaches the site frame's edges. margin-top adds room below IMPACT
+   before the rule, instead of the rule sitting flush against it. */
 .engine__footer {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x));
+  margin: 40px calc(-1 * var(--section-padding-x)) 0;
   padding: 40px var(--section-padding-x) 0;
   border-top: 1px solid var(--color-card-border);
   text-align: center;
@@ -734,14 +735,8 @@ a {
   margin: 0 auto;
 }
 
-/* Short centered rule between the two closing paragraphs — deliberately
-   not full-bleed like the divider above, per the approved mockup. */
-.engine__footer-divider {
-  display: block;
-  width: 48px;
-  height: 1px;
-  margin: 32px auto;
-  background: var(--color-card-border);
+.engine__text + .engine__text {
+  margin-top: 32px;
 }
 
 /* ---------- Fuel section ---------- */
