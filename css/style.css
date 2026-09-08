@@ -56,6 +56,7 @@ img {
 
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 /* ---------- Site frame ---------- */
@@ -137,7 +138,6 @@ a {
   padding: 16px 8px;
   font-size: clamp(0.5rem, 2.2vw, 0.7rem);
   letter-spacing: 0.02em;
-  text-decoration: none;
   text-align: center;
   color: var(--color-text);
   white-space: nowrap;
@@ -1115,7 +1115,6 @@ a {
   display: inline-block;
   background: var(--color-bg);
   color: var(--color-text);
-  text-decoration: none;
   padding: 18px 40px;
   font-size: 0.9rem;
   font-weight: 700;
@@ -1166,7 +1165,6 @@ a {
 
 .connect__link {
   color: var(--color-text);
-  text-decoration: none;
   font-size: 2rem;
 }
 
@@ -1183,7 +1181,6 @@ a {
 .connect__social-link {
   padding: 12px;
   cursor: pointer;
-  text-decoration: none;
 }
 
 /* ---------- Modal ---------- */
