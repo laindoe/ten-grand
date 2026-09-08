@@ -605,9 +605,30 @@ a {
 /* ---------- Engine section ---------- */
 
 .section--engine {
-  text-align: center;
+  min-height: auto;
   padding: 0 var(--section-padding-x) 60px;
   border-top: 1px solid var(--color-card-border);
+}
+
+/* Full-bleed, same technique as .dilemma__header. */
+.engine__header {
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
+  padding: 24px var(--section-padding-x) 32px;
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.engine__headline {
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 12px 0 20px;
+}
+
+.engine__subhead {
+  font-size: clamp(1rem, 4vw, 1.15rem);
+  line-height: 1.4;
+  max-width: 36ch;
 }
 
 .engine__diagram {
@@ -617,6 +638,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 /* The schematic's mechanical centerline sits at 47.76% of its own
@@ -672,26 +694,6 @@ a {
   height: auto;
 }
 
-.engine__module-hotspot {
-  position: absolute;
-  left: 6%;
-  width: 88%;
-  top: var(--hotspot-top);
-  bottom: calc(100% - var(--hotspot-bottom));
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.engine__module-hotspot:hover,
-.engine__module-hotspot:focus-visible {
-  background: rgba(255, 255, 255, 0.06);
-  outline: none;
-}
-
 /* Flex column + align-items:center is used instead of text-align, so
    centering doesn't depend on the label's shrink-to-fit width lining
    up correctly with its children — robust regardless of content. */
@@ -715,13 +717,31 @@ a {
   line-height: 1.3;
 }
 
-/* Small thin right-pointing arrow under each module's label, signaling
-   it opens a modal. */
-.engine__module-arrow {
-  display: flex;
-  margin-top: 8px;
-  width: 20px;
-  color: var(--color-text-muted);
+/* Full-bleed, same technique as .distance__footer, so the top rule
+   reaches the site frame's edges. */
+.engine__footer {
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x));
+  padding: 40px var(--section-padding-x) 0;
+  border-top: 1px solid var(--color-card-border);
+  text-align: center;
+}
+
+.engine__text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 34ch;
+  margin: 0 auto;
+}
+
+/* Short centered rule between the two closing paragraphs — deliberately
+   not full-bleed like the divider above, per the approved mockup. */
+.engine__footer-divider {
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin: 32px auto;
+  background: var(--color-card-border);
 }
 
 /* ---------- Fuel section ---------- */
