@@ -795,6 +795,131 @@ a {
   color: var(--color-text);
 }
 
+/* ---------- Amass Comm[unity] section ---------- */
+
+.section--amass {
+  min-height: auto;
+  padding: 0 var(--section-padding-x) 60px;
+  border-top: 1px solid var(--color-card-border);
+}
+
+/* Full-bleed, same technique as .engine__header. */
+.amass__header {
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
+  padding: 24px var(--section-padding-x) 32px;
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.amass__headline {
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 12px 0 20px;
+}
+
+.amass__subhead {
+  font-size: clamp(1rem, 4vw, 1.15rem);
+  line-height: 1.4;
+  max-width: 36ch;
+}
+
+/* Each content block is full-bleed with its own bottom rule, standing
+   in for the "divider below this block" requirement — same technique
+   as .amass__header, just centered text instead of left-aligned. */
+.amass__intro,
+.amass__timeline-block,
+.amass__culture {
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x));
+  padding: 40px var(--section-padding-x);
+  border-bottom: 1px solid var(--color-card-border);
+  text-align: center;
+}
+
+.amass__text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 34ch;
+  margin: 0 auto;
+}
+
+.amass__section-heading {
+  font-size: clamp(0.85rem, 3.5vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  margin-bottom: 32px;
+}
+
+.amass__timeline {
+  position: relative;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+/* Sits behind the dots, roughly level with them — icon height (28px
+   max) + its margin-bottom (12px) + half the dot's own height. */
+.amass__timeline-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 43px;
+  height: 1px;
+  background: var(--color-card-border);
+}
+
+.amass__timeline-item {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.amass__timeline-icon {
+  display: block;
+  width: clamp(20px, 7vw, 28px);
+  height: clamp(20px, 7vw, 28px);
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+.amass__timeline-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.amass__timeline-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text);
+  margin-bottom: 16px;
+}
+
+.amass__timeline-year {
+  font-size: clamp(0.65rem, 2.6vw, 0.8rem);
+  margin-bottom: 4px;
+}
+
+.amass__timeline-label {
+  font-size: clamp(0.55rem, 2.3vw, 0.7rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.amass__timeline-desc {
+  font-size: clamp(0.55rem, 2.2vw, 0.68rem);
+  line-height: 1.4;
+  color: var(--color-text-muted);
+  max-width: 14ch;
+}
+
 /* ---------- Director section ---------- */
 
 /* min-height: auto overrides the base .section's 100vh minimum — this
