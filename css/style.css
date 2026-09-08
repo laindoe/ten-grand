@@ -1055,6 +1055,57 @@ a {
   overflow-wrap: break-word;
 }
 
+/* ---------- Grand Scheme Invitation section ---------- */
+
+.section--invitation {
+  min-height: auto;
+  padding: 60px var(--section-padding-x);
+  border-top: 1px solid var(--color-card-border);
+}
+
+.invitation__card {
+  width: 100%;
+  max-width: var(--content-max-width);
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 56px 32px;
+  text-align: center;
+  border-radius: 0;
+}
+
+.invitation__label {
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 24px;
+}
+
+.invitation__headline {
+  font-size: clamp(1.5rem, 7vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.invitation__body {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 30ch;
+  margin: 0 auto 40px;
+}
+
+.invitation__button {
+  display: inline-block;
+  background: var(--color-bg);
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 18px 40px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
 /* ---------- Connect section ---------- */
 
 .section--connect {
