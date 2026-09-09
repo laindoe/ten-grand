@@ -359,12 +359,24 @@ a {
 }
 
 /* Plain structural divider between the two routes — a single
-   straight line, never a road. Its horizontal margin (included in
-   the grid's auto-sized middle column) is the only thing separating
-   the two routes. */
+   straight line, never a road. The grid only reserves its width (an
+   invisible spacer, so the two columns stay evenly spaced); the
+   visible line itself is absolutely positioned so it can start at
+   the header's bottom border instead of the grid's own top, closing
+   the gap between them. -32px matches .dilemma__header's
+   margin-bottom exactly, same technique as the section used before. */
+.dilemma__divider-spacer {
+  width: clamp(17px, 6vw, 41px);
+  visibility: hidden;
+}
+
 .dilemma__divider {
+  position: absolute;
+  top: -32px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 1px;
-  margin: 0 clamp(8px, 3vw, 20px);
   background: var(--color-card-border);
 }
 
@@ -385,7 +397,7 @@ a {
   appearance: none;
   display: block;
   width: 100%;
-  margin: 0 0 16px;
+  margin: 0 0 28px;
   padding: 0;
   background: none;
   border: none;
@@ -503,6 +515,19 @@ a {
   right: 32%;
 }
 
+/* min-height is set inline by js/main.js on load, sized to whichever
+   of the default/alternate copy is taller for THIS billboard, so
+   toggling never changes the section's height or moves anything
+   below it — no guessed value here, measured from the real content. */
+.billboard__copy {
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+
+.billboard__copy.is-swapping {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
 .billboard__title {
   font-size: clamp(0.85rem, 3.5vw, 1rem);
   font-weight: 700;
@@ -513,20 +538,6 @@ a {
   font-size: clamp(0.68rem, 2.7vw, 0.85rem);
   line-height: 1.6;
   color: var(--color-text-muted);
-  min-height: 6.5em;
-}
-
-/* Fade + small vertical shift when the paragraph swaps between its
-   default and alternate state — no sliding, no layout jumps. */
-.billboard__title,
-.billboard__body {
-  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out);
-}
-
-.billboard__title.is-swapping,
-.billboard__body.is-swapping {
-  opacity: 0;
-  transform: translateY(4px);
 }
 
 /* ---------- Shared toll ----------
