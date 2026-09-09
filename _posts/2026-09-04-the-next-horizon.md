@@ -1,18 +1,18 @@
 ---
 layout: transmission
-title: "The Next Horizon"
+title: The Next Horizon
 date: 2026-09-04
-format: "Essay"
+format: Essay
 pillars:
   - Technology
   - Entertainment
-featured_image: "/assets/images/samples/the-next-horizon.svg"
-excerpt: "On what comes after the breakthrough — and how we build a more human future from here."
+featured_image: /assets/images/IMG_6404.png
+excerpt: On what comes after the breakthrough — and how we build a more human
+  future from here.
 featured: true
 sample: true
 ---
 
-<!-- SAMPLE TRANSMISSION — replace this post with real editorial content before launch. -->
 
 Every era of technology promises the same thing: that this time, the tools will finally get out of the way and let people build. Rarely does it happen cleanly, and rarely all at once.
 
