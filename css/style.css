@@ -664,13 +664,10 @@ a {
   background: var(--color-card-border);
 }
 
-/* min-height instead of aspect-ratio — 30 labeled points need more
-   vertical room than the original 12 did to stay legible on a
-   narrow column. */
 .distance__visual {
   position: relative;
   flex: 2 1 280px;
-  min-height: 780px;
+  aspect-ratio: 4 / 5;
 }
 
 .distance__point {
