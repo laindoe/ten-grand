@@ -386,7 +386,7 @@ a {
    js/main.js reads both and swaps on click, no markup duplication. */
 
 .billboard {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
 .billboard:last-child {
