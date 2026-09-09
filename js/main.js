@@ -84,29 +84,54 @@
 
     const swapDelay = prefersReducedMotion ? 0 : 180;
 
+    function reserveHeight(copyEl, titleEl, bodyEl, defaultTitle, defaultBody, altTitle, altBody) {
+      // Measure both states and lock in whichever is taller, so
+      // toggling never changes the section's height or shifts
+      // anything below it. Runs before paint, so there's no flicker.
+      copyEl.style.minHeight = '';
+      const defaultHeight = copyEl.getBoundingClientRect().height;
+
+      titleEl.textContent = altTitle;
+      bodyEl.textContent = altBody;
+      const altHeight = copyEl.getBoundingClientRect().height;
+
+      titleEl.textContent = defaultTitle;
+      bodyEl.textContent = defaultBody;
+      copyEl.style.minHeight = `${Math.max(defaultHeight, altHeight)}px`;
+    }
+
     billboards.forEach((billboard) => {
       const trigger = billboard.querySelector('.billboard__frame');
+      const copyEl = billboard.querySelector('.billboard__copy');
       const titleEl = billboard.querySelector('.billboard__title');
       const bodyEl = billboard.querySelector('.billboard__body');
-      if (!trigger || !titleEl || !bodyEl) return;
+      if (!trigger || !copyEl || !titleEl || !bodyEl) return;
 
       const defaultTitle = titleEl.textContent;
       const defaultBody = bodyEl.textContent;
       const altTitle = billboard.dataset.altTitle || defaultTitle;
       const altBody = billboard.dataset.altBody || defaultBody;
 
+      reserveHeight(copyEl, titleEl, bodyEl, defaultTitle, defaultBody, altTitle, altBody);
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(() => {
+          reserveHeight(copyEl, titleEl, bodyEl, defaultTitle, defaultBody, altTitle, altBody);
+        }, 200);
+      });
+
       trigger.addEventListener('click', () => {
         const isActive = billboard.classList.toggle('is-active');
         trigger.setAttribute('aria-pressed', String(isActive));
 
-        titleEl.classList.add('is-swapping');
-        bodyEl.classList.add('is-swapping');
+        copyEl.classList.add('is-swapping');
 
         window.setTimeout(() => {
           titleEl.textContent = isActive ? altTitle : defaultTitle;
           bodyEl.textContent = isActive ? altBody : defaultBody;
-          titleEl.classList.remove('is-swapping');
-          bodyEl.classList.remove('is-swapping');
+          copyEl.classList.remove('is-swapping');
         }, swapDelay);
       });
     });
