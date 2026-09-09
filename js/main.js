@@ -4,6 +4,9 @@
 //      as they enter the viewport.
 //   2. Shared modal, opened by any element with a `data-modal-title`
 //      attribute (used by the engine section's clickable modules).
+//   3. Billboard toggle (Different Roads section) — tap a billboard to
+//      swap in its alternate title/body and reveal the vandalism
+//      placeholder; tap again to return to the default state.
 // ============================================================
 
 (() => {
@@ -75,8 +78,43 @@
     });
   }
 
+  function initBillboards() {
+    const billboards = document.querySelectorAll('.billboard');
+    if (!billboards.length) return;
+
+    const swapDelay = prefersReducedMotion ? 0 : 180;
+
+    billboards.forEach((billboard) => {
+      const trigger = billboard.querySelector('.billboard__frame');
+      const titleEl = billboard.querySelector('.billboard__title');
+      const bodyEl = billboard.querySelector('.billboard__body');
+      if (!trigger || !titleEl || !bodyEl) return;
+
+      const defaultTitle = titleEl.textContent;
+      const defaultBody = bodyEl.textContent;
+      const altTitle = billboard.dataset.altTitle || defaultTitle;
+      const altBody = billboard.dataset.altBody || defaultBody;
+
+      trigger.addEventListener('click', () => {
+        const isActive = billboard.classList.toggle('is-active');
+        trigger.setAttribute('aria-pressed', String(isActive));
+
+        titleEl.classList.add('is-swapping');
+        bodyEl.classList.add('is-swapping');
+
+        window.setTimeout(() => {
+          titleEl.textContent = isActive ? altTitle : defaultTitle;
+          bodyEl.textContent = isActive ? altBody : defaultBody;
+          titleEl.classList.remove('is-swapping');
+          bodyEl.classList.remove('is-swapping');
+        }, swapDelay);
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initReveal();
     initModal();
+    initBillboards();
   });
 })();

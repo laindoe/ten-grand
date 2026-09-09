@@ -280,7 +280,7 @@ a {
   color: var(--color-text);
 }
 
-/* ---------- Creator's Dilemma section ---------- */
+/* ---------- Different Roads, Same Destination section ---------- */
 
 /* min-height: auto (see .section--director) so the section sizes to
    its content instead of .section's 100vh + centering, which was
@@ -313,10 +313,6 @@ a {
   max-width: 32ch;
 }
 
-/* Positioning context for the road overlay below — scoped to just
-   the grid (not the header or footer) so the overlay's top:-32px /
-   bottom:0 land exactly on the header's border and the grid's own
-   bottom, without reaching into either the header or footer text. */
 .dilemma__grid-wrap {
   position: relative;
 }
@@ -331,87 +327,249 @@ a {
 }
 
 .dilemma__column {
-  padding: 0 clamp(4px, 2vw, 16px) 32px;
-}
-
-.dilemma__column--industry {
-  padding-left: clamp(16px, 6vw, 32px);
+  padding: 0 clamp(4px, 2vw, 12px) 32px;
 }
 
 .dilemma__route-title {
   font-size: clamp(1rem, 4.5vw, 1.25rem);
   font-weight: 400;
   line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+/* Interaction cue shown once per column — never repeated per
+   billboard. Pulses to signal the billboards are tappable; stays
+   static for prefers-reduced-motion. */
+.dilemma__cue {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
   margin-bottom: 20px;
 }
 
-.dilemma__list {
-  list-style: disc;
-  padding-left: 1.1em;
-  font-size: clamp(0.68rem, 2.7vw, 0.9rem);
-  line-height: 1.9;
+@media (prefers-reduced-motion: no-preference) {
+  .dilemma__cue {
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
+  }
 }
 
+@keyframes dilemma-cue-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+/* Plain structural divider between the two routes — a single
+   straight line, never a road. Its horizontal margin (included in
+   the grid's auto-sized middle column) is the only thing separating
+   the two routes. */
+.dilemma__divider {
+  width: 1px;
+  margin: 0 clamp(8px, 3vw, 20px);
+  background: var(--color-card-border);
+}
+
+/* ---------- Billboard component ----------
+   Data-driven toggle: each .billboard carries data-alt-title /
+   data-alt-body; the default title/body are just its visible text.
+   js/main.js reads both and swaps on click, no markup duplication. */
+
+.billboard {
+  margin-bottom: 32px;
+}
+
+.billboard:last-child {
+  margin-bottom: 0;
+}
+
+.billboard__frame {
+  appearance: none;
+  display: block;
+  width: 100%;
+  margin: 0 0 16px;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.billboard__frame:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.billboard__graphic {
+  position: relative;
+  padding-top: 12px;
+  padding-bottom: 20px;
+}
+
+.billboard__lamp {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 12px;
+  background: var(--color-card-border);
+}
+
+.billboard__lamp::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -5px;
+  width: 11px;
+  height: 1px;
+  background: var(--color-card-border);
+}
+
+.billboard__lamp--left {
+  left: 18%;
+}
+
+.billboard__lamp--right {
+  right: 18%;
+}
+
+.billboard__board {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 76px;
+  padding: 14px 10px;
+  border: 1px solid var(--color-card-border);
+  background: var(--color-bg);
+  text-align: center;
+  overflow: hidden;
+}
+
+.billboard__headline {
+  font-size: clamp(0.85rem, 4vw, 1.1rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Placeholder for the real graffiti/vandalism art — layers over the
+   headline (which stays visible underneath) rather than replacing
+   it. Swap the background/content here for a custom asset later. */
+.billboard__vandalism {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--color-accent);
+  background: rgba(217, 79, 48, 0.12);
+  border: 1px dashed var(--color-accent);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+  pointer-events: none;
+}
+
+.billboard.is-active .billboard__vandalism {
+  opacity: 1;
+}
+
+.billboard__leg {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 20px;
+  background: var(--color-card-border);
+}
+
+.billboard__leg::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -6px;
+  width: 13px;
+  height: 1px;
+  background: var(--color-card-border);
+}
+
+.billboard__leg--left {
+  left: 32%;
+}
+
+.billboard__leg--right {
+  right: 32%;
+}
+
+.billboard__title {
+  font-size: clamp(0.85rem, 3.5vw, 1rem);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.billboard__body {
+  font-size: clamp(0.68rem, 2.7vw, 0.85rem);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  min-height: 6.5em;
+}
+
+/* Fade + small vertical shift when the paragraph swaps between its
+   default and alternate state — no sliding, no layout jumps. */
+.billboard__title,
+.billboard__body {
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+
+.billboard__title.is-swapping,
+.billboard__body.is-swapping {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+/* ---------- Shared toll ----------
+   One toll for both routes — they converge here, not two separate
+   lanes. Full-bleed, same technique as .dilemma__header. */
 .dilemma__toll {
-  margin-top: 32px;
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x));
+  padding: 40px var(--section-padding-x) 0;
+  border-top: 1px solid var(--color-card-border);
+  text-align: center;
 }
 
 .dilemma__toll-label {
-  font-size: clamp(0.75rem, 3vw, 0.9rem);
-  letter-spacing: 0.03em;
-  margin-bottom: 12px;
+  display: inline-block;
+  border: 1px solid var(--color-card-border);
+  padding: 8px 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin: 0 auto 24px;
 }
 
-.dilemma__road {
+.dilemma__toll-placeholder {
+  width: 100%;
+  max-width: var(--content-max-width);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto 32px;
+  padding: 16px;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
-  gap: clamp(6px, 2vw, 16px);
-  padding: 0 clamp(4px, 1.5vw, 12px);
-  border-left: 1px solid var(--color-card-border);
-  border-right: 1px solid var(--color-card-border);
-}
-
-/* Reserves the gutter's width in the grid without being seen — the
-   visible lines are the overlay below. */
-.dilemma__road--spacer {
-  visibility: hidden;
-}
-
-/* -32px matches .dilemma__header's margin-bottom exactly, so the
-   overlay's top lands precisely on the header's border line — no
-   further, so it never reaches into the header text. bottom:0 is
-   the grid's own bottom, since .dilemma__grid-wrap contains only
-   the grid (not the footer), so this never reaches the footer text
-   either. */
-.dilemma__road--overlay {
-  position: absolute;
-  top: -32px;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.dilemma__road-line--solid {
-  width: 0;
-  border-left: 1px solid var(--color-card-border);
-}
-
-.dilemma__road-line--dashed {
-  width: 1px;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    var(--color-text-muted) 0 6px,
-    transparent 6px 18px
-  );
+  border: 1px dashed var(--color-card-border);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-align: center;
 }
 
 .dilemma__footer {
-  width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x));
-  padding: 40px var(--section-padding-x);
-  border-top: 1px solid var(--color-card-border);
-  text-align: center;
+  max-width: 40ch;
+  margin: 0 auto;
+  padding: 0 0 40px;
   font-size: 1rem;
   line-height: 1.5;
 }
