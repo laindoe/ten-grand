@@ -88,12 +88,14 @@
     const columnBillboards = Array.from(columns).map((column) =>
       Array.from(column.querySelectorAll('.billboard')).map((billboard) => {
         const trigger = billboard.querySelector('.billboard__frame');
+        const boardEl = billboard.querySelector('.billboard__board');
         const copyEl = billboard.querySelector('.billboard__copy');
         const titleEl = billboard.querySelector('.billboard__title');
         const bodyEl = billboard.querySelector('.billboard__body');
         return {
           billboard,
           trigger,
+          boardEl,
           copyEl,
           titleEl,
           bodyEl,
@@ -115,20 +117,25 @@
     }
 
     // A "row" is the Nth billboard in each column. Every billboard in
-    // a row shares one min-height — the tallest of any billboard's
-    // default/alt copy in that row — so corresponding billboards
+    // a row shares one min-height for its copy (the tallest of any
+    // billboard's default/alt copy in that row) AND for its board
+    // graphic (the tallest headline in that row, which can wrap to
+    // more lines than its counterpart) — so corresponding billboards
     // always start at the same vertical position across columns, and
     // toggling any one of them never shifts the row (or anything
     // below it) out of alignment.
     function reserveRowHeights() {
       for (let row = 0; row < rowCount; row++) {
         let maxHeight = 0;
+        let maxBoardHeight = 0;
         const entries = [];
 
         columnBillboards.forEach((col) => {
           const entry = col[row];
           if (!entry) return;
           entries.push(entry);
+          entry.boardEl.style.minHeight = '';
+          maxBoardHeight = Math.max(maxBoardHeight, entry.boardEl.getBoundingClientRect().height);
           maxHeight = Math.max(
             maxHeight,
             naturalHeight(entry, entry.defaultTitle, entry.defaultBody),
@@ -137,6 +144,7 @@
         });
 
         entries.forEach((entry) => {
+          entry.boardEl.style.minHeight = `${maxBoardHeight}px`;
           entry.titleEl.textContent = entry.billboard.classList.contains('is-active')
             ? entry.altTitle
             : entry.defaultTitle;
