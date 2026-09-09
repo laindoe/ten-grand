@@ -304,6 +304,7 @@ a {
   font-size: clamp(1.5rem, 6vw, 2rem);
   font-weight: 400;
   line-height: 1.15;
+  text-align: left;
   margin: 12px 0 20px;
 }
 
@@ -334,6 +335,7 @@ a {
   font-size: clamp(1rem, 4.5vw, 1.25rem);
   font-weight: 400;
   line-height: 1.25;
+  text-align: left;
   margin-bottom: 8px;
 }
 
@@ -448,12 +450,12 @@ a {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 76px;
   padding: 14px 10px;
   border: 1px solid var(--color-card-border);
   background: var(--color-bg);
-  text-align: center;
+  text-align: left;
   overflow: hidden;
 }
 
@@ -528,21 +530,23 @@ a {
   transform: translateY(4px);
 }
 
-/* min-height reserves 2 lines (line-height 1.5, inherited) so a
-   longer title (e.g. "No More Gatekeepers") that wraps doesn't push
-   its own body copy — and everything below it — out of alignment
-   with the matching billboard in the other column. */
 .billboard__title {
   font-size: clamp(0.85rem, 3.5vw, 1rem);
   font-weight: 700;
-  min-height: 3em;
+  text-align: left;
   margin-bottom: 6px;
 }
 
+/* Justified like newspaper body text; text-align-last keeps the
+   final (usually short) line from being stretched to the full
+   column width. */
 .billboard__body {
   font-size: clamp(0.68rem, 2.7vw, 0.85rem);
   line-height: 1.6;
   color: var(--color-text-muted);
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
 }
 
 /* ---------- Shared toll ----------

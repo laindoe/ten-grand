@@ -109,24 +109,14 @@
 
     const rowCount = Math.max(...columnBillboards.map((col) => col.length));
 
-    function naturalHeight(entry, title, body) {
-      entry.copyEl.style.minHeight = '';
-      entry.titleEl.textContent = title;
-      entry.bodyEl.textContent = body;
-      return entry.copyEl.getBoundingClientRect().height;
-    }
-
-    // A "row" is the Nth billboard in each column. Every billboard in
-    // a row shares one min-height for its copy (the tallest of any
-    // billboard's default/alt copy in that row) AND for its board
-    // graphic (the tallest headline in that row, which can wrap to
-    // more lines than its counterpart) — so corresponding billboards
-    // always start at the same vertical position across columns, and
-    // toggling any one of them never shifts the row (or anything
-    // below it) out of alignment.
-    function reserveRowHeights() {
+    // The billboard *graphic* still aligns across a row (a longer
+    // headline can need an extra line), but the copy below it now
+    // flows at its natural height — no reserved min-height — so the
+    // gap from the end of a paragraph to the next billboard is
+    // always the same fixed margin, never inflated to match a
+    // neighboring billboard's longer content.
+    function reserveBoardHeights() {
       for (let row = 0; row < rowCount; row++) {
-        let maxHeight = 0;
         let maxBoardHeight = 0;
         const entries = [];
 
@@ -136,32 +126,20 @@
           entries.push(entry);
           entry.boardEl.style.minHeight = '';
           maxBoardHeight = Math.max(maxBoardHeight, entry.boardEl.getBoundingClientRect().height);
-          maxHeight = Math.max(
-            maxHeight,
-            naturalHeight(entry, entry.defaultTitle, entry.defaultBody),
-            naturalHeight(entry, entry.altTitle, entry.altBody)
-          );
         });
 
         entries.forEach((entry) => {
           entry.boardEl.style.minHeight = `${maxBoardHeight}px`;
-          entry.titleEl.textContent = entry.billboard.classList.contains('is-active')
-            ? entry.altTitle
-            : entry.defaultTitle;
-          entry.bodyEl.textContent = entry.billboard.classList.contains('is-active')
-            ? entry.altBody
-            : entry.defaultBody;
-          entry.copyEl.style.minHeight = `${maxHeight}px`;
         });
       }
     }
 
-    reserveRowHeights();
+    reserveBoardHeights();
 
     let resizeTimer;
     window.addEventListener('resize', () => {
       window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(reserveRowHeights, 200);
+      resizeTimer = window.setTimeout(reserveBoardHeights, 200);
     });
 
     columnBillboards.flat().forEach((entry) => {
