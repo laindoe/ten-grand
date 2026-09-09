@@ -79,48 +79,86 @@
   }
 
   function initBillboards() {
-    const billboards = document.querySelectorAll('.billboard');
-    if (!billboards.length) return;
+    const columns = document.querySelectorAll('.dilemma__column');
+    if (!columns.length) return;
 
     const swapDelay = prefersReducedMotion ? 0 : 180;
 
-    function reserveHeight(copyEl, titleEl, bodyEl, defaultTitle, defaultBody, altTitle, altBody) {
-      // Measure both states and lock in whichever is taller, so
-      // toggling never changes the section's height or shifts
-      // anything below it. Runs before paint, so there's no flicker.
-      copyEl.style.minHeight = '';
-      const defaultHeight = copyEl.getBoundingClientRect().height;
+    // Read each column's billboards + their default/alt copy up front.
+    const columnBillboards = Array.from(columns).map((column) =>
+      Array.from(column.querySelectorAll('.billboard')).map((billboard) => {
+        const trigger = billboard.querySelector('.billboard__frame');
+        const copyEl = billboard.querySelector('.billboard__copy');
+        const titleEl = billboard.querySelector('.billboard__title');
+        const bodyEl = billboard.querySelector('.billboard__body');
+        return {
+          billboard,
+          trigger,
+          copyEl,
+          titleEl,
+          bodyEl,
+          defaultTitle: titleEl.textContent,
+          defaultBody: bodyEl.textContent,
+          altTitle: billboard.dataset.altTitle || titleEl.textContent,
+          altBody: billboard.dataset.altBody || bodyEl.textContent,
+        };
+      })
+    );
 
-      titleEl.textContent = altTitle;
-      bodyEl.textContent = altBody;
-      const altHeight = copyEl.getBoundingClientRect().height;
+    const rowCount = Math.max(...columnBillboards.map((col) => col.length));
 
-      titleEl.textContent = defaultTitle;
-      bodyEl.textContent = defaultBody;
-      copyEl.style.minHeight = `${Math.max(defaultHeight, altHeight)}px`;
+    function naturalHeight(entry, title, body) {
+      entry.copyEl.style.minHeight = '';
+      entry.titleEl.textContent = title;
+      entry.bodyEl.textContent = body;
+      return entry.copyEl.getBoundingClientRect().height;
     }
 
-    billboards.forEach((billboard) => {
-      const trigger = billboard.querySelector('.billboard__frame');
-      const copyEl = billboard.querySelector('.billboard__copy');
-      const titleEl = billboard.querySelector('.billboard__title');
-      const bodyEl = billboard.querySelector('.billboard__body');
-      if (!trigger || !copyEl || !titleEl || !bodyEl) return;
+    // A "row" is the Nth billboard in each column. Every billboard in
+    // a row shares one min-height — the tallest of any billboard's
+    // default/alt copy in that row — so corresponding billboards
+    // always start at the same vertical position across columns, and
+    // toggling any one of them never shifts the row (or anything
+    // below it) out of alignment.
+    function reserveRowHeights() {
+      for (let row = 0; row < rowCount; row++) {
+        let maxHeight = 0;
+        const entries = [];
 
-      const defaultTitle = titleEl.textContent;
-      const defaultBody = bodyEl.textContent;
-      const altTitle = billboard.dataset.altTitle || defaultTitle;
-      const altBody = billboard.dataset.altBody || defaultBody;
+        columnBillboards.forEach((col) => {
+          const entry = col[row];
+          if (!entry) return;
+          entries.push(entry);
+          maxHeight = Math.max(
+            maxHeight,
+            naturalHeight(entry, entry.defaultTitle, entry.defaultBody),
+            naturalHeight(entry, entry.altTitle, entry.altBody)
+          );
+        });
 
-      reserveHeight(copyEl, titleEl, bodyEl, defaultTitle, defaultBody, altTitle, altBody);
+        entries.forEach((entry) => {
+          entry.titleEl.textContent = entry.billboard.classList.contains('is-active')
+            ? entry.altTitle
+            : entry.defaultTitle;
+          entry.bodyEl.textContent = entry.billboard.classList.contains('is-active')
+            ? entry.altBody
+            : entry.defaultBody;
+          entry.copyEl.style.minHeight = `${maxHeight}px`;
+        });
+      }
+    }
 
-      let resizeTimer;
-      window.addEventListener('resize', () => {
-        window.clearTimeout(resizeTimer);
-        resizeTimer = window.setTimeout(() => {
-          reserveHeight(copyEl, titleEl, bodyEl, defaultTitle, defaultBody, altTitle, altBody);
-        }, 200);
-      });
+    reserveRowHeights();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(reserveRowHeights, 200);
+    });
+
+    columnBillboards.flat().forEach((entry) => {
+      const { billboard, trigger, copyEl, titleEl, bodyEl, defaultTitle, defaultBody, altTitle, altBody } = entry;
+      if (!trigger) return;
 
       trigger.addEventListener('click', () => {
         const isActive = billboard.classList.toggle('is-active');

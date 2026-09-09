@@ -528,9 +528,14 @@ a {
   transform: translateY(4px);
 }
 
+/* min-height reserves 2 lines (line-height 1.5, inherited) so a
+   longer title (e.g. "No More Gatekeepers") that wraps doesn't push
+   its own body copy — and everything below it — out of alignment
+   with the matching billboard in the other column. */
 .billboard__title {
   font-size: clamp(0.85rem, 3.5vw, 1rem);
   font-weight: 700;
+  min-height: 3em;
   margin-bottom: 6px;
 }
 
