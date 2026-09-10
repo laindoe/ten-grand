@@ -356,64 +356,83 @@
       </div>
 
       <div class="engine__route reveal">
-        <svg viewBox="0 0 300 484" fill="none" role="img" aria-label="A winding route from Imagination, through Development, Production, Packaging, and Distribution, down to Impact">
-          <!-- Imagination: starburst -->
-          <path d="M150,14 Q154,30 170,34 Q154,38 150,54 Q146,38 130,34 Q146,30 150,14 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-          <text x="150" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">IMAGINATION</text>
+        <svg viewBox="0 0 300 660" fill="none" role="img" aria-label="A winding route from Imagination, through Development, Production, Packaging, and Distribution, down to Impact">
+          <defs>
+            <radialGradient id="engineGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="30%" stop-color="#ffe27a"/>
+              <stop offset="55%" stop-color="#ff8fc7"/>
+              <stop offset="80%" stop-color="#7fa8ff"/>
+              <stop offset="100%" stop-color="#6a4cff" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="engineSoftGlow" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="6"/>
+            </filter>
+          </defs>
+
+          <!-- Imagination: colorful glowing starburst -->
+          <g transform="translate(150,50)">
+            <circle r="34" fill="url(#engineGlow)" opacity="0.55" filter="url(#engineSoftGlow)"/>
+            <g stroke="url(#engineGlow)" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.85">
+              <line x1="0" y1="-46" x2="0" y2="-38"/>
+              <line x1="0" y1="38" x2="0" y2="46"/>
+              <line x1="-46" y1="0" x2="-38" y2="0"/>
+              <line x1="46" y1="0" x2="38" y2="0"/>
+              <line x1="-33" y1="-33" x2="-27" y2="-27"/>
+              <line x1="33" y1="-33" x2="27" y2="-27"/>
+              <line x1="-33" y1="33" x2="-27" y2="27"/>
+              <line x1="33" y1="33" x2="27" y2="27"/>
+            </g>
+            <path d="M0,-26 Q6,-8 24,0 Q6,8 0,26 Q-6,8 -24,0 Q-6,-8 0,-26 Z" fill="url(#engineGlow)"/>
+          </g>
+          <text x="150" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">IMAGINATION</text>
 
           <!-- centerline the route winds around -->
-          <line x1="150" y1="78" x2="150" y2="378" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.5"/>
+          <line x1="150" y1="108" x2="150" y2="448" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.5"/>
 
           <!-- the winding route itself -->
-          <path d="M150.0,78.0 C150.0,98.0 198.0,98.0 198.0,118.0 C198.0,150.5 102.0,150.5 102.0,183.0 C102.0,215.5 198.0,215.5 198.0,248.0 C198.0,280.5 102.0,280.5 102.0,313.0 C102.0,333.0 150.0,333.0 150.0,353.0"
+          <path d="M150.0,108.0 C150.0,133.0 202.0,133.0 202.0,158.0 C202.0,198.0 98.0,198.0 98.0,238.0 C98.0,278.0 202.0,278.0 202.0,318.0 C202.0,358.0 98.0,358.0 98.0,398.0 C98.0,423.0 150.0,423.0 150.0,448.0"
                 stroke="currentColor" stroke-width="1.6"/>
 
           <!-- stop 1: Development -->
-          <g transform="translate(198,94)">
+          <g transform="translate(202,134)">
             <path d="M0,-18 C-8,-18 -14,-12 -14,-4 C-14,6 0,20 0,20 C0,20 14,6 14,-4 C14,-12 8,-18 0,-18 Z" stroke="currentColor" stroke-width="1.3"/>
             <circle cx="0" cy="-4" r="4.5" stroke="currentColor" stroke-width="1.1"/>
           </g>
-          <circle cx="198" cy="118" r="3" fill="currentColor"/>
-          <ellipse cx="198" cy="121" rx="15" ry="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.6"/>
-          <text x="222" y="121" font-size="9" fill="currentColor">DEVELOPMENT</text>
+          <circle cx="202" cy="158" r="3" fill="currentColor"/>
+          <ellipse cx="202" cy="161" rx="15" ry="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.6"/>
+          <text x="226" y="161" font-size="9" fill="currentColor">DEVELOPMENT</text>
 
           <!-- stop 2: Production -->
-          <g transform="translate(102,159)">
+          <g transform="translate(98,214)">
             <path d="M0,-18 C-8,-18 -14,-12 -14,-4 C-14,6 0,20 0,20 C0,20 14,6 14,-4 C14,-12 8,-18 0,-18 Z" stroke="currentColor" stroke-width="1.3"/>
             <circle cx="0" cy="-4" r="4.5" stroke="currentColor" stroke-width="1.1"/>
           </g>
-          <circle cx="102" cy="183" r="3" fill="currentColor"/>
-          <ellipse cx="102" cy="186" rx="15" ry="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.6"/>
-          <text x="78" y="186" font-size="9" fill="currentColor" text-anchor="end">PRODUCTION</text>
+          <circle cx="98" cy="238" r="3" fill="currentColor"/>
+          <ellipse cx="98" cy="241" rx="15" ry="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.6"/>
+          <text x="74" y="241" font-size="9" fill="currentColor" text-anchor="end">PRODUCTION</text>
 
           <!-- stop 3: Packaging -->
-          <g transform="translate(198,224)">
+          <g transform="translate(202,294)">
             <path d="M0,-18 C-8,-18 -14,-12 -14,-4 C-14,6 0,20 0,20 C0,20 14,6 14,-4 C14,-12 8,-18 0,-18 Z" stroke="currentColor" stroke-width="1.3"/>
             <circle cx="0" cy="-4" r="4.5" stroke="currentColor" stroke-width="1.1"/>
           </g>
-          <circle cx="198" cy="248" r="3" fill="currentColor"/>
-          <ellipse cx="198" cy="251" rx="15" ry="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.6"/>
-          <text x="222" y="251" font-size="9" fill="currentColor">PACKAGING</text>
+          <circle cx="202" cy="318" r="3" fill="currentColor"/>
+          <ellipse cx="202" cy="321" rx="15" ry="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.6"/>
+          <text x="226" y="321" font-size="9" fill="currentColor">PACKAGING</text>
 
           <!-- stop 4: Distribution -->
-          <g transform="translate(102,289)">
+          <g transform="translate(98,374)">
             <path d="M0,-18 C-8,-18 -14,-12 -14,-4 C-14,6 0,20 0,20 C0,20 14,6 14,-4 C14,-12 8,-18 0,-18 Z" stroke="currentColor" stroke-width="1.3"/>
             <circle cx="0" cy="-4" r="4.5" stroke="currentColor" stroke-width="1.1"/>
           </g>
-          <circle cx="102" cy="313" r="3" fill="currentColor"/>
-          <ellipse cx="102" cy="316" rx="15" ry="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.6"/>
-          <text x="78" y="316" font-size="9" fill="currentColor" text-anchor="end">DISTRIBUTION</text>
+          <circle cx="98" cy="398" r="3" fill="currentColor"/>
+          <ellipse cx="98" cy="401" rx="15" ry="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.6"/>
+          <text x="74" y="401" font-size="9" fill="currentColor" text-anchor="end">DISTRIBUTION</text>
 
-          <!-- Impact: globe -->
-          <g transform="translate(150,410)">
-            <circle r="38" stroke="currentColor" stroke-width="1.4"/>
-            <ellipse rx="22" ry="38" stroke="currentColor" stroke-width="1"/>
-            <ellipse rx="8" ry="38" stroke="currentColor" stroke-width="1"/>
-            <ellipse cx="0" cy="-15" rx="38" ry="9" stroke="currentColor" stroke-width="1"/>
-            <ellipse cx="0" cy="15" rx="38" ry="9" stroke="currentColor" stroke-width="1"/>
-            <ellipse cx="0" cy="36" rx="30" ry="5" stroke="currentColor" stroke-width="0.9" opacity="0.5"/>
-          </g>
-          <text x="150" y="470" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">IMPACT</text>
+          <!-- Impact: colorful globe (restored asset) -->
+          <image href="assets/images/icon-impact-globe.png" x="70" y="455" width="160" height="158"/>
+          <text x="150" y="645" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">IMPACT</text>
         </svg>
       </div>
 
