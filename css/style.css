@@ -1001,28 +1001,39 @@ a {
   width: 100%;
   max-width: var(--content-max-width);
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 4px;
+  text-align: left;
 }
 
-/* Sits behind the dots, roughly level with them — icon height (28px
-   max) + its margin-bottom (12px) + half the dot's own height. */
 .amass__timeline-track {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 43px;
-  height: 1px;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
   background: var(--color-card-border);
+  transform: translateX(-50%);
 }
 
 .amass__timeline-item {
   position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-height: 108px;
+  padding: 22px 0;
+}
+
+.amass__timeline-content {
+  position: absolute;
+  top: 0;
+  width: calc(50% - 26px);
+}
+
+.amass__timeline-item--left .amass__timeline-content {
+  left: 0;
+  text-align: right;
+}
+
+.amass__timeline-item--right .amass__timeline-content {
+  right: 0;
+  text-align: left;
 }
 
 .amass__timeline-icon {
@@ -1030,20 +1041,16 @@ a {
   width: clamp(20px, 7vw, 28px);
   height: clamp(20px, 7vw, 28px);
   color: var(--color-text);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+}
+
+.amass__timeline-item--left .amass__timeline-icon {
+  margin-left: auto;
 }
 
 .amass__timeline-icon svg {
   width: 100%;
   height: 100%;
-}
-
-.amass__timeline-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-text);
-  margin-bottom: 16px;
 }
 
 .amass__timeline-year {
@@ -1062,7 +1069,123 @@ a {
   font-size: clamp(0.55rem, 2.2vw, 0.68rem);
   line-height: 1.4;
   color: var(--color-text-muted);
-  max-width: 14ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.amass__timeline-item--left .amass__timeline-desc {
+  margin-right: 0;
+}
+
+.amass__timeline-item--right .amass__timeline-desc {
+  margin-left: 0;
+}
+
+/* Bridges the content column to the toggle circle sitting on the
+   centerline — its top matches the toggle's own vertical center so
+   the line visually runs into (and behind) the circle. */
+.amass__timeline-connector {
+  position: absolute;
+  top: 21px;
+  height: 1px;
+  width: 26px;
+  background: var(--color-card-border);
+}
+
+.amass__timeline-item--left .amass__timeline-connector {
+  right: 50%;
+}
+
+.amass__timeline-item--right .amass__timeline-connector {
+  left: 50%;
+}
+
+.amass__timeline-toggle {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--color-card-border);
+  background: var(--color-bg);
+  padding: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.amass__timeline-toggle::before,
+.amass__timeline-toggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--color-text);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.amass__timeline-toggle::before {
+  width: 10px;
+  height: 1.4px;
+  transform: translate(-50%, -50%);
+}
+
+.amass__timeline-toggle::after {
+  width: 1.4px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+}
+
+.amass__timeline-item.is-open .amass__timeline-toggle::before,
+.amass__timeline-item.is-open .amass__timeline-toggle::after {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.amass__timeline-bubble {
+  position: absolute;
+  top: 0;
+  width: calc(50% - 26px);
+  background: var(--color-bg);
+  border: 1px solid var(--color-card-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  z-index: 1;
+}
+
+.amass__timeline-item--left .amass__timeline-bubble {
+  right: 0;
+}
+
+.amass__timeline-item--right .amass__timeline-bubble {
+  left: 0;
+}
+
+.amass__timeline-bubble::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  width: 10px;
+  height: 10px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-card-border);
+  transform: rotate(45deg);
+}
+
+.amass__timeline-item--left .amass__timeline-bubble::before {
+  left: -6px;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.amass__timeline-item--right .amass__timeline-bubble::before {
+  right: -6px;
+  border-left-color: transparent;
+  border-top-color: transparent;
 }
 
 /* ---------- Director section ---------- */
