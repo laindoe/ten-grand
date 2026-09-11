@@ -79,24 +79,13 @@
   }
 
   // Bubbles are independent — opening one does not close any others,
-  // so several can stay open at once. Each is positioned absolutely
-  // (so it can sit flush against the timeline point, opposite the
-  // icon/label), which means it does not push later items down on its
-  // own. When it is taller than the item's own box, we reserve the
-  // extra room as bottom padding so the next stop on the timeline
-  // never sits underneath it.
+  // so several can stay open at once. Each item is a CSS grid row with
+  // the bubble as a normal (not absolutely positioned) grid cell, so
+  // the row's height already grows to fit an open bubble on its own —
+  // no manual measuring needed here.
   function initTimelineBubbles() {
     const items = document.querySelectorAll('.amass__timeline-item');
     if (!items.length) return;
-
-    function closeItem(item) {
-      const toggle = item.querySelector('.amass__timeline-toggle');
-      const bubble = item.querySelector('.amass__timeline-bubble');
-      item.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      bubble.hidden = true;
-      item.style.paddingBottom = '';
-    }
 
     items.forEach((item) => {
       const toggle = item.querySelector('.amass__timeline-toggle');
@@ -105,26 +94,9 @@
 
       toggle.addEventListener('click', () => {
         const isOpen = item.classList.contains('is-open');
-
-        if (isOpen) {
-          closeItem(item);
-        } else {
-          item.classList.add('is-open');
-          toggle.setAttribute('aria-expanded', 'true');
-          bubble.hidden = false;
-
-          // All of the item's children are positioned absolutely, so its
-          // own content height is always 0 — only paddingTop occupies
-          // flow space above that. The bubble sits at top:0 within the
-          // item, so the padding-bottom needed to fully contain it (plus
-          // a small gap before the next stop) is its distance past the
-          // item's top, minus that fixed top padding.
-          const paddingTop = parseFloat(getComputedStyle(item).paddingTop) || 0;
-          const itemTop = item.getBoundingClientRect().top;
-          const bubbleBottom = bubble.getBoundingClientRect().bottom;
-          const neededPaddingBottom = bubbleBottom - itemTop - paddingTop + 16;
-          item.style.paddingBottom = neededPaddingBottom > paddingTop ? `${neededPaddingBottom}px` : '';
-        }
+        item.classList.toggle('is-open', !isOpen);
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+        bubble.hidden = isOpen;
       });
     });
   }
