@@ -78,11 +78,13 @@
     });
   }
 
-  // The bubble is positioned absolutely (so it can sit flush against
-  // the timeline point, opposite the icon/label), which means it does
-  // not push later items down on its own. When it is taller than the
-  // item's own box, we reserve the extra room as bottom padding so
-  // the next stop on the timeline never sits underneath it.
+  // Bubbles are independent — opening one does not close any others,
+  // so several can stay open at once. Each is positioned absolutely
+  // (so it can sit flush against the timeline point, opposite the
+  // icon/label), which means it does not push later items down on its
+  // own. When it is taller than the item's own box, we reserve the
+  // extra room as bottom padding so the next stop on the timeline
+  // never sits underneath it.
   function initTimelineBubbles() {
     const items = document.querySelectorAll('.amass__timeline-item');
     if (!items.length) return;
@@ -103,10 +105,6 @@
 
       toggle.addEventListener('click', () => {
         const isOpen = item.classList.contains('is-open');
-
-        items.forEach((other) => {
-          if (other !== item) closeItem(other);
-        });
 
         if (isOpen) {
           closeItem(item);
