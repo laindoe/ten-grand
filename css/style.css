@@ -1038,8 +1038,8 @@ a {
   position: relative;
   display: grid;
   grid-template-columns: 1fr 40px 1fr;
-  min-height: 148px;
-  padding: 38px 0;
+  min-height: 184px;
+  padding: 56px 0;
 }
 
 /* Every grid cell in the row defaults to align-self: stretch, so the
@@ -1103,28 +1103,6 @@ a {
   font-size: clamp(0.55rem, 2.2vw, 0.68rem);
   line-height: 1.4;
   color: var(--color-text-muted);
-}
-
-/* Bridges the content column's inner edge to the toggle circle. Both
-   are centered on the row's cross axis, so they stay level with the
-   (also centered) content and bubble groups no matter how tall an
-   open bubble makes the row. */
-.amass__timeline-connector {
-  grid-row: 1;
-  align-self: center;
-  height: 1px;
-  width: 16px;
-  background: var(--color-card-border);
-}
-
-.amass__timeline-item--left .amass__timeline-connector {
-  grid-column: 1;
-  justify-self: end;
-}
-
-.amass__timeline-item--right .amass__timeline-connector {
-  grid-column: 3;
-  justify-self: start;
 }
 
 .amass__timeline-toggle {
