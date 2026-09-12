@@ -1015,11 +1015,16 @@ a {
 /* Sits at the container's own top edge — exactly where the track
    above also starts — so the two visually touch. display: block is
    required here: it's a <span>, and width/height on an inline
-   element (the default) are simply ignored. */
+   element (the default) are simply ignored. Capped at the same
+   34ch used by the subtitle above it (and .amass__text elsewhere),
+   rather than the full padded section width, so it doesn't read as
+   stretching out to the section's edges. */
 .amass__timeline-divider {
   display: block;
   width: 100%;
+  max-width: 34ch;
   height: 1px;
+  margin: 0 auto;
   background: var(--color-card-border);
 }
 
