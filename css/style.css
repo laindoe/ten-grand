@@ -328,7 +328,7 @@ a {
 }
 
 .dilemma__column {
-  padding: 0 clamp(4px, 2vw, 12px) 32px;
+  padding: 0 clamp(2px, 1vw, 8px) 32px;
 }
 
 .dilemma__route-title {
@@ -368,7 +368,7 @@ a {
    the gap between them. -32px matches .dilemma__header's
    margin-bottom exactly, same technique as the section used before. */
 .dilemma__divider-spacer {
-  width: clamp(17px, 6vw, 41px);
+  width: clamp(12px, 4vw, 28px);
   visibility: hidden;
 }
 
@@ -398,8 +398,14 @@ a {
 .billboard__frame {
   appearance: none;
   display: block;
-  width: 100%;
-  margin: 0 0 28px;
+  /* Bleeds slightly into the column's own side padding and the
+     gutter toward the center divider, so the graphic reads bigger
+     without widening the column (and its title/copy) to match.
+     width: 100% here would be over-constrained alongside two
+     non-auto margins (the browser would just ignore one side), so
+     the extra width is expressed directly instead. */
+  width: calc(100% + 12px);
+  margin: 0 -6px 28px;
   padding: 0;
   background: none;
   border: none;
