@@ -538,20 +538,12 @@ a {
   margin: 0 auto 24px;
 }
 
-.dilemma__toll-placeholder {
+.dilemma__toll-graphic {
+  display: block;
   width: 100%;
   max-width: var(--content-max-width);
-  aspect-ratio: 16 / 9;
+  height: auto;
   margin: 0 auto 32px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed var(--color-card-border);
-  color: var(--color-text-muted);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  text-align: center;
 }
 
 .dilemma__footer {
