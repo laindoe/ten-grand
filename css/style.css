@@ -1013,8 +1013,11 @@ a {
 }
 
 /* Sits at the container's own top edge — exactly where the track
-   above also starts — so the two visually touch. */
+   above also starts — so the two visually touch. display: block is
+   required here: it's a <span>, and width/height on an inline
+   element (the default) are simply ignored. */
 .amass__timeline-divider {
+  display: block;
   width: 100%;
   height: 1px;
   background: var(--color-card-border);
@@ -1045,28 +1048,26 @@ a {
 /* Every grid cell in the row defaults to align-self: stretch, so the
    content column's own box always matches the row's full height —
    including a taller row caused by an open bubble on the opposite
-   side — and the icon/text group centers within that height instead
-   of sitting pinned at the top with empty space below. */
+   side. Stacking the icon above the text (rather than beside it)
+   makes that column's own natural content taller to begin with, and
+   justify-content: center then centers the whole stack within
+   whatever extra height the row ends up with. */
 .amass__timeline-content {
   grid-row: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  text-align: center;
 }
 
-/* Icon sits on the outer edge of the entry (away from the centerline);
-   row-reverse on the right side keeps the same markup order (icon
-   first) while visually pushing the icon out to the far right. */
 .amass__timeline-item--left .amass__timeline-content {
   grid-column: 1;
-  flex-direction: row;
-  text-align: right;
 }
 
 .amass__timeline-item--right .amass__timeline-content {
   grid-column: 3;
-  flex-direction: row-reverse;
-  text-align: left;
 }
 
 .amass__timeline-icon {
@@ -1083,7 +1084,6 @@ a {
 }
 
 .amass__timeline-text {
-  flex: 1 1 auto;
   min-width: 0;
 }
 
