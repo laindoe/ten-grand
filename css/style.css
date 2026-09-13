@@ -528,22 +528,37 @@ a {
   text-align: center;
 }
 
-.dilemma__toll-label {
-  display: inline-block;
-  border: 1px solid var(--color-card-border);
-  padding: 8px 20px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  margin: 0 auto 24px;
+.dilemma__toll-graphic-wrap {
+  position: relative;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto 32px;
 }
 
 .dilemma__toll-graphic {
   display: block;
   width: 100%;
-  max-width: var(--content-max-width);
   height: auto;
-  margin: 0 auto 32px;
+}
+
+/* Positioned to match the empty sign rect drawn at the top of
+   toll-gate.svg (its x/y/width/height as fractions of the SVG's own
+   viewBox), so the label sits centered inside that rectangle. */
+.dilemma__toll-label {
+  position: absolute;
+  left: 24.45%;
+  right: 41.27%;
+  top: 13.61%;
+  bottom: 76.51%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 4px;
+  font-size: clamp(0.5rem, 2.6vw, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  overflow: hidden;
 }
 
 .dilemma__footer {
