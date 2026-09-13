@@ -543,11 +543,12 @@ a {
 
 /* Positioned to match the empty sign rect drawn at the top of
    toll-gate.svg (its x/y/width/height as fractions of the SVG's own
-   viewBox), so the label sits centered inside that rectangle. */
+   *current* viewBox — recompute these if that viewBox changes), so
+   the label sits centered inside that rectangle. */
 .dilemma__toll-label {
   position: absolute;
-  left: 24.45%;
-  right: 41.27%;
+  left: 24.64%;
+  right: 25.89%;
   top: 13.61%;
   bottom: 76.51%;
   display: flex;
