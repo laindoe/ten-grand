@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1106.84 486.32" role="img" aria-label="Toll booth with animated raising gate arms">
 <defs><style>
-.cls-1{fill:#191414;}
 .cls-2,.cls-3,.cls-4{fill:none;stroke:#fff;stroke-miterlimit:10;}
 .cls-3{stroke-width:.75px;}
 .cls-5{fill:#fff;}
@@ -12,7 +11,6 @@
 @keyframes swingLeft{0%,35%{transform:rotate(0deg);}50%,85%{transform:rotate(-90deg);}100%{transform:rotate(0deg);}}
 @keyframes swingRight{0%,35%{transform:rotate(0deg);}50%,85%{transform:rotate(90deg);}100%{transform:rotate(0deg);}}
 </style></defs>
-<rect class="cls-1" width="1106.84" height="486.32"/>
 <rect class="cls-4" x="270.55" y="66.17" width="379.52" height="48.07"/>
 <rect class="cls-4" x="96.51" y="125.78" width="737.17" height="20.92"/>
 <rect class="cls-4" x="138.11" y="146.72" width="20.92" height="144.27"/>
