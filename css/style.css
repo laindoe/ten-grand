@@ -1336,12 +1336,19 @@ a {
   opacity: 0.16;
 }
 
-/* Solid backing (not just text color) so a star that would otherwise
-   land in the gaps between lines or letters is fully hidden behind
-   it, rather than relying on exact star coordinates never landing on
-   the text. */
+/* Absolutely centered on the section's own midpoint (top: 50% +
+   translate(-50%, -50%)) instead of relying on the flex/padding
+   balance to land it there — this stays exactly centered regardless
+   of font metrics or any per-device rendering quirk, since it's
+   pinned to the box's geometric center rather than "equal padding on
+   both sides adds up to centered." Solid backing (not just text
+   color) so a star that would otherwise land in the gaps between
+   lines or letters is fully hidden behind it. */
 .quote__text {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
   background: var(--color-bg);
   padding: 24px 12px;
@@ -1349,7 +1356,6 @@ a {
   font-weight: 400;
   line-height: 1.25;
   max-width: 330px;
-  margin: 0 auto;
   overflow-wrap: break-word;
 }
 
