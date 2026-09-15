@@ -1311,11 +1311,16 @@ a {
    No border-top here — this section now sits directly under Amass's
    Decentralized Culture block, which already supplies the divider
    via its own border-bottom; adding another produced a doubled line. */
+/* Padding restores the exact box height the stem/crosshair-icon
+   graphic used to occupy (measured before/after removal: 566.48px ->
+   250.48px, a 316px gap), split evenly top/bottom to keep the same
+   balance those elements gave it, now that the star field is the
+   only thing filling that space. */
 .section--quote {
   position: relative;
   text-align: center;
   min-height: auto;
-  padding: 0 var(--section-padding-x) 60px;
+  padding: 158px var(--section-padding-x) 218px;
   overflow: hidden;
 }
 
