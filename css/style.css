@@ -1318,7 +1318,7 @@ a {
   position: relative;
   text-align: center;
   min-height: auto;
-  padding: 170px var(--section-padding-x);
+  padding: 220px var(--section-padding-x);
   overflow: hidden;
 }
 
