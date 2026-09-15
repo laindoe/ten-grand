@@ -1307,9 +1307,10 @@ a {
 
 /* min-height: auto (see .section--director) so the section sizes to
    its content instead of forcing 100vh + centering, which left an
-   inconsistent gap depending on viewport height. Generous top/bottom
-   padding gives the star field room to surround the quote instead of
-   just framing it top and bottom.
+   inconsistent gap depending on viewport height. Padding matches the
+   section's original (pre-star-field) size — the star field fills
+   whatever room that leaves rather than the section being grown to
+   fit it.
    No border-top here — this section now sits directly under Amass's
    Decentralized Culture block, which already supplies the divider
    via its own border-bottom; adding another produced a doubled line. */
@@ -1317,7 +1318,7 @@ a {
   position: relative;
   text-align: center;
   min-height: auto;
-  padding: 90px var(--section-padding-x);
+  padding: 0 var(--section-padding-x) 60px;
   overflow: hidden;
 }
 
@@ -1335,9 +1336,15 @@ a {
   opacity: 0.16;
 }
 
+/* Solid backing (not just text color) so a star that would otherwise
+   land in the gaps between lines or letters is fully hidden behind
+   it, rather than relying on exact star coordinates never landing on
+   the text. */
 .quote__text {
   position: relative;
   z-index: 1;
+  background: var(--color-bg);
+  padding: 24px 12px;
   font-size: clamp(1.5rem, 7.5vw, 2rem);
   font-weight: 400;
   line-height: 1.25;
