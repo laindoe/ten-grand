@@ -1307,10 +1307,10 @@ a {
 
 /* min-height: auto (see .section--director) so the section sizes to
    its content instead of forcing 100vh + centering, which left an
-   inconsistent gap depending on viewport height. Padding matches the
-   section's original (pre-star-field) size — the star field fills
-   whatever room that leaves rather than the section being grown to
-   fit it.
+   inconsistent gap depending on viewport height. Generous top/bottom
+   padding gives the star field real room above and below the quote,
+   closer to the tall reference mood board than the original tight
+   spacing.
    No border-top here — this section now sits directly under Amass's
    Decentralized Culture block, which already supplies the divider
    via its own border-bottom; adding another produced a doubled line. */
@@ -1318,7 +1318,7 @@ a {
   position: relative;
   text-align: center;
   min-height: auto;
-  padding: 0 var(--section-padding-x) 60px;
+  padding: 170px var(--section-padding-x);
   overflow: hidden;
 }
 
