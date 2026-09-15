@@ -1340,9 +1340,14 @@ a {
   opacity: 0.16;
 }
 
+/* background is pure paint — it doesn't add to the box's size — so a
+   star that would otherwise land in the gaps between lines or
+   letters is fully hidden behind the text's own rectangle, without
+   affecting the section's height. */
 .quote__text {
   position: relative;
   z-index: 1;
+  background: var(--color-bg);
   font-size: clamp(1.5rem, 7.5vw, 2rem);
   font-weight: 400;
   line-height: 1.25;
