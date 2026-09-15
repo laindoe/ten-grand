@@ -1307,10 +1307,8 @@ a {
 
 /* min-height: auto (see .section--director) so the section sizes to
    its content instead of forcing 100vh + centering, which left an
-   inconsistent gap between the top border and the stem depending on
-   viewport height. padding-top stays 0 so the stem touches the border
-   with no gap at all, matching the design. */
-/* No border-top here — this section now sits directly under Amass's
+   inconsistent gap depending on viewport height.
+   No border-top here — this section now sits directly under Amass's
    Decentralized Culture block, which already supplies the divider
    via its own border-bottom; adding another produced a doubled line. */
 .section--quote {
@@ -1335,21 +1333,6 @@ a {
 
 .quote__star-glow {
   opacity: 0.16;
-}
-
-.quote__stem {
-  position: relative;
-  z-index: 1;
-  width: 1px;
-  height: 100px;
-  background: var(--color-card-border);
-}
-
-.quote__icon {
-  position: relative;
-  z-index: 1;
-  width: 58px;
-  height: 58px;
 }
 
 .quote__text {
