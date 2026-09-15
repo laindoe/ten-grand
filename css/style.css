@@ -1307,55 +1307,35 @@ a {
 
 /* min-height: auto (see .section--director) so the section sizes to
    its content instead of forcing 100vh + centering, which left an
-   inconsistent gap depending on viewport height. Generous top/bottom
-   padding gives the star field real room above and below the quote,
-   closer to the tall reference mood board than the original tight
-   spacing.
-   No border-top here — this section now sits directly under Amass's
+   inconsistent gap between the top border and the stem depending on
+   viewport height. padding-top stays 0 so the stem touches the border
+   with no gap at all, matching the design. */
+/* No border-top here — this section now sits directly under Amass's
    Decentralized Culture block, which already supplies the divider
    via its own border-bottom; adding another produced a doubled line. */
 .section--quote {
-  position: relative;
   text-align: center;
   min-height: auto;
-  padding: 220px var(--section-padding-x);
-  overflow: hidden;
+  padding: 0 var(--section-padding-x) 60px;
 }
 
-/* Fills the section as a backdrop behind the quote — slice-cropped
-   rather than stretched, so circular stars never become ellipses. */
-.quote__stars {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
+.quote__stem {
+  width: 1px;
+  height: 100px;
+  background: var(--color-card-border);
 }
 
-.quote__star-glow {
-  opacity: 0.16;
+.quote__icon {
+  width: 58px;
+  height: 58px;
 }
 
-/* Absolutely centered on the section's own midpoint (top: 50% +
-   translate(-50%, -50%)) instead of relying on the flex/padding
-   balance to land it there — this stays exactly centered regardless
-   of font metrics or any per-device rendering quirk, since it's
-   pinned to the box's geometric center rather than "equal padding on
-   both sides adds up to centered." Solid backing (not just text
-   color) so a star that would otherwise land in the gaps between
-   lines or letters is fully hidden behind it. */
 .quote__text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  background: var(--color-bg);
-  padding: 24px 12px;
   font-size: clamp(1.5rem, 7.5vw, 2rem);
   font-weight: 400;
   line-height: 1.25;
   max-width: 330px;
+  margin: 40px auto;
   overflow-wrap: break-word;
 }
 
