@@ -1332,11 +1332,11 @@ a {
 }
 
 .quote__star-glow--big {
-  opacity: 0.18;
+  opacity: 0.45;
 }
 
 .quote__star-glow--small {
-  opacity: 0.12;
+  opacity: 0.32;
 }
 
 /* Gentle, staggered twinkle on the glowing stars — each circle's own
@@ -1354,13 +1354,13 @@ a {
 }
 
 @keyframes quoteGlowPulseBig {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 0.3; }
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
 }
 
 @keyframes quoteGlowPulseSmall {
-  0%, 100% { opacity: 0.06; }
-  50% { opacity: 0.2; }
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.45; }
 }
 
 .quote__text {
