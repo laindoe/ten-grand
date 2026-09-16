@@ -1324,8 +1324,10 @@ a {
   overflow: hidden;
 }
 
-/* Fills the section as a backdrop — slice-cropped rather than
-   stretched, so circular stars never become ellipses. position:
+/* Fills the section as a backdrop, fit (not cropped) to the box so
+   none of the constellation's edge stars get clipped if the box's
+   aspect ratio doesn't exactly match the artwork's — any leftover
+   margin is invisible against the shared black background. position:
    relative + z-index: 1 on the elements below (no offset, so no
    layout/size change) just lifts them above this in paint order. */
 .quote__stars {
@@ -1336,8 +1338,12 @@ a {
   z-index: 0;
 }
 
-.quote__star-glow {
-  opacity: 0.16;
+.quote__star-glow--big {
+  opacity: 0.18;
+}
+
+.quote__star-glow--small {
+  opacity: 0.12;
 }
 
 /* background is pure paint — it doesn't add to the box's size — so a
