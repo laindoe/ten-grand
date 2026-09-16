@@ -1354,16 +1354,24 @@ a {
   height: auto;
 }
 
-/* The big tier's halo is three times the radius of the small tier's, so it
-   carries far more presence at the same opacity and was reading as a blob
-   rather than a glow. Small comes down a little too, only enough to stay
-   under big — left alone it would have ended up the more intense halo of
-   the two, inverting the hierarchy. */
+/* Each halo swings between --glow-min and --glow-max. The trough is near
+   zero so the glow fades out almost entirely before swelling back, which
+   is what makes the twinkle legible; the peaks stay moderate so the
+   average brightness remains close to a steady soft glow rather than the
+   blob a constant high opacity produced.
+   These values MUST be defined here, not only inline per star: an
+   undefined var() in `opacity` is invalid at computed-value time and falls
+   back to the initial value of 1, which would paint a solid white disc.
+   The plain `opacity` is the static fallback for reduced motion. */
 .quote__star-glow--big {
+  --glow-min: 0.04;
+  --glow-max: 0.48;
   opacity: 0.24;
 }
 
 .quote__star-glow--small {
+  --glow-min: 0.03;
+  --glow-max: 0.36;
   opacity: 0.2;
 }
 
@@ -1374,23 +1382,17 @@ a {
    The duration here is only a fallback; the inline value overrides it.
    Reduced-motion users get the static opacity set above instead. */
 @media (prefers-reduced-motion: no-preference) {
-  .quote__star-glow--big {
-    animation: quoteGlowPulseBig 6s ease-in-out infinite;
-  }
-
-  .quote__star-glow--small {
-    animation: quoteGlowPulseSmall 6s ease-in-out infinite;
+  .quote__star-glow {
+    animation: quoteGlowPulse 6s ease-in-out infinite;
   }
 }
 
-@keyframes quoteGlowPulseBig {
-  0%, 100% { opacity: 0.14; }
-  50% { opacity: 0.32; }
-}
-
-@keyframes quoteGlowPulseSmall {
-  0%, 100% { opacity: 0.12; }
-  50% { opacity: 0.27; }
+/* One keyframe for both tiers — the range comes from the custom properties,
+   so each star's own peak drives its swing. Only the halo animates; the
+   crisp core circle behind it stays put, so the letterforms never flicker. */
+@keyframes quoteGlowPulse {
+  0%, 100% { opacity: var(--glow-min); }
+  50% { opacity: var(--glow-max); }
 }
 
 /* Pinned to the centre of the gap the artwork leaves between TEN and GRAND.
