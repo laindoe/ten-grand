@@ -1314,7 +1314,7 @@ a {
 .section--quote {
   text-align: center;
   min-height: auto;
-  padding: 40px var(--section-padding-x);
+  padding: 20px var(--section-padding-x);
 }
 
 /* The star field is one composition with the quote inside it: TEN above,
@@ -1327,7 +1327,7 @@ a {
    The field bleeds through the section's side padding so the flanking
    stars clear the quote's own width instead of landing behind it. */
 .quote__frame {
-  display: grid;
+  position: relative;
   width: calc(100% + 2 * var(--section-padding-x));
   margin-inline: calc(-1 * var(--section-padding-x));
 }
@@ -1342,10 +1342,6 @@ a {
     max-width: 520px;
     margin-inline: auto;
   }
-}
-
-.quote__frame > * {
-  grid-area: 1 / 1;
 }
 
 .quote__stars {
@@ -1386,17 +1382,24 @@ a {
   50% { opacity: 0.45; }
 }
 
-/* Centred in the shared grid cell, which the viewBox is built around: the
-   field is symmetric about the gap between TEN and GRAND, so centring the
-   quote drops it into that gap without a hand-tuned offset. */
+/* Pinned to the centre of the gap the artwork leaves between TEN and GRAND.
+   --quote-band-centre is that gap's midpoint as a percentage of the
+   viewBox height, emitted with the markup, so the quote tracks the artwork
+   rather than a hand-tuned offset — and the field no longer has to be
+   padded into vertical symmetry just to make centring land correctly.
+   left/right 0 with auto margins rather than left:50%, which would halve
+   the width available to a shrink-to-fit box and rewrap the lines. */
 .quote__text {
-  align-self: center;
-  justify-self: center;
+  position: absolute;
+  top: var(--quote-band-centre);
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  margin: 0 auto;
   font-size: clamp(1.5rem, 7.5vw, 2rem);
   font-weight: 400;
   line-height: 1.25;
   max-width: 330px;
-  margin: 0;
   overflow-wrap: break-word;
 }
 
