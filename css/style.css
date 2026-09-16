@@ -1317,14 +1317,37 @@ a {
   padding: 40px var(--section-padding-x);
 }
 
-/* TEN and GRAND are normal-flow siblings of the quote text (not an
-   absolutely-positioned backdrop) specifically so the gap above and
-   below the text is guaranteed equal — it's just .quote__text's own
-   margin, the same value on both sides, rather than two independently
-   positioned things that happen to need to match. Each SVG's viewBox
-   is pre-cropped (in the generating script) to that word's own
-   content bounds plus a fixed margin, so both words render at a
-   consistent scale and neither crowds the section's edges. */
+/* The star field is one composition with the quote inside it: TEN above,
+   GRAND below, and ambient stars flanking the quote to its left and
+   right. Field and quote share a single grid cell rather than sitting in
+   normal flow, which is what lets the quote occupy the gap the artwork
+   leaves for it — stacking them as siblings pushed the quote below the
+   whole field and opened a dead space where those flanking stars were
+   meant to sit.
+   The field bleeds through the section's side padding so the flanking
+   stars clear the quote's own width instead of landing behind it. */
+.quote__frame {
+  display: grid;
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin-inline: calc(-1 * var(--section-padding-x));
+}
+
+/* Past this width the bleed would make the field absurdly tall (its height
+   follows its width), so it becomes a centred, capped box instead. The
+   negative margins have to go with it — auto margins resolve to zero on an
+   element wider than its container, leaving it flush left and overflowing. */
+@media (min-width: 600px) {
+  .quote__frame {
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+}
+
+.quote__frame > * {
+  grid-area: 1 / 1;
+}
+
 .quote__stars {
   display: block;
   width: 100%;
@@ -1363,13 +1386,27 @@ a {
   50% { opacity: 0.45; }
 }
 
+/* Centred in the shared grid cell, which the viewBox is built around: the
+   field is symmetric about the gap between TEN and GRAND, so centring the
+   quote drops it into that gap without a hand-tuned offset. */
 .quote__text {
+  align-self: center;
+  justify-self: center;
   font-size: clamp(1.5rem, 7.5vw, 2rem);
   font-weight: 400;
   line-height: 1.25;
   max-width: 330px;
-  margin: 40px auto;
+  margin: 0;
   overflow-wrap: break-word;
+}
+
+/* Painted per line box, so no star ever sits inside a glyph while the
+   ragged space beside the shorter lines still shows the field through. */
+.quote__text span {
+  background: var(--color-bg);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0 0.12em;
 }
 
 /* ---------- Grand Scheme Invitation section ---------- */
