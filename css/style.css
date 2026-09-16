@@ -1354,36 +1354,43 @@ a {
   height: auto;
 }
 
+/* The big tier's halo is three times the radius of the small tier's, so it
+   carries far more presence at the same opacity and was reading as a blob
+   rather than a glow. Small comes down a little too, only enough to stay
+   under big — left alone it would have ended up the more intense halo of
+   the two, inverting the hierarchy. */
 .quote__star-glow--big {
-  opacity: 0.45;
+  opacity: 0.24;
 }
 
 .quote__star-glow--small {
-  opacity: 0.32;
+  opacity: 0.2;
 }
 
-/* Gentle, staggered twinkle on the glowing stars — each circle's own
-   inline animation-delay (randomized per star) keeps them from
-   pulsing in unison. Reduced-motion users get the static opacity set
-   above instead. */
+/* Staggered twinkle on the glowing stars. Each circle carries its own
+   animation-duration and a negative animation-delay inline, so the stars
+   differ in period as well as phase — sharing one duration made the whole
+   field pulse at a single rate no matter how the delays were scattered.
+   The duration here is only a fallback; the inline value overrides it.
+   Reduced-motion users get the static opacity set above instead. */
 @media (prefers-reduced-motion: no-preference) {
   .quote__star-glow--big {
-    animation: quoteGlowPulseBig 4.5s ease-in-out infinite;
+    animation: quoteGlowPulseBig 6s ease-in-out infinite;
   }
 
   .quote__star-glow--small {
-    animation: quoteGlowPulseSmall 4.5s ease-in-out infinite;
+    animation: quoteGlowPulseSmall 6s ease-in-out infinite;
   }
 }
 
 @keyframes quoteGlowPulseBig {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
+  0%, 100% { opacity: 0.14; }
+  50% { opacity: 0.32; }
 }
 
 @keyframes quoteGlowPulseSmall {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.45; }
+  0%, 100% { opacity: 0.12; }
+  50% { opacity: 0.27; }
 }
 
 /* Pinned to the centre of the gap the artwork leaves between TEN and GRAND.
