@@ -705,6 +705,23 @@ a {
   height: auto;
 }
 
+/* The artwork is inlined (see _includes/middle-path-svg.html) so the page can
+   reach inside it and start the sun on scroll; an <img>-referenced SVG is
+   unreachable from page CSS and JS. Its own stylesheet has to live here
+   because an inline <svg>'s <style> is not scoped -- it would apply
+   document-wide, leaking .cls-1 .. .cls-18 into the page. Every selector is
+   therefore prefixed with .middle-path__art. */
+.middle-path__art .cls-1,.middle-path__art .cls-2,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{fill:none;}.middle-path__art .cls-3{fill:#141414;}.middle-path__art .cls-14{fill:url(#mp-sun);}.middle-path__art .cls-15{fill:#fff;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke-miterlimit:10;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke:#fff;}.middle-path__art .cls-16{clip-path:url(#mp-clip-b);}.middle-path__art .cls-3,.middle-path__art .cls-9{stroke-width:2px;}.middle-path__art .cls-17{fill:url(#mp-sky);}.middle-path__art .cls-4{stroke-width:.5px;}.middle-path__art .cls-5{stroke-width:.53px;}.middle-path__art .cls-6{stroke-width:.8px;}.middle-path__art .cls-7{stroke-width:.27px;}.middle-path__art .cls-8{stroke-width:1.24px;}.middle-path__art .cls-9{stroke:#fff;}.middle-path__art .cls-10{stroke-width:.95px;}.middle-path__art .cls-11{stroke-width:.75px;}.middle-path__art .cls-12{stroke-width:.78px;}.middle-path__art .cls-13{stroke-width:1.06px;}.middle-path__art .cls-18{clip-path:url(#mp-clip-a);}.middle-path__art #mp-freedom-car path:not([class]){fill:#fff;}.middle-path__art .mask-in{fill:#fff;}.middle-path__art .mask-out{fill:#000;}.middle-path__art .hill-fill,.middle-path__art .rail-fill,.middle-path__art .portal-fill{fill:#141414;}.middle-path__art .post-fill{fill:#141414;}@media (prefers-reduced-motion:no-preference){.middle-path__art .sun-rise{animation:sunArc 7s linear infinite;animation-fill-mode:backwards;animation-play-state:paused;animation-delay:.35s;}}@keyframes sunArc{0%{transform:translateY(95px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}22%{transform:translateY(0);}58%{transform:translateY(0);animation-timing-function:cubic-bezier(.55,.06,.68,.19);}80%{transform:translateY(95px);}100%{transform:translateY(95px);}}
+
+/* The sun waits for the section instead of looping on its own schedule, so
+   the rise is seen rather than caught by luck. Reuses the existing
+   IntersectionObserver in js/main.js, which already puts .is-visible on
+   .reveal once at a 0.2 threshold -- no new JS. The delay lets the 0.8s
+   reveal transition settle first, so the rise is not lost inside the fade. */
+.middle-path__scene.is-visible .middle-path__art .sun-rise {
+  animation-play-state: running;
+}
+
 /* Billboard copy is live text rather than outlines, so it stays legible at
    the size the artwork draws the boards. Percentages come off the artwork's
    1272.56 x 825.95 viewBox: the boards sit at x 152.39–362.14 and
