@@ -688,45 +688,62 @@ a {
   margin: 0 auto;
 }
 
-/* The tunnel illustration — the section's visual reveal. The road
-   inside it is part of the artwork only; it never touches the
-   section's own structural borders/dividers. */
-.middle-path__graphic {
+/* The tunnel artwork. Full-bleed, matching .distance__visual above it, so
+   the billboards at either edge of the composition are not cropped.
+   container-type lets the billboard copy be sized in cqw, i.e. against the
+   artwork's own width rather than the viewport's. */
+.middle-path__scene {
+  position: relative;
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
+  container-type: inline-size;
+}
+
+.middle-path__art {
+  display: block;
   width: 100%;
-  max-width: 360px;
-  margin: 0 auto 40px;
+  height: auto;
+}
+
+/* Billboard copy is live text rather than outlines, so it stays legible at
+   the size the artwork draws the boards. Percentages come off the artwork's
+   1272.56 x 825.95 viewBox: the boards sit at x 152.39–362.14 and
+   x 935.44–1145.19, y 265.56–377.55, and the painted arrow takes the lower
+   third of each, so the copy only gets y 269–338. The font size is the one
+   that makes the longest line ("INFRASTRUCTURE") just fill a board. */
+.middle-path__board {
+  position: absolute;
+  top: 32.57%;    /* 269 / 825.95 */
+  height: 8.35%;  /*  69 / 825.95 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2.16cqw;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  text-align: center;
   color: var(--color-text);
 }
 
-.middle-path__graphic svg {
-  width: 100%;
-  height: auto;
+/* The boards are narrow for the word count, so the copy is condensed
+   horizontally instead of being shrunk down out of readability. */
+.middle-path__board span {
   display: block;
+  transform: scaleX(0.8);
 }
 
-/* Subtle "light at the end of the tunnel" pulse — the only motion in
-   the graphic. transform-box/-origin center the scale on the circle
-   itself rather than the svg's own top-left corner. */
-.middle-path__glow {
-  transform-box: fill-box;
-  transform-origin: center;
+.middle-path__board--left {
+  left: 12.6%;    /* 160.4 / 1272.56 */
+  right: 72.19%;  /* 1272.56 - 353.9 */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .middle-path__glow {
-    animation: middle-path-glow-pulse 2.6s ease-in-out infinite;
-  }
-}
-
-@keyframes middle-path-glow-pulse {
-  0%, 100% {
-    opacity: 0.55;
-    transform: scale(0.9);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.08);
-  }
+.middle-path__board--right {
+  left: 74.14%;   /* 943.4 / 1272.56 */
+  right: 10.64%;  /* 1272.56 - 1137.2 */
 }
 
 .middle-path__body {
