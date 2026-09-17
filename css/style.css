@@ -640,10 +640,14 @@ a {
   background: var(--color-card-border);
 }
 
-/* No aspect-ratio: the old floating dots were absolutely positioned inside a
-   fixed 4:5 box, whereas the highway sizes itself from the artwork. */
+/* Full-bleed to the site frame, same technique as .distance__divider above.
+   No aspect-ratio: the old floating dots were absolutely positioned inside a
+   fixed 4:5 box, whereas the highway sizes itself from the artwork. The old
+   `flex: 2 1 280px` is gone with them — .distance__body is block flow, so it
+   never applied. */
 .distance__visual {
-  flex: 2 1 280px;
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin-inline: calc(-1 * var(--section-padding-x));
 }
 
 .distance__road {
