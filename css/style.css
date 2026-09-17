@@ -640,47 +640,16 @@ a {
   background: var(--color-card-border);
 }
 
+/* No aspect-ratio: the old floating dots were absolutely positioned inside a
+   fixed 4:5 box, whereas the highway sizes itself from the artwork. */
 .distance__visual {
-  position: relative;
   flex: 2 1 280px;
-  aspect-ratio: 4 / 5;
 }
 
-.distance__point {
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
-.distance__drift {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  animation-name: distance-drift;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-.distance__label {
-  font-size: clamp(0.65rem, 2.6vw, 0.85rem);
-  white-space: nowrap;
-}
-
-.distance__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-text);
-}
-
-@keyframes distance-drift {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(var(--dx), var(--dy));
-  }
+.distance__road {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* ---------- The Middle Path section ---------- */
