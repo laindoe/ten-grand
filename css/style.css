@@ -572,9 +572,13 @@ a {
 
 /* ---------- Distance Between Us section ---------- */
 
+/* No bottom padding: the highway is the last thing in this section, and 60px
+   of it left a band of dead black between the road and the rule that starts
+   the next section — which read as a gap in the artwork. The road now runs
+   straight into that line. */
 .section--distance {
   min-height: auto;
-  padding: 0 var(--section-padding-x) 60px;
+  padding: 0 var(--section-padding-x);
   border-top: 1px solid var(--color-card-border);
 }
 
@@ -770,8 +774,8 @@ a {
   .hw-bush-r{animation:hwProp_bush-r 7.300s linear infinite;animation-play-state:paused;}
   .highway__bob{animation:hwBob 2.00s linear infinite;animation-play-state:paused;}
   .highway__car--centre{animation:hwCar_centre 10.971s linear infinite,hwZ 10.971s step-end infinite;animation-play-state:paused;}
-  .highway__car--left{animation:hwCar_left 10.971s linear infinite,hwZ 10.971s step-end infinite;animation-play-state:paused;}
-  .highway__car--right{animation:hwCar_right 10.971s linear infinite,hwZ 10.971s step-end infinite;animation-play-state:paused;}
+  .highway__car--left{animation:hwCar_left 13.714s linear infinite,hwZ 13.714s step-end infinite;animation-play-state:paused;}
+  .highway__car--right{animation:hwCar_right 8.777s linear infinite,hwZ 8.777s step-end infinite;animation-play-state:paused;}
   .distance__visual.is-visible .hw-move,.distance__visual.is-visible .highway__car,.distance__visual.is-visible .highway__bob{animation-play-state:running;}
 }
 
