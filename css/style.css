@@ -1512,8 +1512,13 @@ a {
    own text (display: flex) — so when the entry's content side is the
    taller of the two, the bubble's text and pointer still land at the
    row's true vertical center instead of drifting from the toggle. */
+/* align-self so it sizes to its own copy: a grid item stretches to its row by
+   default, and this row is as tall as the icon column beside it, which is what
+   made a short paragraph sit in a tall box. Centred, so it lines up with the
+   toggle rather than hanging from the top of the row. */
 .amass__timeline-bubble {
   grid-row: 1;
+  align-self: center;
   position: relative;
   display: flex;
   align-items: center;
