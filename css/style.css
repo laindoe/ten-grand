@@ -1338,12 +1338,15 @@ a {
    34ch used by the subtitle above it (and .amass__text elsewhere),
    rather than the full padded section width, so it doesn't read as
    stretching out to the section's edges. */
+/* Full-bleed, so it lands on the site frame's edges like the block's own
+   bottom border does. It is a child of .amass__timeline-block rather than of
+   .amass__timeline for that reason: inside the 480px timeline column there is
+   no fixed amount it could escape by. */
 .amass__timeline-divider {
   display: block;
-  width: 100%;
-  max-width: 34ch;
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 0 calc(-1 * var(--section-padding-x)) 28px;
   height: 1px;
-  margin: 0 auto;
   background: var(--color-card-border);
 }
 
