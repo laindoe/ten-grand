@@ -46,10 +46,24 @@
     const bodyEl = modal.querySelector('.modal__body');
     let lastFocused = null;
 
+    // One <p> per paragraph, split on blank lines, so the copy in
+    // _data/route.yml can run to more than a sentence. textContent per
+    // paragraph, so nothing in a data file can inject markup.
+    function setBody(text) {
+      bodyEl.textContent = '';
+      text.split(/\n\s*\n/).forEach((para) => {
+        const trimmed = para.trim();
+        if (!trimmed) return;
+        const p = document.createElement('p');
+        p.textContent = trimmed;
+        bodyEl.appendChild(p);
+      });
+    }
+
     function openModal(trigger) {
       lastFocused = trigger;
       titleEl.textContent = trigger.dataset.modalTitle || '';
-      bodyEl.textContent = trigger.dataset.modalBody || '';
+      setBody(trigger.dataset.modalBody || '');
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
@@ -98,6 +112,29 @@
         toggle.setAttribute('aria-expanded', String(!isOpen));
         bubble.hidden = isOpen;
       });
+    });
+  }
+
+  // The whole route animation — light, four stop flashes, the globe igniting —
+  // is CSS with its own delays, so all this has to do is toggle one class. The
+  // remove/reflow/add is what lets a second tap replay it: restarting a CSS
+  // animation needs the element to leave the animating state for one frame.
+  //
+  // The dim "armed" state is added here rather than in the stylesheet, so the
+  // no-script state stays the finished picture instead of a route that never
+  // lights. (Whether armed actually dims anything is gated on
+  // prefers-reduced-motion in the stylesheet.)
+  function initRoute() {
+    const route = document.querySelector('.route');
+    if (!route) return;
+    const spark = route.querySelector('.route__spark');
+    if (!spark) return;
+
+    route.classList.add('route--armed');
+    spark.addEventListener('click', () => {
+      route.classList.remove('route--running');
+      void route.offsetWidth;
+      route.classList.add('route--running');
     });
   }
 
@@ -209,6 +246,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     initReveal();
     initModal();
+    initRoute();
     initTimelineBubbles();
     initBillboards();
   });

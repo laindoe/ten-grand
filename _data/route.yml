@@ -1,0 +1,28 @@
+# Copy for the four route modals, in order down the road.  Placeholder for now.
+# Blank lines split paragraphs; the modal builds one <p> per paragraph.
+- title: DEVELOPMENT
+  body: |
+    Placeholder copy for the development stage. This is where the shape of the
+    idea gets decided — what it is, who it is for, and what it needs before
+    anyone else can touch it.
+
+    Replace this with the real write-up.
+- title: PRODUCTION
+  body: |
+    Placeholder copy for the production stage. The point where the idea stops
+    being a plan and starts being a thing, with all the cost and coordination
+    that turn involves.
+
+    Replace this with the real write-up.
+- title: PACKAGING
+  body: |
+    Placeholder copy for the packaging stage. The work of making the finished
+    thing legible to someone who was not in the room while it was made.
+
+    Replace this with the real write-up.
+- title: DISTRIBUTION
+  body: |
+    Placeholder copy for the distribution stage. Getting it in front of the
+    people it was made for, which is the step most ideas never reach.
+
+    Replace this with the real write-up.
