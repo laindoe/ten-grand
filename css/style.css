@@ -1669,10 +1669,14 @@ a {
   margin-bottom: 32px;
 }
 
-.director__icon {
-  width: 58px;
-  height: 58px;
+/* Sits where the target icon used to, between the name block and the CTA.
+   Same measure as the other body copy on the site so it reads as part of it. */
+.director__bio {
+  max-width: 34ch;
   margin: 0 auto 40px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
 }
 
 .director__cta {
