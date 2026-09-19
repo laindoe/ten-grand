@@ -975,9 +975,16 @@ a {
   /* 130px, not the nav's 64: the rest is deliberate slack. The animation
      fires when the whole drawing is on screen, so the drawing has to be
      comfortably shorter than the room — otherwise there is a 40px window of
-     scroll positions where that is true and a flick goes straight past it. */
-  height: clamp(380px, calc(100svh - 130px), 720px);
-  width: auto;
+     scroll positions where that is true and a flick goes straight past it.
+
+     The width is a calc off this height, NOT aspect-ratio. Safari would not
+     resolve the svg's height:100% against a box whose width came from
+     aspect-ratio, so the svg fell back to its intrinsic 300x150 and rendered
+     about 45x164 in the middle of a full-height stage. A definite height and a
+     definite width cannot go wrong that way. The ratio itself is emitted with
+     the artwork, since it is the viewBox's. */
+  --rt-h: clamp(380px, calc(100svh - 130px), 720px);
+  height: var(--rt-h);
   max-width: 100%;
 }
 
@@ -1132,10 +1139,10 @@ a {
 .route__art .rt-star-halo{opacity:.4;}
 @keyframes rtColour{0.000%{stroke-dashoffset:1000.00}9.550%{stroke-dashoffset:904.50}9.550%{stroke-dashoffset:904.50}35.950%{stroke-dashoffset:640.50}35.950%{stroke-dashoffset:640.50}62.350%{stroke-dashoffset:376.50}62.350%{stroke-dashoffset:376.50}87.150%{stroke-dashoffset:128.50}87.150%{stroke-dashoffset:128.50}100.000%{stroke-dashoffset:0.00}}
 @keyframes rtComet{0.000%{stroke-dashoffset:-0.00;opacity:1.00}9.550%{stroke-dashoffset:-95.50;opacity:1.00}9.550%{stroke-dashoffset:-95.50;opacity:1.00}35.950%{stroke-dashoffset:-359.50;opacity:1.00}35.950%{stroke-dashoffset:-359.50;opacity:1.00}62.350%{stroke-dashoffset:-623.50;opacity:1.00}62.350%{stroke-dashoffset:-623.50;opacity:1.00}87.150%{stroke-dashoffset:-871.50;opacity:1.00}87.150%{stroke-dashoffset:-871.50;opacity:1.00}100.000%{stroke-dashoffset:-1000.00;opacity:0.00}}
-@keyframes rtDot1{0%{fill:#fff;transform:scale(1)}45%{fill:#be2026;transform:scale(1.4)}100%{fill:#be2026;transform:scale(1)}}
-@keyframes rtDot2{0%{fill:#fff;transform:scale(1)}45%{fill:#d3871d;transform:scale(1.4)}100%{fill:#d3871d;transform:scale(1)}}
-@keyframes rtDot3{0%{fill:#fff;transform:scale(1)}45%{fill:#84b224;transform:scale(1.4)}100%{fill:#84b224;transform:scale(1)}}
-@keyframes rtDot4{0%{fill:#fff;transform:scale(1)}45%{fill:#00a0b0;transform:scale(1.4)}100%{fill:#00a0b0;transform:scale(1)}}
+@keyframes rtDot1{0%{transform:scale(1)}45%{transform:scale(1.4)}100%{transform:scale(1)}}
+@keyframes rtDot2{0%{transform:scale(1)}45%{transform:scale(1.4)}100%{transform:scale(1)}}
+@keyframes rtDot3{0%{transform:scale(1)}45%{transform:scale(1.4)}100%{transform:scale(1)}}
+@keyframes rtDot4{0%{transform:scale(1)}45%{transform:scale(1.4)}100%{transform:scale(1)}}
 @keyframes rtCore{0%{opacity:.3;transform:scale(1)}100%{opacity:1;transform:scale(1.7177)}}
 @keyframes rtGlobe{0%{opacity:.5}100%{opacity:1}}
 @keyframes rtHalo{0%{opacity:0;transform:scale(.5)}100%{opacity:.5;transform:scale(1.45)}}
@@ -1149,15 +1156,11 @@ a {
 .route__cap--star{bottom:94.710%;margin-bottom:14px;}
 .route__cap--globe{top:93.330%;margin-top:22px;}
 .route{padding-bottom:0;}
-.route__stage{aspect-ratio:0.2557;}
+.route__stage{width:calc(var(--rt-h) * 0.2557);}
 @media (prefers-reduced-motion: reduce) {
   .route__art .rt-colour{stroke-dashoffset:0;}
   .route__art .rt-globe-halo{opacity:.5;transform:scale(1.45);}
   .route__art .rt-core{transform:scale(1.7177);}
-  .route__art .rt-dot--1{fill:#be2026;}
-  .route__art .rt-dot--2{fill:#d3871d;}
-  .route__art .rt-dot--3{fill:#84b224;}
-  .route__art .rt-dot--4{fill:#00a0b0;}
 }
 
 @media (prefers-reduced-motion: no-preference) {
