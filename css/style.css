@@ -1356,7 +1356,9 @@ a {
    stopping short at the last item. */
 .amass__timeline-track {
   position: absolute;
-  top: 0;
+  /* up past the divider's own 28px margin, so the line starts on the rule
+     rather than at the first item */
+  top: -28px;
   bottom: -40px;
   left: 50%;
   width: 1px;
@@ -1432,7 +1434,12 @@ a {
   color: var(--color-text-muted);
 }
 
+/* Each toggle takes one step of the route's own ramp -- the same four stops
+   that paint the star and the globe, sampled at six even points -- so the
+   timeline reads in the same colours as the journey. One custom property per
+   button, one keyframe for all of them. */
 .amass__timeline-toggle {
+  --amass-pulse: #be2026;
   grid-row: 1;
   grid-column: 2;
   justify-self: center;
@@ -1446,6 +1453,32 @@ a {
   padding: 0;
   cursor: pointer;
   z-index: 2;
+  border-color: var(--amass-pulse);
+}
+
+.amass__timeline-item:nth-of-type(2) .amass__timeline-toggle { --amass-pulse: #c54123; }
+.amass__timeline-item:nth-of-type(3) .amass__timeline-toggle { --amass-pulse: #d9a11b; }
+.amass__timeline-item:nth-of-type(4) .amass__timeline-toggle { --amass-pulse: #96ba22; }
+.amass__timeline-item:nth-of-type(5) .amass__timeline-toggle { --amass-pulse: #008a6a; }
+.amass__timeline-item:nth-of-type(6) .amass__timeline-toggle { --amass-pulse: #00b0e0; }
+
+/* The ring is a box-shadow rather than a scaled element, so the pulse costs no
+   layout and the button's own 24px hit area never moves. Offsets are staggered
+   so the six do not beat in unison. */
+@keyframes amassPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--amass-pulse); }
+  50% { box-shadow: 0 0 0 5px transparent; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .amass__timeline-toggle {
+    animation: amassPulse 2.4s ease-out infinite;
+  }
+  .amass__timeline-item:nth-of-type(2) .amass__timeline-toggle { animation-delay: -0.4s; }
+  .amass__timeline-item:nth-of-type(3) .amass__timeline-toggle { animation-delay: -0.8s; }
+  .amass__timeline-item:nth-of-type(4) .amass__timeline-toggle { animation-delay: -1.2s; }
+  .amass__timeline-item:nth-of-type(5) .amass__timeline-toggle { animation-delay: -1.6s; }
+  .amass__timeline-item:nth-of-type(6) .amass__timeline-toggle { animation-delay: -2.0s; }
 }
 
 .amass__timeline-toggle::before,
