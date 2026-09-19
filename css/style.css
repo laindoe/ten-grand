@@ -1400,8 +1400,8 @@ a {
 .amass__timeline-icon {
   display: block;
   flex: none;
-  width: 55px;
-  height: 55px;
+  width: 75px;
+  height: 75px;
   color: var(--color-text);
 }
 
