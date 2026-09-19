@@ -498,6 +498,21 @@ a {
   .billboard.is-active .billboard__mark--3 {
     animation-delay: 0.32s;
   }
+
+  /* Spare slots: a board whose artwork carries more than three marks
+     keeps the same 0.14s beat rather than landing them all together.
+     tools/build_billboards.py refuses to emit past --6. */
+  .billboard.is-active .billboard__mark--4 {
+    animation-delay: 0.46s;
+  }
+
+  .billboard.is-active .billboard__mark--5 {
+    animation-delay: 0.6s;
+  }
+
+  .billboard.is-active .billboard__mark--6 {
+    animation-delay: 0.74s;
+  }
 }
 
 @keyframes billboardSlap {
