@@ -1400,8 +1400,8 @@ a {
 .amass__timeline-icon {
   display: block;
   flex: none;
-  width: clamp(34px, 11vw, 46px);
-  height: clamp(34px, 11vw, 46px);
+  width: 55px;
+  height: 55px;
   color: var(--color-text);
 }
 
@@ -1415,19 +1415,19 @@ a {
 }
 
 .amass__timeline-year {
-  font-size: clamp(0.65rem, 2.6vw, 0.8rem);
+  font-size: clamp(0.8rem, 3.2vw, 1rem);
   margin-bottom: 4px;
 }
 
 .amass__timeline-label {
-  font-size: clamp(0.55rem, 2.3vw, 0.7rem);
+  font-size: clamp(0.7rem, 2.9vw, 0.875rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   margin-bottom: 8px;
 }
 
 .amass__timeline-desc {
-  font-size: clamp(0.55rem, 2.2vw, 0.68rem);
+  font-size: clamp(0.68rem, 2.7vw, 0.85rem);
   line-height: 1.4;
   color: var(--color-text-muted);
 }
