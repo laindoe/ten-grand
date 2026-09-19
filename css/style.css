@@ -962,24 +962,39 @@ a {
 
 /* The stage is exactly the drawing's box, so every control and label can be
    placed as a percentage of the viewBox and stay put at any size. The labels
-   deliberately overflow it, so nothing here may clip. */
+   deliberately overflow it, so nothing here may clip.
+
+   Sized by HEIGHT, not width: the whole sequence has to be on screen at once,
+   or the light arrives at a globe nobody can see. svh rather than vh because
+   vh on a phone is the viewport with the browser's own chrome hidden, which is
+   not what you get while reading. 104px covers the sticky nav and a margin.
+   The width then follows from the artwork's own ratio (aspect-ratio comes from
+   the generated block below). */
 .route__stage {
   position: relative;
-  width: clamp(158px, 50vw, 208px);
+  /* 130px, not the nav's 64: the rest is deliberate slack. The animation
+     fires when the whole drawing is on screen, so the drawing has to be
+     comfortably shorter than the room — otherwise there is a 40px window of
+     scroll positions where that is true and a flick goes straight past it. */
+  height: clamp(380px, calc(100svh - 130px), 720px);
+  width: auto;
+  max-width: 100%;
 }
 
 .route__art {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
+/* top is the shape's own edge and the gap below it is a margin in pixels, so
+   the breathing room does not shrink with the drawing. */
 .route__cap {
   position: absolute;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   white-space: nowrap;
@@ -1082,10 +1097,14 @@ a {
 .route__art .rt-14{fill:var(--color-bg);}
 .route__art .rt-dash line{stroke:var(--color-text);opacity:.28;}
 .route__art .rt-line{fill:none;stroke:var(--color-text);stroke-width:11px;stroke-linecap:round;}
-.route__art .rt-base{opacity:.32;}
-.route__art .rt-trail{stroke-dasharray:1000;stroke-dashoffset:0;}
-.route__art .rt-comet,.route__art .rt-comet-glow{stroke-dasharray:45 955;opacity:0;}
-.route__art .rt-comet-glow{stroke-width:30px;}
+.route__art .rt-colour{stroke:url(#rt-road);}
+.route__art .rt-colour{stroke-dasharray:1000;stroke-dashoffset:-1000;}
+.route__art .rt-comet{stroke-dasharray:45 955;opacity:0;}
+.route__art .rt-dot{fill:var(--color-text);transform-box:view-box;}
+.route__art .rt-dot--1{transform-origin:877.256px 585.902px;}
+.route__art .rt-dot--2{transform-origin:499.736px 881.941px;}
+.route__art .rt-dot--3{transform-origin:858.267px 1228.973px;}
+.route__art .rt-dot--4{transform-origin:492.127px 1651.439px;}
 .route__art .rt-core,.route__art .rt-globe-halo,.route__art .rt-star,.route__art .rt-star-halo,.route__art .rt-pin{transform-box:view-box;}
 .route__art .rt-pin--1{transform-origin:877.256px 585.902px;}
 .route__art .rt-pin--2{transform-origin:499.736px 881.941px;}
@@ -1093,42 +1112,47 @@ a {
 .route__art .rt-pin--4{transform-origin:492.127px 1651.439px;}
 .route__art .rt-core,.route__art .rt-globe-halo{transform-origin:682.617px 2071.701px;}
 .route__art .rt-star,.route__art .rt-star-halo{transform-origin:682.617px 112.102px;}
-.route__art .rt-core{transform:scale(1.7174);}
-.route__art .rt-globe-halo{opacity:.5;transform:scale(1.45);}
+.route__art .rt-globe-halo{opacity:0;transform:scale(.5);}
 .route__art .rt-star-halo{opacity:.4;}
-@keyframes rtTrail{0.000%{stroke-dashoffset:-1000.00}13.132%{stroke-dashoffset:-823.00}19.584%{stroke-dashoffset:-823.00}35.387%{stroke-dashoffset:-610.00}41.839%{stroke-dashoffset:-610.00}59.052%{stroke-dashoffset:-378.00}65.503%{stroke-dashoffset:-378.00}85.610%{stroke-dashoffset:-107.00}92.061%{stroke-dashoffset:-107.00}100.000%{stroke-dashoffset:-0.00}}
-@keyframes rtComet{0.000%{stroke-dashoffset:-955.00;opacity:1.00}13.132%{stroke-dashoffset:-778.00;opacity:1.00}19.584%{stroke-dashoffset:-778.00;opacity:1.00}35.387%{stroke-dashoffset:-565.00;opacity:1.00}41.839%{stroke-dashoffset:-565.00;opacity:1.00}59.052%{stroke-dashoffset:-333.00;opacity:1.00}65.503%{stroke-dashoffset:-333.00;opacity:1.00}85.610%{stroke-dashoffset:-62.00;opacity:1.00}92.061%{stroke-dashoffset:-62.00;opacity:1.00}100.000%{stroke-dashoffset:45.00;opacity:0.00}}
-@keyframes rtPin{0%{opacity:.45;transform:scale(1)}34%{opacity:1;transform:scale(1.16)}100%{opacity:1;transform:scale(1)}}
+@keyframes rtColour{0.000%{stroke-dashoffset:-1000.00}17.700%{stroke-dashoffset:-823.00}17.700%{stroke-dashoffset:-823.00}39.000%{stroke-dashoffset:-610.00}39.000%{stroke-dashoffset:-610.00}62.200%{stroke-dashoffset:-378.00}62.200%{stroke-dashoffset:-378.00}89.300%{stroke-dashoffset:-107.00}89.300%{stroke-dashoffset:-107.00}100.000%{stroke-dashoffset:-0.00}}
+@keyframes rtComet{0.000%{stroke-dashoffset:-955.00;opacity:1.00}17.700%{stroke-dashoffset:-778.00;opacity:1.00}17.700%{stroke-dashoffset:-778.00;opacity:1.00}39.000%{stroke-dashoffset:-565.00;opacity:1.00}39.000%{stroke-dashoffset:-565.00;opacity:1.00}62.200%{stroke-dashoffset:-333.00;opacity:1.00}62.200%{stroke-dashoffset:-333.00;opacity:1.00}89.300%{stroke-dashoffset:-62.00;opacity:1.00}89.300%{stroke-dashoffset:-62.00;opacity:1.00}100.000%{stroke-dashoffset:45.00;opacity:0.00}}
+@keyframes rtDot1{0%{fill:#fff;transform:scale(1)}45%{fill:#c74c22;transform:scale(1.4)}100%{fill:#c74c22;transform:scale(1)}}
+@keyframes rtDot2{0%{fill:#fff;transform:scale(1)}45%{fill:#daa81a;transform:scale(1.4)}100%{fill:#daa81a;transform:scale(1)}}
+@keyframes rtDot3{0%{fill:#fff;transform:scale(1)}45%{fill:#6ea928;transform:scale(1.4)}100%{fill:#6ea928;transform:scale(1)}}
+@keyframes rtDot4{0%{fill:#fff;transform:scale(1)}45%{fill:#00acd3;transform:scale(1.4)}100%{fill:#00acd3;transform:scale(1)}}
 @keyframes rtCore{0%{opacity:.3;transform:scale(1)}100%{opacity:1;transform:scale(1.7174)}}
 @keyframes rtGlobe{0%{opacity:.5}100%{opacity:1}}
 @keyframes rtHalo{0%{opacity:0;transform:scale(.5)}100%{opacity:.5;transform:scale(1.45)}}
 @keyframes rtStarBloom{0%{transform:scale(1)}30%{transform:scale(1.3)}100%{transform:scale(1)}}
-@keyframes rtIdle{0%,100%{opacity:.3;transform:scale(.92)}50%{opacity:.62;transform:scale(1.12)}}
 /* pin labels, placed off the measured bounding box of each pin */
 .route__pin--1{left:71.926%;top:17.242%;width:25.512%;height:9.654%;}
 .route__pin--2{left:5.230%;top:29.579%;width:25.512%;height:9.654%;}
 .route__pin--3{left:68.569%;top:44.038%;width:25.512%;height:9.654%;}
 .route__pin--4{left:3.887%;top:61.642%;width:25.512%;height:9.654%;}
 .route__spark{left:49.932%;top:6.504%;width:27.646%;}
-.route__cap--star{top:10.172%;}
-.route__cap--globe{top:97.101%;}
+.route__cap--star{top:9.221%;margin-top:15px;}
+.route__cap--globe{top:96.142%;margin-top:22px;}
+.route__stage{aspect-ratio:0.2358;}
+@media (prefers-reduced-motion: reduce) {
+  .route__art .rt-colour{stroke-dashoffset:0;}
+  .route__art .rt-globe-halo{opacity:.5;transform:scale(1.45);}
+  .route__art .rt-core{transform:scale(1.7174);}
+  .route__art .rt-dot--1{fill:#c74c22;}
+  .route__art .rt-dot--2{fill:#daa81a;}
+  .route__art .rt-dot--3{fill:#6ea928;}
+  .route__art .rt-dot--4{fill:#00acd3;}
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .route--armed .rt-base{opacity:.22;}
-  .route--armed .rt-trail{stroke-dashoffset:-1000;}
-  .route--armed .rt-pin{opacity:.45;}
-  .route--armed .rt-core{opacity:.3;transform:scale(1);}
-  .route--armed .rt-globe{opacity:.5;}
-  .route--armed .rt-globe-halo{opacity:0;transform:scale(.5);}
-  .route--armed .rt-star-halo{animation:rtIdle 2.6s ease-in-out infinite;}
-  .route--running .rt-trail{animation:rtTrail 3.100s linear both;}
-  .route--running .rt-comet,.route--running .rt-comet-glow{animation:rtComet 3.100s linear both;}
-  .route--running .rt-pin--1{animation:rtPin .52s ease-out 0.407s both;}
-  .route--running .rt-pin--2{animation:rtPin .52s ease-out 1.097s both;}
-  .route--running .rt-pin--3{animation:rtPin .52s ease-out 1.831s both;}
-  .route--running .rt-pin--4{animation:rtPin .52s ease-out 2.654s both;}
-  .route--running .rt-core{animation:rtCore 1.20s ease-out 3.100s both;}
-  .route--running .rt-globe{animation:rtGlobe 1.20s ease-out 3.100s both;}
-  .route--running .rt-globe-halo{animation:rtHalo 1.20s ease-out 3.100s both;}
+  .route--running .rt-colour{animation:rtColour 2.600s linear both;}
+  .route--running .rt-comet{animation:rtComet 2.600s linear both;}
+  .route--running .rt-dot--1{animation:rtDot1 .5s ease-out 0.460s both;}
+  .route--running .rt-dot--2{animation:rtDot2 .5s ease-out 1.014s both;}
+  .route--running .rt-dot--3{animation:rtDot3 .5s ease-out 1.617s both;}
+  .route--running .rt-dot--4{animation:rtDot4 .5s ease-out 2.322s both;}
+  .route--running .rt-core{animation:rtCore 1.20s ease-out 2.600s both;}
+  .route--running .rt-globe{animation:rtGlobe 1.20s ease-out 2.600s both;}
+  .route--running .rt-globe-halo{animation:rtHalo 1.20s ease-out 2.600s both;}
   .route--running .rt-star{animation:rtStarBloom .7s ease-out both;}
 }
 /* --- end route artwork --- */

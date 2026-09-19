@@ -115,27 +115,78 @@
     });
   }
 
-  // The whole route animation — light, four stop flashes, the globe igniting —
-  // is CSS with its own delays, so all this has to do is toggle one class. The
-  // remove/reflow/add is what lets a second tap replay it: restarting a CSS
-  // animation needs the element to leave the animating state for one frame.
+  // The whole route sequence — the colour running down the road, each dot
+  // taking its colour, the globe igniting — is CSS with its own delays, so all
+  // this has to do is toggle one class. The remove/reflow/add is what lets it
+  // replay: restarting a CSS animation needs the element to leave the
+  // animating state for one frame.
   //
-  // The dim "armed" state is added here rather than in the stylesheet, so the
-  // no-script state stays the finished picture instead of a route that never
-  // lights. (Whether armed actually dims anything is gated on
-  // prefers-reduced-motion in the stylesheet.)
+  // It runs itself once enough of the drawing is on screen, and resets only
+  // once the drawing is ENTIRELY gone. That second threshold is the whole
+  // trick: the road un-colouring is what would make a replay read as a glitch,
+  // so it is only ever done while nobody can see it.
   function initRoute() {
     const route = document.querySelector('.route');
     if (!route) return;
+    const stage = route.querySelector('.route__stage');
     const spark = route.querySelector('.route__spark');
-    if (!spark) return;
+    if (!stage) return;
 
-    route.classList.add('route--armed');
-    spark.addEventListener('click', () => {
+    function run() {
       route.classList.remove('route--running');
       void route.offsetWidth;
       route.classList.add('route--running');
-    });
+    }
+
+    if (spark) spark.addEventListener('click', run);
+    if (prefersReducedMotion) return;
+
+    // The sticky nav covers the top of the viewport, so it comes off the room
+    // available — otherwise "on screen" counts pixels sitting behind it.
+    const nav = document.querySelector('.nav');
+    const navHeight = nav ? Math.round(nav.getBoundingClientRect().height) : 0;
+
+    // Deliberately not an IntersectionObserver. A threshold has to be low
+    // enough to be reachable on a short screen, and then on a tall one it
+    // fires with the globe still under the fold — which is the one thing this
+    // section must not do. Worse, an observer only reports at a threshold
+    // crossing, so a fast flick that lands on the section can skip every one
+    // of them and it never plays at all. Measuring the box on scroll-idle
+    // fires on where the reader actually STOPPED, however they got there.
+    let lit = false;
+    let ticking = false;
+
+    function check() {
+      ticking = false;
+      const box = stage.getBoundingClientRect();
+      const top = navHeight;
+      const bottom = window.innerHeight;
+      const room = bottom - top;
+      // whole thing in view, with a couple of pixels of grace; if it cannot
+      // fit at all, settle for most of the room it has
+      const ready = box.height <= room
+        ? box.top >= top - 8 && box.bottom <= bottom + 8
+        : Math.min(box.bottom, bottom) - Math.max(box.top, top) >= room * 0.9;
+      if (!lit && ready) {
+        lit = true;
+        run();
+      } else if (lit && (box.bottom <= top || box.top >= bottom)) {
+        // reset only once it is entirely gone: the road un-colouring is what
+        // would make the replay read as a glitch, so it happens unseen
+        lit = false;
+        route.classList.remove('route--running');
+      }
+    }
+
+    function schedule() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(check);
+    }
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    check();
   }
 
   function initBillboards() {
