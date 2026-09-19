@@ -530,43 +530,6 @@ a {
   }
 }
 
-.billboard__headline {
-  /* Flex items default to min-width: auto, which refuses to shrink
-     below the text's unwrapped width — on longer titles that clips
-     against overflow: hidden on the flex container instead of
-     wrapping. min-width: 0 lets it shrink and wrap normally. */
-  min-width: 0;
-  font-size: clamp(0.7rem, 3.2vw, 1.1rem);
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-/* Placeholder for the real graffiti/vandalism art — layers over the
-   headline (which stays visible underneath) rather than replacing
-   it. Swap the background/content here for a custom asset later. */
-.billboard__vandalism {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-align: center;
-  color: var(--color-accent);
-  background: rgba(217, 79, 48, 0.12);
-  border: 1px dashed var(--color-accent);
-  opacity: 0;
-  transition: opacity 0.35s var(--ease-out);
-  pointer-events: none;
-}
-
-.billboard.is-active .billboard__vandalism {
-  opacity: 1;
-}
-
 /* min-height is set inline by js/main.js on load, sized to whichever
    of the default/alternate copy is taller for THIS billboard, so
    toggling never changes the section's height or moves anything
