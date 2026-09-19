@@ -1673,7 +1673,7 @@ a {
    Same measure as the other body copy on the site so it reads as part of it. */
 .director__bio {
   max-width: 34ch;
-  margin: 0 auto 40px;
+  margin: 0 auto 64px;
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--color-text-muted);
