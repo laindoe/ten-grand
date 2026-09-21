@@ -229,10 +229,12 @@ a {
 
 /* Justified text, but the block itself still centered in the section:
    margin: 0 auto centers the box, text-align overrides the centering
-   .section--intro sets for everything else. The last line follows
-   text-align-last: auto, which for justify means start -- left, as it
-   should be; forcing it to justify would stretch a two-word line
-   across the whole measure. */
+   .section--intro sets for everything else.
+
+   text-align-last because the last line is the one line justify does
+   not stretch -- left by default, which reads as a left-aligned
+   paragraph. Centering it keeps the block symmetrical. (Safari below
+   16.4 ignores the property and leaves that line left.) */
 .intro__explainer {
   color: var(--color-text);
   font-size: 1rem;
@@ -240,6 +242,7 @@ a {
   max-width: 34ch;
   margin: 0 auto;
   text-align: justify;
+  text-align-last: center;
 }
 
 /* ---------- Shared section header ----------
