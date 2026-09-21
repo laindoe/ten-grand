@@ -426,14 +426,12 @@ a {
 .billboard__frame {
   appearance: none;
   display: block;
-  /* Bleeds slightly into the column's own side padding and the
-     gutter toward the center divider, so the graphic reads bigger
-     without widening the column (and its title/copy) to match.
-     width: 100% here would be over-constrained alongside two
-     non-auto margins (the browser would just ignore one side), so
-     the extra width is expressed directly instead. */
-  width: calc(100% + 12px);
-  margin: 0 -6px 28px;
+  /* Flush with the column's text. billboard-frame.svg's viewBox is
+     cropped to the drawing's left and right edges, so the graphic's
+     own box edges ARE the sign's outer rails -- 100% puts them on the
+     same measure the title and copy use. */
+  width: 100%;
+  margin: 0 0 28px;
   padding: 0;
   background: none;
   border: none;
@@ -462,11 +460,18 @@ a {
 /* Positioned to match the sign face drawn inside billboard-frame.svg
    (its x/y/width/height as fractions of the SVG's own viewBox), with
    a little extra inset beyond that rect so text clears its frame
-   line rather than sitting flush against it. */
+   line rather than sitting flush against it.
+
+   left/right are small because that viewBox is cropped horizontally
+   to the drawing: the panel nearly fills it side to side and what is
+   left is the panel's own 11-unit rail. top/bottom are untouched --
+   the crop is horizontal only, so the vertical fractions still hold.
+   In artwork units the face is x 167.66..1062.25, y 153.12..479.34;
+   recompute left/right against the new width if the crop changes. */
 .billboard__board {
   position: absolute;
-  left: 13.7%;
-  right: 13.2%;
+  left: 2.79%;
+  right: 2.73%;
   top: 18.4%;
   bottom: 42.4%;
   display: flex;
