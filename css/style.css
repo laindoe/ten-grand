@@ -602,16 +602,16 @@ a {
   margin-bottom: 6px;
 }
 
-/* Justified like newspaper body text; text-align-last keeps the
-   final (usually short) line from being stretched to the full
-   column width. */
+/* Left aligned, not justified: at a column this narrow justification
+   opened large word gaps. hyphens: auto was only there to close them,
+   and against a ragged right edge it provably never fires (identical
+   line counts at 320 through 1600) -- a hyphen in ragged text would
+   read worse than the rag itself. text-align-last goes with justify. */
 .billboard__body {
   font-size: clamp(0.68rem, 2.7vw, 0.85rem);
   line-height: 1.6;
   color: var(--color-text-muted);
-  text-align: justify;
-  text-align-last: left;
-  hyphens: auto;
+  text-align: left;
 }
 
 /* ---------- Shared toll ----------
