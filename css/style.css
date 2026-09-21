@@ -375,7 +375,8 @@ a {
    billboard. Pulses to signal the billboards are tappable; stays
    static for prefers-reduced-motion. */
 .dilemma__cue {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.05em;
   color: var(--color-vandalism);
   margin-bottom: 20px;
@@ -387,8 +388,12 @@ a {
   }
 }
 
+/* Floor at 0.7, not 0.45: this red is 4.00:1 against the background at
+   full strength, and fading it to 0.45 drops the trough to 1.65:1 --
+   the cue was hardest to read exactly when it was asking to be read.
+   0.7 keeps the trough at 2.48:1 and the pulse still registers. */
 @keyframes dilemma-cue-pulse {
-  0%, 100% { opacity: 0.45; }
+  0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }
 }
 
