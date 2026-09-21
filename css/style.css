@@ -350,6 +350,15 @@ a {
   padding: 0 clamp(2px, 1vw, 8px) 32px;
 }
 
+/* Both titles are broken after their first word in the markup, and
+   both have to be, not just the longer one: whichever wraps and
+   whichever does not, the two columns' billboards start at different
+   heights. "INDEPENDENT ROUTE" wraps to two lines at every width
+   anyway -- the grid is capped by --content-max-width, so a column is
+   never wider than ~226px -- so two fixed lines each is what the
+   layout already wants, and it no longer depends on whether Inter
+   loaded (the fallback is wider, and used to wrap "INDUSTRY ROUTE"
+   that the real font fits on one line). */
 .dilemma__route-title {
   font-size: clamp(1rem, 4.5vw, 1.25rem);
   font-weight: 400;
