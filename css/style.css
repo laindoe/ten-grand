@@ -585,9 +585,19 @@ a {
   transform: translateY(4px);
 }
 
+/* The vw term is lower than it looks like it should be because these
+   titles only wrap on phones -- at desktop the column is 210px and all
+   six fit at the 1rem cap. Dropping it to 3.05vw puts five of the six
+   on one line from 360px up without touching desktop at all.
+
+   text-wrap: balance for the one that still cannot fit ("Best in the
+   Business" at 144px against a 148px column is the closest call):
+   it splits the two lines evenly instead of orphaning the last word.
+   Browsers without it just wrap as before. */
 .billboard__title {
-  font-size: clamp(0.85rem, 3.5vw, 1rem);
+  font-size: clamp(0.72rem, 3.05vw, 1rem);
   font-weight: 700;
+  text-wrap: balance;
   text-align: left;
   margin-bottom: 6px;
 }
