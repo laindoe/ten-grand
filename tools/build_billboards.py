@@ -50,6 +50,8 @@ HTML = ROOT / 'index.html'
 PANEL = (895.3, 325.8)
 PANEL_TOLERANCE = 0.03  # 3% on the aspect ratio
 
+# Kept in step with --color-vandalism in css/style.css, which paints the
+# "TAP BILLBOARDS" cue the same red. Change both together.
 MARK_COLOUR = '#e42320'
 
 # In the same order as the six .billboard blocks in index.html.

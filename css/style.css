@@ -15,6 +15,10 @@
   --color-text: #ffffff;
   --color-text-muted: rgba(255, 255, 255, 0.65);
   --color-accent: #d94f30;
+  /* The graffiti red. Must match MARK_COLOUR in
+     tools/build_billboards.py, which inlines it as a fill attribute on
+     each mark -- a custom property cannot reach inside those. */
+  --color-vandalism: #e42320;
 
   --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -373,7 +377,7 @@ a {
 .dilemma__cue {
   font-size: 0.7rem;
   letter-spacing: 0.05em;
-  color: var(--color-text-muted);
+  color: var(--color-vandalism);
   margin-bottom: 20px;
 }
 
