@@ -195,12 +195,29 @@ a {
   height: auto;
 }
 
+/* The two lines are broken explicitly in the markup, so the only job
+   left for a width is to not squeeze the longer of them ("FOR
+   INDEPENDENT CREATORS") into a third line. fit-content sizes the box
+   to exactly that line whatever font actually renders -- a ch-based
+   max-width would be a guess, and ch is the width of "0" while these
+   are caps. Capped at 100% so it still wraps rather than overflowing
+   if the viewport really is too narrow for the line. */
 .intro__headline {
   font-size: clamp(1rem, 3.5vw, 1.25rem);
   font-weight: 400;
   line-height: 1.35;
-  max-width: 22ch;
+  width: fit-content;
+  max-width: 100%;
   margin: 0 auto 40px;
+}
+
+/* Below ~360px the longer line does not fit at the clamp's 1rem floor
+   and breaks into a third line, so the floor comes down just for those
+   widths. Narrower than any current phone; 320px is the old iPhone SE. */
+@media (max-width: 359px) {
+  .intro__headline {
+    font-size: 0.8125rem;
+  }
 }
 
 .intro__icon {
@@ -210,12 +227,19 @@ a {
   color: var(--color-text);
 }
 
+/* Justified text, but the block itself still centered in the section:
+   margin: 0 auto centers the box, text-align overrides the centering
+   .section--intro sets for everything else. The last line follows
+   text-align-last: auto, which for justify means start -- left, as it
+   should be; forcing it to justify would stretch a two-word line
+   across the whole measure. */
 .intro__explainer {
   color: var(--color-text);
   font-size: 1rem;
   line-height: 1.6;
   max-width: 34ch;
   margin: 0 auto;
+  text-align: justify;
 }
 
 /* ---------- Shared section header ----------
