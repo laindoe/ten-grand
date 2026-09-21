@@ -784,8 +784,8 @@ a {
 .highway__art .st1, .highway__art .st2, .highway__art .st6, .highway__art .st7, .highway__art .st8, .highway__art .st9, .highway__art .st10, .highway__art .st11, .highway__art .st12, .highway__art .st13, .highway__art .st14, .highway__art .st15, .highway__art .st16, .highway__art .st18{stroke: #fff;}
 .highway__art .st1, .highway__art .st6, .highway__art .st18{stroke-width: 5px;}
 .highway__art .st20{fill: #fff;}
-.highway__art .st2{stroke-linecap: round;}
-.highway__art .st2, .highway__art .st13{stroke-width: .8px;}
+.highway__art .st2{stroke-linecap: round;stroke-width: .22px;}
+.highway__art .st13{stroke-width: .8px;}
 .highway__art .st3, .highway__art .st4, .highway__art .st5{stroke: #fff;}
 .highway__art .st3, .highway__art .st9{stroke-width: .7px;}
 .highway__art .st4, .highway__art .st16, .highway__art .st17{stroke-width: 1.4px;}
