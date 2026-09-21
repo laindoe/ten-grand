@@ -77,8 +77,9 @@ BILLBOARDS = [
      'slogan': None, 'marks': None},
 ]
 
-# css/style.css staggers .billboard__mark--1 .. --MAX_MARKS.
-MAX_MARKS = 6
+# css/style.css staggers .billboard__mark--1 .. --MAX_MARKS. Raise both
+# together if an artwork ever carries more marks than this.
+MAX_MARKS = 3
 
 IND = ' ' * 20   # children of <span class="billboard__board">
 BOARD_RE = re.compile(
