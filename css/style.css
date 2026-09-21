@@ -199,13 +199,9 @@ a {
   height: auto;
 }
 
-/* The two lines are broken explicitly in the markup, so the only job
-   left for a width is to not squeeze the longer of them ("FOR
-   INDEPENDENT CREATORS") into a third line. fit-content sizes the box
-   to exactly that line whatever font actually renders -- a ch-based
-   max-width would be a guess, and ch is the width of "0" while these
-   are caps. Capped at 100% so it still wraps rather than overflowing
-   if the viewport really is too narrow for the line. */
+/* Broken into two lines in the markup. fit-content so the box is never
+   narrower than the longer line in whatever font renders; a ch value
+   would be a guess. */
 .intro__headline {
   font-size: clamp(1rem, 3.5vw, 1.25rem);
   font-weight: 400;
@@ -215,9 +211,8 @@ a {
   margin: 0 auto 40px;
 }
 
-/* Below ~360px the longer line does not fit at the clamp's 1rem floor
-   and breaks into a third line, so the floor comes down just for those
-   widths. Narrower than any current phone; 320px is the old iPhone SE. */
+/* Below ~360px the longer line needs more than the 1rem floor allows
+   and breaks into a third line. */
 @media (max-width: 359px) {
   .intro__headline {
     font-size: 0.8125rem;
@@ -231,8 +226,7 @@ a {
   color: var(--color-text);
 }
 
-/* Centered text, inherited from .section--intro; margin: 0 auto
-   centers the 34ch measure itself in the section. */
+/* Centered, inherited from .section--intro. */
 .intro__explainer {
   color: var(--color-text);
   font-size: 1rem;
@@ -354,15 +348,11 @@ a {
   padding: 0 clamp(2px, 1vw, 8px) 32px;
 }
 
-/* Both titles are broken after their first word in the markup, and
-   both have to be, not just the longer one: whichever wraps and
-   whichever does not, the two columns' billboards start at different
-   heights. "INDEPENDENT ROUTE" wraps to two lines at every width
-   anyway -- the grid is capped by --content-max-width, so a column is
-   never wider than ~226px -- so two fixed lines each is what the
-   layout already wants, and it no longer depends on whether Inter
-   loaded (the fallback is wider, and used to wrap "INDUSTRY ROUTE"
-   that the real font fits on one line). */
+/* Both titles are broken after their first word in the markup. Both,
+   not just the longer one: if their line counts differ the two columns'
+   billboards start at different heights. Safe to fix because
+   --content-max-width caps a column at ~226px, where "INDEPENDENT
+   ROUTE" is two lines at every width. */
 .dilemma__route-title {
   font-size: clamp(1rem, 4.5vw, 1.25rem);
   font-weight: 400;
@@ -388,10 +378,8 @@ a {
   }
 }
 
-/* Floor at 0.7, not 0.45: this red is 4.00:1 against the background at
-   full strength, and fading it to 0.45 drops the trough to 1.65:1 --
-   the cue was hardest to read exactly when it was asking to be read.
-   0.7 keeps the trough at 2.48:1 and the pulse still registers. */
+/* Floor at 0.7, not 0.45: this red is only 4.00:1 against the
+   background, and 0.45 took the trough to 1.65:1. */
 @keyframes dilemma-cue-pulse {
   0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }
@@ -435,10 +423,8 @@ a {
 .billboard__frame {
   appearance: none;
   display: block;
-  /* Flush with the column's text. billboard-frame.svg's viewBox is
-     cropped to the drawing's left and right edges, so the graphic's
-     own box edges ARE the sign's outer rails -- 100% puts them on the
-     same measure the title and copy use. */
+  /* billboard-frame.svg's viewBox is cropped to the drawing's left and
+     right edges, so 100% puts the sign's rails on the text's measure. */
   width: 100%;
   margin: 0 0 28px;
   padding: 0;
@@ -471,12 +457,9 @@ a {
    a little extra inset beyond that rect so text clears its frame
    line rather than sitting flush against it.
 
-   left/right are small because that viewBox is cropped horizontally
-   to the drawing: the panel nearly fills it side to side and what is
-   left is the panel's own 11-unit rail. top/bottom are untouched --
-   the crop is horizontal only, so the vertical fractions still hold.
-   In artwork units the face is x 167.66..1062.25, y 153.12..479.34;
-   recompute left/right against the new width if the crop changes. */
+   In artwork units the face is x 167.66..1062.25, y 153.12..479.34.
+   left/right are small because the viewBox is cropped horizontally to
+   the drawing; recompute them if that crop changes. */
 .billboard__board {
   position: absolute;
   left: 2.79%;
@@ -490,10 +473,8 @@ a {
   overflow: hidden;
 }
 
-/* Outlined slogan + graffiti, one coordinate space so the marks stay
-   locked to the words at every width. The artboard is 895.3 x 325.8,
-   which is the sign face's own box, so inset: 0 fills it exactly.
-   Absolute rather than width/height: 100% — Safari will not resolve a
+/* The artboard is the sign face's own box, so inset: 0 fills it.
+   Absolute rather than height: 100% - Safari will not resolve a
    percentage height on an svg against a box it is still laying out. */
 .billboard__art {
   position: absolute;
@@ -502,8 +483,8 @@ a {
   height: 100%;
 }
 
-/* Base state is the finished, defaced billboard: anything that can't
-   animate (reduced motion, no animation support) still gets the point. */
+/* Base state is the defaced billboard, so reduced motion still lands
+   on the end result. */
 .billboard__mark {
   opacity: 0;
   transition: opacity 0.3s var(--ease-out);
@@ -514,17 +495,15 @@ a {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* fill-box so each mark scales about its own centre rather than the
-     whole artboard's — otherwise the strike-through swings in from
-     off-panel instead of landing on the word. */
+  /* fill-box so each mark scales about its own centre, not the
+     artboard's. */
   .billboard__mark {
     transform-box: fill-box;
     transform-origin: center;
   }
 
   /* backwards fill holds the 0% frame through the delay, so the
-     marks stay hidden until their turn instead of the transition
-     above fading them all in at once. */
+     transition above does not fade them all in at once. */
   .billboard.is-active .billboard__mark {
     animation: billboardSlap 0.34s var(--ease-out) backwards;
   }
@@ -539,21 +518,6 @@ a {
 
   .billboard.is-active .billboard__mark--3 {
     animation-delay: 0.32s;
-  }
-
-  /* Spare slots: a board whose artwork carries more than three marks
-     keeps the same 0.14s beat rather than landing them all together.
-     tools/build_billboards.py refuses to emit past --6. */
-  .billboard.is-active .billboard__mark--4 {
-    animation-delay: 0.46s;
-  }
-
-  .billboard.is-active .billboard__mark--5 {
-    animation-delay: 0.6s;
-  }
-
-  .billboard.is-active .billboard__mark--6 {
-    animation-delay: 0.74s;
   }
 }
 
@@ -585,15 +549,9 @@ a {
   transform: translateY(4px);
 }
 
-/* The vw term is lower than it looks like it should be because these
-   titles only wrap on phones -- at desktop the column is 210px and all
-   six fit at the 1rem cap. Dropping it to 3.05vw puts five of the six
-   on one line from 360px up without touching desktop at all.
-
-   text-wrap: balance for the one that still cannot fit ("Best in the
-   Business" at 144px against a 148px column is the closest call):
-   it splits the two lines evenly instead of orphaning the last word.
-   Browsers without it just wrap as before. */
+/* 3.05vw, not 3.5vw: these only wrap on phones, and the 1rem cap
+   leaves desktop untouched. balance so anything that does wrap splits
+   evenly instead of orphaning its last word. */
 .billboard__title {
   font-size: clamp(0.72rem, 3.05vw, 1rem);
   font-weight: 700;
@@ -625,19 +583,12 @@ a {
   text-align: center;
 }
 
-/* The gap that read as lopsided was inside the artwork, not in the CSS:
-   .dilemma__toll's 40px padding-top against this 32px margin was
-   already the smaller of the two, but toll-gate.svg carried 13.4% of
-   dead space above the drawing and 25.9% below. That viewBox is now
-   cropped so both are 13.4%, and since that share scales with the
-   image while a pixel margin does not, the two gaps track each other
-   at every width instead of matching only where it was eyeballed.
-
-   34px rather than 40px to mirror the padding, because the paragraph
-   below adds half-leading above its first glyph (16px text in a 24px
-   line) where the border above is a hard edge. Measured from rendered
-   pixels, that is a constant 6px at every width -- constant because
-   the footer's size and line-height are fixed. */
+/* toll-gate.svg's viewBox is cropped so it carries the same 13.4% of
+   dead space below the drawing as above it; that share scales with the
+   image, so this margin and .dilemma__toll's padding-top keep the two
+   gaps equal at every width. 34px not 40px because the paragraph adds
+   6px of half-leading above its first glyph where the border above is
+   a hard edge. */
 .dilemma__toll-graphic-wrap {
   position: relative;
   width: 100%;
