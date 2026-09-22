@@ -26,6 +26,14 @@
   --frame-margin: 8px;
   --section-padding-x: clamp(20px, 6vw, 60px);
   --content-max-width: 480px;
+  /* Space between a header divider (the rule under a section's own
+     headline, or under any full-bleed content block that ends in one)
+     and the text on either side of it. One shared value, used the same
+     way in every section that has this kind of divider, instead of each
+     section hand-picking its own 24/32/40px -- being applied section by
+     section as a trial; see .amass__header and its content blocks for
+     the first application. */
+  --divider-gap: 32px;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -312,8 +320,8 @@ a {
 /* Full-bleed, same technique as .section-header. */
 .dilemma__header {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) 32px;
-  padding: 24px var(--section-padding-x) 32px;
+  margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
+  padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
 }
 
@@ -345,7 +353,7 @@ a {
 }
 
 .dilemma__column {
-  padding: 0 clamp(2px, 1vw, 8px) 32px;
+  padding: 0 clamp(2px, 1vw, 8px) var(--divider-gap);
 }
 
 /* Both titles are broken after their first word in the markup. Both,
@@ -644,11 +652,14 @@ a {
   border-top: 1px solid var(--color-card-border);
 }
 
-/* Full-bleed, same technique as .dilemma__header. */
+/* Full-bleed, same technique as .dilemma__header. Only this header uses
+   --divider-gap; the highway artwork below it stays flush against the
+   NEXT divider on purpose (see .section--distance) rather than padded,
+   so that specific edge is not standardized. */
 .distance__header {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
-  padding: 24px var(--section-padding-x) 32px;
+  margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
+  padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
 }
 
@@ -876,9 +887,14 @@ a {
 
 /* ---------- The Middle Path section ---------- */
 
+/* No bottom padding of its own: .middle-path__scene (the last thing in
+   this section) already carries its own trailing margin below, same
+   reasoning as .amass__culture. The 60px this used to have on top of
+   that was double-counted -- the actual gap before the next divider was
+   nearly triple every other section's. */
 .section--middle-path {
   min-height: auto;
-  padding: 0 var(--section-padding-x) 60px;
+  padding: 0 var(--section-padding-x);
   border-top: 1px solid var(--color-card-border);
 }
 
@@ -886,8 +902,8 @@ a {
    a plain straight divider, no road styling. */
 .middle-path__header {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) 32px;
-  padding: 24px var(--section-padding-x) 32px;
+  margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
+  padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
   text-align: center;
 }
@@ -913,7 +929,7 @@ a {
 .middle-path__scene {
   position: relative;
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
+  margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
   container-type: inline-size;
 }
 
@@ -1075,17 +1091,21 @@ a {
 
 /* ---------- Engine section ---------- */
 
+/* .engine__footer (the last thing in this section) carries no trailing
+   space of its own, unlike .amass__culture or .middle-path__scene, so
+   this section has to supply exactly one --divider-gap itself rather
+   than being able to rely on padding:0 the way those sections' do. */
 .section--engine {
   min-height: auto;
-  padding: 0 var(--section-padding-x) 60px;
+  padding: 0 var(--section-padding-x) var(--divider-gap);
   border-top: 1px solid var(--color-card-border);
 }
 
 /* Full-bleed, same technique as .dilemma__header. */
 .engine__header {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
-  padding: 24px var(--section-padding-x) 32px;
+  margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
+  padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
 }
 
@@ -1362,8 +1382,8 @@ a {
    before the rule, instead of the rule sitting flush against it. */
 .engine__footer {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 40px calc(-1 * var(--section-padding-x)) 0;
-  padding: 40px var(--section-padding-x) 0;
+  margin: var(--divider-gap) calc(-1 * var(--section-padding-x)) 0;
+  padding: var(--divider-gap) var(--section-padding-x) 0;
   border-top: 1px solid var(--color-card-border);
   text-align: center;
 }
@@ -1450,8 +1470,8 @@ a {
 /* Full-bleed, same technique as .engine__header. */
 .amass__header {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
-  padding: 24px var(--section-padding-x) 32px;
+  margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
+  padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
 }
 
@@ -1476,7 +1496,7 @@ a {
 .amass__culture {
   width: calc(100% + 2 * var(--section-padding-x));
   margin: 0 calc(-1 * var(--section-padding-x));
-  padding: 40px var(--section-padding-x);
+  padding: var(--divider-gap) var(--section-padding-x);
   border-bottom: 1px solid var(--color-card-border);
   text-align: center;
 }
