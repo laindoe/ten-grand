@@ -1133,7 +1133,9 @@ a {
 .route {
   width: calc(100% + 2 * var(--section-padding-x));
   margin-inline: calc(-1 * var(--section-padding-x));
-  padding-bottom: 34px;         /* room for the IMPACT cap, which sits below */
+  /* padding-bottom set further down, where the artwork's own measured
+     geometry overrides live -- this declaration would otherwise be
+     shadowed by that later, equal-specificity rule. */
   display: flex;
   justify-content: center;
   color: var(--color-text);
@@ -1357,7 +1359,7 @@ a {
 .route__spark{left:50.018%;top:8.240%;width:27.696%;}
 .route__cap--star{bottom:94.710%;margin-bottom:14px;}
 .route__cap--globe{top:93.330%;margin-top:22px;}
-.route{padding-bottom:0;}
+.route{padding-bottom:60px;} /* matches the 60px above IMAGINATION; also clears the IMPACT cap, which sits below the stage */
 .route__stage{width:calc(var(--rt-h) * 0.2557);}
 @media (prefers-reduced-motion: reduce) {
   .route__art .rt-colour{stroke-dashoffset:0;}
