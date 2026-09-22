@@ -26,6 +26,14 @@
   --frame-margin: 8px;
   --section-padding-x: clamp(20px, 6vw, 60px);
   --content-max-width: 480px;
+  /* Space between a header divider (the rule under a section's own
+     headline, or under any full-bleed content block that ends in one)
+     and the text on either side of it. One shared value, used the same
+     way in every section that has this kind of divider, instead of each
+     section hand-picking its own 24/32/40px -- being applied section by
+     section as a trial; see .amass__header and its content blocks for
+     the first application. */
+  --divider-gap: 32px;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1450,8 +1458,8 @@ a {
 /* Full-bleed, same technique as .engine__header. */
 .amass__header {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) 40px;
-  padding: 24px var(--section-padding-x) 32px;
+  margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
+  padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
 }
 
@@ -1476,7 +1484,7 @@ a {
 .amass__culture {
   width: calc(100% + 2 * var(--section-padding-x));
   margin: 0 calc(-1 * var(--section-padding-x));
-  padding: 40px var(--section-padding-x);
+  padding: var(--divider-gap) var(--section-padding-x);
   border-bottom: 1px solid var(--color-card-border);
   text-align: center;
 }
