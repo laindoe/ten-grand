@@ -1063,6 +1063,7 @@ a {
   width: 100%;
   max-width: var(--content-max-width);
   margin: 0 auto;
+  padding-bottom: 60px;
   text-align: center;
 }
 
