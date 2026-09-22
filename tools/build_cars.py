@@ -49,7 +49,10 @@ BEZEL = '#141414'          # the page background
 # Translucent copies behind each lamp, (units to inflate, opacity), painted
 # largest first. Plain geometry rather than a blur filter: fourteen cars
 # animate their scale continuously and a filter would re-rasterise per frame.
-GLOW = [(9.0, 0.07), (5.5, 0.15), (2.5, 0.28)]
+# The first cut (9/.07, 5.5/.15, 2.5/.28) was too subtle to read against the
+# dark background at typical scroll speed -- roughly doubled the opacities
+# and added a fourth, tighter layer for a brighter core near the lamp.
+GLOW = [(14.0, 0.14), (9.0, 0.26), (5.0, 0.42), (2.0, 0.62)]
 
 # Label inset inside the plate's white face: enough to clear a bolt hole
 # (its centre inset plus its radius) with a little air after it.
@@ -202,10 +205,18 @@ def main():
                 '<use href="#hw-car-%s"/></svg>'
                 '<span class="highway__plate"><span>%s</span></span>%s'
                 % (m.group(1), m.group(3), lane, label, m.group(5)))
+    already_done = html.count('class="highway__car-art"')
     html, n = pat.subn(rewrite, html)
-    assert n == 14, 'rewrote %d car instances, expected 14' % n
-    assert 'scaleX' not in html, 'a scaleX squeeze survived'
-    HTML.write_text(html)
+    if n == 0 and already_done == 14:
+        # Idempotent re-run: index.html was converted by an earlier pass and
+        # carries no more scaleX markup to find. Only the symbols (colours,
+        # geometry, glow) can change on a re-run; the instances do not.
+        pass
+    else:
+        assert n == 14, 'rewrote %d car instances, expected 14 (already-converted: %d)' \
+            % (n, already_done)
+        assert 'scaleX' not in html, 'a scaleX squeeze survived'
+        HTML.write_text(html)
 
     for name in CARS:
         r = report[name]
