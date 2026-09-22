@@ -956,11 +956,11 @@ a {
 }
 
 .middle-path__art #mp-mountains .cls-2 {
-  stroke-width: 1px;
+  stroke-width: 1.2px;
 }
 
 .middle-path__art #mp-mountains :is(.cls-4, .cls-10, .cls-11, .cls-12) {
-  stroke-width: .8px;
+  stroke-width: 1px;
 }
 
 .middle-path__plate {
