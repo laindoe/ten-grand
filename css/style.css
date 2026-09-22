@@ -966,14 +966,14 @@ a {
 .middle-path__plate {
   position: absolute;
   left: 43.58%;
-  top: 74.9%;
+  top: 75.3%;
   width: 12.52%;
   height: 4.54%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 1.75cqw;
+  font-size: 1.58cqw;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -.02em;
