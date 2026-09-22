@@ -797,6 +797,23 @@ a {
 .highway__art .st20{fill: #fff;}
 .highway__art .st2{stroke-linecap: round;stroke-width: .22px;}
 .highway__art .st13{stroke-width: .8px;}
+
+/* The cactus's own silhouette and interior ribs, split out of st7/st10 --
+   those are also the mountains' outline and rib classes and the guardrail
+   post's, so this cannot be a shared-rule edit the way st2/st13 was.
+
+   st7 (the outline) never had a stroke-width rule anywhere: it fell back to
+   the SVG/CSS initial value of 1 (unitless, i.e. 1 user unit), which through
+   the cactus's own 1.3x enlargement and its up-to-1.49x instance scale
+   rendered at ~0.63px near camera -- 2.6x the bush's 0.24px and 2x the
+   cactus's own ribs, which is what read as "redrawn thicker." #206 matched
+   the bush to st10 (the ribs) and never looked at st7.
+
+   0.48px puts the outline at ~0.30px rendered near camera; 0.32px puts the
+   ribs at ~0.20px. Both close to the bush's 0.24px, with the outline still
+   the heavier of the two as an outer silhouette should be. */
+.highway__art .hw-cactus-outline{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:.48px;}
+.highway__art .hw-cactus-rib{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:.32px;}
 .highway__art .st3, .highway__art .st4, .highway__art .st5{stroke: #fff;}
 .highway__art .st3, .highway__art .st9{stroke-width: .7px;}
 .highway__art .st4, .highway__art .st16, .highway__art .st17{stroke-width: 1.4px;}
