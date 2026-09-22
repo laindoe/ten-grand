@@ -1205,6 +1205,13 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Marker popups are temporarily disabled; preserve the diagram exactly as
+   drawn while removing hover/click affordances and pointer interaction. */
+.route__pin--static {
+  cursor: default;
+  pointer-events: none;
+}
+
 .route__pin::before {
   content: '';
   position: absolute;
