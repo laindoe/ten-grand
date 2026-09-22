@@ -755,6 +755,15 @@ a {
   inset: 0;
 }
 
+/* Paint-driven car motion. JavaScript replaces the compositor scale
+   with real width/height/position changes so Chromium rasterizes the inline
+   SVG at its current size on every frame. */
+.distance__visual.is-frame-driven .highway__car {
+  animation: none !important;
+  transform: none !important;
+  opacity: 1;
+}
+
 /* One <use> of the car symbol in the shared defs, rather than fourteen copies
    of the art. Vector, so the tail lights can be painted and scaling does not
    resample -- the PNGs this replaces were grey+alpha, with no colour channel
