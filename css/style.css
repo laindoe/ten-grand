@@ -1228,7 +1228,7 @@ a {
   position: absolute;
   bottom: 0;
   width: max-content;
-  max-width: clamp(64px, 22vw, 120px);
+  max-width: clamp(70px, 25.5vw, 130px);
   overflow-wrap: break-word;
 }
 
@@ -1246,7 +1246,7 @@ a {
 
 .route__pin-label {
   display: block;
-  font-size: 0.64rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   line-height: 1.2;
@@ -1255,7 +1255,7 @@ a {
 .route__pin-note {
   display: block;
   margin-top: 2px;
-  font-size: 0.56rem;
+  font-size: 0.68rem;
   line-height: 1.3;
   color: var(--color-text-muted);
 }
