@@ -59,16 +59,28 @@ GLOW = [(14.0, 0.14), (9.0, 0.26), (5.0, 0.42), (2.0, 0.62)]
 # declare no stroke of their own, so wrapping the body in this default stroke
 # pads them out without touching anything that already has an explicit
 # stroke (the plate bezel, bolt holes, centre.svg's window-crack lines).
-# This exists to survive a browser behaviour, not a drawing problem: a
-# continuously-animated CSS transform: scale() is handled by the compositor
-# thread by resampling one fixed-resolution paint of the layer every frame,
-# rather than re-rendering the vector geometry at each new scale -- proven
-# by comparing a live-played frame against a fresh paint at the identical
-# transform value (same matrix, different pixels; two fresh paints at that
-# same value are byte-identical). Thin fills survive that resampling worse
-# than the same shape with some stroke width behind it.
 BODY_STROKE_COLOUR = '#fff'
 BODY_STROKE_WIDTH = 1.0
+
+# Locks that stroke's rendered width in screen pixels, ignoring every
+# transform between the shape and the screen -- not just the symbol's
+# viewBox mapping, .highway__car's own animated scale too. Without this,
+# BODY_STROKE_WIDTH is 1 unit in the symbol's own ~510-632 unit viewBox,
+# which shrinks right along with the car: computed from the animation's own
+# keyframes, the rendered stroke drops under one device pixel by ~8% into a
+# cycle and stays there, fully opaque, for roughly half of it before the
+# fade-out starts -- which is what read as the outline flickering in and
+# out as a car nears the vanishing point. A fixed stroke width alone (the
+# first attempt at this) cannot fix that: it scales down with everything
+# else and is just as sub-pixel by the time the car is that small.
+#
+# SVG1.1 text says vector-effect does not inherit from an ancestor, so this
+# was checked before relying on it, not assumed: an isolated test comparing
+# the attribute set directly on a shape against set once on its wrapping
+# <g> rendered identically in Chromium at both a large and a deliberately
+# tiny scale, and a shape with neither vanished completely at the tiny
+# scale where these two stayed solidly visible.
+BODY_NON_SCALING_STROKE = True
 
 # Label inset inside the plate's white face: enough to clear a bolt hole
 # (its centre inset plus its radius) with a little air after it.
@@ -150,6 +162,14 @@ def convert(name):
             paint['fill'] = BEZEL
         if is_lamp:
             paint = {'fill': LIGHT_COLOUR}
+        elif BODY_NON_SCALING_STROKE:
+            # On the shape itself, not just the wrapping <g>: SVG1.1 says
+            # vector-effect does not inherit, and getComputedStyle agrees
+            # (reports "none" on a child even when the parent has it set),
+            # despite an isolated test showing group-level placement paints
+            # the same as shape-level in Chromium. Putting it on every shape
+            # removes that ambiguity rather than resting the fix on it.
+            paint['vector-effect'] = 'non-scaling-stroke'
         el = '<%s %s %s/>' % (tag,
                               ' '.join('%s="%s"' % kv for kv in attrs.items()),
                               ' '.join('%s="%s"' % kv for kv in sorted(paint.items())))
@@ -179,6 +199,9 @@ def main():
         assert len(g) == 4 * len(GLOW)
         vb = geo[name]['ink']
         parts = ['  <symbol id="hw-car-%s" viewBox="%g %g %g %g">' % ((name,) + tuple(vb))]
+        # vector-effect is not on this wrapper: it does not reliably inherit
+        # (see BODY_NON_SCALING_STROKE above), so it is set on each shape
+        # directly, inside convert().
         parts.append('    <g stroke="%s" stroke-width="%g" stroke-linejoin="round" '
                      'stroke-linecap="round">' % (BODY_STROKE_COLOUR, BODY_STROKE_WIDTH))
         parts += ['      ' + e for e, _ in body]
