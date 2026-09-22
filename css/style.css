@@ -2102,6 +2102,14 @@ a {
   margin: 0 auto 56px;
 }
 
+/* Otherwise the last zone's own trailing margin stacks with the
+   section's own bottom padding below, same double-counting as
+   .amass__header's old margin-bottom -- the section is the one place
+   this gap should come from. */
+.connect__zone:last-child {
+  margin-bottom: 0;
+}
+
 .connect__zone--text {
   aspect-ratio: 276 / 114;
   display: flex;
