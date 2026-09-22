@@ -54,6 +54,22 @@ BEZEL = '#141414'          # the page background
 # and added a fourth, tighter layer for a brighter core near the lamp.
 GLOW = [(14.0, 0.14), (9.0, 0.26), (5.0, 0.42), (2.0, 0.62)]
 
+# Fill-only shapes (the body outline rings, wheels, mirrors -- anywhere the
+# artist drew the line as a thin filled ring rather than a stroked path)
+# declare no stroke of their own, so wrapping the body in this default stroke
+# pads them out without touching anything that already has an explicit
+# stroke (the plate bezel, bolt holes, centre.svg's window-crack lines).
+# This exists to survive a browser behaviour, not a drawing problem: a
+# continuously-animated CSS transform: scale() is handled by the compositor
+# thread by resampling one fixed-resolution paint of the layer every frame,
+# rather than re-rendering the vector geometry at each new scale -- proven
+# by comparing a live-played frame against a fresh paint at the identical
+# transform value (same matrix, different pixels; two fresh paints at that
+# same value are byte-identical). Thin fills survive that resampling worse
+# than the same shape with some stroke width behind it.
+BODY_STROKE_COLOUR = '#fff'
+BODY_STROKE_WIDTH = 1.0
+
 # Label inset inside the plate's white face: enough to clear a bolt hole
 # (its centre inset plus its radius) with a little air after it.
 BOLT_CLEARANCE = 3.5
@@ -163,8 +179,11 @@ def main():
         assert len(g) == 4 * len(GLOW)
         vb = geo[name]['ink']
         parts = ['  <symbol id="hw-car-%s" viewBox="%g %g %g %g">' % ((name,) + tuple(vb))]
-        parts += ['    ' + e for e, _ in body] + ['    ' + e for e in g] + \
-                 ['    ' + e for e, _ in lamps]
+        parts.append('    <g stroke="%s" stroke-width="%g" stroke-linejoin="round" '
+                     'stroke-linecap="round">' % (BODY_STROKE_COLOUR, BODY_STROKE_WIDTH))
+        parts += ['      ' + e for e, _ in body]
+        parts.append('    </g>')
+        parts += ['    ' + e for e in g] + ['    ' + e for e, _ in lamps]
         parts.append('  </symbol>')
         blocks.append('\n'.join(parts))
 
