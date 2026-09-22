@@ -583,13 +583,14 @@ a {
 /* ---------- Shared toll ----------
    One toll for both routes — they converge here, not two separate
    lanes. Full-bleed, same technique as .dilemma__header. */
-/* padding-top matches the 29px the section leaves below the paragraph,
-   and is the whole gap now: toll-gate.svg's viewBox is cropped to the top
-   of the drawing, so no share of it scales with the image. */
+/* Trial: 60px, matching .section--director/.section--connect, in place
+   of the old 29px -- toll-gate.svg's viewBox is cropped to the top of
+   the drawing, so this padding is still the whole visible gap, no share
+   of it baked into the image. */
 .dilemma__toll {
   width: calc(100% + 2 * var(--section-padding-x));
   margin: 0 calc(-1 * var(--section-padding-x));
-  padding: 29px var(--section-padding-x) 0;
+  padding: 60px var(--section-padding-x) 0;
   border-top: 1px solid var(--color-card-border);
   text-align: center;
 }
@@ -635,7 +636,7 @@ a {
 .dilemma__footer {
   max-width: 40ch;
   margin: 0 auto;
-  padding: 0 0 40px;
+  padding: 0 0 60px;
   font-size: 1rem;
   line-height: 1.5;
 }
