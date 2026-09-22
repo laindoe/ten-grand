@@ -923,13 +923,72 @@ a {
   height: auto;
 }
 
+/* Match the multi-car desert linework. Dedicated classes prevent the SVG
+   exporter's generic .cls-* rules from changing mountains and rails too. */
+.middle-path__art #mp-cacti .mp-cactus-outline {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .48px;
+  vector-effect: non-scaling-stroke;
+}
+
+.middle-path__art #mp-cacti .mp-cactus-rib {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .32px;
+  vector-effect: non-scaling-stroke;
+}
+
+.middle-path__art #mp-cacti .mp-bush {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .22px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Keep the mountain contours at device-pixel widths when this wide SVG is
+   responsively scaled. This avoids the soft half-pixel rasterization. */
+.middle-path__art #mp-mountains path {
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;
+}
+
+.middle-path__art #mp-mountains .cls-2 {
+  stroke-width: 1px;
+}
+
+.middle-path__art #mp-mountains :is(.cls-4, .cls-10, .cls-11, .cls-12) {
+  stroke-width: .8px;
+}
+
+.middle-path__plate {
+  position: absolute;
+  left: 37.88%;
+  top: 72.88%;
+  width: 12.52%;
+  height: 4.54%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 1.12cqw;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: #141414;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 /* The artwork is inlined (see _includes/middle-path-svg.html) so the page can
    reach inside it and start the sun on scroll; an <img>-referenced SVG is
    unreachable from page CSS and JS. Its own stylesheet has to live here
    because an inline <svg>'s <style> is not scoped -- it would apply
    document-wide, leaking .cls-1 .. .cls-18 into the page. Every selector is
    therefore prefixed with .middle-path__art. */
-.middle-path__art .cls-1,.middle-path__art .cls-2,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{fill:none;}.middle-path__art .cls-3{fill:#141414;}.middle-path__art .cls-14{fill:url(#mp-sun);}.middle-path__art .cls-15{fill:#fff;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke-miterlimit:10;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke:#fff;}.middle-path__art .cls-16{clip-path:url(#mp-clip-b);}.middle-path__art .cls-3,.middle-path__art .cls-9{stroke-width:2px;}.middle-path__art .cls-17{fill:url(#mp-sky);}.middle-path__art .cls-4{stroke-width:.5px;}.middle-path__art .cls-5{stroke-width:.53px;}.middle-path__art .cls-6{stroke-width:.8px;}.middle-path__art .cls-7{stroke-width:.27px;}.middle-path__art .cls-8{stroke-width:1.24px;}.middle-path__art .cls-9{stroke:#fff;}.middle-path__art .cls-10{stroke-width:.95px;}.middle-path__art .cls-11{stroke-width:.75px;}.middle-path__art .cls-12{stroke-width:.78px;}.middle-path__art .cls-13{stroke-width:1.06px;}.middle-path__art .cls-18{clip-path:url(#mp-clip-a);}.middle-path__art #mp-freedom-car path:not([class]){fill:#fff;}.middle-path__art .mask-in{fill:#fff;}.middle-path__art .mask-out{fill:#000;}.middle-path__art .hill-fill,.middle-path__art .rail-fill,.middle-path__art .portal-fill{fill:#141414;}.middle-path__art .post-fill{fill:#141414;}@media (prefers-reduced-motion:no-preference){.middle-path__art .sun-rise{animation:sunArc 11s linear infinite;animation-fill-mode:backwards;animation-play-state:paused;animation-delay:.35s;}}@keyframes sunArc{0%{transform:translateY(95px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}20%{transform:translateY(0);}58%{transform:translateY(0);animation-timing-function:cubic-bezier(.45,.05,.55,.95);}78%{transform:translateY(95px);}100%{transform:translateY(95px);}}
+.middle-path__art .cls-1,.middle-path__art .cls-2,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{fill:none;}.middle-path__art .cls-3{fill:#141414;}.middle-path__art .cls-14{fill:url(#mp-sun);}.middle-path__art .cls-15{fill:#fff;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke-miterlimit:10;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke:#fff;}.middle-path__art .cls-16{clip-path:url(#mp-clip-b);}.middle-path__art .cls-3,.middle-path__art .cls-9{stroke-width:2px;}.middle-path__art .cls-17{fill:url(#mp-sky);}.middle-path__art .cls-4{stroke-width:.5px;}.middle-path__art .cls-5{stroke-width:.53px;}.middle-path__art .cls-6{stroke-width:.8px;}.middle-path__art .cls-7{stroke-width:.27px;}.middle-path__art .cls-8{stroke-width:1.24px;}.middle-path__art .cls-9{stroke:#fff;}.middle-path__art .cls-10{stroke-width:.95px;}.middle-path__art .cls-11{stroke-width:.75px;}.middle-path__art .cls-12{stroke-width:.78px;}.middle-path__art .cls-13{stroke-width:1.06px;}.middle-path__art .cls-18{clip-path:url(#mp-clip-a);}.middle-path__art .mask-in{fill:#fff;}.middle-path__art .mask-out{fill:#000;}.middle-path__art .hill-fill,.middle-path__art .rail-fill,.middle-path__art .portal-fill{fill:#141414;}.middle-path__art .post-fill{fill:#141414;}@media (prefers-reduced-motion:no-preference){.middle-path__art .sun-rise{animation:sunArc 11s linear infinite;animation-fill-mode:backwards;animation-play-state:paused;animation-delay:.35s;}}@keyframes sunArc{0%{transform:translateY(95px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}20%{transform:translateY(0);}58%{transform:translateY(0);animation-timing-function:cubic-bezier(.45,.05,.55,.95);}78%{transform:translateY(95px);}100%{transform:translateY(95px);}}
 
 /* The sun waits for the section instead of looping on its own schedule, so
    the rise is seen rather than caught by luck. Reuses the existing
