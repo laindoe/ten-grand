@@ -1384,9 +1384,15 @@ a {
 /* Full-bleed, same technique as .distance__footer, so the top rule
    reaches the site frame's edges. margin-top adds room below IMPACT
    before the rule, instead of the rule sitting flush against it. */
+/* No top margin: .route's own 60px padding-bottom is the sole gap up to
+   this divider (matching the 60px above IMAGINATION on the other side
+   of the graphic) -- a margin here would stack with it, the same
+   double-counted-gap bug fixed earlier on .amass__header. padding-top
+   is the actual closing-text gap (divider to paragraph) and stays at
+   --divider-gap. */
 .engine__footer {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: var(--divider-gap) calc(-1 * var(--section-padding-x)) 0;
+  margin: 0 calc(-1 * var(--section-padding-x)) 0;
   padding: var(--divider-gap) var(--section-padding-x) 0;
   border-top: 1px solid var(--color-card-border);
   text-align: center;
