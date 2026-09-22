@@ -955,12 +955,14 @@ a {
   shape-rendering: geometricPrecision;
 }
 
-.middle-path__art #mp-mountains .cls-2 {
-  stroke-width: 1.6px;
+/* Matches the highway section's mountain weights (.highway__art .st7/.st13):
+   1px for the majority contour lines, .8px for interior detail. */
+.middle-path__art #mp-mountains :is(.cls-2, .cls-4) {
+  stroke-width: 1px;
 }
 
-.middle-path__art #mp-mountains :is(.cls-4, .cls-10, .cls-11, .cls-12) {
-  stroke-width: 1.35px;
+.middle-path__art #mp-mountains :is(.cls-10, .cls-11, .cls-12) {
+  stroke-width: .8px;
 }
 
 .middle-path__plate {
