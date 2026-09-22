@@ -1557,16 +1557,17 @@ a {
   background: var(--color-card-border);
 }
 
-/* Runs from the divider above down to -40px, which matches
+/* Runs from the divider above down to -1 * --divider-gap, which matches
    .amass__timeline-block's own bottom padding exactly, so the line
    reaches all the way to that block's bottom border instead of
-   stopping short at the last item. */
+   stopping short at the last item (or, if this drifts out of sync with
+   that padding again, overshooting it into the block below). */
 .amass__timeline-track {
   position: absolute;
   /* up past the divider's own 28px margin, so the line starts on the rule
      rather than at the first item */
   top: -28px;
-  bottom: -40px;
+  bottom: calc(-1 * var(--divider-gap));
   left: 50%;
   width: 1px;
   background: var(--color-card-border);
