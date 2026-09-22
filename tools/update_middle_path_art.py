@@ -32,9 +32,13 @@ source = SVG_PATH.read_text()
 replacement = (
     '<svg id="mp-freedom-car" x="432" y="425" width="408" height="308" '
     'viewBox="94.36 33.9 509.38 384.4" preserveAspectRatio="xMidYMid meet" '
-    'aria-hidden="true"><use href="#hw-car-centre"/></svg>'
+    'overflow="visible" aria-hidden="true"><use href="#hw-car-centre" '
+    'x="94.36" y="33.9" width="509.38" height="384.4"/></svg>'
 )
-if '<g id="mp-freedom-car"' in source:
+if '<svg id="mp-freedom-car"' in source:
+    start, end, _ = element(source, "svg", "mp-freedom-car")
+    source = source[:start] + replacement + source[end:]
+elif '<g id="mp-freedom-car"' in source:
     start, end, _ = element(source, "g", "mp-freedom-car")
     source = source[:start] + replacement + source[end:]
 
