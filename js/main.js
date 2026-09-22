@@ -115,6 +115,116 @@
     });
   }
 
+  // Chromium normally rasterizes each transformed car once and lets the GPU
+  // shrink that texture for the rest of the drive. Fine SVG lines then blink
+  // between physical pixels near the horizon. Drive width, height and
+  // position from requestAnimationFrame instead: these layout properties make
+  // the browser repaint the actual vectors at their current size every frame.
+  function initHighwayCars() {
+    if (prefersReducedMotion) return;
+
+    const stage = document.querySelector('.distance__visual');
+    if (!stage) return;
+    const elements = Array.from(stage.querySelectorAll('.highway__car'));
+    if (!elements.length) return;
+
+    const lanes = {
+      centre: { duration: 17999, from: 1.65300, to: 0.01680 },
+      left:   { duration: 22498, from: 4.09987, to: 0.04167 },
+      right:  { duration: 14399, from: 4.12350, to: 0.04191 },
+    };
+    const opacityStops = [
+      [0, 1], [2 / 3, 1], [0.708333, 0.827], [0.75, 0.632],
+      [0.791667, 0.471], [0.833333, 0.338], [0.875, 0.228],
+      [0.916667, 0.137], [0.958333, 0.062], [1, 0],
+    ];
+
+    const cars = elements.map((el) => {
+      const lane = el.classList.contains('highway__car--centre')
+        ? 'centre'
+        : el.classList.contains('highway__car--left') ? 'left' : 'right';
+      const style = getComputedStyle(el);
+      const origin = style.transformOrigin.split(' ').map(parseFloat);
+      const plate = el.querySelector('.highway__plate');
+      return {
+        el,
+        plate,
+        lane,
+        delay: Math.abs(parseFloat(style.getPropertyValue('--drive-delay'))) * 1000,
+        leftRatio: el.offsetLeft / stage.clientWidth,
+        topRatio: el.offsetTop / stage.clientHeight,
+        widthRatio: el.offsetWidth / stage.clientWidth,
+        heightRatio: el.offsetHeight / stage.clientHeight,
+        originXRatio: origin[0] / el.offsetWidth,
+        originYRatio: origin[1] / el.offsetHeight,
+        plateFont: parseFloat(getComputedStyle(plate).fontSize),
+      };
+    });
+
+    function opacityAt(progress) {
+      for (let i = 1; i < opacityStops.length; i++) {
+        const next = opacityStops[i];
+        if (progress <= next[0]) {
+          const prev = opacityStops[i - 1];
+          const span = next[0] - prev[0];
+          const local = span ? (progress - prev[0]) / span : 0;
+          return prev[1] + (next[1] - prev[1]) * local;
+        }
+      }
+      return 0;
+    }
+
+    let stageWidth = stage.clientWidth;
+    let stageHeight = stage.clientHeight;
+    new ResizeObserver(() => {
+      stageWidth = stage.clientWidth;
+      stageHeight = stage.clientHeight;
+    }).observe(stage);
+
+    let running = false;
+    let frame = 0;
+    let startedAt = 0;
+
+    function draw(now) {
+      if (!running) return;
+      const elapsed = now - startedAt;
+      cars.forEach((car) => {
+        const lane = lanes[car.lane];
+        const progress = ((elapsed + car.delay) % lane.duration) / lane.duration;
+        const scale = lane.from * Math.pow(lane.to / lane.from, progress);
+        const baseLeft = car.leftRatio * stageWidth;
+        const baseTop = car.topRatio * stageHeight;
+        const baseWidth = car.widthRatio * stageWidth;
+        const baseHeight = car.heightRatio * stageHeight;
+        const left = baseLeft + baseWidth * car.originXRatio * (1 - scale);
+        const top = baseTop + baseHeight * car.originYRatio * (1 - scale);
+
+        car.el.style.left = `${left}px`;
+        car.el.style.top = `${top}px`;
+        car.el.style.width = `${baseWidth * scale}px`;
+        car.el.style.height = `${baseHeight * scale}px`;
+        car.el.style.opacity = String(opacityAt(progress));
+        car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
+        car.plate.style.fontSize = `${car.plateFont * scale}px`;
+      });
+      frame = requestAnimationFrame(draw);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries[0].isIntersecting;
+      if (visible === running) return;
+      running = visible;
+      if (running) {
+        stage.classList.add('is-frame-driven');
+        startedAt = performance.now();
+        frame = requestAnimationFrame(draw);
+      } else {
+        cancelAnimationFrame(frame);
+      }
+    });
+    observer.observe(stage);
+  }
+
   // The whole route sequence — the colour running down the road, each dot
   // taking its colour, the globe igniting — is CSS with its own delays, so all
   // this has to do is toggle one class. The remove/reflow/add is what lets it
@@ -300,5 +410,6 @@
     initRoute();
     initTimelineBubbles();
     initBillboards();
+    initHighwayCars();
   });
 })();
