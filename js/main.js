@@ -184,39 +184,11 @@
     let running = false;
     let frame = 0;
     let startedAt = 0;
-    let lastDrawAt = -Infinity;
-    let groupIndex = 0;
-    const groups = [cars.filter((_, i) => i % 2 === 0), cars.filter((_, i) => i % 2 === 1)];
-
-    // Repainting fourteen cars' worth of vector linework is the entire point
-    // (it's what keeps the outline from going sub-pixel and flickering as a
-    // car shrinks -- see tools/build_cars.py), but it is real per-frame CPU
-    // work. The motion is a slow, smooth scale/position drift with no fast
-    // direction changes, so two things cut that cost without being visible
-    // against it: capping the tick rate to ~60Hz (skips wasted extra work on
-    // 120Hz+ displays; a no-op once a device is already slower than that),
-    // and updating only half the cars each tick, alternating which half.
-    // Each car still gets refreshed at ~30fps overall, but every individual
-    // frame's paint work is about half the size. That second part is what
-    // matters on a throttled or low-power device: a frame-rate cap alone
-    // cannot skip work once a single frame already takes longer than the
-    // target interval, but a smaller chunk of work per frame helps
-    // regardless of how slow the device is. Positions come from real
-    // elapsed wall-clock time, not a frame counter, so lap timing does not
-    // drift even though any one car is redrawn less often than every tick.
-    const FRAME_INTERVAL = 1000 / 60;
 
     function draw(now) {
       if (!running) return;
-      if (now - lastDrawAt < FRAME_INTERVAL) {
-        frame = requestAnimationFrame(draw);
-        return;
-      }
-      lastDrawAt = now;
       const elapsed = now - startedAt;
-      const group = groups[groupIndex];
-      groupIndex = 1 - groupIndex;
-      group.forEach((car) => {
+      cars.forEach((car) => {
         const lane = lanes[car.lane];
         const progress = ((elapsed + car.delay) % lane.duration) / lane.duration;
         const scale = lane.from * Math.pow(lane.to / lane.from, progress);
@@ -227,16 +199,12 @@
         const left = baseLeft + baseWidth * car.originXRatio * (1 - scale);
         const top = baseTop + baseHeight * car.originYRatio * (1 - scale);
 
-        // One style mutation instead of six: the browser only has to queue
-        // a single recalculation per car rather than one per property. This
-        // replaces the whole inline style, which is safe here -- the markup's
-        // original transform/animation-delay/--drive-delay are all inert
-        // once .is-frame-driven's `animation: none !important` takes over,
-        // and --drive-delay is only ever read once, at init, above.
-        car.el.style.cssText = `left:${left}px;top:${top}px;`
-          + `width:${baseWidth * scale}px;height:${baseHeight * scale}px;`
-          + `opacity:${opacityAt(progress)};`
-          + `z-index:${Math.max(1, 48 - Math.floor(progress * 48))}`;
+        car.el.style.left = `${left}px`;
+        car.el.style.top = `${top}px`;
+        car.el.style.width = `${baseWidth * scale}px`;
+        car.el.style.height = `${baseHeight * scale}px`;
+        car.el.style.opacity = String(opacityAt(progress));
+        car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
         car.plate.style.fontSize = `${car.plateFont * scale}px`;
       });
       frame = requestAnimationFrame(draw);
