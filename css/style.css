@@ -1228,25 +1228,41 @@ a {
   position: absolute;
   bottom: 0;
   width: max-content;
-  max-width: clamp(70px, 25.5vw, 130px);
   overflow-wrap: break-word;
 }
 
 .route__pin--right .route__pin-text {
   left: 100%;
-  margin-left: 7px;
+  margin-left: 11px;
   text-align: left;
 }
 
 .route__pin--left .route__pin-text {
   right: 100%;
-  margin-right: 7px;
+  margin-right: 11px;
   text-align: right;
 }
 
+/* Per-pin, not one shared value: each pin sits a different distance from the
+   stage edge (see .route__pin--1..4 below), so the room available before the
+   viewport edge differs pin to pin. Tuned from each pin's own measured
+   position, with a real ~12px clearance to the edge, so every label uses as
+   much of its own margin as it comfortably has -- DEVELOPMENT's pin sits
+   closest to the edge, so it alone wraps to two lines at this size (the
+   soft hyphen in its markup gives that wrap a clean break rather than
+   whatever the text happens to run out of room at; automatic `hyphens:
+   auto` was tried here first but needs an OS-level hyphenation dictionary
+   that headless Linux Chromium doesn't have, so it could not be verified
+   and produced a ragged, non-hyphenated break in testing). The rest stay
+   on one line. */
+.route__pin--1 .route__pin-text { max-width: 88px; }
+.route__pin--2 .route__pin-text { max-width: 98px; }
+.route__pin--3 .route__pin-text { max-width: 93px; }
+.route__pin--4 .route__pin-text { max-width: 106px; }
+
 .route__pin-label {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   line-height: 1.2;
@@ -1255,7 +1271,7 @@ a {
 .route__pin-note {
   display: block;
   margin-top: 2px;
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   line-height: 1.3;
   color: var(--color-text-muted);
 }
