@@ -146,9 +146,11 @@
       const style = getComputedStyle(el);
       const origin = style.transformOrigin.split(' ').map(parseFloat);
       const plate = el.querySelector('.highway__plate');
+      const plateText = plate.querySelector('span');
       return {
         el,
         plate,
+        plateText,
         lane,
         delay: Math.abs(parseFloat(style.getPropertyValue('--drive-delay'))) * 1000,
         leftRatio: el.offsetLeft / stage.clientWidth,
@@ -157,7 +159,6 @@
         heightRatio: el.offsetHeight / stage.clientHeight,
         originXRatio: origin[0] / el.offsetWidth,
         originYRatio: origin[1] / el.offsetHeight,
-        plateFont: parseFloat(getComputedStyle(plate).fontSize),
       };
     });
 
@@ -205,7 +206,11 @@
         car.el.style.height = `${baseHeight * scale}px`;
         car.el.style.opacity = String(opacityAt(progress));
         car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
-        car.plate.style.fontSize = `${car.plateFont * scale}px`;
+        // Keep the glyphs at one rasterized font size and let the compositor
+        // scale that stable texture. Changing font-size every frame makes the
+        // font hinter choose different pixel coverage at fractional sizes,
+        // which reads as jitter even though the car geometry moves smoothly.
+        car.plateText.style.transform = `scale(${scale})`;
       });
       frame = requestAnimationFrame(draw);
     }

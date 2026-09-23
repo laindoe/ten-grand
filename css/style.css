@@ -796,6 +796,8 @@ a {
 .highway__plate span {
   display: block;
   white-space: nowrap;
+  transform-origin: center;
+  will-change: transform;
 }
 
 .highway__art .st0, .highway__art .st1, .highway__art .st2, .highway__art .st3, .highway__art .st4, .highway__art .st5, .highway__art .st6, .highway__art .st7, .highway__art .st8, .highway__art .st9, .highway__art .st10, .highway__art .st11, .highway__art .st12, .highway__art .st13, .highway__art .st14, .highway__art .st15, .highway__art .st16, .highway__art .st17, .highway__art .st18, .highway__art .st19{fill: none;}
