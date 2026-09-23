@@ -992,6 +992,15 @@ a {
   stroke-width: .236px;
 }
 
+/* The tunnel arch's inner line (.cls-8, 1.24px nominal) sits inside
+   #mp-mountains too, so it inherits that group's non-scaling-stroke pin
+   and was rendering at a literal 1.24 device px -- thicker than every
+   other line in the scene. Scaled down by the same ratio as the pairs
+   above (1.24 * ~0.2947) so it reads at the same weight. */
+.middle-path__art #mp-mountains .cls-8 {
+  stroke-width: .365px;
+}
+
 .middle-path__plate {
   position: absolute;
   left: 43.58%;
