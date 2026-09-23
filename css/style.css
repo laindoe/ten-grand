@@ -793,6 +793,15 @@ a {
    face the artwork draws. No scaleX squeeze any more: the three plates are
    one shape at one aspect, and the two names that would not fit are
    abbreviated in the markup instead of being distorted to suit. */
+/* Under .is-frame-driven, JS (initHighwayCars) freezes this box's own
+   left/top/width/height at car.el's rest geometry and drives all further
+   size/position change through `transform: scale()` instead -- see
+   syncPlate() and draw() in js/main.js for why. will-change promotes it to
+   its own compositor layer up front; without it, a transform written from
+   JS every frame (rather than a running CSS animation) doesn't reliably
+   get Chromium's automatic promotion, and the text can still get
+   repainted/re-hinted on the main thread each frame instead of just
+   having one cached raster rescaled. */
 .highway__plate {
   position: absolute;
   display: flex;
@@ -803,6 +812,7 @@ a {
   line-height: 1;
   letter-spacing: -0.02em;
   color: #000;
+  will-change: transform;
 }
 
 .highway__plate span {

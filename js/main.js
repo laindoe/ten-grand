@@ -145,10 +145,10 @@
         : el.classList.contains('highway__car--left') ? 'left' : 'right';
       const style = getComputedStyle(el);
       const origin = style.transformOrigin.split(' ').map(parseFloat);
-      const plateSpan = el.querySelector('.highway__plate span');
+      const plate = el.querySelector('.highway__plate');
       return {
         el,
-        plateSpan,
+        plate,
         lane,
         delay: Math.abs(parseFloat(style.getPropertyValue('--drive-delay'))) * 1000,
         leftRatio: el.offsetLeft / stage.clientWidth,
@@ -157,8 +157,37 @@
         heightRatio: el.offsetHeight / stage.clientHeight,
         originXRatio: origin[0] / el.offsetWidth,
         originYRatio: origin[1] / el.offsetHeight,
+        // The plate's own left/top/width/height are % of car.el, so they
+        // used to recompute every time car.el's width/height changed below
+        // -- a real layout pass on every frame, just to keep the plate
+        // proportional. Captured here as ratios of car.el's own (untouched)
+        // box, so its frozen pixel geometry (set in syncPlate) can be
+        // recomputed on resize without depending on car.el's live size.
+        plateLeftRatio: plate.offsetLeft / el.offsetWidth,
+        plateTopRatio: plate.offsetTop / el.offsetHeight,
+        plateWidthRatio: plate.offsetWidth / el.offsetWidth,
+        plateHeightRatio: plate.offsetHeight / el.offsetHeight,
       };
     });
+
+    // Freezes each plate's box at its rest (car.el-at-base-size) geometry,
+    // as literal pixels, and points transform-origin at car.el's own local
+    // origin (in the plate's own coordinate space, hence the negative
+    // offset). From here a single `transform: scale()` per frame -- using
+    // the exact scale car.el's own width/height already move by -- shrinks
+    // the plate exactly as the old percentage layout did, but as a
+    // compositor-only operation: no layout, no text re-hinting, no jitter.
+    function syncPlate(car) {
+      const baseWidth = car.widthRatio * stageWidth;
+      const baseHeight = car.heightRatio * stageHeight;
+      const left = car.plateLeftRatio * baseWidth;
+      const top = car.plateTopRatio * baseHeight;
+      car.plate.style.left = `${left}px`;
+      car.plate.style.top = `${top}px`;
+      car.plate.style.width = `${car.plateWidthRatio * baseWidth}px`;
+      car.plate.style.height = `${car.plateHeightRatio * baseHeight}px`;
+      car.plate.style.transformOrigin = `${-left}px ${-top}px`;
+    }
 
     function opacityAt(progress) {
       for (let i = 1; i < opacityStops.length; i++) {
@@ -175,9 +204,11 @@
 
     let stageWidth = stage.clientWidth;
     let stageHeight = stage.clientHeight;
+    cars.forEach(syncPlate);
     new ResizeObserver(() => {
       stageWidth = stage.clientWidth;
       stageHeight = stage.clientHeight;
+      cars.forEach(syncPlate);
     }).observe(stage);
 
     let running = false;
@@ -204,15 +235,12 @@
         car.el.style.height = `${baseHeight * scale}px`;
         car.el.style.opacity = String(opacityAt(progress));
         car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
-        // The plate's own box already tracks the car (it's sized in % of
-        // car.el, which is resized above), so it only needs the text inside
-        // it to shrink to match -- a job for transform, not font-size.
-        // font-size forces the glyphs to be re-hinted at a new pixel size
-        // every frame, and that hinting doesn't interpolate as smoothly as a
-        // scaled vector: the plate visibly bounced a pixel or so vertically
-        // as the hinted baseline snapped frame to frame. transform just
-        // rescales the already-laid-out text on the compositor.
-        car.plateSpan.style.transform = `scale(${scale})`;
+        // The plate itself is frozen at rest size/position (see syncPlate)
+        // and only ever moved by this transform, in lockstep with car.el's
+        // own width/height above -- so it's a pure compositor rescale, with
+        // no layout and no text re-hinting happening on the plate each
+        // frame to jitter.
+        car.plate.style.transform = `scale(${scale})`;
       });
       frame = requestAnimationFrame(draw);
     }
