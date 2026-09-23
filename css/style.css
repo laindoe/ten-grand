@@ -1524,8 +1524,8 @@ a {
 .route__pin--4 .route__pin-text{max-width:150px;}
 .route__spark{left:47.58%;top:4.50%;width:12.25%;}
 .route__cap--star{bottom:95.50%;margin-bottom:54px;}
-.route__cap--globe{top:98.75%;margin-top:18px;}
-.route{padding-bottom:60px;}
+.route__cap--globe{top:98.75%;margin-top:14px;}
+.route{padding:46px 0 89px;}
 
 @media (prefers-reduced-motion:reduce) {
   .route__art .rt3-reveal-mask{stroke-dashoffset:0;}
