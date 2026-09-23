@@ -1419,8 +1419,8 @@ a {
 }
 
 .route__art .rt3-2 { stroke: #fff; }
-.route__art .rt3-10 { stroke: url(#rt3-radial-gradient-3); }
-.route__art .rt3-11 { stroke: url(#rt3-radial-gradient-2); }
+.route__art .rt3-10,
+.route__art .rt3-11 { stroke:#fff; }
 .route__art .rt3-13 { fill: url(#rt3-radial-gradient-4); }
 .route__art .rt3-15 { fill: url(#rt3-radial-gradient); }
 .route__art .rt3-14 { fill: url(#rt3-linear-gradient-7); }
@@ -1434,10 +1434,13 @@ a {
 .route__art .rt3-12 { fill:none;stroke:#141414;stroke-width:4px; }
 .route__art .rt3-17 { fill:#fff; }
 
-.route__art .rt3-road-base,
+.route__art .rt3-road-base { opacity:.58; }
+.route__art .rt3-road-active { opacity:0; }
 .route__art .rt3-centre-base { opacity:.25; }
-.route__art .rt3-road-active,
-.route__art .rt3-centre-active { opacity:1; }
+.route__art .rt3-centre-active {
+  opacity:1;
+  stroke:url(#rt3-route-colour);
+}
 .route__art .rt3-centre-active {
   filter:drop-shadow(0 0 5px rgba(255,255,255,.75));
 }

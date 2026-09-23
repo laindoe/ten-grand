@@ -81,6 +81,13 @@ globe = element(raw, "g", "outer_globe")
 
 centre_d = re.search(r'\bd="([^"]+)"', centre).group(1)
 defs += (
+    '<linearGradient id="rt3-route-colour" x1="0" y1="160" x2="0" y2="1540" '
+    'gradientUnits="userSpaceOnUse">'
+    '<stop offset="0" stop-color="#ff334d"/>'
+    '<stop offset=".34" stop-color="#ffd21f"/>'
+    '<stop offset=".66" stop-color="#58de68"/>'
+    '<stop offset="1" stop-color="#27bfff"/>'
+    '</linearGradient>'
     '<mask id="rt3-route-reveal" maskUnits="userSpaceOnUse" '
     'x="0" y="130" width="1064.05" height="1430">'
     f'<path class="rt3-reveal-mask" pathLength="1000" d="{centre_d}"/>'
