@@ -145,10 +145,10 @@
         : el.classList.contains('highway__car--left') ? 'left' : 'right';
       const style = getComputedStyle(el);
       const origin = style.transformOrigin.split(' ').map(parseFloat);
-      const plate = el.querySelector('.highway__plate');
+      const plateSpan = el.querySelector('.highway__plate span');
       return {
         el,
-        plate,
+        plateSpan,
         lane,
         delay: Math.abs(parseFloat(style.getPropertyValue('--drive-delay'))) * 1000,
         leftRatio: el.offsetLeft / stage.clientWidth,
@@ -157,7 +157,6 @@
         heightRatio: el.offsetHeight / stage.clientHeight,
         originXRatio: origin[0] / el.offsetWidth,
         originYRatio: origin[1] / el.offsetHeight,
-        plateFont: parseFloat(getComputedStyle(plate).fontSize),
       };
     });
 
@@ -205,7 +204,15 @@
         car.el.style.height = `${baseHeight * scale}px`;
         car.el.style.opacity = String(opacityAt(progress));
         car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
-        car.plate.style.fontSize = `${car.plateFont * scale}px`;
+        // The plate's own box already tracks the car (it's sized in % of
+        // car.el, which is resized above), so it only needs the text inside
+        // it to shrink to match -- a job for transform, not font-size.
+        // font-size forces the glyphs to be re-hinted at a new pixel size
+        // every frame, and that hinting doesn't interpolate as smoothly as a
+        // scaled vector: the plate visibly bounced a pixel or so vertically
+        // as the hinted baseline snapped frame to frame. transform just
+        // rescales the already-laid-out text on the compositor.
+        car.plateSpan.style.transform = `scale(${scale})`;
       });
       frame = requestAnimationFrame(draw);
     }
