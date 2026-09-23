@@ -1448,7 +1448,7 @@ a {
   stroke-width:70px;
   stroke-linecap:round;
   stroke-dasharray:1000;
-  stroke-dashoffset:1000;
+  stroke-dashoffset:-1000;
 }
 
 .route__art .rt3-start-orb,
