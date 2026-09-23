@@ -1276,13 +1276,13 @@ a {
 
 .route__pin--right .route__pin-text {
   left: 100%;
-  margin-left: 11px;
+  margin-left: 42px;
   text-align: left;
 }
 
 .route__pin--left .route__pin-text {
   right: 100%;
-  margin-right: 11px;
+  margin-right: 42px;
   text-align: right;
 }
 
@@ -1523,7 +1523,7 @@ a {
 .route__pin--3 .route__pin-text,
 .route__pin--4 .route__pin-text{max-width:150px;}
 .route__spark{left:47.58%;top:4.50%;width:12.25%;}
-.route__cap--star{bottom:95.50%;margin-bottom:14px;}
+.route__cap--star{bottom:95.50%;margin-bottom:54px;}
 .route__cap--globe{top:98.75%;margin-top:18px;}
 .route{padding-bottom:60px;}
 
