@@ -816,18 +816,8 @@ a {
 .highway__art .st1, .highway__art .st2, .highway__art .st6, .highway__art .st7, .highway__art .st8, .highway__art .st9, .highway__art .st10, .highway__art .st11, .highway__art .st12, .highway__art .st13, .highway__art .st14, .highway__art .st15, .highway__art .st16, .highway__art .st18{stroke: #fff;}
 .highway__art .st1, .highway__art .st6, .highway__art .st18{stroke-width: 5px;}
 .highway__art .st20{fill: #fff;}
-.highway__art .st2{stroke-linecap: round;stroke-width: .22px;vector-effect: non-scaling-stroke;}
-.highway__art .st13{stroke-width: .8px;vector-effect: non-scaling-stroke;shape-rendering: geometricPrecision;}
-
-/* st7 is the mountain outline (and the guardrail post's) -- pinned to
-   device pixels for the same reason as .middle-path__art's mountains
-   below: without this, its nominal 1px stroke rendered at ~0.3 actual
-   device pixels once the SVG's own scale-to-viewport ratio was applied,
-   and anti-aliasing a sub-pixel line reads as a soft, blurred, wider
-   line than a crisp pinned one -- which is what looked "thicker" than
-   the middle-path mountains next to it, despite an identical nominal
-   width. */
-.highway__art .st7{vector-effect: non-scaling-stroke;shape-rendering: geometricPrecision;}
+.highway__art .st2{stroke-linecap: round;stroke-width: .22px;}
+.highway__art .st13{stroke-width: .8px;}
 
 /* The cactus's own silhouette and interior ribs, split out of st7/st10 --
    those are also the mountains' outline and rib classes and the guardrail
@@ -843,8 +833,8 @@ a {
    0.48px puts the outline at ~0.30px rendered near camera; 0.32px puts the
    ribs at ~0.20px. Both close to the bush's 0.24px, with the outline still
    the heavier of the two as an outer silhouette should be. */
-.highway__art .hw-cactus-outline{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:.48px;vector-effect:non-scaling-stroke;}
-.highway__art .hw-cactus-rib{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:.32px;vector-effect:non-scaling-stroke;}
+.highway__art .hw-cactus-outline{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:.48px;}
+.highway__art .hw-cactus-rib{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:.32px;}
 .highway__art .st3, .highway__art .st4, .highway__art .st5{stroke: #fff;}
 .highway__art .st3, .highway__art .st9{stroke-width: .7px;}
 .highway__art .st4, .highway__art .st16, .highway__art .st17{stroke-width: 1.4px;}
