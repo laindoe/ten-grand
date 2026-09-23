@@ -942,24 +942,32 @@ a {
 
 /* Match the multi-car desert linework. Dedicated classes prevent the SVG
    exporter's generic .cls-* rules from changing mountains and rails too. */
+/* Widths below are the highway's own cactus/bush/mountain strokes'
+   real rendered device-pixel size (measured directly: e.g. the
+   highway's un-pinned hw-cactus-outline renders at ~0.141 device px,
+   its 0.48px nominal width times that SVG's ~0.2947 scale-to-viewport
+   ratio), reproduced here as literal pinned values via vector-effect,
+   since this SVG's own scale-to-viewport ratio is nearly identical
+   (~0.2947 vs the highway's ~0.29467) but not guaranteed to stay that
+   way if either artwork's container sizing changes independently. */
 .middle-path__art #mp-cacti .mp-cactus-outline {
   fill: none;
   stroke: #fff;
-  stroke-width: .48px;
+  stroke-width: .141px;
   vector-effect: non-scaling-stroke;
 }
 
 .middle-path__art #mp-cacti .mp-cactus-rib {
   fill: none;
   stroke: #fff;
-  stroke-width: .32px;
+  stroke-width: .094px;
   vector-effect: non-scaling-stroke;
 }
 
 .middle-path__art #mp-cacti .mp-bush {
   fill: none;
   stroke: #fff;
-  stroke-width: .22px;
+  stroke-width: .065px;
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
@@ -972,14 +980,16 @@ a {
   shape-rendering: geometricPrecision;
 }
 
-/* Matches the highway section's mountain weights (.highway__art .st7/.st13):
-   1px for the majority contour lines, .8px for interior detail. */
+/* Matches the highway section's actual rendered mountain widths
+   (.highway__art .st7/.st13, un-pinned, ~0.295px/~0.236px at that
+   SVG's own scale) -- not the highway's own nominal 1px/.8px, which
+   only renders that thin because it ISN'T pinned there. */
 .middle-path__art #mp-mountains :is(.cls-2, .cls-4) {
-  stroke-width: 1px;
+  stroke-width: .295px;
 }
 
 .middle-path__art #mp-mountains :is(.cls-10, .cls-11, .cls-12) {
-  stroke-width: .8px;
+  stroke-width: .236px;
 }
 
 .middle-path__plate {
