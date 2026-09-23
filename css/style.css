@@ -1441,6 +1441,9 @@ a {
   opacity:1;
   stroke:url(#rt3-route-colour);
 }
+.route__art .rt3-centre-cap-active {
+  stroke:url(#rt3-route-colour);
+}
 .route__art .rt3-centre-active {
   filter:drop-shadow(0 0 5px rgba(255,255,255,.75));
 }
@@ -1448,7 +1451,7 @@ a {
 .route__art .rt3-reveal-mask {
   fill:none;
   stroke:#fff;
-  stroke-width:70px;
+  stroke-width:120px;
   stroke-linecap:round;
   stroke-dasharray:1000;
   stroke-dashoffset:-1000;
@@ -1500,8 +1503,8 @@ a {
 }
 @keyframes rt3ImpactCore {
   0% { transform:scale(.75); }
-  70% { transform:scale(1.18); }
-  100% { transform:scale(1); }
+  70% { transform:scale(1.82); }
+  100% { transform:scale(1.7177); }
 }
 
 .route__pin-index {
@@ -1544,7 +1547,7 @@ a {
   .route__art .rt3-reveal-mask{stroke-dashoffset:0;}
   .route__art .rt3-marker-glow{opacity:.9;transform:scale(1);}
   .route__art #rt3-impact{opacity:1;transform:scale(1);}
-  .route__art .rt3-impact-core{transform:scale(1);}
+  .route__art .rt3-impact-core{transform:scale(1.7177);}
 }
 
 @media (prefers-reduced-motion:no-preference) {

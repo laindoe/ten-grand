@@ -119,6 +119,8 @@ base_edges = add_class(road_left, "rt3-road-base") + add_class(road_right, "rt3-
 active_edges = add_class(road_left, "rt3-road-active") + add_class(road_right, "rt3-road-active")
 base_centre = add_class(centre, "rt3-centre-base")
 active_centre = add_class(centre, "rt3-centre-active")
+base_caps = caps.replace('class="', 'class="rt3-centre-cap-base ')
+active_caps = caps.replace('class="', 'class="rt3-centre-cap-active ')
 
 globe = normalize(globe).replace('id="outer_globe"', 'id="rt3-impact"')
 globe = globe.replace('class="rt3-15"', 'class="rt3-15 rt3-impact-core"', 1)
@@ -145,8 +147,8 @@ svg = (
     'aria-label="A winding route carrying an idea through development, production, packaging, and distribution to cultural impact">'
     f'<defs>{defs}</defs>'
     '<g class="rt3-road">'
-    f'<g>{base_edges}{base_centre}{caps}</g>'
-    f'<g class="rt3-lit-route" mask="url(#rt3-route-reveal)">{active_edges}{active_centre}</g>'
+    f'<g>{base_edges}{base_centre}{base_caps}</g>'
+    f'<g class="rt3-lit-route" mask="url(#rt3-route-reveal)">{active_edges}{active_centre}{active_caps}</g>'
     '</g>'
     f'{start_orb}'
     + ''.join(marker_markup)
