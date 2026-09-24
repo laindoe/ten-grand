@@ -1435,7 +1435,7 @@ a {
 .route__art .rt3-12 { fill:none;stroke:#141414;stroke-width:4px; }
 .route__art .rt3-17 { fill:#fff; }
 
-.route__art .rt3-road-base { opacity:.58; }
+.route__art .rt3-road-base { opacity:1; }
 .route__art .rt3-road-active { opacity:0; }
 .route__art .rt3-centre-base { opacity:.25; }
 .route__art .rt3-centre-active {
