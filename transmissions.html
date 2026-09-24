@@ -20,82 +20,90 @@ permalink: /transmissions/
 
   <main>
     <section class="archive-header">
-      <p class="section-eyebrow">TG-10000 ARCHIVE</p>
-      <h1 class="archive-header__title">TRANSMISSIONS</h1>
-      <p class="archive-header__subtitle">Ideas, observations, and stories transmitted from the Ten Grand universe.</p>
+      <div class="archive-inner">
+        <p class="section-eyebrow">TG-10000 ARCHIVE</p>
+        <h1 class="archive-header__title">TRANSMISSIONS</h1>
+        <p class="archive-header__subtitle">Ideas, observations, and stories transmitted from the Ten Grand universe.</p>
+      </div>
     </section>
 
     <section class="archive-filters">
-      <div class="archive-filters__pillars" role="group" aria-label="Filter by pillar">
-        <button type="button" class="archive-filter-btn is-active" data-filter-pillar="all">ALL</button>
-        <button type="button" class="archive-filter-btn" data-filter-pillar="technology">TECHNOLOGY</button>
-        <button type="button" class="archive-filter-btn" data-filter-pillar="entertainment">ENTERTAINMENT</button>
-        <button type="button" class="archive-filter-btn" data-filter-pillar="merchandise">MERCHANDISE</button>
-        <button type="button" class="archive-filter-btn" data-filter-pillar="experiences">EXPERIENCES</button>
-      </div>
+      <div class="archive-inner">
+        <div class="archive-filters__pillars" role="group" aria-label="Filter by pillar">
+          <button type="button" class="archive-filter-btn is-active" data-filter-pillar="all">ALL</button>
+          <button type="button" class="archive-filter-btn" data-filter-pillar="technology">TECHNOLOGY</button>
+          <button type="button" class="archive-filter-btn" data-filter-pillar="entertainment">ENTERTAINMENT</button>
+          <button type="button" class="archive-filter-btn" data-filter-pillar="merchandise">MERCHANDISE</button>
+          <button type="button" class="archive-filter-btn" data-filter-pillar="experiences">EXPERIENCES</button>
+        </div>
 
-      <div class="archive-filters__row">
-        <select class="archive-select" id="series-filter" aria-label="Browse series">
-          <option value="all">BROWSE SERIES</option>
-          {% assign all_series = site.posts | map: "series" | compact | uniq | sort %}
-          {% for series in all_series %}
-          <option value="{{ series | slugify }}">{{ series }}</option>
-          {% endfor %}
-        </select>
+        <div class="archive-filters__row">
+          <select class="archive-select" id="series-filter" aria-label="Browse series">
+            <option value="all">BROWSE SERIES</option>
+            {% assign all_series = site.posts | map: "series" | compact | uniq | sort %}
+            {% for series in all_series %}
+            <option value="{{ series | slugify }}">{{ series }}</option>
+            {% endfor %}
+          </select>
 
-        <input type="search" class="archive-search" id="search-input" placeholder="Search transmissions&hellip;" aria-label="Search transmissions" />
+          <input type="search" class="archive-search" id="search-input" placeholder="Search transmissions&hellip;" aria-label="Search transmissions" />
+        </div>
       </div>
     </section>
 
     {% assign featured_post = site.posts | where: "featured", true | first %}
     {% if featured_post %}
     <section class="archive-featured">
-      <p class="archive-featured__label">FEATURED TRANSMISSION</p>
-      <a class="featured-card" href="{{ featured_post.url | relative_url }}">
-        <div class="featured-card__image" style="background-image: url('{{ featured_post.featured_image | relative_url }}');"></div>
-        <div class="featured-card__text">
-          {% if featured_post.sample %}<span class="sample-badge">SAMPLE</span>{% endif %}
-          <p class="transmission-card__date">{{ featured_post.date | date: "%b %d, %Y" | upcase }}</p>
-          {% if featured_post.series %}<p class="transmission-card__series">{{ featured_post.series | upcase }}</p>{% endif %}
-          <h2 class="featured-card__title">{{ featured_post.title | upcase }}</h2>
-          {% if featured_post.format %}<p class="transmission-card__format">{{ featured_post.format | upcase }}</p>{% endif %}
-          <p class="featured-card__excerpt">{{ featured_post.excerpt | strip_html | strip_newlines | truncatewords: 28 }}</p>
-          <span class="transmission-card__cta">&rarr; READ TRANSMISSION</span>
-        </div>
-      </a>
+      <div class="archive-inner">
+        <p class="archive-featured__label">FEATURED TRANSMISSION</p>
+        <a class="featured-card" href="{{ featured_post.url | relative_url }}">
+          <div class="featured-card__image" style="background-image: url('{{ featured_post.featured_image | relative_url }}');"></div>
+          <div class="featured-card__text">
+            {% if featured_post.sample %}<span class="sample-badge">SAMPLE</span>{% endif %}
+            <p class="transmission-card__date">{{ featured_post.date | date: "%b %d, %Y" | upcase }}</p>
+            {% if featured_post.series %}<p class="transmission-card__series">{{ featured_post.series | upcase }}</p>{% endif %}
+            <h2 class="featured-card__title">{{ featured_post.title | upcase }}</h2>
+            {% if featured_post.format %}<p class="transmission-card__format">{{ featured_post.format | upcase }}</p>{% endif %}
+            <p class="featured-card__excerpt">{{ featured_post.excerpt | strip_html | strip_newlines | truncatewords: 28 }}</p>
+            <span class="transmission-card__cta">&rarr; READ TRANSMISSION</span>
+          </div>
+        </a>
+      </div>
     </section>
     {% endif %}
 
     <section class="archive-grid-section">
-      <div class="archive-grid-section__header">
-        <p class="archive-grid-section__label">ALL TRANSMISSIONS</p>
-      </div>
+      <div class="archive-inner">
+        <div class="archive-grid-section__header">
+          <p class="archive-grid-section__label">ALL TRANSMISSIONS</p>
+        </div>
 
-      {% assign featured_url = featured_post.url | default: "" %}
-      <div class="archive-grid" id="transmissions-grid">
-        {% for post in site.posts %}
-        {% unless post.url == featured_url %}
-        <a class="transmission-card"
-           href="{{ post.url | relative_url }}"
-           data-pillars="{% for pillar in post.pillars %}{{ pillar | slugify }} {% endfor %}"
-           data-series="{{ post.series | slugify }}"
-           data-search="{{ post.title | append: ' ' | append: post.excerpt | strip_html | strip_newlines | downcase | escape }}">
-          <div class="transmission-card__image" style="background-image: url('{{ post.featured_image | relative_url }}');"></div>
-          <div class="transmission-card__body">
-            {% if post.sample %}<span class="sample-badge">SAMPLE</span>{% endif %}
-            <p class="transmission-card__date">{{ post.date | date: "%b %d, %Y" | upcase }}</p>
-            {% if post.series %}<p class="transmission-card__series">{{ post.series | upcase }}</p>{% endif %}
-            <h3 class="transmission-card__title">{{ post.title | upcase }}</h3>
-            {% if post.format %}<p class="transmission-card__format">{{ post.format | upcase }}</p>{% endif %}
-            <p class="transmission-card__excerpt">{{ post.excerpt | strip_html | strip_newlines | truncatewords: 20 }}</p>
-            <span class="transmission-card__cta">&rarr; READ TRANSMISSION</span>
-          </div>
-        </a>
-        {% endunless %}
-        {% endfor %}
-      </div>
+        {% assign featured_url = featured_post.url | default: "" %}
+        <div class="archive-grid" id="transmissions-grid">
+          {% for post in site.posts %}
+          {% unless post.url == featured_url %}
+          <a class="transmission-card"
+             href="{{ post.url | relative_url }}"
+             data-pillars="{% for pillar in post.pillars %}{{ pillar | slugify }} {% endfor %}"
+             data-series="{{ post.series | slugify }}"
+             data-search="{{ post.title | append: ' ' | append: post.excerpt | strip_html | strip_newlines | downcase | escape }}">
+            <div class="transmission-card__image" style="background-image: url('{{ post.featured_image | relative_url }}');"></div>
+            <div class="transmission-card__body">
+              {% if post.sample %}<span class="sample-badge">SAMPLE</span>{% endif %}
+              <p class="transmission-card__date">{{ post.date | date: "%b %d, %Y" | upcase }}</p>
+              {% if post.series %}<p class="transmission-card__series">{{ post.series | upcase }}</p>{% endif %}
+              <h3 class="transmission-card__title">{{ post.title | upcase }}</h3>
+              {% if post.format %}<p class="transmission-card__format">{{ post.format | upcase }}</p>{% endif %}
+              <p class="transmission-card__excerpt">{{ post.excerpt | strip_html | strip_newlines | truncatewords: 20 }}</p>
+              <span class="transmission-card__cta">&rarr; READ TRANSMISSION</span>
+            </div>
+          </a>
+          {% endunless %}
+          {% endfor %}
+        </div>
 
-      <p class="archive-empty" id="archive-empty" hidden>No transmissions match your filters yet.</p>
+        <p class="archive-empty" id="archive-empty" hidden>No transmissions match your filters yet.</p>
+      </div>
     </section>
   </main>
 
