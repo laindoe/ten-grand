@@ -1535,6 +1535,12 @@ a {
   text-align: center;
 }
 
+/* Bottom padding is owned by the last timeline item's own 60px
+   padding-bottom instead (see .amass__timeline-item:last-of-type). */
+.amass__timeline-block {
+  padding-bottom: 0;
+}
+
 .amass__text {
   font-size: 0.95rem;
   line-height: 1.6;
@@ -1579,22 +1585,18 @@ a {
 .amass__timeline-divider {
   display: block;
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) 28px;
+  margin: 0 calc(-1 * var(--section-padding-x));
   height: 1px;
   background: var(--color-card-border);
 }
 
-/* Runs from the divider above down to -1 * --divider-gap, which matches
-   .amass__timeline-block's own bottom padding exactly, so the line
-   reaches all the way to that block's bottom border instead of
-   stopping short at the last item (or, if this drifts out of sync with
-   that padding again, overshooting it into the block below). */
+/* .amass__timeline-block's own bottom padding is zeroed below so the last
+   item's own 60px padding-bottom is the sole source of that gap; the track
+   runs the full height of .amass__timeline as a result, top to bottom. */
 .amass__timeline-track {
   position: absolute;
-  /* up past the divider's own 28px margin, so the line starts on the rule
-     rather than at the first item */
-  top: -28px;
-  bottom: calc(-1 * var(--divider-gap));
+  top: 0;
+  bottom: 0;
   left: 50%;
   width: 1px;
   background: var(--color-card-border);
@@ -1606,7 +1608,20 @@ a {
   display: grid;
   grid-template-columns: 1fr 40px 1fr;
   min-height: 184px;
-  padding: 56px 0;
+  padding: 30px 0;
+}
+
+/* The 60px gaps at the very top and bottom of the timeline (divider to
+   first item, last item to the block's bottom border) are each owned
+   entirely by that one item's own padding, rather than split between the
+   item and a neighboring margin/padding -- see .amass__timeline-divider's
+   margin and .amass__timeline-block's padding-bottom above/below. */
+.amass__timeline-item:first-of-type {
+  padding-top: 60px;
+}
+
+.amass__timeline-item:last-of-type {
+  padding-bottom: 60px;
 }
 
 /* Every grid cell in the row defaults to align-self: stretch, so the
