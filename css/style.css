@@ -1520,6 +1520,10 @@ a {
 .route__pin--2 .route__pin-text,
 .route__pin--3 .route__pin-text,
 .route__pin--4 .route__pin-text{max-width:150px;}
+.route__pin--1 .route__pin-text,
+.route__pin--3 .route__pin-text{margin-right:clamp(70px, 14vw, 90px);}
+.route__pin--2 .route__pin-text,
+.route__pin--4 .route__pin-text{margin-left:clamp(70px, 14vw, 90px);}
 .route__spark{left:47.58%;top:4.50%;width:12.25%;}
 .route__cap--star{bottom:95.50%;margin-bottom:47px;}
 .route__cap--globe{top:98.75%;margin-top:26px;}
