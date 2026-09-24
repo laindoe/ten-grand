@@ -1439,6 +1439,7 @@ a {
 .route__art .rt3-road-base { opacity:1; }
 .route__art .rt3-road-active { opacity:0; }
 .route__art .rt3-centre-base { opacity:.25; }
+.route__art .rt3-lit-route { opacity:0; }
 .route__art .rt3-centre-active {
   opacity:1;
   stroke:url(#rt3-route-colour);
@@ -1505,7 +1506,15 @@ a {
   filter:drop-shadow(0 0 10px var(--marker-colour));
 }
 
-@keyframes rt3Reveal { to { stroke-dashoffset:0; } }
+@keyframes rt3Reveal {
+  from { stroke-dashoffset:-1000; }
+  to { stroke-dashoffset:0; }
+}
+@keyframes rt3LitRoute {
+  0% { opacity:0; }
+  .1% { opacity:1; }
+  100% { opacity:1; }
+}
 @keyframes rt3Start {
   35% { transform:scale(1.18); }
 }
@@ -1572,6 +1581,7 @@ a {
 }
 
 @media (prefers-reduced-motion:reduce) {
+  .route__art .rt3-lit-route{opacity:1;}
   .route__art .rt3-reveal-mask{stroke-dashoffset:0;}
   .route__art .rt3-marker-glow{opacity:.9;transform:scale(1);}
   .route__art #rt3-impact{opacity:1;transform:scale(1);}
@@ -1580,6 +1590,7 @@ a {
 }
 
 @media (prefers-reduced-motion:no-preference) {
+  .route--running .rt3-lit-route{animation:rt3LitRoute 4.2s linear both;}
   .route--running .rt3-reveal-mask{animation:rt3Reveal 4.2s linear both;}
   .route--running .rt3-start-orb{animation:rt3Start .7s ease-out both;}
   .route--running .rt3-start-glow{animation:rt3StartGlow .7s ease-out both;}

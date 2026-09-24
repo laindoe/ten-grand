@@ -243,8 +243,7 @@
     if (!stage) return;
 
     function run() {
-      route.classList.remove('route--running');
-      void route.offsetWidth;
+      if (route.classList.contains('route--running')) return;
       route.classList.add('route--running');
     }
 
