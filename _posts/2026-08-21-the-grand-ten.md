@@ -10,7 +10,6 @@ pillars:
 featured_image: "/assets/images/samples/the-grand-ten.svg"
 excerpt: "Ten people. Ten perspectives. A snapshot of where culture is headed next."
 featured: false
-sample: true
 ---
 
 <!-- SAMPLE TRANSMISSION — replace this post with real editorial content before launch. -->

@@ -10,7 +10,6 @@ featured_image: /assets/images/IMG_6404.png
 excerpt: On what comes after the breakthrough — and how we build a more human
   future from here.
 featured: true
-sample: true
 ---
 
 
