@@ -409,7 +409,7 @@ main {
 
   .featured-card__image {
     width: 55%;
-    aspect-ratio: auto;
+    aspect-ratio: 16 / 9;
   }
 
   .featured-card__text {
