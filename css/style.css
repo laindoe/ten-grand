@@ -1421,7 +1421,7 @@ a {
 
 .route__art .rt3-2 { stroke: #fff; }
 .route__art .rt3-10,
-.route__art .rt3-11 { stroke:#fff; }
+.route__art .rt3-11 { stroke:#fff;stroke-width:2px; }
 .route__art .rt3-13 { fill: url(#rt3-radial-gradient-4); }
 .route__art .rt3-15 { fill: url(#rt3-radial-gradient); }
 .route__art .rt3-14 { fill: url(#rt3-linear-gradient-7); }
