@@ -1547,6 +1547,7 @@ a {
 /* Measured directly from the 1064.05 x 1954.31 export. */
 .route__stage {
   --rt-h:min(clamp(380px, calc(100svh - 130px), 720px), calc((100vw - 2px) * 1.8367));
+  --rt-label-outset:clamp(0px, calc(31vw - 116.25px), 30px);
   width:calc(var(--rt-h) * .54447);
 }
 .route__art { transform:translateX(5.5%); }
@@ -1560,12 +1561,12 @@ a {
 .route__pin--3 .route__pin-text,
 .route__pin--4 .route__pin-text{max-width:150px;}
 .route__pin--1 .route__pin-text,
-.route__pin--3 .route__pin-text{margin-right:clamp(70px, 14vw, 90px);}
+.route__pin--3 .route__pin-text{margin-right:calc(clamp(70px, 14vw, 90px) + var(--rt-label-outset));}
 .route__pin--3 .route__pin-text{
-  margin-right:calc(clamp(70px, 14vw, 90px) + clamp(29px, 9.02vw, 35px));
+  margin-right:calc(clamp(70px, 14vw, 90px) + var(--rt-label-outset) + clamp(29px, 9.02vw, 35px));
 }
 .route__pin--2 .route__pin-text,
-.route__pin--4 .route__pin-text{margin-left:clamp(70px, 14vw, 90px);}
+.route__pin--4 .route__pin-text{margin-left:calc(clamp(70px, 14vw, 90px) + var(--rt-label-outset));}
 @media (min-width:500px) {
   .route__pin--1 .route__pin-text,
   .route__pin--2 .route__pin-text,
