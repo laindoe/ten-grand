@@ -1192,6 +1192,7 @@ a {
   display: block;
   width: 100%;
   height: 100%;
+  overflow: visible;
 }
 
 /* top is the shape's own edge and the gap below it is a margin in pixels, so
@@ -1201,8 +1202,9 @@ a {
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
+  line-height: 1.2;
   letter-spacing: 0.1em;
   white-space: nowrap;
   pointer-events: none;
@@ -1276,13 +1278,13 @@ a {
 
 .route__pin--right .route__pin-text {
   left: 100%;
-  margin-left: 11px;
+  margin-left: 42px;
   text-align: left;
 }
 
 .route__pin--left .route__pin-text {
   right: 100%;
-  margin-right: 11px;
+  margin-right: 42px;
   text-align: right;
 }
 
@@ -1305,7 +1307,7 @@ a {
 
 .route__pin-label {
   display: block;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   line-height: 1.2;
@@ -1314,7 +1316,7 @@ a {
 .route__pin-note {
   display: block;
   margin-top: 2px;
-  font-size: 0.74rem;
+  font-size: 0.875rem;
   line-height: 1.3;
   color: var(--color-text-muted);
 }
@@ -1399,6 +1401,201 @@ a {
   .route--running .rt-star{animation:rtStarBloom .7s ease-out both;}
 }
 /* --- end route artwork --- */
+
+/* --- Impact Path v3 ----------------------------------------------------
+   The moving reveal is a wide animated mask over fixed dashes. The dashes
+   illuminate in place instead of sliding, while the same mask wakes up the
+   road-edge colour directly beside them. */
+.route__art .rt3-1,
+.route__art .rt3-2,
+.route__art .rt3-10,
+.route__art .rt3-11 {
+  fill: none;
+  stroke-miterlimit: 10;
+  stroke-width: 8px;
+}
+
+.route__art .rt3-1 {
+  stroke: #fff;
+  stroke-dasharray: 36.39 36.39;
+}
+
+.route__art .rt3-2 { stroke: #fff; }
+.route__art .rt3-10,
+.route__art .rt3-11 { stroke:#fff;stroke-width:4px; }
+.route__art .rt3-13 { fill: url(#rt3-radial-gradient-4); }
+.route__art .rt3-15 { fill: url(#rt3-radial-gradient); }
+.route__art .rt3-14 { fill: url(#rt3-linear-gradient-7); }
+.route__art .rt3-3 { fill:none;stroke:url(#rt3-linear-gradient-4);stroke-width:4px; }
+.route__art .rt3-4 { fill:none;stroke:url(#rt3-linear-gradient-3);stroke-width:4px; }
+.route__art .rt3-5 { fill:none;stroke:url(#rt3-linear-gradient-2);stroke-width:4px; }
+.route__art .rt3-6 { fill:none;stroke:url(#rt3-linear-gradient-6);stroke-width:4px; }
+.route__art .rt3-7 { fill:none;stroke:url(#rt3-linear-gradient-5);stroke-width:4px; }
+.route__art .rt3-9 { fill:none;stroke:url(#rt3-linear-gradient);stroke-width:4px; }
+.route__art .rt3-8 { fill:#141414;stroke:#fff;stroke-width:4px; }
+.route__art .rt3-12 { fill:none;stroke:#141414;stroke-width:4px; }
+.route__art .rt3-17 { fill:#fff; }
+
+.route__art .rt3-road-base { opacity:1; }
+.route__art .rt3-road-active { opacity:0; }
+.route__art .rt3-centre-base { opacity:.25; }
+.route__art .rt3-centre-active {
+  opacity:1;
+  stroke:url(#rt3-route-colour);
+}
+.route__art .rt3-centre-cap-active {
+  stroke:url(#rt3-route-colour);
+}
+.route__art .rt3-centre-active {
+  filter:drop-shadow(0 0 5px rgba(255,255,255,.75));
+}
+
+.route__art .rt3-reveal-mask {
+  fill:none;
+  stroke:#fff;
+  stroke-width:120px;
+  stroke-linecap:round;
+  stroke-dasharray:1000;
+  stroke-dashoffset:-1000;
+}
+
+.route__art .rt3-start-orb,
+.route__art .rt3-start-glow,
+.route__art .rt3-marker,
+.route__art #rt3-impact,
+.route__art .rt3-impact-core,
+.route__art .rt3-impact-glow,
+.route__art .rt3-marker-glow {
+  transform-box:view-box;
+}
+
+.route__art .rt3-start-orb {
+  transform-origin:447.75px 87.91px;
+}
+.route__art .rt3-start-glow {
+  fill:#00b0e0;
+  opacity:.48;
+  transform:scale(1.12);
+  transform-origin:447.75px 87.91px;
+  filter:url(#rt3-soft-glow);
+}
+.route__art #rt3-impact {
+  opacity:.45;
+  transform:scale(1);
+  transform-origin:478.18px 1738.94px;
+}
+.route__art .rt3-impact-core {
+  transform:scale(.75);
+  transform-origin:478.86px 1742.74px;
+}
+.route__art .rt3-impact-glow {
+  fill:#00b0e0;
+  opacity:0;
+  transform:scale(.75);
+  transform-origin:478.86px 1742.74px;
+  filter:url(#rt3-soft-glow);
+}
+.route__art .rt3-marker-glow {
+  fill:none;
+  stroke:var(--marker-colour);
+  stroke-width:6px;
+  opacity:0;
+  transform-origin:var(--marker-x) var(--marker-y);
+  transform:scale(.6);
+  filter:drop-shadow(0 0 10px var(--marker-colour));
+}
+
+@keyframes rt3Reveal { to { stroke-dashoffset:0; } }
+@keyframes rt3Start {
+  35% { transform:scale(1.18); }
+}
+@keyframes rt3StartGlow {
+  0%,100% { opacity:.48;transform:scale(1.12); }
+  35% { opacity:.68;transform:scale(1.3); }
+}
+@keyframes rt3MarkerGlow {
+  0% { opacity:0;transform:scale(.55); }
+  45% { opacity:1;transform:scale(1.25); }
+  100% { opacity:.9;transform:scale(1); }
+}
+@keyframes rt3MarkerLight {
+  0% { filter:none; }
+  45%,100% { filter:drop-shadow(0 0 8px var(--marker-colour)); }
+}
+@keyframes rt3Impact {
+  0% { opacity:.45;transform:scale(1); }
+  100% { opacity:1;transform:scale(1); }
+}
+@keyframes rt3ImpactCore {
+  0% { transform:scale(.75); }
+  100% { transform:scale(1.7177); }
+}
+@keyframes rt3ImpactGlow {
+  0% { opacity:0;transform:scale(.75); }
+  100% { opacity:.58;transform:scale(1.7177); }
+}
+
+/* Measured directly from the 1064.05 x 1954.31 export. */
+.route__stage {
+  --rt-h:min(clamp(380px, calc(100svh - 130px), 720px), calc((100vw - 2px) * 1.8367));
+  width:calc(var(--rt-h) * .54447);
+}
+.route__art { transform:translateX(5.5%); }
+.route__pin-text { top:50%;bottom:auto;transform:translateY(-50%); }
+.route__pin--1{left:61.04%;top:10.73%;width:8.84%;height:8.80%;}
+.route__pin--2{left:29.93%;top:30.17%;width:8.84%;height:8.80%;}
+.route__pin--3{left:70.06%;top:44.61%;width:9.70%;height:8.80%;}
+.route__pin--4{left:29.93%;top:62.57%;width:9.70%;height:8.80%;}
+.route__pin--1 .route__pin-text,
+.route__pin--2 .route__pin-text,
+.route__pin--3 .route__pin-text,
+.route__pin--4 .route__pin-text{max-width:150px;}
+.route__pin--1 .route__pin-text,
+.route__pin--3 .route__pin-text{margin-right:clamp(70px, 14vw, 90px);}
+.route__pin--3 .route__pin-text{
+  margin-right:calc(clamp(70px, 14vw, 90px) + clamp(29px, 9.02vw, 35px));
+}
+.route__pin--2 .route__pin-text,
+.route__pin--4 .route__pin-text{margin-left:clamp(70px, 14vw, 90px);}
+@media (min-width:500px) {
+  .route__pin--1 .route__pin-text,
+  .route__pin--2 .route__pin-text,
+  .route__pin--3 .route__pin-text,
+  .route__pin--4 .route__pin-text{max-width:180px;}
+}
+.route__spark{left:47.58%;top:4.50%;width:12.25%;}
+.route__cap--star{bottom:95.50%;margin-bottom:47px;}
+.route__cap--globe{top:98.75%;margin-top:26px;}
+.route{
+  padding-top:clamp(39px, calc(76.85px - 4.5svh), 54px);
+  padding-bottom:clamp(101px, calc(111.625px - 1.25svh), 105.25px);
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .route__art .rt3-reveal-mask{stroke-dashoffset:0;}
+  .route__art .rt3-marker-glow{opacity:.9;transform:scale(1);}
+  .route__art #rt3-impact{opacity:1;transform:scale(1);}
+  .route__art .rt3-impact-core{transform:scale(1.7177);}
+  .route__art .rt3-impact-glow{opacity:.58;transform:scale(1.7177);}
+}
+
+@media (prefers-reduced-motion:no-preference) {
+  .route--running .rt3-reveal-mask{animation:rt3Reveal 4.2s linear both;}
+  .route--running .rt3-start-orb{animation:rt3Start .7s ease-out both;}
+  .route--running .rt3-start-glow{animation:rt3StartGlow .7s ease-out both;}
+  .route--running .rt3-marker--development{animation:rt3MarkerLight .65s ease-out .70s both;}
+  .route--running .rt3-marker--production{animation:rt3MarkerLight .65s ease-out 1.72s both;}
+  .route--running .rt3-marker--packaging{animation:rt3MarkerLight .65s ease-out 2.66s both;}
+  .route--running .rt3-marker--distribution{animation:rt3MarkerLight .65s ease-out 3.55s both;}
+  .route--running .rt3-marker--development .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out .70s both;}
+  .route--running .rt3-marker--production .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 1.72s both;}
+  .route--running .rt3-marker--packaging .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 2.66s both;}
+  .route--running .rt3-marker--distribution .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 3.55s both;}
+  .route--running #rt3-impact{animation:rt3Impact 1.8s ease-in-out 4.2s both;}
+  .route--running .rt3-impact-core{animation:rt3ImpactCore 1.8s ease-in-out 4.2s both;}
+  .route--running .rt3-impact-glow{animation:rt3ImpactGlow 1.8s ease-in-out 4.2s both;}
+}
+/* --- end Impact Path v3 --- */
 
 /* Full-bleed, same technique as .distance__footer, so the top rule
    reaches the site frame's edges. margin-top adds room below IMPACT
