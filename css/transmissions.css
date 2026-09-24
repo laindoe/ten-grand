@@ -16,15 +16,34 @@ main {
 
 /* ---------- Shared wide container ---------- */
 
-.archive-header,
-.archive-filters,
-.archive-featured,
-.archive-grid-section,
 .transmission-post {
   width: 100%;
   max-width: var(--archive-max-width);
   margin: 0 auto;
   padding: 40px var(--section-padding-x);
+  box-sizing: border-box;
+}
+
+/* The archive's own sections stay full-width (rather than capped at
+   --archive-max-width like .transmission-post above) specifically so each
+   one's border-bottom divider reaches the site-frame's actual edge on
+   wide viewports, instead of stopping at the 1100px reading column and
+   leaving visible gaps on either side. The reading column itself is
+   reintroduced one level in, via .archive-inner. */
+.archive-header,
+.archive-filters,
+.archive-featured,
+.archive-grid-section {
+  width: 100%;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  box-sizing: border-box;
+}
+
+.archive-inner {
+  max-width: var(--archive-max-width);
+  margin: 0 auto;
+  padding: 0 var(--section-padding-x);
   box-sizing: border-box;
 }
 
