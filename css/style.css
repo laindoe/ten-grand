@@ -1433,7 +1433,7 @@ a {
 .route__art .rt3-7 { fill:none;stroke:url(#rt3-linear-gradient-5);stroke-width:4px; }
 .route__art .rt3-9 { fill:none;stroke:url(#rt3-linear-gradient);stroke-width:4px; }
 .route__art .rt3-8 { fill:#141414;stroke:#fff;stroke-width:4px; }
-.route__art .rt3-12 { fill:none;stroke:#141414;stroke-width:4px; }
+.route__art .rt3-12 { display:none; }
 .route__art .rt3-17 { fill:#fff; }
 
 .route__art .rt3-road-base { opacity:1; }
