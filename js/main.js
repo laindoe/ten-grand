@@ -242,9 +242,24 @@
     const spark = route.querySelector('.route__spark');
     if (!stage) return;
 
+    let startFrame = 0;
+
     function run() {
-      if (route.classList.contains('route--running')) return;
-      route.classList.add('route--running');
+      if (route.classList.contains('route--running') ||
+          route.classList.contains('route--armed')) return;
+
+      // Give the browser one painted frame with the colour layer forcibly
+      // hidden, then start the mask animation and wait one more painted frame
+      // before revealing it. This prevents Chromium from briefly compositing
+      // the complete gradient while the SVG mask is being promoted.
+      route.classList.add('route--armed');
+      startFrame = requestAnimationFrame(() => {
+        route.classList.add('route--running');
+        startFrame = requestAnimationFrame(() => {
+          route.classList.remove('route--armed');
+          startFrame = 0;
+        });
+      });
     }
 
     if (spark) spark.addEventListener('click', run);
@@ -283,6 +298,9 @@
         // reset only once it is entirely gone: the road un-colouring is what
         // would make the replay read as a glitch, so it happens unseen
         lit = false;
+        if (startFrame) cancelAnimationFrame(startFrame);
+        startFrame = 0;
+        route.classList.remove('route--armed');
         route.classList.remove('route--running');
       }
     }
