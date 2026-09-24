@@ -1667,19 +1667,19 @@ a {
 }
 
 .amass__timeline-year {
-  font-size: clamp(0.8rem, 3.2vw, 1rem);
+  font-size: clamp(1rem, 4vw, 1.15rem);
   margin-bottom: 4px;
 }
 
 .amass__timeline-label {
-  font-size: clamp(0.7rem, 2.9vw, 0.875rem);
+  font-size: clamp(0.9rem, 3.6vw, 1.05rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   margin-bottom: 8px;
 }
 
 .amass__timeline-desc {
-  font-size: clamp(0.68rem, 2.7vw, 0.85rem);
+  font-size: clamp(0.85rem, 3.4vw, 1rem);
   line-height: 1.4;
   color: var(--color-text-muted);
 }
