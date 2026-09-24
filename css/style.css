@@ -1725,13 +1725,14 @@ a {
   .amass__timeline-toggle {
     animation: amassPulse 2.4s ease-out infinite, amassHue 12s linear infinite;
   }
-  /* Staggered by one color-step each (12s / 6 stops = 2s), so neighboring
-     circles always show adjacent colors instead of cycling in unison. */
-  .amass__timeline-item:nth-of-type(2) .amass__timeline-toggle { animation-delay: -0.4s, -2s; }
-  .amass__timeline-item:nth-of-type(3) .amass__timeline-toggle { animation-delay: -0.8s, -4s; }
-  .amass__timeline-item:nth-of-type(4) .amass__timeline-toggle { animation-delay: -1.2s, -6s; }
-  .amass__timeline-item:nth-of-type(5) .amass__timeline-toggle { animation-delay: -1.6s, -8s; }
-  .amass__timeline-item:nth-of-type(6) .amass__timeline-toggle { animation-delay: -2.0s, -10s; }
+  /* Only the pulse ring stays staggered, so the six don't beat in unison --
+     amassHue has no per-item delay, so every circle shows the same color at
+     the same time as it cycles. */
+  .amass__timeline-item:nth-of-type(2) .amass__timeline-toggle { animation-delay: -0.4s, 0s; }
+  .amass__timeline-item:nth-of-type(3) .amass__timeline-toggle { animation-delay: -0.8s, 0s; }
+  .amass__timeline-item:nth-of-type(4) .amass__timeline-toggle { animation-delay: -1.2s, 0s; }
+  .amass__timeline-item:nth-of-type(5) .amass__timeline-toggle { animation-delay: -1.6s, 0s; }
+  .amass__timeline-item:nth-of-type(6) .amass__timeline-toggle { animation-delay: -2.0s, 0s; }
 }
 
 .amass__timeline-toggle::before,
