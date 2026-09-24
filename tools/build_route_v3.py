@@ -88,6 +88,10 @@ defs += (
     '<stop offset=".66" stop-color="#58de68"/>'
     '<stop offset="1" stop-color="#27bfff"/>'
     '</linearGradient>'
+    '<filter id="rt3-soft-glow" x="-100%" y="-100%" width="300%" height="300%" '
+    'color-interpolation-filters="sRGB">'
+    '<feGaussianBlur stdDeviation="25"/>'
+    '</filter>'
     '<mask id="rt3-route-reveal" maskUnits="userSpaceOnUse" '
     'x="0" y="130" width="1064.05" height="1430">'
     f'<path class="rt3-reveal-mask" pathLength="1000" d="{centre_d}"/>'
@@ -114,6 +118,7 @@ road_right = normalize(road_right)
 centre = normalize(centre)
 caps = normalize(caps)
 start_orb = add_class(normalize(start_orb), "rt3-start-orb")
+start_glow = start_orb.replace('class="rt3-start-orb rt3-13"', 'class="rt3-start-glow"')
 
 base_edges = add_class(road_left, "rt3-road-base") + add_class(road_right, "rt3-road-base")
 active_edges = add_class(road_left, "rt3-road-active") + add_class(road_right, "rt3-road-active")
@@ -124,6 +129,7 @@ active_caps = caps.replace('class="', 'class="rt3-centre-cap-active ')
 
 globe = normalize(globe).replace('id="outer_globe"', 'id="rt3-impact"')
 globe = globe.replace('class="rt3-15"', 'class="rt3-15 rt3-impact-core"', 1)
+impact_glow = '<circle class="rt3-impact-glow" cx="478.86" cy="1742.74" r="111.63"/>'
 
 marker_markup = []
 for name, source_id, colour, cx, cy in markers:
@@ -150,9 +156,9 @@ svg = (
     f'<g>{base_edges}{base_centre}{base_caps}</g>'
     f'<g class="rt3-lit-route" mask="url(#rt3-route-reveal)">{active_edges}{active_centre}{active_caps}</g>'
     '</g>'
-    f'{start_orb}'
+    f'{start_glow}{start_orb}'
     + ''.join(marker_markup)
-    + globe
+    + impact_glow + globe
     + '</svg>'
 )
 
