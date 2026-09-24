@@ -1679,7 +1679,7 @@ a {
 }
 
 .amass__timeline-desc {
-  font-size: clamp(0.85rem, 3.4vw, 1rem);
+  font-size: 0.95rem;
   line-height: 1.4;
   color: var(--color-text-muted);
 }
@@ -1796,7 +1796,7 @@ a {
   border-radius: 10px;
   padding: 8px 10px;
   text-align: left;
-  font-size: 0.72rem;
+  font-size: 0.95rem;
   line-height: 1.55;
   color: var(--color-text-muted);
   z-index: 1;
