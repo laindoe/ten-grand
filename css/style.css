@@ -1416,13 +1416,13 @@ a {
 }
 
 .route__art .rt3-1 {
-  stroke: #fff;
+  stroke: #f3f3f4;
   stroke-dasharray: 36.39 36.39;
 }
 
-.route__art .rt3-2 { stroke: #fff; }
+.route__art .rt3-2 { stroke: #f3f3f4; }
 .route__art .rt3-10,
-.route__art .rt3-11 { stroke:#fff;stroke-width:4px; }
+.route__art .rt3-11 { stroke:#f3f3f4;stroke-width:4px; }
 .route__art .rt3-13 { fill: url(#rt3-radial-gradient-4); }
 .route__art .rt3-15 { fill: url(#rt3-radial-gradient); }
 .route__art .rt3-14 { fill: url(#rt3-linear-gradient-7); }
@@ -1432,9 +1432,9 @@ a {
 .route__art .rt3-6 { fill:none;stroke:url(#rt3-linear-gradient-6);stroke-width:4px; }
 .route__art .rt3-7 { fill:none;stroke:url(#rt3-linear-gradient-5);stroke-width:4px; }
 .route__art .rt3-9 { fill:none;stroke:url(#rt3-linear-gradient);stroke-width:4px; }
-.route__art .rt3-8 { fill:#141414;stroke:#fff;stroke-width:4px; }
+.route__art .rt3-8 { fill:#141414;stroke:#f3f3f4;stroke-width:4px; }
 .route__art .rt3-12 { display:none; }
-.route__art .rt3-17 { fill:#fff; }
+.route__art .rt3-17 { fill:#f3f3f4; }
 
 .route__art .rt3-road-base { opacity:1; }
 .route__art .rt3-road-active { opacity:0; }
@@ -1448,7 +1448,7 @@ a {
   stroke:url(#rt3-route-colour);
 }
 .route__art .rt3-centre-active {
-  filter:drop-shadow(0 0 5px rgba(255,255,255,.75));
+  filter:drop-shadow(0 0 5px rgba(243,243,244,.75));
 }
 
 .route__art .rt3-reveal-mask {
