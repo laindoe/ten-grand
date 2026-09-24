@@ -1201,8 +1201,9 @@ a {
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
+  line-height: 1.2;
   letter-spacing: 0.1em;
   white-space: nowrap;
   pointer-events: none;
