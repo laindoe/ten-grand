@@ -167,18 +167,10 @@ main {
 
 /* ---------- Featured transmission ---------- */
 
-/* The outer box: full-bleed logo-colored backdrop behind the "FEATURED
-   TRANSMISSION" label and the card. The card itself (.featured-card, the
-   "inner box") stays exactly as it looks on the rest of the page -- given
-   its own explicit dark background below so it still reads as a distinct
-   card sitting on top of this, rather than picking up this background
-   through its own transparency. */
 .archive-featured {
   border-bottom: 1px solid var(--color-card-border);
   padding-top: 40px;
   padding-bottom: 40px;
-  background: var(--color-text);
-  color: var(--color-bg);
 }
 
 .archive-featured__label {
@@ -187,13 +179,16 @@ main {
   margin-bottom: 20px;
 }
 
+/* The inner box: the card itself is logo-colored, with its text inverted
+   to the bg color. The outer .archive-featured backdrop above stays the
+   page's normal background. */
 .featured-card {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-card-border);
   text-decoration: none;
-  color: var(--color-text);
-  background: var(--color-bg);
+  color: var(--color-bg);
+  background: var(--color-text);
 }
 
 .featured-card__image {
@@ -215,12 +210,23 @@ main {
   margin: 6px 0 10px;
 }
 
+/* The dark equivalent of --color-text-muted (rgba(20,20,20) instead of
+   rgba(255,255,255)), needed because this card's background/text pair is
+   inverted from the rest of the page. */
 .featured-card__excerpt {
-  color: var(--color-text-muted);
+  color: rgba(20, 20, 20, 0.65);
   font-size: 0.95rem;
   line-height: 1.6;
   margin: 12px 0 20px;
   max-width: 60ch;
+}
+
+/* .transmission-card__date/__format are shared with the plain grid cards
+   below, which stay on the normal dark background -- scoped here so only
+   the featured card's copies pick up the inverted muted color. */
+.featured-card .transmission-card__date,
+.featured-card .transmission-card__format {
+  color: rgba(20, 20, 20, 0.65);
 }
 
 /* ---------- All transmissions grid ---------- */
