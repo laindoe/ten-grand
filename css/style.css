@@ -1523,6 +1523,9 @@ a {
 .route__pin--4 .route__pin-text{max-width:150px;}
 .route__pin--1 .route__pin-text,
 .route__pin--3 .route__pin-text{margin-right:clamp(70px, 14vw, 90px);}
+.route__pin--3 .route__pin-text{
+  margin-right:calc(clamp(70px, 14vw, 90px) + clamp(29px, 9.02vw, 35px));
+}
 .route__pin--2 .route__pin-text,
 .route__pin--4 .route__pin-text{margin-left:clamp(70px, 14vw, 90px);}
 @media (min-width:500px) {
