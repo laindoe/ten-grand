@@ -9,7 +9,6 @@ pillars:
 featured_image: "/assets/images/samples/the-ai-argument.svg"
 excerpt: "A clear-eyed look at what AI changes, what it doesn't, and what still depends on us."
 featured: false
-sample: true
 ---
 
 <!-- SAMPLE TRANSMISSION — replace this post with real editorial content before launch. -->
