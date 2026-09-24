@@ -11,6 +11,6 @@
 <path id="Vector_8" d="M49.4633 8.97221L8.44956 49.986" stroke="#F3F3F4" stroke-width="0.75" stroke-miterlimit="10" stroke-linecap="square"/>
 <path id="Vector_9" d="M49.4633 49.986L8.44956 8.97221" stroke="#F3F3F4" stroke-width="0.75" stroke-miterlimit="10" stroke-linecap="square"/>
 </g>
-<line id="Line 1" x1="29.5" y1="86" x2="29.5" y2="37" stroke="white"/>
+<line id="Line 1" x1="29.5" y1="86" x2="29.5" y2="37" stroke="#f3f3f4"/>
 </g>
 </svg>
