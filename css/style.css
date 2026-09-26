@@ -2262,8 +2262,7 @@ a {
 .quote__frame {
   position: relative;
   width: calc(100% + 2 * var(--section-padding-x));
-  min-height: 580px;
-  aspect-ratio: 3077.9 / 1510.8;
+  aspect-ratio: 1077.51 / 1603.39;
   margin-inline: calc(-1 * var(--section-padding-x));
   overflow: hidden;
 }
@@ -2274,9 +2273,9 @@ a {
    element wider than its container, leaving it flush left and overflowing. */
 @media (min-width: 600px) {
   .quote__frame {
-    width: 100%;
-    max-width: 520px;
-    margin-inline: auto;
+    width: calc(100% + 2 * var(--section-padding-x));
+    max-width: none;
+    margin-inline: calc(-1 * var(--section-padding-x));
   }
 }
 
@@ -2289,12 +2288,12 @@ a {
 .quote__stars--desktop {
   display: block;
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: 50%;
+  width: auto;
   max-width: none;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  transform: translateX(-50%);
 }
 
 .quote__stars--mobile {
@@ -2774,6 +2773,7 @@ body.modal-open {
   .quote__frame {
     width: calc(100% + 2 * var(--section-padding-x));
     max-width: none;
+    aspect-ratio: 3077.9 / 1510.8;
     margin-inline: calc(-1 * var(--section-padding-x));
   }
 
