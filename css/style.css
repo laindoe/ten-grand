@@ -2262,7 +2262,10 @@ a {
 .quote__frame {
   position: relative;
   width: calc(100% + 2 * var(--section-padding-x));
+  min-height: 580px;
+  aspect-ratio: 3077.9 / 1510.8;
   margin-inline: calc(-1 * var(--section-padding-x));
+  overflow: hidden;
 }
 
 /* Past this width the bleed would make the field absurdly tall (its height
@@ -2284,6 +2287,17 @@ a {
 }
 
 .quote__stars--desktop {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.quote__stars--mobile {
   display: none;
 }
 
@@ -2760,7 +2774,6 @@ body.modal-open {
   .quote__frame {
     width: calc(100% + 2 * var(--section-padding-x));
     max-width: none;
-    height: 774px;
     margin-inline: calc(-1 * var(--section-padding-x));
   }
 
@@ -2771,6 +2784,7 @@ body.modal-open {
   .quote__stars--desktop {
     display: block;
     width: 100%;
+    max-width: none;
     height: 100%;
   }
 
