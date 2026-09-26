@@ -26,6 +26,9 @@
   --frame-margin: 8px;
   --section-padding-x: clamp(20px, 6vw, 60px);
   --content-max-width: 480px;
+  --measure-body: 34ch;
+  --measure-subhead: 36ch;
+  --measure-wide: 40ch;
   /* Space between a header divider (the rule under a section's own
      headline, or under any full-bleed content block that ends in one)
      and the text on either side of it. One shared value, used the same
@@ -153,11 +156,34 @@ a {
   text-align: center;
   color: var(--color-text);
   white-space: nowrap;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 .nav__item--inverse {
   background: var(--color-text);
   color: var(--color-bg);
+}
+
+.nav__item:not(.nav__item--inverse):focus-visible {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.nav__item--inverse:focus-visible {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav__item:not(.nav__item--inverse):hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .nav__item--inverse:hover {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
 }
 
 /* ---------- Layout / section shell ---------- */
@@ -239,7 +265,7 @@ a {
   color: var(--color-text);
   font-size: 1rem;
   line-height: 1.6;
-  max-width: 34ch;
+  max-width: var(--measure-body);
   margin: 0 auto;
 }
 
@@ -336,7 +362,7 @@ a {
 .dilemma__subhead {
   font-size: 1rem;
   line-height: 1.4;
-  max-width: 32ch;
+  max-width: var(--measure-subhead);
 }
 
 .dilemma__grid-wrap {
@@ -634,7 +660,7 @@ a {
 }
 
 .dilemma__footer {
-  max-width: 40ch;
+  max-width: var(--measure-wide);
   margin: 0 auto;
   padding: 0 0 60px;
   font-size: 1rem;
@@ -674,7 +700,7 @@ a {
 .distance__subhead {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
-  max-width: 36ch;
+  max-width: var(--measure-subhead);
 }
 
 /* This site never renders wider than --content-max-width, so the
@@ -701,7 +727,7 @@ a {
 .distance__text-p {
   font-size: 0.95rem;
   line-height: 1.6;
-  max-width: 34ch;
+  max-width: var(--measure-body);
 }
 
 .distance__text-p + .distance__text-p {
@@ -727,11 +753,15 @@ a {
    side of the frame, waiting to come near enough to be shown whole. It is
    transparent there but still laid out, and without clipping it widened the
    page by 77px at 393. */
-.distance__visual {
+.distance__crop {
   width: calc(100% + 2 * var(--section-padding-x));
   margin-inline: calc(-1 * var(--section-padding-x));
-  position: relative;
   overflow: hidden;
+}
+
+.distance__visual {
+  width: 100%;
+  position: relative;
   container-type: inline-size;
 }
 
@@ -848,6 +878,10 @@ a {
 .highway__art .st11{stroke-width: 1.4px;}
 .highway__art .st12{stroke-width: 1.5px;}
 .highway__art .st15{stroke-width: 1.1px;}
+.highway__art #hw-post .st7{
+  stroke-width: 1.4px;
+  vector-effect: non-scaling-stroke;
+}
 .highway__art .st17{stroke: #f3f3f4;}
 .highway__art .st18{stroke-dasharray: 79.2 49.5;}
 .highway__art .st19{stroke: #f3f3f4;}
@@ -919,7 +953,7 @@ a {
 .middle-path__subhead {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
-  max-width: 36ch;
+  max-width: var(--measure-subhead);
   margin: 0 auto;
 }
 
@@ -1080,7 +1114,7 @@ a {
 
 .middle-path__body {
   width: 100%;
-  max-width: var(--content-max-width);
+  max-width: var(--measure-wide);
   margin: 0 auto;
   padding-bottom: 60px;
   text-align: center;
@@ -1089,7 +1123,7 @@ a {
 .middle-path__text {
   font-size: 0.95rem;
   line-height: 1.6;
-  max-width: 34ch;
+  max-width: var(--measure-body);
   margin: 0 auto;
 }
 
@@ -1140,7 +1174,7 @@ a {
 .engine__subhead {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
-  max-width: 36ch;
+  max-width: var(--measure-subhead);
 }
 
 /* The drawing is tall and narrow — 1:4.1 — so it is deliberately not sized to
@@ -1627,10 +1661,17 @@ a {
   text-align: center;
 }
 
+.engine__footer-heading {
+  font-size: clamp(1.25rem, 5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
 .engine__text {
   font-size: 0.95rem;
   line-height: 1.6;
-  max-width: 34ch;
+  max-width: var(--measure-body);
   margin: 0 auto;
 }
 
@@ -1729,7 +1770,7 @@ a {
 .amass__subhead {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
-  max-width: 36ch;
+  max-width: var(--measure-subhead);
 }
 
 /* Each content block is full-bleed with its own bottom rule, standing
@@ -1754,7 +1795,7 @@ a {
 .amass__text {
   font-size: 0.95rem;
   line-height: 1.6;
-  max-width: 34ch;
+  max-width: var(--measure-body);
   margin: 0 auto;
 }
 
@@ -2156,7 +2197,7 @@ a {
 /* Sits where the target icon used to, between the name block and the CTA.
    Same measure as the other body copy on the site so it reads as part of it. */
 .director__bio {
-  max-width: 34ch;
+  max-width: var(--measure-body);
   margin: 0 auto 64px;
   font-size: 0.95rem;
   line-height: 1.6;
@@ -2168,6 +2209,19 @@ a {
   border: 1px solid var(--color-card-border);
   padding: 16px 32px;
   font-size: 1.1rem;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.director__cta:focus-visible {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .director__cta:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
 }
 
 /* ---------- Quote section ---------- */
@@ -2324,7 +2378,7 @@ a {
 .invitation__body {
   font-size: 1rem;
   line-height: 1.6;
-  max-width: 30ch;
+  max-width: var(--measure-body);
   margin: 0 auto 40px;
 }
 
@@ -2332,11 +2386,28 @@ a {
   display: inline-block;
   background: var(--color-bg);
   color: var(--color-text);
+  border: 1px solid var(--color-bg);
   padding: 18px 40px;
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   border-radius: 0;
+  transition: background-color 180ms ease, color 180ms ease,
+    border-color 180ms ease;
+}
+
+.invitation__button:focus-visible {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-bg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .invitation__button:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+    border-color: var(--color-bg);
+  }
 }
 
 /* ---------- Connect section ---------- */
@@ -2480,6 +2551,193 @@ a {
 
 body.modal-open {
   overflow: hidden;
+}
+
+/* ---------- Wide-screen composition ----------
+   Mobile and tablet retain the established stacked layouts. These rules only
+   redistribute existing content once there is enough room for a true desktop
+   composition. */
+@media (min-width: 900px) {
+  :root {
+    --measure-body: 58ch;
+    --measure-subhead: 54ch;
+    --measure-wide: 68ch;
+  }
+
+  /* Anchor the brand and CTA to the site frame while the three primary links
+     share the space between them. The existing divider elements become the
+     full-height separators for each grid track. */
+  .nav__inner {
+    display: grid;
+    grid-template-columns:
+      88px 1px
+      minmax(140px, 1fr) 1px
+      minmax(170px, 1fr) 1px
+      minmax(140px, 1fr) 1px
+      minmax(220px, 260px);
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .nav__logo-box {
+    width: 100%;
+  }
+
+  .nav__item {
+    min-width: 0;
+    padding-inline: 16px;
+    font-size: clamp(0.68rem, 0.85vw, 0.9rem);
+  }
+
+  /* Let both routes occupy the desktop canvas, but cap each billboard so its
+     explanatory copy keeps a readable measure instead of becoming a single
+     long line. */
+  .dilemma__grid {
+    max-width: none;
+  }
+
+  .dilemma__grid-wrap {
+    width: 100%;
+  }
+
+  .dilemma__header .section-eyebrow,
+  .dilemma__headline,
+  .dilemma__subhead {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .dilemma__column {
+    min-width: 0;
+    padding-inline: clamp(40px, 6vw, 120px);
+  }
+
+  .dilemma__route-title br {
+    display: none;
+  }
+
+  .dilemma__route-title {
+    width: min(100%, 300px);
+    margin-inline: auto;
+    white-space: nowrap;
+  }
+
+  .dilemma__cue {
+    width: min(100%, 300px);
+    margin-inline: auto;
+  }
+
+  .dilemma__column .billboard {
+    width: 100%;
+    max-width: 300px;
+    margin-inline: auto;
+  }
+
+  .dilemma__column .billboard__copy {
+    max-width: 38ch;
+  }
+
+  /* The title/copy groups sit at the same left content margin as their parent
+     section headers. Only their readable text measure remains constrained. */
+  .distance__body {
+    max-width: none;
+  }
+
+  .distance__header .section-eyebrow,
+  .distance__headline,
+  .distance__subhead {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .distance__text {
+    width: min(100%, var(--measure-wide));
+    margin-inline: auto;
+  }
+
+  .distance__text-heading,
+  .distance__text-p {
+    text-align: center;
+  }
+
+  .distance__text-p {
+    margin-inline: auto;
+  }
+
+  .distance__divider {
+    width: calc(100% + 2 * var(--section-padding-x));
+    margin-inline: calc(-1 * var(--section-padding-x));
+    margin-bottom: 0;
+  }
+
+  .distance__crop {
+    position: relative;
+    aspect-ratio: 16 / 5;
+  }
+
+  .distance__crop .distance__visual {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    transform: translateY(-28%);
+  }
+
+  .engine__header .section-eyebrow,
+  .engine__headline,
+  .engine__subhead {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .engine__route {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .engine__route::before,
+  .engine__route::after {
+    content: "";
+    position: absolute;
+    top: -60px;
+    bottom: 0;
+    z-index: 0;
+    width: 1px;
+    background: var(--color-card-border);
+    pointer-events: none;
+  }
+
+  .engine__route::before {
+    left: 20%;
+  }
+
+  .engine__route::after {
+    right: 20%;
+  }
+
+  .engine__route .route {
+    position: relative;
+    z-index: 1;
+  }
+
+  .amass__header .section-eyebrow,
+  .amass__headline,
+  .amass__subhead {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .amass__intro {
+    text-align: center;
+  }
+
+  .amass__text {
+    margin-inline: auto;
+    text-align: center;
+  }
+
 }
 
 /* ---------- Reduced motion ---------- */
