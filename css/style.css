@@ -2271,6 +2271,10 @@ a {
   height: auto;
 }
 
+.quote__stars--desktop {
+  display: none;
+}
+
 /* Each halo swings between --glow-min and --glow-max. The trough is near
    zero so the glow fades out almost entirely before swelling back, which
    is what makes the twinkle legible; the peaks stay moderate so the
@@ -2736,6 +2740,26 @@ body.modal-open {
   .amass__text {
     margin-inline: auto;
     text-align: center;
+  }
+
+  /* Preserve the established desktop constellation height while allowing the
+     new, wider artwork to extend across the full framed section. The original
+     portrait composition remains the mobile asset. */
+  .quote__frame {
+    width: calc(100% + 2 * var(--section-padding-x));
+    max-width: none;
+    height: 774px;
+    margin-inline: calc(-1 * var(--section-padding-x));
+  }
+
+  .quote__stars--mobile {
+    display: none;
+  }
+
+  .quote__stars--desktop {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
 }
