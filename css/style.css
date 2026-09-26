@@ -1806,6 +1806,18 @@ a {
   margin-bottom: 8px;
 }
 
+/* These two editorial blocks use the same title-and-copy hierarchy as the
+   closing text beneath the Imagination to Impact route. Timeline item labels
+   retain their smaller, technical typography. */
+.amass__timeline-block > .amass__section-heading,
+.amass__culture > .amass__section-heading {
+  font-size: clamp(1.25rem, 5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: normal;
+  margin-bottom: 24px;
+}
+
 .amass__timeline-subtitle {
   font-size: clamp(0.75rem, 3vw, 0.85rem);
   line-height: 1.4;
