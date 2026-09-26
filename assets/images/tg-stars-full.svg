@@ -6,7 +6,6 @@
       .st0 {
         fill: #f3f3f4;
         filter: drop-shadow(0 0 9px rgba(243, 243, 244, .8));
-        animation: starFlashLarge 6.2s ease-in-out infinite;
       }
 
       .st1 {
@@ -17,12 +16,22 @@
       .st2 {
         fill: #f3f3f4;
         filter: drop-shadow(0 0 5px rgba(243, 243, 244, .68));
+      }
+
+      #TEN .st0, #GRAND .st0 {
+        animation: starFlashLarge 6.2s ease-in-out infinite;
+      }
+
+      #TEN .st2, #GRAND .st2 {
         animation: starFlashSmall 5.1s ease-in-out infinite;
       }
 
-      .st0:nth-child(3n), .st2:nth-child(3n) { animation-delay: -1.7s; }
-      .st0:nth-child(4n), .st2:nth-child(4n) { animation-delay: -3.2s; }
-      .st0:nth-child(5n), .st2:nth-child(5n) { animation-delay: -4.4s; }
+      #TEN .st0:nth-child(3n), #TEN .st2:nth-child(3n),
+      #GRAND .st0:nth-child(3n), #GRAND .st2:nth-child(3n) { animation-delay: -1.7s; }
+      #TEN .st0:nth-child(4n), #TEN .st2:nth-child(4n),
+      #GRAND .st0:nth-child(4n), #GRAND .st2:nth-child(4n) { animation-delay: -3.2s; }
+      #TEN .st0:nth-child(5n), #TEN .st2:nth-child(5n),
+      #GRAND .st0:nth-child(5n), #GRAND .st2:nth-child(5n) { animation-delay: -4.4s; }
 
       @keyframes starFlashLarge {
         0%, 100% { opacity: .72; }
