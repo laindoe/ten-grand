@@ -1332,6 +1332,30 @@ a {
   pointer-events: auto;
 }
 
+/* Desktop-only: a callout card in the open space beside the road, linked
+   to its sign with a short connector line, replacing the mobile modal
+   there (see .modal for that). Hidden entirely below the desktop
+   breakpoint -- JS never opens it at narrower widths anyway, but this
+   keeps it out of layout rather than just invisible. */
+.route__callout {
+  display: none;
+}
+
+/* The callout's own side margin isn't empty -- the pin labels on that
+   side already live there -- so while a callout is open, every label but
+   the one it belongs to steps back rather than fighting the card for the
+   same space. .route--callout-open and .is-callout-active are set by JS
+   (initRoute in main.js) alongside opening/closing the callout itself. */
+.route--callout-open .route__pin-text {
+  opacity: 0.15;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.route--callout-open .route__pin.is-callout-active .route__pin-text,
+.route--callout-open .route__pin-ghost.is-callout-active .route__pin-text {
+  opacity: 1;
+}
+
 .route__pin::before {
   content: '';
   position: absolute;
@@ -1342,7 +1366,13 @@ a {
   transform: translate(-50%, -50%);
 }
 
+/* Hidden until a sign is actually opened, at which point the same copy
+   shows in the modal instead (see .modal__title/.modal__body) -- mobile
+   reads the road from its colours and signage alone, not permanent
+   captions. Desktop re-enables this, since it keeps the always-on labels
+   alongside its callout card. */
 .route__pin-text {
+  display: none;
   position: absolute;
   bottom: 0;
   width: max-content;
@@ -1531,7 +1561,7 @@ a {
   stroke-width:120px;
   stroke-linecap:round;
   stroke-dasharray:1000;
-  stroke-dashoffset:-1000;
+  stroke-dashoffset:1000;
 }
 
 .route__art .rt3-start-orb,
@@ -1604,17 +1634,23 @@ a {
 
    Each stop is that sign's own position along the reveal path (measured
    with getPointAtLength against the live <path>, as a fraction of its
-   total length, scaled to this -1000..0 dashoffset range), pulled back
+   total length, scaled to a -1000..0 dashoffset range), pulled back
    by one dash-and-gap cycle of the coloured line itself (36.39+36.39 real
    units, i.e. ~30.5 units here) so the sweep stops just short of the
    sign instead of a trailing dash overlapping it -- the colour and the
    mask don't share a dash phase, so landing exactly on the sign let a
-   partial dash poke out past it. */
-@keyframes rt3RevealStage1 { from { stroke-dashoffset:-1000; } to { stroke-dashoffset:-910.24; } }
-@keyframes rt3RevealStage2 { from { stroke-dashoffset:-910.24; } to { stroke-dashoffset:-619.64; } }
-@keyframes rt3RevealStage3 { from { stroke-dashoffset:-619.64; } to { stroke-dashoffset:-371.44; } }
-@keyframes rt3RevealStage4 { from { stroke-dashoffset:-371.44; } to { stroke-dashoffset:-112.14; } }
-@keyframes rt3RevealStage5 { from { stroke-dashoffset:-112.14; } to { stroke-dashoffset:0; } }
+   partial dash poke out past it.
+
+   The offsets below are that -1000..0 range shifted up by one full
+   2000-unit dash cycle (dasharray is 1000/1000, so period is 2000) to land
+   on 1000..2000 instead: mathematically identical mod 2000, but some
+   WebKit builds render a pathLength-scaled *negative* stroke-dashoffset
+   inside an SVG mask backwards, so staying positive avoids that bug. */
+@keyframes rt3RevealStage1 { from { stroke-dashoffset:1000; } to { stroke-dashoffset:1089.76; } }
+@keyframes rt3RevealStage2 { from { stroke-dashoffset:1089.76; } to { stroke-dashoffset:1380.36; } }
+@keyframes rt3RevealStage3 { from { stroke-dashoffset:1380.36; } to { stroke-dashoffset:1628.56; } }
+@keyframes rt3RevealStage4 { from { stroke-dashoffset:1628.56; } to { stroke-dashoffset:1887.86; } }
+@keyframes rt3RevealStage5 { from { stroke-dashoffset:1887.86; } to { stroke-dashoffset:2000; } }
 @keyframes rt3Start {
   35% { transform:scale(1.18); }
 }
@@ -1660,15 +1696,30 @@ a {
 .route__pin--2{left:18.586%;top:27.014%;width:28.666%;height:12.193%;}
 .route__pin--3{left:66.243%;top:36.139%;width:17.37%;height:17.505%;}
 .route__pin--4{left:26.087%;top:53.824%;width:17.37%;height:17.521%;}
+/* Packaging's label anchor -- distribution's own box (same numbers as
+   .route__pin--4 above), so the relocated label reads as if it lived
+   there. Not a real hit target: .route__pin--3 itself, over the u-turn
+   sign, still owns the click. */
+.route__pin-ghost {
+  position: absolute;
+  pointer-events: none;
+}
+
+.route__pin-ghost.route__pin--3 {
+  left: 26.087%;
+  top: 53.824%;
+  width: 17.37%;
+  height: 17.521%;
+}
 .route__pin--1 .route__pin-text,
 .route__pin--2 .route__pin-text,
 .route__pin--3 .route__pin-text,
 .route__pin--4 .route__pin-text{max-width:150px;}
-.route__pin--1 .route__pin-text,
 .route__pin--3 .route__pin-text{margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
 .route__pin--3 .route__pin-text{
   margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset) + clamp(29px, 9.02vw, 35px));
 }
+.route__pin--1 .route__pin-text,
 .route__pin--2 .route__pin-text,
 .route__pin--4 .route__pin-text{margin-left:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
 @media (min-width:500px) {
@@ -1688,7 +1739,7 @@ a {
 
 @media (prefers-reduced-motion:reduce) {
   .route__art .rt3-lit-route{opacity:1;}
-  .route__art .rt3-reveal-mask{stroke-dashoffset:0;}
+  .route__art .rt3-reveal-mask{stroke-dashoffset:2000;}
   .route__art .rt3-marker-glow{opacity:.9;transform:scale(1);}
   .route__art #rt3-impact{opacity:1;transform:scale(1);}
   .route__art .rt3-impact-core{transform:scale(1.7177);}
@@ -2028,8 +2079,8 @@ a {
 .amass__timeline-icon {
   display: block;
   flex: none;
-  width: 125px;
-  height: 125px;
+  width: 100px;
+  height: 100px;
   color: var(--color-text);
 }
 
@@ -2678,17 +2729,77 @@ a {
   cursor: pointer;
 }
 
+/* Same look as the desktop route callout (.route__callout-card) --
+   headline, body, then a tag + CTA footer -- just centred-overlay instead
+   of a side card, since that's this modal's own presentation. */
 .modal__title {
-  font-size: 1.15rem;
-  font-weight: 400;
-  margin-bottom: 16px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0 0 14px;
   padding-right: 24px;
 }
 
 .modal__body {
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.5;
   color: var(--color-text);
+  margin-bottom: 18px;
+}
+
+.modal__body p + p {
+  margin-top: 12px;
+}
+
+.modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-card-border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.modal__tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-vandalism);
+  white-space: nowrap;
+}
+
+.modal__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-vandalism);
+  flex-shrink: 0;
+}
+
+.modal__cta {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.15s var(--ease-out);
+}
+
+.modal__cta:hover,
+.modal__cta:focus-visible {
+  color: var(--color-text);
+}
+
+.modal__cta::after {
+  content: ' \2192';
 }
 
 body.modal-open {
@@ -2850,29 +2961,154 @@ body.modal-open {
     align-self: stretch;
   }
 
-  .engine__route::before,
-  .engine__route::after {
-    content: "";
-    position: absolute;
-    top: -60px;
-    bottom: 0;
-    z-index: 0;
-    width: 1px;
-    background: var(--color-card-border);
-    pointer-events: none;
-  }
-
-  .engine__route::before {
-    left: 20%;
-  }
-
-  .engine__route::after {
-    right: 20%;
-  }
-
   .engine__route .route {
     position: relative;
     z-index: 1;
+  }
+
+  /* Desktop keeps the always-on labels alongside its callout card, unlike
+     mobile which hides them until a sign is opened (see .route__pin-text
+     above). */
+  .route__pin-text {
+    display: block;
+  }
+
+  /* The callout that replaces the mobile modal on desktop: a card that
+     drops straight down from its label, linked to it with a short
+     vertical connector, rather than sitting beside it -- the labels
+     already live in the open margin, so a card opening sideways from the
+     sign ended up overlapping the word instead of clearing it. JS
+     (openCallout in main.js) measures the label itself and sets --top /
+     --left in pixels, and --align to "left" or "right" to say which of
+     the card's own edges lines up under the label. */
+  .route__callout {
+    display: block;
+    position: absolute;
+    top: var(--top, 0);
+    left: var(--left, 0);
+    width: 320px;
+    max-width: min(320px, 80vw);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease-out);
+  }
+
+  .route__callout.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* The dot sits inset from the card's outer edge, into the word above it
+     rather than at its far corner, and the line drops from there to the
+     card's own top edge. */
+  .route__callout-connector {
+    position: absolute;
+    bottom: 100%;
+    width: 1px;
+    height: 22px;
+    background: var(--color-card-border);
+  }
+
+  .route__callout[data-align="left"] .route__callout-connector {
+    left: 24px;
+  }
+
+  .route__callout[data-align="right"] .route__callout-connector {
+    right: 24px;
+  }
+
+  .route__callout-connector::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 1px solid var(--color-card-border);
+    transform: translate(-50%, -50%);
+  }
+
+  .route__callout-card {
+    position: relative;
+    background: var(--color-bg);
+    border: 1px solid var(--color-card-border);
+    padding: 28px 24px 20px;
+  }
+
+  .route__callout-close {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .route__callout-headline {
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    margin: 0 0 14px;
+    padding-right: 20px;
+    text-transform: uppercase;
+  }
+
+  .route__callout-body {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text);
+    margin-bottom: 18px;
+  }
+
+  .route__callout-body p + p {
+    margin-top: 12px;
+  }
+
+  .route__callout-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-card-border);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .route__callout-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-vandalism);
+    white-space: nowrap;
+  }
+
+  .route__callout-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-vandalism);
+    flex-shrink: 0;
+  }
+
+  .route__callout-cta {
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .route__callout-cta::after {
+    content: ' \2192';
   }
 
   .section--bridge {

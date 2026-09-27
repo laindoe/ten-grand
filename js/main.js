@@ -44,6 +44,7 @@
 
     const titleEl = modal.querySelector('.modal__title');
     const bodyEl = modal.querySelector('.modal__body');
+    const ctaEl = modal.querySelector('.modal__cta');
     let lastFocused = null;
 
     // One <p> per paragraph, split on blank lines, so the copy in
@@ -62,8 +63,12 @@
 
     function openModal(trigger) {
       lastFocused = trigger;
-      titleEl.textContent = trigger.dataset.modalTitle || '';
+      // Same headline/CTA as the desktop callout (see .route__callout in
+      // style.css) -- one look for a sign's content, just two different
+      // presentations (centred overlay here, side card there).
+      titleEl.textContent = trigger.dataset.calloutHeadline || '';
       setBody(trigger.dataset.modalBody || '');
+      if (ctaEl) ctaEl.textContent = trigger.dataset.calloutCta || '';
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
@@ -294,6 +299,15 @@
 
     let currentStage = 0;
     let armFrame = 0;
+    // Set right before routeModal.open(pin) on mobile, so the "next" button
+    // (see below) knows which sign's modal is on screen without initModal
+    // having to expose its own private trigger.
+    let mobileModalPin = null;
+    // The stage to auto-open once its marker lights up, armed only by the
+    // modal's "next" button -- closing via the X or the backdrop advances
+    // the road same as always, but leaves the reader to tap the next sign
+    // themselves.
+    let pendingAutoOpenStage = 0;
 
     function setStage(n) {
       currentStage = n;
@@ -320,8 +334,99 @@
         const n = Number(route.dataset.stage);
         const pin = pinForStage(n);
         if (pin) pin.classList.add('is-reached');
+        if (pin && n === pendingAutoOpenStage && routeModal && !desktopQuery.matches) {
+          pendingAutoOpenStage = 0;
+          mobileModalPin = pin;
+          routeModal.open(pin);
+        }
       });
     });
+
+    // Desktop's equivalent of the mobile modal: a callout card in the open
+    // margin beside the road, linked to its sign with a connector line,
+    // instead of a centred overlay. Same "click opens it, closing it
+    // advances if it was the current sign" pattern as the modal below,
+    // just a different presentation for the same content.
+    const callout = route.querySelector('.route__callout');
+    const calloutHeadline = callout && callout.querySelector('.route__callout-headline');
+    const calloutBody = callout && callout.querySelector('.route__callout-body');
+    const calloutCta = callout && callout.querySelector('.route__callout-cta');
+    let calloutTrigger = null;
+
+    function setCalloutBody(text) {
+      calloutBody.textContent = '';
+      text.split(/\n\s*\n/).forEach((para) => {
+        const trimmed = para.trim();
+        if (!trimmed) return;
+        const p = document.createElement('p');
+        p.textContent = trimmed;
+        calloutBody.appendChild(p);
+      });
+    }
+
+    function openCallout(pin) {
+      if (!callout) return;
+      calloutTrigger = pin;
+      calloutHeadline.textContent = pin.dataset.calloutHeadline || '';
+      setCalloutBody(pin.dataset.modalBody || '');
+      calloutCta.textContent = pin.dataset.calloutCta || '';
+      // Stems from the label, not the sign -- most labels sit right by
+      // their own sign, but packaging's is relocated well away from it
+      // (see #route-label-3 / .route__pin-ghost), so this measures
+      // wherever the label actually renders rather than the pin itself.
+      const label = document.getElementById(`route-label-${pin.dataset.stage}`) || pin;
+      const stageRect = stage.getBoundingClientRect();
+      const labelRect = label.getBoundingClientRect();
+      // Drops straight down from the label instead of opening beside it --
+      // the card is wide enough that "beside" ran it right over the word.
+      // The card's near-the-road edge (right edge for a left-side label,
+      // left edge for a right-side one -- the stable edge that side's
+      // text already hugs, see .route__pin--left/--right .route__pin-text)
+      // lines up under that same edge of the label, so the connector's dot
+      // lands inside the word rather than off past either end of it.
+      const side = pin.dataset.calloutSide || 'right';
+      const align = side === 'left' ? 'right' : 'left';
+      callout.dataset.align = align;
+      const top = labelRect.bottom - stageRect.top + 22;
+      const left = align === 'left'
+        ? labelRect.left - stageRect.left
+        : labelRect.right - stageRect.left - callout.offsetWidth;
+      callout.style.setProperty('--top', `${top}px`);
+      callout.style.setProperty('--left', `${left}px`);
+      callout.classList.add('is-open');
+      callout.setAttribute('aria-hidden', 'false');
+      route.classList.add('route--callout-open');
+      // Dims every label but this one's -- toggled on whichever element
+      // actually holds the label (the pin itself, or packaging's ghost
+      // anchor), not on the pins themselves.
+      route.querySelectorAll('.route__pin, .route__pin-ghost').forEach((el) => {
+        el.classList.remove('is-callout-active');
+      });
+      if (label.parentElement) label.parentElement.classList.add('is-callout-active');
+    }
+
+    function closeCallout(advanceIfCurrent) {
+      if (!callout || !callout.classList.contains('is-open')) return;
+      const wasCurrent = advanceIfCurrent && calloutTrigger && Number(calloutTrigger.dataset.stage) === currentStage;
+      callout.classList.remove('is-open');
+      callout.setAttribute('aria-hidden', 'true');
+      route.classList.remove('route--callout-open');
+      route.querySelectorAll('.route__pin, .route__pin-ghost').forEach((el) => {
+        el.classList.remove('is-callout-active');
+      });
+      if (calloutTrigger) calloutTrigger.focus();
+      calloutTrigger = null;
+      if (wasCurrent) advance();
+    }
+
+    if (callout) {
+      callout.querySelectorAll('[data-callout-close]').forEach((el) => {
+        el.addEventListener('click', () => closeCallout(true));
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeCallout(true);
+      });
+    }
 
     pins.forEach((pin) => {
       pin.addEventListener('click', () => {
@@ -330,20 +435,33 @@
         // it's current -- so this only re-checks "is it lit at all", not
         // "is it the current one".
         if (!pin.classList.contains('is-reached')) return;
-        const isCurrent = Number(pin.dataset.stage) === currentStage;
         if (desktopQuery.matches) {
-          // No modal on desktop, so a past sign has nothing left to do here.
-          if (isCurrent) advance();
+          openCallout(pin);
         } else if (routeModal) {
           // Mobile always reopens the modal, current sign or a past one --
           // advancing (if this is the current sign) waits for its close,
           // handled by the modal:close listener below.
+          mobileModalPin = pin;
           routeModal.open(pin);
         }
       });
     });
 
     if (routeModal) {
+      const nextBtn = routeModal.modal.querySelector('[data-modal-next]');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (!mobileModalPin) return;
+          // Only chains into the next modal when this sign is the actual
+          // frontier -- reopening a past sign's modal and hitting "next"
+          // just closes it, same as the X, since there's nothing to advance.
+          if (Number(mobileModalPin.dataset.stage) === currentStage) {
+            pendingAutoOpenStage = currentStage + 1;
+          }
+          routeModal.close();
+        });
+      }
+
       routeModal.modal.addEventListener('modal:close', (event) => {
         const trigger = event.detail && event.detail.trigger;
         if (!trigger || !trigger.classList.contains('route__pin')) return;
@@ -426,6 +544,9 @@
         route.classList.remove('route--running');
         pins.forEach((pin) => pin.classList.remove('is-reached'));
         markers.forEach((marker) => marker.classList.remove('is-lit'));
+        pendingAutoOpenStage = 0;
+        mobileModalPin = null;
+        closeCallout(false);
       }
     }
 
