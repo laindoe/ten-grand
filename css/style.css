@@ -1332,6 +1332,29 @@ a {
   pointer-events: auto;
 }
 
+/* Desktop-only: a callout card in the open space beside the road, linked
+   to its sign with a short connector line, replacing the mobile modal
+   there (see .modal for that). Hidden entirely below the desktop
+   breakpoint -- JS never opens it at narrower widths anyway, but this
+   keeps it out of layout rather than just invisible. */
+.route__callout {
+  display: none;
+}
+
+/* The callout's own side margin isn't empty -- the pin labels on that
+   side already live there -- so while a callout is open, every label but
+   the one it belongs to steps back rather than fighting the card for the
+   same space. .route--callout-open and .is-callout-active are set by JS
+   (initRoute in main.js) alongside opening/closing the callout itself. */
+.route--callout-open .route__pin-text {
+  opacity: 0.15;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.route--callout-open .route__pin.is-callout-active .route__pin-text {
+  opacity: 1;
+}
+
 .route__pin::before {
   content: '';
   position: absolute;
@@ -2850,29 +2873,154 @@ body.modal-open {
     align-self: stretch;
   }
 
-  .engine__route::before,
-  .engine__route::after {
-    content: "";
-    position: absolute;
-    top: -60px;
-    bottom: 0;
-    z-index: 0;
-    width: 1px;
-    background: var(--color-card-border);
-    pointer-events: none;
-  }
-
-  .engine__route::before {
-    left: 20%;
-  }
-
-  .engine__route::after {
-    right: 20%;
-  }
-
   .engine__route .route {
     position: relative;
     z-index: 1;
+  }
+
+  /* The callout that replaces the mobile modal on desktop: a card in the
+     open margin beside the road, linked to its sign with a short
+     connector line. --callout-top is set by JS (initRoute in main.js) to
+     the clicked sign's own vertical centre, measured off its actual
+     rendered position rather than duplicating the .route__pin--N top
+     values here. data-side (also set by JS, from each pin's
+     data-callout-side) picks which open margin it sits in -- whichever
+     side that sign is closer to, so the connector stays short. */
+  .route__callout {
+    display: block;
+    position: absolute;
+    top: var(--callout-top, 50%);
+    transform: translateY(-50%);
+    width: 320px;
+    max-width: 30vw;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease-out);
+  }
+
+  .route__callout.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .route__callout[data-side="right"] {
+    left: 100%;
+    margin-left: 56px;
+  }
+
+  .route__callout[data-side="left"] {
+    right: 100%;
+    margin-right: 56px;
+  }
+
+  .route__callout-connector {
+    position: absolute;
+    top: 50%;
+    width: 56px;
+    height: 1px;
+    background: var(--color-card-border);
+  }
+
+  .route__callout[data-side="right"] .route__callout-connector {
+    right: 100%;
+  }
+
+  .route__callout[data-side="left"] .route__callout-connector {
+    left: 100%;
+  }
+
+  .route__callout-connector::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 1px solid var(--color-card-border);
+    transform: translate(-50%, -50%);
+  }
+
+  .route__callout-card {
+    position: relative;
+    background: var(--color-bg);
+    border: 1px solid var(--color-card-border);
+    padding: 28px 24px 20px;
+  }
+
+  .route__callout-close {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .route__callout-headline {
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    margin: 0 0 14px;
+    padding-right: 20px;
+    text-transform: uppercase;
+  }
+
+  .route__callout-body {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text);
+    margin-bottom: 18px;
+  }
+
+  .route__callout-body p + p {
+    margin-top: 12px;
+  }
+
+  .route__callout-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-card-border);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .route__callout-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-vandalism);
+    white-space: nowrap;
+  }
+
+  .route__callout-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-vandalism);
+    flex-shrink: 0;
+  }
+
+  .route__callout-cta {
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .route__callout-cta::after {
+    content: ' \2192';
   }
 
   .section--bridge {

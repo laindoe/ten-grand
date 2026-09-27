@@ -323,6 +323,69 @@
       });
     });
 
+    // Desktop's equivalent of the mobile modal: a callout card in the open
+    // margin beside the road, linked to its sign with a connector line,
+    // instead of a centred overlay. Same "click opens it, closing it
+    // advances if it was the current sign" pattern as the modal below,
+    // just a different presentation for the same content.
+    const callout = route.querySelector('.route__callout');
+    const calloutHeadline = callout && callout.querySelector('.route__callout-headline');
+    const calloutBody = callout && callout.querySelector('.route__callout-body');
+    const calloutCta = callout && callout.querySelector('.route__callout-cta');
+    let calloutTrigger = null;
+
+    function setCalloutBody(text) {
+      calloutBody.textContent = '';
+      text.split(/\n\s*\n/).forEach((para) => {
+        const trimmed = para.trim();
+        if (!trimmed) return;
+        const p = document.createElement('p');
+        p.textContent = trimmed;
+        calloutBody.appendChild(p);
+      });
+    }
+
+    function openCallout(pin) {
+      if (!callout) return;
+      calloutTrigger = pin;
+      callout.dataset.side = pin.dataset.calloutSide || 'right';
+      calloutHeadline.textContent = pin.dataset.calloutHeadline || '';
+      setCalloutBody(pin.dataset.modalBody || '');
+      calloutCta.textContent = pin.dataset.calloutCta || '';
+      // Measured off the sign's own rendered position, not the
+      // .route__pin--N top values, so this can't drift out of sync with
+      // them if those are ever retuned.
+      const stageRect = stage.getBoundingClientRect();
+      const pinRect = pin.getBoundingClientRect();
+      const topPercent = ((pinRect.top + pinRect.height / 2 - stageRect.top) / stageRect.height) * 100;
+      callout.style.setProperty('--callout-top', `${topPercent}%`);
+      callout.classList.add('is-open');
+      callout.setAttribute('aria-hidden', 'false');
+      route.classList.add('route--callout-open');
+      pins.forEach((p) => p.classList.toggle('is-callout-active', p === pin));
+    }
+
+    function closeCallout(advanceIfCurrent) {
+      if (!callout || !callout.classList.contains('is-open')) return;
+      const wasCurrent = advanceIfCurrent && calloutTrigger && Number(calloutTrigger.dataset.stage) === currentStage;
+      callout.classList.remove('is-open');
+      callout.setAttribute('aria-hidden', 'true');
+      route.classList.remove('route--callout-open');
+      pins.forEach((p) => p.classList.remove('is-callout-active'));
+      if (calloutTrigger) calloutTrigger.focus();
+      calloutTrigger = null;
+      if (wasCurrent) advance();
+    }
+
+    if (callout) {
+      callout.querySelectorAll('[data-callout-close]').forEach((el) => {
+        el.addEventListener('click', () => closeCallout(true));
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeCallout(true);
+      });
+    }
+
     pins.forEach((pin) => {
       pin.addEventListener('click', () => {
         // pointer-events already keeps this to reached signs, but a sign
@@ -330,10 +393,8 @@
         // it's current -- so this only re-checks "is it lit at all", not
         // "is it the current one".
         if (!pin.classList.contains('is-reached')) return;
-        const isCurrent = Number(pin.dataset.stage) === currentStage;
         if (desktopQuery.matches) {
-          // No modal on desktop, so a past sign has nothing left to do here.
-          if (isCurrent) advance();
+          openCallout(pin);
         } else if (routeModal) {
           // Mobile always reopens the modal, current sign or a past one --
           // advancing (if this is the current sign) waits for its close,
@@ -426,6 +487,7 @@
         route.classList.remove('route--running');
         pins.forEach((pin) => pin.classList.remove('is-reached'));
         markers.forEach((marker) => marker.classList.remove('is-lit'));
+        closeCallout(false);
       }
     }
 
