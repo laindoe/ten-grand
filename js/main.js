@@ -176,10 +176,31 @@
 
     let stageWidth = stage.clientWidth;
     let stageHeight = stage.clientHeight;
+
+    // .distance__crop clips the tall scene down to a short window on desktop
+    // (see css/style.css); a car sliding through that window gets a hard cut
+    // wherever its edge crosses the window's top/bottom. Rather than fading
+    // that cut (rejected -- it should look like a clean stop, not a dissolve),
+    // hide a car outright for the moment it would straddle either edge, in
+    // the same stage-local coordinate space top/left are already computed in.
+    // On mobile there's no crop transform, so these bounds land at ~0 and
+    // ~stageHeight and effectively never trigger.
+    const cropEl = document.querySelector('.distance__crop');
+    let clipTop = -Infinity;
+    let clipBottom = Infinity;
+    function measureClipBounds() {
+      if (!cropEl) return;
+      const cropRect = cropEl.getBoundingClientRect();
+      const stageRect = stage.getBoundingClientRect();
+      clipTop = cropRect.top - stageRect.top;
+      clipBottom = clipTop + cropRect.height;
+    }
     new ResizeObserver(() => {
       stageWidth = stage.clientWidth;
       stageHeight = stage.clientHeight;
+      measureClipBounds();
     }).observe(stage);
+    measureClipBounds();
 
     let running = false;
     let frame = 0;
@@ -198,12 +219,22 @@
         const baseHeight = car.heightRatio * stageHeight;
         const left = baseLeft + baseWidth * car.originXRatio * (1 - scale);
         const top = baseTop + baseHeight * car.originYRatio * (1 - scale);
+        const height = baseHeight * scale;
+        const bottom = top + height;
+        // A small nick off a car's edge (a few percent of its own height) is
+        // an unremarkable, ordinary hard crop -- cars have always looked like
+        // that at the frame's edges. Only a severe cut (more than a third of
+        // the car itself) reads as broken, so only that gets hidden outright;
+        // anything milder is left to the crop's normal overflow clip.
+        const hiddenAbovePx = top < clipTop ? Math.min(clipTop, bottom) - top : 0;
+        const hiddenBelowPx = bottom > clipBottom ? bottom - Math.max(clipBottom, top) : 0;
+        const severelyClipped = Math.max(hiddenAbovePx, hiddenBelowPx) / height > 0.35;
 
         car.el.style.left = `${left}px`;
         car.el.style.top = `${top}px`;
         car.el.style.width = `${baseWidth * scale}px`;
-        car.el.style.height = `${baseHeight * scale}px`;
-        car.el.style.opacity = String(opacityAt(progress));
+        car.el.style.height = `${height}px`;
+        car.el.style.opacity = severelyClipped ? '0' : String(opacityAt(progress));
         car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
         car.plate.style.fontSize = `${car.plateFont * scale}px`;
       });
