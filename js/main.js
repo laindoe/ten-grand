@@ -316,6 +316,7 @@
     markers.forEach((marker) => {
       marker.addEventListener('animationstart', (event) => {
         if (event.animationName !== 'rt3MarkerLight') return;
+        marker.classList.add('is-lit'); // e.g. keeps the hurdle's lamps blinking from here on
         const n = Number(route.dataset.stage);
         const pin = pinForStage(n);
         if (pin) pin.classList.add('is-reached');
@@ -378,6 +379,7 @@
       // need to be reachable so their modals stay openable on mobile.
       setStage(totalStages);
       pins.forEach((pin) => pin.classList.add('is-reached'));
+      markers.forEach((marker) => marker.classList.add('is-lit'));
       return;
     }
 
@@ -423,6 +425,7 @@
         route.classList.remove('route--armed');
         route.classList.remove('route--running');
         pins.forEach((pin) => pin.classList.remove('is-reached'));
+        markers.forEach((marker) => marker.classList.remove('is-lit'));
       }
     }
 

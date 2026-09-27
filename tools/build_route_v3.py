@@ -27,7 +27,10 @@ SIGN_STYLE = {
     "st16": 'fill="#be2026"',
     "st17": 'fill="#e0da15"',
     "st19": 'fill="#308e31"',
-    "st20": 'fill="#d5d519"',
+    # The hurdle's two warning lamps -- tagged with a class (not just the
+    # inline fill every other class gets) so CSS can blink them once that
+    # marker is reached; see .rt3-hurdle-lamp in style.css.
+    "st20": 'class="rt3-hurdle-lamp" fill="#d5d519"',
     "st4": 'fill="#000" stroke="#fff" stroke-width=".7px" stroke-miterlimit="10"',
     "st0": 'fill="#060607"',
 }
@@ -84,10 +87,10 @@ globe = element(raw, "g", "outer_globe")
 # despite very different native proportions -- the diamond signs are
 # tall and narrow, the barricade is short and wide.
 SIGNS = [
-    ("development", "traffic_sign", "#ff334d", 642.75, 362.98, 387.30, 148.29, 0.4014),
-    ("production", "hurdle", "#ffd21f", 291.75, 743.23, 152.40, 262.79, 0.5946),
-    ("packaging", "u-turn", "#58de68", 738.80, 1025.37, 465.65, 599.89, 0.4014),
-    ("distribution", "narrow_road", "#27bfff", 311.47, 1371.31, 213.25, 805.56, 0.4014),
+    ("development", "traffic_sign", "#ff334d", 642.75, 362.98, 15.56, -164.05, 0.9852),
+    ("production", "hurdle", "#ffd21f", 291.75, 743.23, 60.92, -52.73, 0.9852),
+    ("packaging", "u-turn", "#58de68", 738.80, 1025.37, 68.32, -18.94, 0.9852),
+    ("distribution", "narrow_road", "#27bfff", 311.47, 1371.31, 70.39, -17.54, 0.9852),
 ]
 
 
