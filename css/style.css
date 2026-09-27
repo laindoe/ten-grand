@@ -2685,11 +2685,17 @@ body.modal-open {
     margin-inline: auto;
   }
 
+  /* .section--distance has no padding-bottom of its own -- by design, its
+     last child sits flush against the section's edge (see the comment on
+     .distance__header above). That was fine when the crop's own hard edge
+     was last; now that the text paragraph is last, it needs its own
+     trailing space instead, matching the 60px closing-paragraph spacing
+     used elsewhere on the page. */
   .distance__text {
     order: 3;
     width: min(100%, var(--measure-wide));
     margin-inline: auto;
-    margin-bottom: 0;
+    margin-bottom: 60px;
   }
 
   .distance__text-heading,
@@ -2714,7 +2720,7 @@ body.modal-open {
   .distance__crop {
     order: 1;
     position: relative;
-    aspect-ratio: 12 / 5;
+    aspect-ratio: 2 / 1;
   }
 
   .distance__crop .distance__visual {
