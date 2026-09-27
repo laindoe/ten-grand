@@ -357,17 +357,25 @@
       calloutHeadline.textContent = pin.dataset.calloutHeadline || '';
       setCalloutBody(pin.dataset.modalBody || '');
       calloutCta.textContent = pin.dataset.calloutCta || '';
-      // Measured off the sign's own rendered position, not the
-      // .route__pin--N top values, so this can't drift out of sync with
-      // them if those are ever retuned.
+      // Stems from the label, not the sign -- most labels sit right by
+      // their own sign, but packaging's is relocated well away from it
+      // (see #route-label-3 / .route__pin-ghost), so this measures
+      // wherever the label actually renders rather than the pin itself.
+      const label = document.getElementById(`route-label-${pin.dataset.stage}`) || pin;
       const stageRect = stage.getBoundingClientRect();
-      const pinRect = pin.getBoundingClientRect();
-      const topPercent = ((pinRect.top + pinRect.height / 2 - stageRect.top) / stageRect.height) * 100;
+      const labelRect = label.getBoundingClientRect();
+      const topPercent = ((labelRect.top + labelRect.height / 2 - stageRect.top) / stageRect.height) * 100;
       callout.style.setProperty('--callout-top', `${topPercent}%`);
       callout.classList.add('is-open');
       callout.setAttribute('aria-hidden', 'false');
       route.classList.add('route--callout-open');
-      pins.forEach((p) => p.classList.toggle('is-callout-active', p === pin));
+      // Dims every label but this one's -- toggled on whichever element
+      // actually holds the label (the pin itself, or packaging's ghost
+      // anchor), not on the pins themselves.
+      route.querySelectorAll('.route__pin, .route__pin-ghost').forEach((el) => {
+        el.classList.remove('is-callout-active');
+      });
+      if (label.parentElement) label.parentElement.classList.add('is-callout-active');
     }
 
     function closeCallout(advanceIfCurrent) {
@@ -376,7 +384,9 @@
       callout.classList.remove('is-open');
       callout.setAttribute('aria-hidden', 'true');
       route.classList.remove('route--callout-open');
-      pins.forEach((p) => p.classList.remove('is-callout-active'));
+      route.querySelectorAll('.route__pin, .route__pin-ghost').forEach((el) => {
+        el.classList.remove('is-callout-active');
+      });
       if (calloutTrigger) calloutTrigger.focus();
       calloutTrigger = null;
       if (wasCurrent) advance();

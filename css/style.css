@@ -1351,7 +1351,8 @@ a {
   transition: opacity 0.2s var(--ease-out);
 }
 
-.route--callout-open .route__pin.is-callout-active .route__pin-text {
+.route--callout-open .route__pin.is-callout-active .route__pin-text,
+.route--callout-open .route__pin-ghost.is-callout-active .route__pin-text {
   opacity: 1;
 }
 
@@ -1689,6 +1690,21 @@ a {
 .route__pin--2{left:18.586%;top:27.014%;width:28.666%;height:12.193%;}
 .route__pin--3{left:66.243%;top:36.139%;width:17.37%;height:17.505%;}
 .route__pin--4{left:26.087%;top:53.824%;width:17.37%;height:17.521%;}
+/* Packaging's label anchor -- distribution's own box (same numbers as
+   .route__pin--4 above), so the relocated label reads as if it lived
+   there. Not a real hit target: .route__pin--3 itself, over the u-turn
+   sign, still owns the click. */
+.route__pin-ghost {
+  position: absolute;
+  pointer-events: none;
+}
+
+.route__pin-ghost.route__pin--3 {
+  left: 26.087%;
+  top: 53.824%;
+  width: 17.37%;
+  height: 17.521%;
+}
 .route__pin--1 .route__pin-text,
 .route__pin--2 .route__pin-text,
 .route__pin--3 .route__pin-text,
