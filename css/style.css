@@ -675,14 +675,14 @@ a {
    straight into that line. */
 .section--distance {
   min-height: auto;
-  padding: 0 var(--section-padding-x);
+  padding: 0 var(--section-padding-x) 60px;
   border-top: 1px solid var(--color-card-border);
 }
 
 /* Full-bleed, same technique as .dilemma__header. Only this header uses
-   --divider-gap; the highway artwork below it stays flush against the
-   NEXT divider on purpose (see .section--distance) rather than padded,
-   so that specific edge is not standardized. */
+   --divider-gap; the section's own bottom padding (see .section--distance)
+   is what closes out the text paragraph below, not a margin on the text
+   itself, so it stays correct regardless of which element ends up last. */
 .distance__header {
   width: calc(100% + 2 * var(--section-padding-x));
   margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
@@ -724,14 +724,8 @@ a {
   order: 2;
 }
 
-/* .section--distance has no padding-bottom of its own -- by design, its
-   last child sits flush against the section's edge (see the comment on
-   .distance__header above). That was fine when the crop's own hard edge
-   was last; now that the text paragraph is last, it needs its own
-   trailing space instead. */
 .distance__text {
   order: 3;
-  margin-bottom: 60px;
 }
 
 .distance__text-heading {
