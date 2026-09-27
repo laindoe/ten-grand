@@ -2806,16 +2806,17 @@ body.modal-open {
     --amass-h-toggle: 40px;
     --amass-row-height: calc(2 * var(--amass-h-half) + var(--amass-h-toggle));
     --amass-row-gap: 32px;
-    /* 86px, not --divider-gap, so the gap above row 1's icons matches the
-       gap below an open row-1 bubble and row 2's icons (measured at 108px,
-       stable across every bubble regardless of its own text length, since
-       both icon and bubble are centered within their own fixed 190px cell
-       either way -- 108px minus that 22.1px of built-in centering is 86px
-       of margin). Re-measure and adjust this if the bubble's own padding
-       or font-size changes again -- both shift how much of the 190px cell
-       the bubble actually fills. */
+    /* 80px, not --divider-gap, so the gap above row 1's icons roughly
+       matches the gap below an open row-1 bubble and row 2's icons
+       (~99px at the current bubble font-size/padding, minus 18.5px of
+       built-in centering in row 1's own content cell). This gap now
+       varies a few px between columns -- at this font-size, copy this
+       length wraps to different line counts depending on its exact word
+       lengths, not just its character count -- so treat 80px as a good
+       match rather than an exact one, and re-measure if the bubble's
+       font-size, padding, or copy length changes again. */
     max-width: none;
-    margin-top: 86px;
+    margin-top: 80px;
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -2912,12 +2913,17 @@ body.modal-open {
     gap: 6px;
   }
 
+  .amass__timeline-subtitle {
+    font-size: 1rem;
+    max-width: 44ch;
+  }
+
   .amass__timeline-year {
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 
   .amass__timeline-label {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
   }
 
   .amass__timeline-desc {
@@ -2927,8 +2933,8 @@ body.modal-open {
 
   .amass__timeline-bubble {
     padding: 16px 18px;
-    font-size: 0.72rem;
-    line-height: 1.4;
+    font-size: 0.85rem;
+    line-height: 1.45;
   }
 
   /* The pointer flips from a sideways tail (aimed at a toggle beside it) to
