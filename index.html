@@ -411,10 +411,10 @@
             <p class="route__cap route__cap--star">IMAGINATION</p>
             <button type="button" class="route__spark" aria-label="Send the idea down the route"><span class="route__spark-ring"></span></button>
             <p class="route__cap route__cap--globe">IMPACT</p>
-            <button type="button" class="route__pin route__pin--1 route__pin--left" data-stage="1" data-callout-side="right" data-modal-title="{{ site.data.route[0].title }}" data-modal-body="{{ site.data.route[0].body | strip }}" data-callout-headline="{{ site.data.route[0].headline }}" data-callout-cta="{{ site.data.route[0].cta }}"><span class="route__pin-text"><span class="route__pin-label">DEVELOPMENT</span><span class="route__pin-note">Map out the idea.</span></span></button>
-            <button type="button" class="route__pin route__pin--2 route__pin--right" data-stage="2" data-callout-side="left" data-modal-title="{{ site.data.route[1].title }}" data-modal-body="{{ site.data.route[1].body | strip }}" data-callout-headline="{{ site.data.route[1].headline }}" data-callout-cta="{{ site.data.route[1].cta }}"><span class="route__pin-text"><span class="route__pin-label">PRODUCTION</span><span class="route__pin-note">Bring it to life.</span></span></button>
-            <button type="button" class="route__pin route__pin--3 route__pin--left" data-stage="3" data-callout-side="right" data-modal-title="{{ site.data.route[2].title }}" data-modal-body="{{ site.data.route[2].body | strip }}" data-callout-headline="{{ site.data.route[2].headline }}" data-callout-cta="{{ site.data.route[2].cta }}"><span class="route__pin-text"><span class="route__pin-label">PACKAGING</span><span class="route__pin-note">Get it ready to be seen.</span></span></button>
-            <button type="button" class="route__pin route__pin--4 route__pin--right" data-stage="4" data-callout-side="left" data-modal-title="{{ site.data.route[3].title }}" data-modal-body="{{ site.data.route[3].body | strip }}" data-callout-headline="{{ site.data.route[3].headline }}" data-callout-cta="{{ site.data.route[3].cta }}"><span class="route__pin-text"><span class="route__pin-label">DISTRIBUTION</span><span class="route__pin-note">Send it out to the world.</span></span></button>
+            <button type="button" class="route__pin route__pin--1 route__pin--left" data-stage="1" data-callout-side="right" aria-label="Development: map out the idea." data-modal-body="{{ site.data.route[0].body | strip }}" data-callout-headline="{{ site.data.route[0].headline }}" data-callout-cta="{{ site.data.route[0].cta }}"><span class="route__pin-text"><span class="route__pin-label">DEVELOPMENT</span><span class="route__pin-note">Map out the idea.</span></span></button>
+            <button type="button" class="route__pin route__pin--2 route__pin--right" data-stage="2" data-callout-side="left" aria-label="Production: bring it to life." data-modal-body="{{ site.data.route[1].body | strip }}" data-callout-headline="{{ site.data.route[1].headline }}" data-callout-cta="{{ site.data.route[1].cta }}"><span class="route__pin-text"><span class="route__pin-label">PRODUCTION</span><span class="route__pin-note">Bring it to life.</span></span></button>
+            <button type="button" class="route__pin route__pin--3 route__pin--left" data-stage="3" data-callout-side="right" aria-label="Packaging: get it ready to be seen." data-modal-body="{{ site.data.route[2].body | strip }}" data-callout-headline="{{ site.data.route[2].headline }}" data-callout-cta="{{ site.data.route[2].cta }}"><span class="route__pin-text"><span class="route__pin-label">PACKAGING</span><span class="route__pin-note">Get it ready to be seen.</span></span></button>
+            <button type="button" class="route__pin route__pin--4 route__pin--right" data-stage="4" data-callout-side="left" aria-label="Distribution: send it out to the world." data-modal-body="{{ site.data.route[3].body | strip }}" data-callout-headline="{{ site.data.route[3].headline }}" data-callout-cta="{{ site.data.route[3].cta }}"><span class="route__pin-text"><span class="route__pin-label">DISTRIBUTION</span><span class="route__pin-note">Send it out to the world.</span></span></button>
 
             <div class="route__callout" id="route-callout" aria-hidden="true">
               <span class="route__callout-connector" aria-hidden="true"></span>
@@ -1060,6 +1060,10 @@
       <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
       <h3 class="modal__title" id="engine-modal-title"></h3>
       <div class="modal__body"></div>
+      <div class="modal__footer">
+        <span class="modal__tag"><span class="modal__dot" aria-hidden="true"></span>COMMON OBSTACLE</span>
+        <span class="modal__cta"></span>
+      </div>
     </div>
   </div>
 

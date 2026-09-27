@@ -44,6 +44,7 @@
 
     const titleEl = modal.querySelector('.modal__title');
     const bodyEl = modal.querySelector('.modal__body');
+    const ctaEl = modal.querySelector('.modal__cta');
     let lastFocused = null;
 
     // One <p> per paragraph, split on blank lines, so the copy in
@@ -62,8 +63,12 @@
 
     function openModal(trigger) {
       lastFocused = trigger;
-      titleEl.textContent = trigger.dataset.modalTitle || '';
+      // Same headline/CTA as the desktop callout (see .route__callout in
+      // style.css) -- one look for a sign's content, just two different
+      // presentations (centred overlay here, side card there).
+      titleEl.textContent = trigger.dataset.calloutHeadline || '';
       setBody(trigger.dataset.modalBody || '');
+      if (ctaEl) ctaEl.textContent = trigger.dataset.calloutCta || '';
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');

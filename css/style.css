@@ -1365,7 +1365,13 @@ a {
   transform: translate(-50%, -50%);
 }
 
+/* Hidden until a sign is actually opened, at which point the same copy
+   shows in the modal instead (see .modal__title/.modal__body) -- mobile
+   reads the road from its colours and signage alone, not permanent
+   captions. Desktop re-enables this, since it keeps the always-on labels
+   alongside its callout card. */
 .route__pin-text {
+  display: none;
   position: absolute;
   bottom: 0;
   width: max-content;
@@ -2701,17 +2707,66 @@ a {
   cursor: pointer;
 }
 
+/* Same look as the desktop route callout (.route__callout-card) --
+   headline, body, then a tag + CTA footer -- just centred-overlay instead
+   of a side card, since that's this modal's own presentation. */
 .modal__title {
-  font-size: 1.15rem;
-  font-weight: 400;
-  margin-bottom: 16px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0 0 14px;
   padding-right: 24px;
 }
 
 .modal__body {
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.5;
   color: var(--color-text);
+  margin-bottom: 18px;
+}
+
+.modal__body p + p {
+  margin-top: 12px;
+}
+
+.modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-card-border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.modal__tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-vandalism);
+  white-space: nowrap;
+}
+
+.modal__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-vandalism);
+  flex-shrink: 0;
+}
+
+.modal__cta {
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.modal__cta::after {
+  content: ' \2192';
 }
 
 body.modal-open {
@@ -2876,6 +2931,13 @@ body.modal-open {
   .engine__route .route {
     position: relative;
     z-index: 1;
+  }
+
+  /* Desktop keeps the always-on labels alongside its callout card, unlike
+     mobile which hides them until a sign is opened (see .route__pin-text
+     above). */
+  .route__pin-text {
+    display: block;
   }
 
   /* The callout that replaces the mobile modal on desktop: a card in the
