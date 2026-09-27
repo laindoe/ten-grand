@@ -2810,14 +2810,16 @@ body.modal-open {
     --amass-h-toggle: 40px;
     --amass-row-height: calc(2 * var(--amass-h-half) + var(--amass-h-toggle));
     --amass-row-gap: 32px;
-    /* 32px, not --divider-gap, so the gap above row 1's icons matches the
-       gap below an open row-1 bubble and row 2's icons (41.4px, stable
-       across every bubble at the current padding/font-size, minus 9.4px
-       of now-symmetric centering in row 1's own content cell -- see
-       --amass-h-half above). Re-measure and adjust this if the content
-       cell height, bubble padding, or copy length changes again. */
+    /* 85px, not --divider-gap, so the gap above row 1's icons roughly
+       matches the gap below an open row-1 bubble and row 2's icons. That
+       gap now depends on the bubble's own min-height (113px) vs. its
+       actual wrapped line count, which varies by viewport width -- ~95px
+       at 1920px where min-height governs, down to ~0px at ~900px where
+       long copy grows past it. 85px (95px minus the 9.4px of centering
+       in row 1's own content cell) matches the common wide-desktop case
+       rather than the full range. */
     max-width: none;
-    margin-top: 32px;
+    margin-top: 85px;
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -2903,12 +2905,15 @@ body.modal-open {
     grid-row: 3;
     width: 75%;
     justify-self: center;
-    /* Overrides the base rule's align-self: center (which sizes the bubble
-       to its own text, so a shorter paragraph gets a visibly smaller box)
-       with stretch, so every bubble fills its row's full 190px cell --
-       same size regardless of copy length, text still centered inside via
-       the bubble's own align-items: center. */
-    align-self: stretch;
+    /* Stretching to the full 190px cell (sized for the icon+text content
+       above, not for this) made every bubble far taller than its own text
+       needed -- measured 73-191px of actual content depending on viewport
+       width and line count, against a fixed 190px box regardless. 113px
+       is sized to the copy's worst realistic case in the common desktop
+       range (~1280px, 5 lines); align-self stays center (the base rule)
+       so a bubble that needs more --  a longer line count at a narrower
+       width -- still grows past this floor rather than clipping. */
+    min-height: 113px;
   }
 
   .amass__timeline-icon {
