@@ -2902,6 +2902,12 @@ body.modal-open {
     grid-row: 3;
     width: 75%;
     justify-self: center;
+    /* Overrides the base rule's align-self: center (which sizes the bubble
+       to its own text, so a shorter paragraph gets a visibly smaller box)
+       with stretch, so every bubble fills its row's full 190px cell --
+       same size regardless of copy length, text still centered inside via
+       the bubble's own align-items: center. */
+    align-self: stretch;
   }
 
   .amass__timeline-icon {
