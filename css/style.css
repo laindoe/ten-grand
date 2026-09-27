@@ -1255,6 +1255,28 @@ a {
   pointer-events: none;
 }
 
+/* Same interaction-cue treatment as .dilemma__cue (the billboards' "TAP
+   BILLBOARDS"), positioned the same way as .route__cap so it can sit
+   directly above IMAGINATION. */
+.route__cue {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-vandalism);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .route__cue {
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
+  }
+}
+
 /* The trigger. The svg stays a picture and every control is a real button on
    top of it: an SVG <g> is neither focusable nor nameable, a button is both,
    and the hit area can be made bigger than the thing it sits on. */
@@ -1297,11 +1319,17 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Marker popups are temporarily disabled; preserve the diagram exactly as
-   drawn while removing hover/click affordances and pointer interaction. */
-.route__pin--static {
-  cursor: default;
+/* Only the sign the light has just reached is clickable -- the rest of the
+   road hasn't "arrived" there yet, so tapping ahead of the reveal does
+   nothing. JS adds .is-reached the moment that stage's marker ignites
+   (see initRoute in main.js) and never removes it once a sign has been
+   passed, so an earlier sign stays reopenable after the fact. */
+.route__pin {
   pointer-events: none;
+}
+
+.route__pin.is-reached {
+  pointer-events: auto;
 }
 
 .route__pin::before {
@@ -1543,24 +1571,42 @@ a {
   filter:url(#rt3-soft-glow);
 }
 .route__art .rt3-marker-glow {
-  fill:none;
-  stroke:var(--marker-colour);
-  stroke-width:6px;
+  fill:var(--marker-colour);
+  stroke:none;
   opacity:0;
   transform-origin:var(--marker-x) var(--marker-y);
   transform:scale(.6);
   filter:drop-shadow(0 0 10px var(--marker-colour));
 }
 
-@keyframes rt3Reveal {
-  from { stroke-dashoffset:-1000; }
-  to { stroke-dashoffset:0; }
+@keyframes rt3LampBlink {
+  0%, 49% { opacity:1; }
+  50%, 100% { opacity:.15; }
 }
-@keyframes rt3LitRoute {
-  0% { opacity:0; }
-  .1% { opacity:1; }
-  100% { opacity:1; }
+
+/* The hurdle's two warning lamps blink once that sign is reached, and
+   keep blinking -- .is-lit is added by JS the moment the marker ignites
+   and only ever cleared on a full reset (see initRoute in main.js), so
+   this isn't tied to the current stage the way the reveal/ignite
+   animations above are. */
+@media (prefers-reduced-motion:no-preference) {
+  .route__art .rt3-marker.is-lit .rt3-hurdle-lamp {
+    animation:rt3LampBlink 1s linear infinite;
+  }
 }
+
+/* The reveal used to be one continuous 4.2s sweep. It is now five sweeps,
+   one per road segment, each fired by JS only once the sign at its start
+   has been dealt with (clicked, and on mobile its modal closed) -- see
+   initRoute in main.js. The five stroke-dashoffset spans are the same
+   points along the path the old single sweep passed through at 16.7% /
+   41.0% / 63.3% / 84.5% / 100%, so the road still reads at the same speed
+   per segment; only the pausing-and-waiting between them is new. */
+@keyframes rt3RevealStage1 { from { stroke-dashoffset:-1000; } to { stroke-dashoffset:-833; } }
+@keyframes rt3RevealStage2 { from { stroke-dashoffset:-833; }  to { stroke-dashoffset:-590; } }
+@keyframes rt3RevealStage3 { from { stroke-dashoffset:-590; }  to { stroke-dashoffset:-367; } }
+@keyframes rt3RevealStage4 { from { stroke-dashoffset:-367; }  to { stroke-dashoffset:-155; } }
+@keyframes rt3RevealStage5 { from { stroke-dashoffset:-155; }  to { stroke-dashoffset:0; } }
 @keyframes rt3Start {
   35% { transform:scale(1.18); }
 }
@@ -1598,21 +1644,25 @@ a {
 }
 .route__art { transform:translateX(5.5%); }
 .route__pin-text { top:50%;bottom:auto;transform:translateY(-50%); }
-.route__pin--1{left:61.04%;top:10.73%;width:8.84%;height:8.80%;}
-.route__pin--2{left:29.93%;top:30.17%;width:8.84%;height:8.80%;}
-.route__pin--3{left:70.06%;top:44.61%;width:9.70%;height:8.80%;}
-.route__pin--4{left:29.93%;top:62.57%;width:9.70%;height:8.80%;}
+/* The hit box is the sign's own full bounding box (post to diamond/board
+   top), measured off the rendered .rt3-marker--* groups -- not the small
+   footprint these were tuned to when the marker was still a map pin, so
+   the whole drawn sign is tappable, not just a dot near its base. */
+.route__pin--1{left:57.22%;top:2.243%;width:17.37%;height:17.508%;}
+.route__pin--2{left:18.586%;top:27.014%;width:28.666%;height:12.193%;}
+.route__pin--3{left:66.243%;top:36.139%;width:17.37%;height:17.505%;}
+.route__pin--4{left:26.087%;top:53.824%;width:17.37%;height:17.521%;}
 .route__pin--1 .route__pin-text,
 .route__pin--2 .route__pin-text,
 .route__pin--3 .route__pin-text,
 .route__pin--4 .route__pin-text{max-width:150px;}
 .route__pin--1 .route__pin-text,
-.route__pin--3 .route__pin-text{margin-right:calc(clamp(70px, 14vw, 90px) + var(--rt-label-outset));}
+.route__pin--3 .route__pin-text{margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
 .route__pin--3 .route__pin-text{
-  margin-right:calc(clamp(70px, 14vw, 90px) + var(--rt-label-outset) + clamp(29px, 9.02vw, 35px));
+  margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset) + clamp(29px, 9.02vw, 35px));
 }
 .route__pin--2 .route__pin-text,
-.route__pin--4 .route__pin-text{margin-left:calc(clamp(70px, 14vw, 90px) + var(--rt-label-outset));}
+.route__pin--4 .route__pin-text{margin-left:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
 @media (min-width:500px) {
   .route__pin--1 .route__pin-text,
   .route__pin--2 .route__pin-text,
@@ -1621,6 +1671,7 @@ a {
 }
 .route__spark{left:47.58%;top:4.50%;width:12.25%;}
 .route__cap--star{bottom:95.50%;margin-bottom:47px;}
+.route__cue{bottom:95.50%;margin-bottom:81px;}
 .route__cap--globe{top:98.75%;margin-top:26px;}
 .route{
   padding-top:clamp(39px, calc(76.85px - 4.5svh), 54px);
@@ -1637,21 +1688,37 @@ a {
 }
 
 @media (prefers-reduced-motion:no-preference) {
-  .route--running .rt3-lit-route{animation:rt3LitRoute 4.2s linear both;}
-  .route--running .rt3-reveal-mask{animation:rt3Reveal 4.2s linear both;}
+  /* Lets the lit (coloured) road layer become visible once, at the very
+     start of the sequence, and then just stay visible underneath every
+     later stage's reveal-mask sweep -- unlike the mask animations below,
+     this has no per-stage variant because there is nothing to repeat. */
+  .route--running .rt3-lit-route{opacity:1;}
+
+  .route[data-stage="1"] .rt3-reveal-mask{animation:rt3RevealStage1 .70s linear both;}
+  .route[data-stage="2"] .rt3-reveal-mask{animation:rt3RevealStage2 1.02s linear both;}
+  .route[data-stage="3"] .rt3-reveal-mask{animation:rt3RevealStage3 .94s linear both;}
+  .route[data-stage="4"] .rt3-reveal-mask{animation:rt3RevealStage4 .89s linear both;}
+  .route[data-stage="5"] .rt3-reveal-mask{animation:rt3RevealStage5 .65s linear both;}
+
   .route--running .rt3-start-orb{animation:rt3Start .7s ease-out both;}
   .route--running .rt3-start-glow{animation:rt3StartGlow .7s ease-out both;}
-  .route--running .rt3-marker--development{animation:rt3MarkerLight .65s ease-out .70s both;}
-  .route--running .rt3-marker--production{animation:rt3MarkerLight .65s ease-out 1.72s both;}
-  .route--running .rt3-marker--packaging{animation:rt3MarkerLight .65s ease-out 2.66s both;}
-  .route--running .rt3-marker--distribution{animation:rt3MarkerLight .65s ease-out 3.55s both;}
-  .route--running .rt3-marker--development .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out .70s both;}
-  .route--running .rt3-marker--production .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 1.72s both;}
-  .route--running .rt3-marker--packaging .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 2.66s both;}
-  .route--running .rt3-marker--distribution .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 3.55s both;}
-  .route--running #rt3-impact{animation:rt3Impact 1.8s ease-in-out 4.2s both;}
-  .route--running .rt3-impact-core{animation:rt3ImpactCore 1.8s ease-in-out 4.2s both;}
-  .route--running .rt3-impact-glow{animation:rt3ImpactGlow 1.8s ease-in-out 4.2s both;}
+
+  /* Each marker ignites once its own stage's sweep reaches it -- the delay
+     equals that stage's own duration, same as it did in the single 4.2s
+     timeline this replaced. JS listens for this animation's start to know
+     when to make that sign clickable (see initRoute in main.js). */
+  .route[data-stage="1"] .rt3-marker--development{animation:rt3MarkerLight .65s ease-out .70s both;}
+  .route[data-stage="2"] .rt3-marker--production{animation:rt3MarkerLight .65s ease-out 1.02s both;}
+  .route[data-stage="3"] .rt3-marker--packaging{animation:rt3MarkerLight .65s ease-out .94s both;}
+  .route[data-stage="4"] .rt3-marker--distribution{animation:rt3MarkerLight .65s ease-out .89s both;}
+  .route[data-stage="1"] .rt3-marker--development .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out .70s both;}
+  .route[data-stage="2"] .rt3-marker--production .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 1.02s both;}
+  .route[data-stage="3"] .rt3-marker--packaging .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out .94s both;}
+  .route[data-stage="4"] .rt3-marker--distribution .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out .89s both;}
+
+  .route[data-stage="5"] #rt3-impact{animation:rt3Impact 1.8s ease-in-out .65s both;}
+  .route[data-stage="5"] .rt3-impact-core{animation:rt3ImpactCore 1.8s ease-in-out .65s both;}
+  .route[data-stage="5"] .rt3-impact-glow{animation:rt3ImpactGlow 1.8s ease-in-out .65s both;}
 }
 /* --- end Impact Path v3 --- */
 

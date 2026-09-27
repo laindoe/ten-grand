@@ -11,6 +11,30 @@ SOURCE = ROOT / "art" / "impact-path-3.svg"
 IMPORT = Path("/Users/shalainderamus/Desktop/impact-path-3.svg")
 OUTPUT = ROOT / "_includes" / "route-svg.html"
 
+# The road-sign artwork the markers are built from (see SIGNS below) --
+# a separate export, not part of the Figma "Impact Path" source.
+SIGNS_SOURCE = ROOT / "art" / "route-signs.svg"
+
+# route-signs.svg carries its own little stylesheet (classes st0..st20).
+# Rather than merge a second <style> block into the output and risk it
+# colliding with the rt3-* numbered classes already in play, each class
+# is resolved to literal attributes at build time -- same approach the
+# hand-authored icons elsewhere on the site use.
+SIGN_STYLE = {
+    "st10": 'fill="#fff" stroke="#000" stroke-width=".7px" stroke-miterlimit="10"',
+    "st12": 'fill="none" stroke="#000" stroke-width="2.9px" stroke-miterlimit="10"',
+    "st15": 'fill="#fff"',
+    "st16": 'fill="#be2026"',
+    "st17": 'fill="#e0da15"',
+    "st19": 'fill="#308e31"',
+    # The hurdle's two warning lamps -- tagged with a class (not just the
+    # inline fill every other class gets) so CSS can blink them once that
+    # marker is reached; see .rt3-hurdle-lamp in style.css.
+    "st20": 'class="rt3-hurdle-lamp" fill="#d5d519"',
+    "st4": 'fill="#000" stroke="#fff" stroke-width=".7px" stroke-miterlimit="10"',
+    "st0": 'fill="#060607"',
+}
+
 
 def element(source: str, tag: str, element_id: str) -> str:
     start = source.index(f'<{tag} id="{element_id}"')
@@ -53,12 +77,25 @@ caps = ''.join(re.findall(r'<path class="cls-2"[^>]*?/>', route))
 start_orb = re.search(r'<circle class="cls-13"[^>]*?/>', route).group(0)
 
 globe = element(raw, "g", "outer_globe")
-markers = [
-    ("development", "Layer_12", "#ff334d", 642.75, 362.98),
-    ("production", "Layer_13", "#ffd21f", 291.75, 743.23),
-    ("packaging", "Layer_14", "#58de68", 738.80, 1025.37),
-    ("distribution", "Layer_15", "#27bfff", 311.47, 1371.31),
+
+# Marker artwork is a road sign standing at the point on the road it
+# marks, not a pin dropped onto it: (translate_x, translate_y, scale)
+# place each sign's own bottom-centre (the foot of its post, measured
+# from route-signs.svg via getBBox) exactly on (cx, cy), so the sign
+# reads as planted at the roadside there. Scale is picked per sign so
+# each renders about the same height (~130px at this canvas's scale)
+# despite very different native proportions -- the diamond signs are
+# tall and narrow, the barricade is short and wide.
+SIGNS = [
+    ("development", "traffic_sign", "#ff334d", 642.75, 362.98, 15.56, -164.05, 0.9852),
+    ("production", "hurdle", "#ffd21f", 291.75, 743.23, 60.92, -52.73, 0.9852),
+    ("packaging", "u-turn", "#58de68", 738.80, 1025.37, 68.32, -18.94, 0.9852),
+    ("distribution", "narrow_road", "#27bfff", 311.47, 1371.31, 70.39, -17.54, 0.9852),
 ]
+
+
+def inline_sign_classes(markup: str) -> str:
+    return re.sub(r'class="(st\d+)"', lambda m: SIGN_STYLE[m.group(1)], markup)
 
 id_names = re.findall(r'\bid="([^"]+)"', defs)
 for old in sorted(id_names, key=len, reverse=True):
@@ -131,19 +168,19 @@ globe = normalize(globe).replace('id="outer_globe"', 'id="rt3-impact"')
 globe = globe.replace('class="rt3-15"', 'class="rt3-15 rt3-impact-core"', 1)
 impact_glow = '<circle class="rt3-impact-glow" cx="478.86" cy="1742.74" r="111.63"/>'
 
+signs_raw = SIGNS_SOURCE.read_text()
+
 marker_markup = []
-for name, source_id, colour, cx, cy in markers:
-    group = normalize(element(raw, "g", source_id))
-    group = group.replace(
-        f'id="{source_id}"',
-        f'id="rt3-marker-{name}" class="rt3-marker rt3-marker--{name}" '
-        f'style="--marker-colour:{colour};--marker-x:{cx}px;--marker-y:{cy}px"'
+for name, source_id, colour, cx, cy, tx, ty, scale in SIGNS:
+    sign = inline_sign_classes(inner(element(signs_raw, "g", source_id)))
+    glow = f'<ellipse class="rt3-marker-glow" cx="{cx}" cy="{cy}" rx="37" ry="23"/>'
+    group = (
+        f'<g id="rt3-marker-{name}" class="rt3-marker rt3-marker--{name}" '
+        f'style="--marker-colour:{colour};--marker-x:{cx}px;--marker-y:{cy}px">'
+        f'{glow}'
+        f'<g transform="translate({tx:.2f} {ty:.2f}) scale({scale})">{sign}</g>'
+        '</g>'
     )
-    glow = (
-        f'<ellipse class="rt3-marker-glow" cx="{cx}" cy="{cy}" '
-        'rx="37" ry="23"/>'
-    )
-    group = group.replace('>', '>' + glow, 1)
     marker_markup.append(group)
 
 svg = (
