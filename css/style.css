@@ -2802,21 +2802,22 @@ body.modal-open {
      never drift off that shared line the way an absolutely positioned
      popover could. */
   .amass__timeline {
-    --amass-h-half: 190px;
+    /* 220px, not 190px -- the icon+text stack itself is ~201px tall at the
+       current icon/font sizes, so 190px was already fully occupied (no
+       visible gap above the toggle at all). 220px leaves ~19px clear on
+       each side of the centered stack. */
+    --amass-h-half: 220px;
     --amass-h-toggle: 40px;
     --amass-row-height: calc(2 * var(--amass-h-half) + var(--amass-h-toggle));
     --amass-row-gap: 32px;
-    /* 80px, not --divider-gap, so the gap above row 1's icons roughly
-       matches the gap below an open row-1 bubble and row 2's icons
-       (~99px at the current bubble font-size/padding, minus 18.5px of
-       built-in centering in row 1's own content cell). This gap now
-       varies a few px between columns -- at this font-size, copy this
-       length wraps to different line counts depending on its exact word
-       lengths, not just its character count -- so treat 80px as a good
-       match rather than an exact one, and re-measure if the bubble's
-       font-size, padding, or copy length changes again. */
+    /* 32px, not --divider-gap, so the gap above row 1's icons matches the
+       gap below an open row-1 bubble and row 2's icons (41.4px, stable
+       across every bubble at the current padding/font-size, minus 9.4px
+       of now-symmetric centering in row 1's own content cell -- see
+       --amass-h-half above). Re-measure and adjust this if the content
+       cell height, bubble padding, or copy length changes again. */
     max-width: none;
-    margin-top: 80px;
+    margin-top: 32px;
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
