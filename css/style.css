@@ -2710,27 +2710,28 @@ body.modal-open {
     margin-inline: calc(-1 * var(--section-padding-x));
   }
 
-  /* Both the top offset and the aspect-ratio are chosen from the actual
+  /* 12/5 is the size that actually matches the request: the combined
+     height of the old (separate) text+divider+crop, measured at ~661px
+     vs this crop's ~659px at a 1600px viewport -- the taller ratios
+     tried in between (2/1, 14/9) were chasing clip-free car positions
+     and drifted well past that target size. -44% is chosen from the
      cars' measured positions (as fractions of .distance__visual's own
-     height, which scales 1:1 with the crop's width): -28%/16:5 cut the
-     ENGINEER car in half around the old top edge, and cut PRODUCER's
-     plate off at the bottom. -30% starts just past ENGINEER's own
-     bottom edge (~0.303) -- INVESTOR right after it still loses its top
-     ~19%, but there's no offset that clears both without also hiding
-     STYLIST just below them, so this is the smallest cut available.
-     14/9 (~0.556 of the crop's width, tall enough to keep DIRECTOR/
-     PHOTOGRAPHR/PRODUCER's full bodies, plates included, in view with
-     room under PRODUCER's plate) replaces the old 2/1. */
+     height, which scales 1:1 with the crop's width) so the crop's
+     bottom edge lands right on PRODUCER's own bottom edge (~0.740)
+     instead of on empty road, keeping DIRECTOR/PHOTOGRAPHR/PRODUCER
+     mostly in view. Cars above them, and any car crossing an edge
+     mid-animation, will still clip sometimes -- unavoidable once the
+     crop is short enough to match the target size. */
   .distance__crop {
     position: relative;
-    aspect-ratio: 14 / 9;
+    aspect-ratio: 12 / 5;
   }
 
   .distance__crop .distance__visual {
     position: absolute;
     inset-inline: 0;
     top: 0;
-    transform: translateY(-30%);
+    transform: translateY(-44%);
   }
 
   .engine__header .section-eyebrow,
