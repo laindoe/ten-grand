@@ -21,9 +21,13 @@ SIGNS_SOURCE = ROOT / "art" / "route-signs.svg"
 # is resolved to literal attributes at build time -- same approach the
 # hand-authored icons elsewhere on the site use.
 SIGN_STYLE = {
-    "st10": 'fill="#fff" stroke="#000" stroke-width=".7px" stroke-miterlimit="10"',
+    # Every part of the artwork that started out plain white is themed to
+    # the same off-white as the Ten Grand logo, rather than a hardcoded
+    # #fff -- var() needs a style attribute, not a presentation attribute,
+    # to resolve.
+    "st10": 'style="fill:var(--color-text);stroke:#000;stroke-width:.7px;stroke-miterlimit:10;"',
     "st12": 'fill="none" stroke="#000" stroke-width="2.9px" stroke-miterlimit="10"',
-    "st15": 'fill="#fff"',
+    "st15": 'style="fill:var(--color-text);"',
     "st16": 'fill="#be2026"',
     "st17": 'fill="#e0da15"',
     "st19": 'fill="#308e31"',
@@ -31,7 +35,7 @@ SIGN_STYLE = {
     # inline fill every other class gets) so CSS can blink them once that
     # marker is reached; see .rt3-hurdle-lamp in style.css.
     "st20": 'class="rt3-hurdle-lamp" fill="#d5d519"',
-    "st4": 'fill="#000" stroke="#fff" stroke-width=".7px" stroke-miterlimit="10"',
+    "st4": 'style="fill:#000;stroke:var(--color-text);stroke-width:.7px;stroke-miterlimit:10;"',
     "st0": 'fill="#060607"',
 }
 
@@ -95,6 +99,16 @@ SIGNS = [
 
 
 def inline_sign_classes(markup: str) -> str:
+    # The post's perforation holes are <circle class="st10"> -- the same
+    # class as the post rects and diamond backing, which stay the logo's
+    # white. Recolour just the circles to the page background first, so
+    # they read as holes punched through the post, before the generic
+    # st10 substitution below claims everything else.
+    markup = re.sub(
+        r'(<circle\b[^>]*?)class="st10"',
+        r'\1style="fill:var(--color-bg);stroke:#000;stroke-width:.7px;stroke-miterlimit:10;"',
+        markup,
+    )
     return re.sub(r'class="(st\d+)"', lambda m: SIGN_STYLE[m.group(1)], markup)
 
 id_names = re.findall(r'\bid="([^"]+)"', defs)
