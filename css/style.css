@@ -2956,21 +2956,21 @@ body.modal-open {
     display: block;
   }
 
-  /* The callout that replaces the mobile modal on desktop: a card in the
-     open margin beside the road, linked to its sign with a short
-     connector line. --callout-top is set by JS (initRoute in main.js) to
-     the clicked sign's own vertical centre, measured off its actual
-     rendered position rather than duplicating the .route__pin--N top
-     values here. data-side (also set by JS, from each pin's
-     data-callout-side) picks which open margin it sits in -- whichever
-     side that sign is closer to, so the connector stays short. */
+  /* The callout that replaces the mobile modal on desktop: a card that
+     drops straight down from its label, linked to it with a short
+     vertical connector, rather than sitting beside it -- the labels
+     already live in the open margin, so a card opening sideways from the
+     sign ended up overlapping the word instead of clearing it. JS
+     (openCallout in main.js) measures the label itself and sets --top /
+     --left in pixels, and --align to "left" or "right" to say which of
+     the card's own edges lines up under the label. */
   .route__callout {
     display: block;
     position: absolute;
-    top: var(--callout-top, 50%);
-    transform: translateY(-50%);
+    top: var(--top, 0);
+    left: var(--left, 0);
     width: 320px;
-    max-width: 30vw;
+    max-width: min(320px, 80vw);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -2983,37 +2983,30 @@ body.modal-open {
     pointer-events: auto;
   }
 
-  .route__callout[data-side="right"] {
-    left: 100%;
-    margin-left: 56px;
-  }
-
-  .route__callout[data-side="left"] {
-    right: 100%;
-    margin-right: 56px;
-  }
-
+  /* The dot sits inset from the card's outer edge, into the word above it
+     rather than at its far corner, and the line drops from there to the
+     card's own top edge. */
   .route__callout-connector {
     position: absolute;
-    top: 50%;
-    width: 56px;
-    height: 1px;
+    bottom: 100%;
+    width: 1px;
+    height: 22px;
     background: var(--color-card-border);
   }
 
-  .route__callout[data-side="right"] .route__callout-connector {
-    right: 100%;
+  .route__callout[data-align="left"] .route__callout-connector {
+    left: 24px;
   }
 
-  .route__callout[data-side="left"] .route__callout-connector {
-    left: 100%;
+  .route__callout[data-align="right"] .route__callout-connector {
+    right: 24px;
   }
 
   .route__callout-connector::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 18px;
+    top: 0;
+    left: 50%;
     width: 9px;
     height: 9px;
     border-radius: 50%;

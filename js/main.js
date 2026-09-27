@@ -353,7 +353,6 @@
     function openCallout(pin) {
       if (!callout) return;
       calloutTrigger = pin;
-      callout.dataset.side = pin.dataset.calloutSide || 'right';
       calloutHeadline.textContent = pin.dataset.calloutHeadline || '';
       setCalloutBody(pin.dataset.modalBody || '');
       calloutCta.textContent = pin.dataset.calloutCta || '';
@@ -364,8 +363,22 @@
       const label = document.getElementById(`route-label-${pin.dataset.stage}`) || pin;
       const stageRect = stage.getBoundingClientRect();
       const labelRect = label.getBoundingClientRect();
-      const topPercent = ((labelRect.top + labelRect.height / 2 - stageRect.top) / stageRect.height) * 100;
-      callout.style.setProperty('--callout-top', `${topPercent}%`);
+      // Drops straight down from the label instead of opening beside it --
+      // the card is wide enough that "beside" ran it right over the word.
+      // The card's near-the-road edge (right edge for a left-side label,
+      // left edge for a right-side one -- the stable edge that side's
+      // text already hugs, see .route__pin--left/--right .route__pin-text)
+      // lines up under that same edge of the label, so the connector's dot
+      // lands inside the word rather than off past either end of it.
+      const side = pin.dataset.calloutSide || 'right';
+      const align = side === 'left' ? 'right' : 'left';
+      callout.dataset.align = align;
+      const top = labelRect.bottom - stageRect.top + 22;
+      const left = align === 'left'
+        ? labelRect.left - stageRect.left
+        : labelRect.right - stageRect.left - callout.offsetWidth;
+      callout.style.setProperty('--top', `${top}px`);
+      callout.style.setProperty('--left', `${left}px`);
       callout.classList.add('is-open');
       callout.setAttribute('aria-hidden', 'false');
       route.classList.add('route--callout-open');
