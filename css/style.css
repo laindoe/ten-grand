@@ -2905,8 +2905,8 @@ body.modal-open {
   }
 
   .amass__timeline-icon {
-    width: clamp(56px, 4.5vw, 72px);
-    height: clamp(56px, 4.5vw, 72px);
+    width: clamp(72px, 6vw, 96px);
+    height: clamp(72px, 6vw, 96px);
   }
 
   .amass__timeline-content {
@@ -2914,8 +2914,8 @@ body.modal-open {
   }
 
   .amass__timeline-subtitle {
-    font-size: 1rem;
-    max-width: 44ch;
+    font-size: 1.15rem;
+    max-width: 48ch;
   }
 
   .amass__timeline-year {
