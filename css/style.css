@@ -2845,6 +2845,13 @@ body.modal-open {
     display: none;
   }
 
+  /* The two full-bleed row tracks below already carry the section's own
+     dividing lines; this one (between the subtitle and the timeline) is
+     redundant with them at this width. */
+  .amass__timeline-divider {
+    display: none;
+  }
+
   .amass__timeline-item,
   .amass__timeline-item:first-of-type,
   .amass__timeline-item:last-of-type {
@@ -2884,6 +2891,8 @@ body.modal-open {
   .amass__timeline-item--right .amass__timeline-bubble {
     grid-column: 1;
     grid-row: 3;
+    width: 75%;
+    justify-self: center;
   }
 
   .amass__timeline-icon {
