@@ -1746,6 +1746,33 @@ a {
   color: var(--color-text);
 }
 
+/* ---------- Bridge (placeholder) section ---------- */
+
+/* Placeholder for a future animated sequence (bridge closing, then a bus
+   crossing it) -- for now just a static line-art illustration sized to
+   roughly match .amass__header + .amass__intro combined, so swapping in
+   the real animation later won't visibly shift the sections around it.
+   min-height carries that sizing directly (measured ~433px/545px) rather
+   than aspect-ratio, since the illustration's own proportions don't scale
+   at the same rate as the text block they're standing in for. */
+.section--bridge {
+  min-height: 545px;
+  padding: 40px var(--section-padding-x);
+  border-top: 1px solid var(--color-card-border);
+}
+
+.bridge__art {
+  width: 100%;
+  max-width: 620px;
+}
+
+.bridge__illustration {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--color-text);
+}
+
 /* ---------- Amass Comm[unity] section ---------- */
 
 /* No bottom padding: the last child is the full-bleed .amass__culture block,
@@ -2771,6 +2798,14 @@ body.modal-open {
   .engine__route .route {
     position: relative;
     z-index: 1;
+  }
+
+  .section--bridge {
+    min-height: 433px;
+  }
+
+  .bridge__art {
+    max-width: 760px;
   }
 
   .amass__header .section-eyebrow,
