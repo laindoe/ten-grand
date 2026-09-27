@@ -364,16 +364,19 @@
       });
     }
 
+    // Fixed distance of the connector's dot/bullet from the card's own
+    // left edge -- always the left side of the callout, never the pin's
+    // side (see openCallout below).
+    const CONNECTOR_DOT_X = 20;
+
     function openCallout(pin) {
       if (!callout) return;
       calloutTrigger = pin;
       calloutHeadline.textContent = pin.dataset.calloutHeadline || '';
       setCalloutBody(pin.dataset.modalBody || '');
       calloutCta.textContent = pin.dataset.calloutCta || '';
-      // Stems from the label, not the sign -- most labels sit right by
-      // their own sign, but packaging's is relocated well away from it
-      // (see #route-label-3 / .route__pin-ghost), so this measures
-      // wherever the label actually renders rather than the pin itself.
+      // Stems from the label, not the sign -- this measures wherever the
+      // label actually renders rather than the pin itself.
       const label = document.getElementById(`route-label-${pin.dataset.stage}`) || pin;
       const stageRect = stage.getBoundingClientRect();
       const labelRect = label.getBoundingClientRect();
@@ -382,24 +385,34 @@
       // The card's near-the-road edge (right edge for a left-side label,
       // left edge for a right-side one -- the stable edge that side's
       // text already hugs, see .route__pin--left/--right .route__pin-text)
-      // lines up under that same edge of the label, so the connector's dot
-      // lands inside the word rather than off past either end of it.
+      // lines up under that same edge of the label.
       const side = pin.dataset.calloutSide || 'right';
       const align = side === 'left' ? 'right' : 'left';
       callout.dataset.align = align;
       const top = labelRect.bottom - stageRect.top + 22;
+      const attachX = align === 'left' ? labelRect.left : labelRect.right;
       const left = align === 'left'
-        ? labelRect.left - stageRect.left
-        : labelRect.right - stageRect.left - callout.offsetWidth;
+        ? attachX - stageRect.left
+        : attachX - stageRect.left - callout.offsetWidth;
       callout.style.setProperty('--top', `${top}px`);
       callout.style.setProperty('--left', `${left}px`);
+      // The dot always sits CONNECTOR_DOT_X in from the card's left edge,
+      // regardless of which side the card opened on -- it reads as a
+      // bullet on the callout's own title, not a pointer stuck to the
+      // word. Straight down from there when the label's own edge already
+      // lines up with the dot (a left-aligned card, whose left edge IS
+      // that edge); a 90-degree jog to reach it otherwise (a right-aligned
+      // card, whose left edge sits a full card-width from the label).
+      const attachXRelToCard = attachX - stageRect.left - left;
+      const bendLeft = Math.min(attachXRelToCard, CONNECTOR_DOT_X);
+      const bendWidth = Math.abs(attachXRelToCard - CONNECTOR_DOT_X);
+      callout.style.setProperty('--connector-bend-left', `${bendLeft}px`);
+      callout.style.setProperty('--connector-bend-width', `${bendWidth}px`);
       callout.classList.add('is-open');
       callout.setAttribute('aria-hidden', 'false');
       route.classList.add('route--callout-open');
-      // Dims every label but this one's -- toggled on whichever element
-      // actually holds the label (the pin itself, or packaging's ghost
-      // anchor), not on the pins themselves.
-      route.querySelectorAll('.route__pin, .route__pin-ghost').forEach((el) => {
+      // Dims every label but this one's.
+      route.querySelectorAll('.route__pin').forEach((el) => {
         el.classList.remove('is-callout-active');
       });
       if (label.parentElement) label.parentElement.classList.add('is-callout-active');
@@ -411,7 +424,7 @@
       callout.classList.remove('is-open');
       callout.setAttribute('aria-hidden', 'true');
       route.classList.remove('route--callout-open');
-      route.querySelectorAll('.route__pin, .route__pin-ghost').forEach((el) => {
+      route.querySelectorAll('.route__pin').forEach((el) => {
         el.classList.remove('is-callout-active');
       });
       if (calloutTrigger) calloutTrigger.focus();

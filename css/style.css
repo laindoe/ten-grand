@@ -1541,7 +1541,7 @@ a {
 
 .route__art .rt3-road-base { opacity:1; }
 .route__art .rt3-road-active { opacity:0; }
-.route__art .rt3-centre-base { opacity:.25; }
+.route__art .rt3-centre-base { opacity:1; }
 .route__art .rt3-lit-route { opacity:0; }
 .route--armed .rt3-lit-route { opacity:0 !important; }
 .route__art .rt3-centre-active {
@@ -1683,7 +1683,6 @@ a {
 /* Measured directly from the 1064.05 x 1954.31 export. */
 .route__stage {
   --rt-h:min(clamp(380px, calc(100svh - 130px), 720px), calc((100vw - 2px) * 1.8367));
-  --rt-label-outset:clamp(0px, calc(31vw - 116.25px), 30px);
   width:calc(var(--rt-h) * .54447);
 }
 .route__art { transform:translateX(5.5%); }
@@ -1696,32 +1695,10 @@ a {
 .route__pin--2{left:18.586%;top:27.014%;width:28.666%;height:12.193%;}
 .route__pin--3{left:66.243%;top:36.139%;width:17.37%;height:17.505%;}
 .route__pin--4{left:26.087%;top:53.824%;width:17.37%;height:17.521%;}
-/* Packaging's label anchor -- distribution's own box (same numbers as
-   .route__pin--4 above), so the relocated label reads as if it lived
-   there. Not a real hit target: .route__pin--3 itself, over the u-turn
-   sign, still owns the click. */
-.route__pin-ghost {
-  position: absolute;
-  pointer-events: none;
-}
-
-.route__pin-ghost.route__pin--3 {
-  left: 26.087%;
-  top: 53.824%;
-  width: 17.37%;
-  height: 17.521%;
-}
 .route__pin--1 .route__pin-text,
 .route__pin--2 .route__pin-text,
 .route__pin--3 .route__pin-text,
 .route__pin--4 .route__pin-text{max-width:150px;}
-.route__pin--3 .route__pin-text{margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
-.route__pin--3 .route__pin-text{
-  margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset) + clamp(29px, 9.02vw, 35px));
-}
-.route__pin--1 .route__pin-text,
-.route__pin--2 .route__pin-text,
-.route__pin--4 .route__pin-text{margin-left:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
 @media (min-width:500px) {
   .route__pin--1 .route__pin-text,
   .route__pin--2 .route__pin-text,
@@ -3000,23 +2977,32 @@ body.modal-open {
     pointer-events: auto;
   }
 
-  /* The dot sits inset from the card's outer edge, into the word above it
-     rather than at its far corner, and the line drops from there to the
-     card's own top edge. */
+  /* The dot is a bullet on the card's own title -- always its left edge,
+     never switching to the right for a right-aligned card -- so the
+     vertical drop is always at that same fixed x. The label itself can sit
+     anywhere along the card's top edge (its own near edge, set by
+     data-align), so .route__callout-connector-bend jogs sideways to reach
+     it: zero width, and invisible, when that edge already lines up with
+     the dot (a left-aligned card); the card's full width when it's at the
+     opposite corner (a right-aligned card). Both custom properties are set
+     per open callout by openCallout in main.js, from the label's actual
+     measured position. */
   .route__callout-connector {
     position: absolute;
     bottom: 100%;
+    left: 20px;
     width: 1px;
     height: 22px;
     background: var(--color-card-border);
   }
 
-  .route__callout[data-align="left"] .route__callout-connector {
-    left: 24px;
-  }
-
-  .route__callout[data-align="right"] .route__callout-connector {
-    right: 24px;
+  .route__callout-connector-bend {
+    position: absolute;
+    top: 0;
+    left: var(--connector-bend-left, 0px);
+    width: var(--connector-bend-width, 0px);
+    height: 1px;
+    background: var(--color-card-border);
   }
 
   .route__callout-connector::before {
