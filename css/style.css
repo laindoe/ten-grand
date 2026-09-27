@@ -2935,6 +2935,7 @@ body.modal-open {
   .amass__timeline-desc {
     font-size: 0.9rem;
     line-height: 1.4;
+    max-width: 28ch;
   }
 
   .amass__timeline-bubble {
