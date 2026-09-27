@@ -703,18 +703,35 @@ a {
   max-width: var(--measure-subhead);
 }
 
-/* This site never renders wider than --content-max-width, so the
-   text and visual columns always stack full-width in practice —
-   plain block flow instead of a flex row that would need extra
-   rules to fight for the divider's full-bleed width below. */
+/* flex + order (rather than a DOM reorder) puts the animation above the
+   text/divider at every width, while keeping the animation the second
+   thing in reading/source order -- screen readers and keyboard users
+   still meet the section's own heading, then the text, in a sensible
+   sequence; only the sighted visual order changes. */
 .distance__body {
   width: 100%;
   max-width: var(--content-max-width);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
+.distance__crop {
+  order: 1;
+}
+
+.distance__divider {
+  order: 2;
+}
+
+/* .section--distance has no padding-bottom of its own -- by design, its
+   last child sits flush against the section's edge (see the comment on
+   .distance__header above). That was fine when the crop's own hard edge
+   was last; now that the text paragraph is last, it needs its own
+   trailing space instead. */
 .distance__text {
-  margin-bottom: 40px;
+  order: 3;
+  margin-bottom: 60px;
 }
 
 .distance__text-heading {
@@ -2697,19 +2714,29 @@ body.modal-open {
   .distance__divider {
     width: calc(100% + 2 * var(--section-padding-x));
     margin-inline: calc(-1 * var(--section-padding-x));
-    margin-bottom: 0;
   }
 
+  /* Both the top offset and the aspect-ratio are chosen from the actual
+     cars' measured positions (as fractions of .distance__visual's own
+     height, which scales 1:1 with the crop's width): -28%/16:5 cut the
+     ENGINEER car in half around the old top edge, and cut PRODUCER's
+     plate off at the bottom. -30% starts just past ENGINEER's own
+     bottom edge (~0.303) -- INVESTOR right after it still loses its top
+     ~19%, but there's no offset that clears both without also hiding
+     STYLIST just below them, so this is the smallest cut available.
+     14/9 (~0.556 of the crop's width, tall enough to keep DIRECTOR/
+     PHOTOGRAPHR/PRODUCER's full bodies, plates included, in view with
+     room under PRODUCER's plate) replaces the old 2/1. */
   .distance__crop {
     position: relative;
-    aspect-ratio: 16 / 5;
+    aspect-ratio: 14 / 9;
   }
 
   .distance__crop .distance__visual {
     position: absolute;
     inset-inline: 0;
     top: 0;
-    transform: translateY(-28%);
+    transform: translateY(-30%);
   }
 
   .engine__header .section-eyebrow,
