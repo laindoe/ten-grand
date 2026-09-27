@@ -1561,7 +1561,7 @@ a {
   stroke-width:120px;
   stroke-linecap:round;
   stroke-dasharray:1000;
-  stroke-dashoffset:-1000;
+  stroke-dashoffset:1000;
 }
 
 .route__art .rt3-start-orb,
@@ -1634,17 +1634,23 @@ a {
 
    Each stop is that sign's own position along the reveal path (measured
    with getPointAtLength against the live <path>, as a fraction of its
-   total length, scaled to this -1000..0 dashoffset range), pulled back
+   total length, scaled to a -1000..0 dashoffset range), pulled back
    by one dash-and-gap cycle of the coloured line itself (36.39+36.39 real
    units, i.e. ~30.5 units here) so the sweep stops just short of the
    sign instead of a trailing dash overlapping it -- the colour and the
    mask don't share a dash phase, so landing exactly on the sign let a
-   partial dash poke out past it. */
-@keyframes rt3RevealStage1 { from { stroke-dashoffset:-1000; } to { stroke-dashoffset:-910.24; } }
-@keyframes rt3RevealStage2 { from { stroke-dashoffset:-910.24; } to { stroke-dashoffset:-619.64; } }
-@keyframes rt3RevealStage3 { from { stroke-dashoffset:-619.64; } to { stroke-dashoffset:-371.44; } }
-@keyframes rt3RevealStage4 { from { stroke-dashoffset:-371.44; } to { stroke-dashoffset:-112.14; } }
-@keyframes rt3RevealStage5 { from { stroke-dashoffset:-112.14; } to { stroke-dashoffset:0; } }
+   partial dash poke out past it.
+
+   The offsets below are that -1000..0 range shifted up by one full
+   2000-unit dash cycle (dasharray is 1000/1000, so period is 2000) to land
+   on 1000..2000 instead: mathematically identical mod 2000, but some
+   WebKit builds render a pathLength-scaled *negative* stroke-dashoffset
+   inside an SVG mask backwards, so staying positive avoids that bug. */
+@keyframes rt3RevealStage1 { from { stroke-dashoffset:1000; } to { stroke-dashoffset:1089.76; } }
+@keyframes rt3RevealStage2 { from { stroke-dashoffset:1089.76; } to { stroke-dashoffset:1380.36; } }
+@keyframes rt3RevealStage3 { from { stroke-dashoffset:1380.36; } to { stroke-dashoffset:1628.56; } }
+@keyframes rt3RevealStage4 { from { stroke-dashoffset:1628.56; } to { stroke-dashoffset:1887.86; } }
+@keyframes rt3RevealStage5 { from { stroke-dashoffset:1887.86; } to { stroke-dashoffset:2000; } }
 @keyframes rt3Start {
   35% { transform:scale(1.18); }
 }
@@ -1733,7 +1739,7 @@ a {
 
 @media (prefers-reduced-motion:reduce) {
   .route__art .rt3-lit-route{opacity:1;}
-  .route__art .rt3-reveal-mask{stroke-dashoffset:0;}
+  .route__art .rt3-reveal-mask{stroke-dashoffset:2000;}
   .route__art .rt3-marker-glow{opacity:.9;transform:scale(1);}
   .route__art #rt3-impact{opacity:1;transform:scale(1);}
   .route__art .rt3-impact-core{transform:scale(1.7177);}
