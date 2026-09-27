@@ -2905,15 +2905,13 @@ body.modal-open {
     grid-row: 3;
     width: 75%;
     justify-self: center;
-    /* Stretching to the full 190px cell (sized for the icon+text content
-       above, not for this) made every bubble far taller than its own text
-       needed -- measured 73-191px of actual content depending on viewport
-       width and line count, against a fixed 190px box regardless. 113px
-       is sized to the copy's worst realistic case in the common desktop
-       range (~1280px, 5 lines); align-self stays center (the base rule)
-       so a bubble that needs more --  a longer line count at a narrower
-       width -- still grows past this floor rather than clipping. */
-    min-height: 113px;
+    /* Sized to the copy's worst realistic case in the common desktop range
+       (~1280px, 5 lines, measured at 120.5px with the bubble's current
+       padding/font-size); align-self stays center (the base rule) so a
+       bubble that needs more -- a longer line count at a narrower width
+       -- still grows past this floor rather than clipping. Re-measure and
+       adjust this if the bubble's padding or font-size changes again. */
+    min-height: 121px;
   }
 
   .amass__timeline-icon {
@@ -2945,11 +2943,7 @@ body.modal-open {
   }
 
   .amass__timeline-bubble {
-    /* The box's own size no longer depends on this -- align-self: stretch
-       above already fixes every bubble to its row's full 190px cell --
-       so this can shrink freely down to whatever still keeps the text off
-       the border, without shrinking the box itself. */
-    padding: 6px 8px;
+    padding: 10px 12px;
     font-size: 0.85rem;
     line-height: 1.45;
   }
