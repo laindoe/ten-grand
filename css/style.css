@@ -1255,6 +1255,28 @@ a {
   pointer-events: none;
 }
 
+/* Same interaction-cue treatment as .dilemma__cue (the billboards' "TAP
+   BILLBOARDS"), positioned the same way as .route__cap so it can sit
+   directly above IMAGINATION. */
+.route__cue {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-vandalism);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .route__cue {
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
+  }
+}
+
 /* The trigger. The svg stays a picture and every control is a real button on
    top of it: an SVG <g> is neither focusable nor nameable, a button is both,
    and the hit area can be made bigger than the thing it sits on. */
@@ -1645,6 +1667,7 @@ a {
 }
 .route__spark{left:47.58%;top:4.50%;width:12.25%;}
 .route__cap--star{bottom:95.50%;margin-bottom:47px;}
+.route__cue{bottom:95.50%;margin-bottom:81px;}
 .route__cap--globe{top:98.75%;margin-top:26px;}
 .route{
   padding-top:clamp(39px, calc(76.85px - 4.5svh), 54px);
