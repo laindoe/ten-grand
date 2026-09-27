@@ -2721,9 +2721,16 @@ body.modal-open {
      14/9 (~0.556 of the crop's width, tall enough to keep DIRECTOR/
      PHOTOGRAPHR/PRODUCER's full bodies, plates included, in view with
      room under PRODUCER's plate) replaces the old 2/1. */
+  /* The cars keep moving/scaling continuously (see js/main.js), so any
+     fixed top/bottom edge here will always have some car mid-crossing at
+     any given moment -- there's no static offset that stays clip-free.
+     Fading the top and bottom 10% instead means a car crossing the edge
+     dissolves into the background rather than getting a hard cut. */
   .distance__crop {
     position: relative;
     aspect-ratio: 14 / 9;
+    mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
   }
 
   .distance__crop .distance__visual {
