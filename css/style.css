@@ -2865,13 +2865,14 @@ body.modal-open {
   .amass__timeline-item:nth-of-type(5) { grid-column: 2; grid-row: 2; }
   .amass__timeline-item:nth-of-type(6) { grid-column: 3; grid-row: 2; }
 
+  /* Content sits above the line and the bubble opens below it for every
+     item, on both rows -- the --left/--right split (used to alternate
+     sides in the single-row version) is ignored here, not removed, since
+     mobile still relies on it. */
   .amass__timeline-item--left .amass__timeline-content,
   .amass__timeline-item--right .amass__timeline-content {
     grid-column: 1;
-  }
-
-  .amass__timeline-item--right .amass__timeline-content {
-    grid-row: 3;
+    grid-row: 1;
   }
 
   .amass__timeline-toggle {
@@ -2879,14 +2880,10 @@ body.modal-open {
     grid-row: 2;
   }
 
-  .amass__timeline-item--left .amass__timeline-bubble {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
+  .amass__timeline-item--left .amass__timeline-bubble,
   .amass__timeline-item--right .amass__timeline-bubble {
     grid-column: 1;
-    grid-row: 1;
+    grid-row: 3;
   }
 
   .amass__timeline-icon {
@@ -2917,12 +2914,13 @@ body.modal-open {
   }
 
   /* The pointer flips from a sideways tail (aimed at a toggle beside it) to
-     a vertical one (aimed at a toggle above or below it). Every property
-     the vertical version set is restated in full on each of these four
-     rules -- a separate reset at a lower specificity than the vertical
-     item-variant rules below would lose to them regardless of source
-     order, since those selectors are just as specific. */
-  .amass__timeline-item--left .amass__timeline-bubble::before {
+     a vertical one aimed at the toggle above -- every bubble opens below
+     its item now, so both variants point the same way. Every property the
+     vertical version set is restated in full -- a partial reset at a lower
+     specificity than the vertical item-variant rules would lose to them
+     regardless of source order, since those selectors are just as specific. */
+  .amass__timeline-item--left .amass__timeline-bubble::before,
+  .amass__timeline-item--right .amass__timeline-bubble::before {
     top: -8px;
     bottom: auto;
     left: 50%;
@@ -2934,37 +2932,14 @@ body.modal-open {
     transform: translateX(-50%);
   }
 
-  .amass__timeline-item--left .amass__timeline-bubble::after {
+  .amass__timeline-item--left .amass__timeline-bubble::after,
+  .amass__timeline-item--right .amass__timeline-bubble::after {
     top: -6.5px;
     bottom: auto;
     left: 50%;
     right: auto;
     border-bottom: 7px solid var(--color-bg);
     border-top: none;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    transform: translateX(-50%);
-  }
-
-  .amass__timeline-item--right .amass__timeline-bubble::before {
-    top: auto;
-    bottom: -8px;
-    left: 50%;
-    right: auto;
-    border-top: 8px solid var(--color-card-border);
-    border-bottom: none;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    transform: translateX(-50%);
-  }
-
-  .amass__timeline-item--right .amass__timeline-bubble::after {
-    top: auto;
-    bottom: -6.5px;
-    left: 50%;
-    right: auto;
-    border-top: 7px solid var(--color-bg);
-    border-bottom: none;
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     transform: translateX(-50%);
