@@ -2789,6 +2789,158 @@ body.modal-open {
     text-align: center;
   }
 
+  /* Rotates the whole timeline 90°: the vertical track and its left/right
+     alternation become a horizontal track with above/below alternation.
+     Every item reserves the same fixed height on both sides of the track
+     (rather than sizing to its own content, as the vertical layout does),
+     so all six toggles land on one straight line regardless of which side
+     currently holds a bubble. --left keeps the content above the line
+     (row 1) with its bubble below (row 3); --right is the mirror. The
+     bubble stays a normal grid cell rather than an overlay, so it can
+     never drift off that shared line the way an absolutely positioned
+     popover could. */
+  .amass__timeline {
+    max-width: none;
+    margin-top: var(--divider-gap);
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .amass__timeline-track {
+    top: 50%;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+
+  .amass__timeline-item,
+  .amass__timeline-item:first-of-type,
+  .amass__timeline-item:last-of-type {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: 190px 40px 190px;
+    padding: 0 10px;
+  }
+
+  .amass__timeline-item--left .amass__timeline-content,
+  .amass__timeline-item--right .amass__timeline-content {
+    grid-column: 1;
+  }
+
+  .amass__timeline-item--right .amass__timeline-content {
+    grid-row: 3;
+  }
+
+  .amass__timeline-toggle {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .amass__timeline-item--left .amass__timeline-bubble {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .amass__timeline-item--right .amass__timeline-bubble {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .amass__timeline-icon {
+    width: clamp(56px, 4.5vw, 72px);
+    height: clamp(56px, 4.5vw, 72px);
+  }
+
+  .amass__timeline-content {
+    gap: 6px;
+  }
+
+  .amass__timeline-year {
+    font-size: 0.85rem;
+  }
+
+  .amass__timeline-label {
+    font-size: 0.8rem;
+  }
+
+  .amass__timeline-desc {
+    font-size: 0.75rem;
+    line-height: 1.35;
+  }
+
+  .amass__timeline-bubble {
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+
+  /* The pointer flips from a sideways tail (aimed at a toggle beside it) to
+     a vertical one (aimed at a toggle above or below it). Every property
+     the vertical version set is restated in full on each of these four
+     rules -- a separate reset at a lower specificity than the vertical
+     item-variant rules below would lose to them regardless of source
+     order, since those selectors are just as specific. */
+  .amass__timeline-item--left .amass__timeline-bubble::before {
+    top: -8px;
+    bottom: auto;
+    left: 50%;
+    right: auto;
+    border-bottom: 8px solid var(--color-card-border);
+    border-top: none;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    transform: translateX(-50%);
+  }
+
+  .amass__timeline-item--left .amass__timeline-bubble::after {
+    top: -6.5px;
+    bottom: auto;
+    left: 50%;
+    right: auto;
+    border-bottom: 7px solid var(--color-bg);
+    border-top: none;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    transform: translateX(-50%);
+  }
+
+  .amass__timeline-item--right .amass__timeline-bubble::before {
+    top: auto;
+    bottom: -8px;
+    left: 50%;
+    right: auto;
+    border-top: 8px solid var(--color-card-border);
+    border-bottom: none;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    transform: translateX(-50%);
+  }
+
+  .amass__timeline-item--right .amass__timeline-bubble::after {
+    top: auto;
+    bottom: -6.5px;
+    left: 50%;
+    right: auto;
+    border-top: 7px solid var(--color-bg);
+    border-bottom: none;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    transform: translateX(-50%);
+  }
+
+  /* The vertical layout gets its top/bottom breathing room from the first
+     and last item's own padding (see the comment on .amass__timeline-block);
+     horizontally there's no equivalent last item, so the block resumes
+     owning its own bottom padding, and .amass__timeline's own margin-top
+     above provides the matching top gap. */
+  .amass__timeline-block {
+    padding-bottom: var(--divider-gap);
+  }
+
   /* Preserve the established desktop constellation height while allowing the
      new, wider artwork to extend across the full framed section. The original
      portrait composition remains the mobile asset. */
