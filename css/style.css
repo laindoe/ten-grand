@@ -2806,8 +2806,14 @@ body.modal-open {
     --amass-h-toggle: 40px;
     --amass-row-height: calc(2 * var(--amass-h-half) + var(--amass-h-toggle));
     --amass-row-gap: 32px;
+    /* 94px, not --divider-gap, so the gap above row 1's icons matches the
+       gap below an open row-1 bubble and row 2's icons (measured at 116px,
+       stable across every bubble regardless of its own text length, since
+       both icon and bubble are centered within their own fixed 190px cell
+       either way -- 116px minus that 22.1px of built-in centering is 94px
+       of margin). */
     max-width: none;
-    margin-top: var(--divider-gap);
+    margin-top: 94px;
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
