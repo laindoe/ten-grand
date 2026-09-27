@@ -2939,7 +2939,11 @@ body.modal-open {
   }
 
   .amass__timeline-bubble {
-    padding: 16px 18px;
+    /* The box's own size no longer depends on this -- align-self: stretch
+       above already fixes every bubble to its row's full 190px cell --
+       so this can shrink freely down to whatever still keeps the text off
+       the border, without shrinking the box itself. */
+    padding: 6px 8px;
     font-size: 0.85rem;
     line-height: 1.45;
   }
