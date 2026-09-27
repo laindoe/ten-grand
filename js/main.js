@@ -299,6 +299,15 @@
 
     let currentStage = 0;
     let armFrame = 0;
+    // Set right before routeModal.open(pin) on mobile, so the "next" button
+    // (see below) knows which sign's modal is on screen without initModal
+    // having to expose its own private trigger.
+    let mobileModalPin = null;
+    // The stage to auto-open once its marker lights up, armed only by the
+    // modal's "next" button -- closing via the X or the backdrop advances
+    // the road same as always, but leaves the reader to tap the next sign
+    // themselves.
+    let pendingAutoOpenStage = 0;
 
     function setStage(n) {
       currentStage = n;
@@ -325,6 +334,11 @@
         const n = Number(route.dataset.stage);
         const pin = pinForStage(n);
         if (pin) pin.classList.add('is-reached');
+        if (pin && n === pendingAutoOpenStage && routeModal && !desktopQuery.matches) {
+          pendingAutoOpenStage = 0;
+          mobileModalPin = pin;
+          routeModal.open(pin);
+        }
       });
     });
 
@@ -427,12 +441,27 @@
           // Mobile always reopens the modal, current sign or a past one --
           // advancing (if this is the current sign) waits for its close,
           // handled by the modal:close listener below.
+          mobileModalPin = pin;
           routeModal.open(pin);
         }
       });
     });
 
     if (routeModal) {
+      const nextBtn = routeModal.modal.querySelector('[data-modal-next]');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (!mobileModalPin) return;
+          // Only chains into the next modal when this sign is the actual
+          // frontier -- reopening a past sign's modal and hitting "next"
+          // just closes it, same as the X, since there's nothing to advance.
+          if (Number(mobileModalPin.dataset.stage) === currentStage) {
+            pendingAutoOpenStage = currentStage + 1;
+          }
+          routeModal.close();
+        });
+      }
+
       routeModal.modal.addEventListener('modal:close', (event) => {
         const trigger = event.detail && event.detail.trigger;
         if (!trigger || !trigger.classList.contains('route__pin')) return;
@@ -515,6 +544,8 @@
         route.classList.remove('route--running');
         pins.forEach((pin) => pin.classList.remove('is-reached'));
         markers.forEach((marker) => marker.classList.remove('is-lit'));
+        pendingAutoOpenStage = 0;
+        mobileModalPin = null;
         closeCallout(false);
       }
     }
