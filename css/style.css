@@ -2810,6 +2810,36 @@ body.modal-open {
     height: 100%;
   }
 
+  /* Side by side rather than stacked. .section (the base class every
+     section shares) is itself display:flex, which makes .connect__zone a
+     flex item of it -- and flex items are unconditionally "blockified"
+     per spec, so no inline-level display (inline-block, inline-flex, ...)
+     can ever apply to one, tried with !important directly on the element
+     and it still computed as plain flex. Grid sidesteps that entirely:
+     .connect__zone stays a normal block-level grid item, and two of them
+     land in the same row purely through the 2-column track plus normal
+     grid auto-placement -- no explicit column assignment needed on the
+     zones themselves. The three elements before them each span both
+     columns so they stay full-width and centered above the pair. */
+  .section--connect {
+    display: grid;
+    grid-template-columns: repeat(2, 340px);
+    column-gap: 40px;
+    justify-content: center;
+  }
+
+  .connect__eyebrow,
+  .connect__logo,
+  .connect__icon {
+    grid-column: 1 / -1;
+  }
+
+  .connect__zone {
+    width: 340px;
+    max-width: 340px;
+    margin: 0;
+  }
+
 }
 
 /* ---------- Reduced motion ---------- */
