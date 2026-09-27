@@ -1644,10 +1644,14 @@ a {
 }
 .route__art { transform:translateX(5.5%); }
 .route__pin-text { top:50%;bottom:auto;transform:translateY(-50%); }
-.route__pin--1{left:61.04%;top:10.73%;width:8.84%;height:8.80%;}
-.route__pin--2{left:29.93%;top:30.17%;width:8.84%;height:8.80%;}
-.route__pin--3{left:70.06%;top:44.61%;width:9.70%;height:8.80%;}
-.route__pin--4{left:29.93%;top:62.57%;width:9.70%;height:8.80%;}
+/* The hit box is the sign's own full bounding box (post to diamond/board
+   top), measured off the rendered .rt3-marker--* groups -- not the small
+   footprint these were tuned to when the marker was still a map pin, so
+   the whole drawn sign is tappable, not just a dot near its base. */
+.route__pin--1{left:57.22%;top:2.243%;width:17.37%;height:17.508%;}
+.route__pin--2{left:18.586%;top:27.014%;width:28.666%;height:12.193%;}
+.route__pin--3{left:66.243%;top:36.139%;width:17.37%;height:17.505%;}
+.route__pin--4{left:26.087%;top:53.824%;width:17.37%;height:17.521%;}
 .route__pin--1 .route__pin-text,
 .route__pin--2 .route__pin-text,
 .route__pin--3 .route__pin-text,
