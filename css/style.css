@@ -2079,8 +2079,8 @@ a {
 .amass__timeline-icon {
   display: block;
   flex: none;
-  width: 125px;
-  height: 125px;
+  width: 100px;
+  height: 100px;
   color: var(--color-text);
 }
 
