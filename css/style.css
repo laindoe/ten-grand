@@ -2668,9 +2668,14 @@ body.modal-open {
   }
 
   /* The title/copy groups sit at the same left content margin as their parent
-     section headers. Only their readable text measure remains constrained. */
+     section headers. Only their readable text measure remains constrained.
+     display:flex + order below puts the animation above the text/divider
+     visually without reordering the DOM, so mobile's (unrelated) reading
+     order is untouched. */
   .distance__body {
     max-width: none;
+    display: flex;
+    flex-direction: column;
   }
 
   .distance__header .section-eyebrow,
@@ -2681,8 +2686,10 @@ body.modal-open {
   }
 
   .distance__text {
+    order: 3;
     width: min(100%, var(--measure-wide));
     margin-inline: auto;
+    margin-bottom: 0;
   }
 
   .distance__text-heading,
@@ -2695,14 +2702,19 @@ body.modal-open {
   }
 
   .distance__divider {
+    order: 2;
     width: calc(100% + 2 * var(--section-padding-x));
     margin-inline: calc(-1 * var(--section-padding-x));
-    margin-bottom: 0;
+    margin-bottom: 40px;
   }
 
+  /* aspect-ratio widened from 16/5 to roughly match the combined height of
+     the old (separate) text block + divider + crop, now that the crop is
+     the first thing shown and needs to carry that space on its own. */
   .distance__crop {
+    order: 1;
     position: relative;
-    aspect-ratio: 16 / 5;
+    aspect-ratio: 12 / 5;
   }
 
   .distance__crop .distance__visual {
