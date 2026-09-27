@@ -1598,21 +1598,21 @@ a {
 /* The reveal used to be one continuous 4.2s sweep. It is now five sweeps,
    one per road segment, each fired by JS only once the sign at its start
    has been dealt with (clicked, and on mobile its modal closed) -- see
-   initRoute in main.js. The five stroke-dashoffset spans are the same
-   points along the path the old single sweep passed through at 16.7% /
-   41.0% / 63.3% / 84.5% / 100%, so the road still reads at the same speed
-   per segment; only the pausing-and-waiting between them is new. */
-/* These five stops are each sign's own position along the reveal path
-   (measured with getPointAtLength against the actual <path>, as a
-   fraction of its total length, then scaled to the -1000..0 dashoffset
-   range) -- not the original single sweep's marker-ignite timings, which
-   were tuned by eye for a sweep that never had to stop, and undershot or
-   overshot every sign once stopping there was the point. */
-@keyframes rt3RevealStage1 { from { stroke-dashoffset:-1000; } to { stroke-dashoffset:-879.7; } }
-@keyframes rt3RevealStage2 { from { stroke-dashoffset:-879.7; } to { stroke-dashoffset:-589.1; } }
-@keyframes rt3RevealStage3 { from { stroke-dashoffset:-589.1; } to { stroke-dashoffset:-340.9; } }
-@keyframes rt3RevealStage4 { from { stroke-dashoffset:-340.9; } to { stroke-dashoffset:-81.6; } }
-@keyframes rt3RevealStage5 { from { stroke-dashoffset:-81.6; } to { stroke-dashoffset:0; } }
+   initRoute in main.js.
+
+   Each stop is that sign's own position along the reveal path (measured
+   with getPointAtLength against the live <path>, as a fraction of its
+   total length, scaled to this -1000..0 dashoffset range), pulled back
+   by one dash-and-gap cycle of the coloured line itself (36.39+36.39 real
+   units, i.e. ~30.5 units here) so the sweep stops just short of the
+   sign instead of a trailing dash overlapping it -- the colour and the
+   mask don't share a dash phase, so landing exactly on the sign let a
+   partial dash poke out past it. */
+@keyframes rt3RevealStage1 { from { stroke-dashoffset:-1000; } to { stroke-dashoffset:-910.24; } }
+@keyframes rt3RevealStage2 { from { stroke-dashoffset:-910.24; } to { stroke-dashoffset:-619.64; } }
+@keyframes rt3RevealStage3 { from { stroke-dashoffset:-619.64; } to { stroke-dashoffset:-371.44; } }
+@keyframes rt3RevealStage4 { from { stroke-dashoffset:-371.44; } to { stroke-dashoffset:-112.14; } }
+@keyframes rt3RevealStage5 { from { stroke-dashoffset:-112.14; } to { stroke-dashoffset:0; } }
 @keyframes rt3Start {
   35% { transform:scale(1.18); }
 }
@@ -1700,11 +1700,11 @@ a {
      this has no per-stage variant because there is nothing to repeat. */
   .route--running .rt3-lit-route{opacity:1;}
 
-  .route[data-stage="1"] .rt3-reveal-mask{animation:rt3RevealStage1 .51s linear both;}
+  .route[data-stage="1"] .rt3-reveal-mask{animation:rt3RevealStage1 .38s linear both;}
   .route[data-stage="2"] .rt3-reveal-mask{animation:rt3RevealStage2 1.22s linear both;}
   .route[data-stage="3"] .rt3-reveal-mask{animation:rt3RevealStage3 1.04s linear both;}
   .route[data-stage="4"] .rt3-reveal-mask{animation:rt3RevealStage4 1.09s linear both;}
-  .route[data-stage="5"] .rt3-reveal-mask{animation:rt3RevealStage5 .34s linear both;}
+  .route[data-stage="5"] .rt3-reveal-mask{animation:rt3RevealStage5 .47s linear both;}
 
   .route--running .rt3-start-orb{animation:rt3Start .7s ease-out both;}
   .route--running .rt3-start-glow{animation:rt3StartGlow .7s ease-out both;}
@@ -1713,18 +1713,18 @@ a {
      equals that stage's own duration, same as it did in the single 4.2s
      timeline this replaced. JS listens for this animation's start to know
      when to make that sign clickable (see initRoute in main.js). */
-  .route[data-stage="1"] .rt3-marker--development{animation:rt3MarkerLight .65s ease-out .51s both;}
+  .route[data-stage="1"] .rt3-marker--development{animation:rt3MarkerLight .65s ease-out .38s both;}
   .route[data-stage="2"] .rt3-marker--production{animation:rt3MarkerLight .65s ease-out 1.22s both;}
   .route[data-stage="3"] .rt3-marker--packaging{animation:rt3MarkerLight .65s ease-out 1.04s both;}
   .route[data-stage="4"] .rt3-marker--distribution{animation:rt3MarkerLight .65s ease-out 1.09s both;}
-  .route[data-stage="1"] .rt3-marker--development .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out .51s both;}
+  .route[data-stage="1"] .rt3-marker--development .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out .38s both;}
   .route[data-stage="2"] .rt3-marker--production .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 1.22s both;}
   .route[data-stage="3"] .rt3-marker--packaging .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 1.04s both;}
   .route[data-stage="4"] .rt3-marker--distribution .rt3-marker-glow{animation:rt3MarkerGlow .65s ease-out 1.09s both;}
 
-  .route[data-stage="5"] #rt3-impact{animation:rt3Impact 1.8s ease-in-out .34s both;}
-  .route[data-stage="5"] .rt3-impact-core{animation:rt3ImpactCore 1.8s ease-in-out .34s both;}
-  .route[data-stage="5"] .rt3-impact-glow{animation:rt3ImpactGlow 1.8s ease-in-out .34s both;}
+  .route[data-stage="5"] #rt3-impact{animation:rt3Impact 1.8s ease-in-out .47s both;}
+  .route[data-stage="5"] .rt3-impact-core{animation:rt3ImpactCore 1.8s ease-in-out .47s both;}
+  .route[data-stage="5"] .rt3-impact-glow{animation:rt3ImpactGlow 1.8s ease-in-out .47s both;}
 }
 /* --- end Impact Path v3 --- */
 
