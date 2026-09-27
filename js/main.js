@@ -71,13 +71,23 @@
     }
 
     function closeModal() {
+      const closed = lastFocused;
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('modal-open');
       if (lastFocused) lastFocused.focus();
+      // Route pins use this to know when to light the next stretch of
+      // road (see initRoute) — dispatched after the close so anything
+      // listening sees the modal already gone.
+      modal.dispatchEvent(new CustomEvent('modal:close', { detail: { trigger: closed } }));
     }
 
+    // Route pins are wired directly by initRoute (their modal only opens
+    // on mobile; on desktop the same click just advances the road
+    // instead), so they opt out of this generic auto-bind — otherwise
+    // this listener would pop the modal open on desktop too.
     document.querySelectorAll('[data-modal-title]').forEach((trigger) => {
+      if (trigger.classList.contains('route__pin')) return;
       trigger.addEventListener('click', () => openModal(trigger));
     });
 
@@ -90,6 +100,8 @@
         closeModal();
       }
     });
+
+    return { modal, open: openModal, close: closeModal };
   }
 
   // Bubbles are independent — opening one does not close any others,
@@ -256,45 +268,118 @@
     observer.observe(stage);
   }
 
-  // The whole route sequence — the colour running down the road, each dot
-  // taking its colour, the globe igniting — is CSS with its own delays, so all
-  // this has to do is toggle one class. The remove/reflow/add is what lets it
-  // replay: restarting a CSS animation needs the element to leave the
-  // animating state for one frame.
+  // The route used to run once, straight through, on a single CSS class.
+  // Now it is five stages — orb-to-development, then one per sign down to
+  // distribution, then the final stretch into the globe — and only the
+  // first one is automatic. Each of the other four waits for its sign to
+  // be dealt with: clicked, and on mobile its modal closed, before the
+  // next stretch of road lights up. Desktop has no modal, so there the
+  // click itself advances (see the pin click handler below).
   //
-  // It runs itself once enough of the drawing is on screen, and resets only
-  // once the drawing is ENTIRELY gone. That second threshold is the whole
-  // trick: the road un-colouring is what would make a replay read as a glitch,
-  // so it is only ever done while nobody can see it.
-  function initRoute() {
+  // Stage N is "on" via `route.dataset.stage`, which CSS reads to run that
+  // segment's reveal-mask sweep and light the sign it ends at (see the
+  // Impact Path v3 rules in style.css). JS never animates anything
+  // directly — it only ever changes which stage is current.
+  function initRoute(routeModal) {
     const route = document.querySelector('.route');
     if (!route) return;
     const stage = route.querySelector('.route__stage');
     const spark = route.querySelector('.route__spark');
     if (!stage) return;
 
-    let startFrame = 0;
+    const pins = Array.from(route.querySelectorAll('.route__pin'));
+    const markers = Array.from(route.querySelectorAll('.rt3-marker'));
+    const desktopQuery = window.matchMedia('(min-width: 900px)');
+    const totalStages = pins.length + 1; // one per sign, plus the final stretch into the globe
 
-    function run() {
-      if (route.classList.contains('route--running') ||
-          route.classList.contains('route--armed')) return;
+    let currentStage = 0;
+    let armFrame = 0;
+
+    function setStage(n) {
+      currentStage = n;
+      route.dataset.stage = String(n);
+    }
+
+    function pinForStage(n) {
+      return pins.find((pin) => Number(pin.dataset.stage) === n);
+    }
+
+    function advance() {
+      if (currentStage < 1 || currentStage >= totalStages) return;
+      setStage(currentStage + 1);
+    }
+
+    // A sign becomes clickable the moment its own marker ignites, which
+    // CSS times to when that stage's sweep reaches it. Listening for the
+    // ignite animation, rather than duplicating its delay here in JS,
+    // means the two can never drift out of sync.
+    markers.forEach((marker) => {
+      marker.addEventListener('animationstart', (event) => {
+        if (event.animationName !== 'rt3MarkerLight') return;
+        const n = Number(route.dataset.stage);
+        const pin = pinForStage(n);
+        if (pin) pin.classList.add('is-reached');
+      });
+    });
+
+    pins.forEach((pin) => {
+      pin.addEventListener('click', () => {
+        // pointer-events already keeps this to reached signs, but a sign
+        // stays reached (and clickable) after it's passed, not just while
+        // it's current -- so this only re-checks "is it lit at all", not
+        // "is it the current one".
+        if (!pin.classList.contains('is-reached')) return;
+        const isCurrent = Number(pin.dataset.stage) === currentStage;
+        if (desktopQuery.matches) {
+          // No modal on desktop, so a past sign has nothing left to do here.
+          if (isCurrent) advance();
+        } else if (routeModal) {
+          // Mobile always reopens the modal, current sign or a past one --
+          // advancing (if this is the current sign) waits for its close,
+          // handled by the modal:close listener below.
+          routeModal.open(pin);
+        }
+      });
+    });
+
+    if (routeModal) {
+      routeModal.modal.addEventListener('modal:close', (event) => {
+        const trigger = event.detail && event.detail.trigger;
+        if (!trigger || !trigger.classList.contains('route__pin')) return;
+        if (Number(trigger.dataset.stage) === currentStage) advance();
+      });
+    }
+
+    function beginSequence() {
+      if (currentStage > 0) return;
 
       // Give the browser one painted frame with the colour layer forcibly
       // hidden, then start the mask animation and wait one more painted frame
       // before revealing it. This prevents Chromium from briefly compositing
-      // the complete gradient while the SVG mask is being promoted.
+      // the complete gradient while the SVG mask is being promoted. Only the
+      // very first stage needs this: by stage two the lit layer is already
+      // composited and visible, so later stages just change the stage number.
       route.classList.add('route--armed');
-      startFrame = requestAnimationFrame(() => {
+      armFrame = requestAnimationFrame(() => {
         route.classList.add('route--running');
-        startFrame = requestAnimationFrame(() => {
+        armFrame = requestAnimationFrame(() => {
           route.classList.remove('route--armed');
-          startFrame = 0;
+          armFrame = 0;
+          setStage(1);
         });
       });
     }
 
-    if (spark) spark.addEventListener('click', run);
-    if (prefersReducedMotion) return;
+    if (spark) spark.addEventListener('click', beginSequence);
+
+    if (prefersReducedMotion) {
+      // Nothing to withhold for motion — show it all lit immediately, same
+      // as the rest of the site does for reduced motion, but signs still
+      // need to be reachable so their modals stay openable on mobile.
+      setStage(totalStages);
+      pins.forEach((pin) => pin.classList.add('is-reached'));
+      return;
+    }
 
     // The sticky nav covers the top of the viewport, so it comes off the room
     // available — otherwise "on screen" counts pixels sitting behind it.
@@ -324,15 +409,20 @@
         : Math.min(box.bottom, bottom) - Math.max(box.top, top) >= room * 0.9;
       if (!lit && ready) {
         lit = true;
-        run();
+        beginSequence();
       } else if (lit && (box.bottom <= top || box.top >= bottom)) {
-        // reset only once it is entirely gone: the road un-colouring is what
-        // would make the replay read as a glitch, so it happens unseen
+        // reset only once it is entirely gone: the road un-colouring (and a
+        // sign going dark again) is what would make the replay read as a
+        // glitch, so it happens unseen. Progress resets with it — scrolling
+        // back plays the whole sequence again from the orb.
         lit = false;
-        if (startFrame) cancelAnimationFrame(startFrame);
-        startFrame = 0;
+        if (armFrame) cancelAnimationFrame(armFrame);
+        armFrame = 0;
+        currentStage = 0;
+        route.dataset.stage = '0';
         route.classList.remove('route--armed');
         route.classList.remove('route--running');
+        pins.forEach((pin) => pin.classList.remove('is-reached'));
       }
     }
 
@@ -454,8 +544,8 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     initReveal();
-    initModal();
-    initRoute();
+    const routeModal = initModal();
+    initRoute(routeModal);
     initTimelineBubbles();
     initBillboards();
     initHighwayCars();
