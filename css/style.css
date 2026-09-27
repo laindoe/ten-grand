@@ -1631,12 +1631,12 @@ a {
 .route__pin--3 .route__pin-text,
 .route__pin--4 .route__pin-text{max-width:150px;}
 .route__pin--1 .route__pin-text,
-.route__pin--3 .route__pin-text{margin-right:calc(clamp(70px, 14vw, 90px) + var(--rt-label-outset));}
+.route__pin--3 .route__pin-text{margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
 .route__pin--3 .route__pin-text{
-  margin-right:calc(clamp(70px, 14vw, 90px) + var(--rt-label-outset) + clamp(29px, 9.02vw, 35px));
+  margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset) + clamp(29px, 9.02vw, 35px));
 }
 .route__pin--2 .route__pin-text,
-.route__pin--4 .route__pin-text{margin-left:calc(clamp(70px, 14vw, 90px) + var(--rt-label-outset));}
+.route__pin--4 .route__pin-text{margin-left:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
 @media (min-width:500px) {
   .route__pin--1 .route__pin-text,
   .route__pin--2 .route__pin-text,
