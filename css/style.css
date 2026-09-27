@@ -2914,8 +2914,8 @@ body.modal-open {
   }
 
   .amass__timeline-subtitle {
-    font-size: 1.15rem;
-    max-width: 48ch;
+    font-size: 1rem;
+    max-width: 44ch;
   }
 
   .amass__timeline-year {
@@ -2927,8 +2927,8 @@ body.modal-open {
   }
 
   .amass__timeline-desc {
-    font-size: 0.75rem;
-    line-height: 1.35;
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
 
   .amass__timeline-bubble {
