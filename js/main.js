@@ -377,7 +377,7 @@
     // Inter actually applied, these two values read clean against real
     // title widths, matching how development's and production's already
     // did with the plain CONNECTOR_TITLE_GAP.
-    const CONNECTOR_TITLE_GAP_OVERRIDE = { 3: -46, 4: -30 };
+    const CONNECTOR_TITLE_GAP_OVERRIDE = { 3: -46, 4: -28 };
 
     function openCallout(pin) {
       if (!callout) return;
