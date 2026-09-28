@@ -2760,19 +2760,8 @@ a {
 }
 
 .modal__cta {
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
   color: var(--color-text-muted);
   white-space: nowrap;
-  cursor: pointer;
-  transition: color 0.15s var(--ease-out);
-}
-
-.modal__cta:hover,
-.modal__cta:focus-visible {
-  color: var(--color-text);
 }
 
 .modal__cta::after {
