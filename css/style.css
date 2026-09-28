@@ -3081,11 +3081,15 @@ body.modal-open {
      never drift off that shared line the way an absolutely positioned
      popover could. */
   .amass__timeline {
-    /* 220px, not 190px -- the icon+text stack itself is ~201px tall at the
-       current icon/font sizes, so 190px was already fully occupied (no
-       visible gap above the toggle at all). 220px leaves ~19px clear on
-       each side of the centered stack. */
-    --amass-h-half: 220px;
+    /* 260px, not 220px -- the icon itself grows with viewport width
+       (clamp(90px, 8vw, 130px)), so the icon+text stack's natural height
+       isn't fixed: it's ~195px at the icon's smallest size but ~235px once
+       the icon clamps to its 130px max around 1625px wide. 220px only left
+       room for the smaller case, so on a wide desktop the icon grew right
+       up against (and past) the toggle above/below it. 260px covers the
+       stack's tallest case with ~25px clear on each side, matching the
+       original margin at the icon's small end. */
+    --amass-h-half: 260px;
     --amass-h-toggle: 40px;
     --amass-row-height: calc(2 * var(--amass-h-half) + var(--amass-h-toggle));
     --amass-row-gap: 32px;
