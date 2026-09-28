@@ -3163,10 +3163,11 @@ body.modal-open {
   .amass__timeline-item:nth-of-type(5) { grid-column: 2; grid-row: 2; }
   .amass__timeline-item:nth-of-type(6) { grid-column: 3; grid-row: 2; }
 
-  /* Content sits above the line and the bubble opens below it for every
-     item, on both rows -- the --left/--right split (used to alternate
-     sides in the single-row version) is ignored here, not removed, since
-     mobile still relies on it. */
+  /* Content sits above the line and the bubble opens below it by default,
+     on both rows -- the --left/--right split (used to alternate sides in
+     the single-row version) is ignored here, not removed, since mobile
+     still relies on it. The middle column of each row (--flipped) reverses
+     this, below. */
   .amass__timeline-item--left .amass__timeline-content,
   .amass__timeline-item--right .amass__timeline-content {
     grid-column: 1;
@@ -3257,6 +3258,36 @@ body.modal-open {
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     transform: translateX(-50%);
+  }
+
+  /* The middle column of each row reverses the stack: the bubble opens
+     above the line and the icon+text content sits below it, so the row
+     reads icon-top / icon-bottom / icon-top across each set of three.
+     Only content and the bubble swap rows -- the toggle stays put in the
+     middle row for all six items, so the divider lines and the pulsing
+     color animation (keyed to nth-of-type) are unaffected. */
+  .amass__timeline-item--flipped .amass__timeline-content {
+    grid-row: 3;
+  }
+
+  .amass__timeline-item--flipped .amass__timeline-bubble {
+    grid-row: 1;
+  }
+
+  /* The pointer mirrors too: it now hangs off the bubble's bottom edge,
+     pointing down at the toggle below instead of up at one above. */
+  .amass__timeline-item--flipped .amass__timeline-bubble::before {
+    top: auto;
+    bottom: -8px;
+    border-top: 8px solid var(--color-card-border);
+    border-bottom: none;
+  }
+
+  .amass__timeline-item--flipped .amass__timeline-bubble::after {
+    top: auto;
+    bottom: -6.5px;
+    border-top: 7px solid var(--color-bg);
+    border-bottom: none;
   }
 
   /* The vertical layout gets its top/bottom breathing room from the first
