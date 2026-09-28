@@ -68,7 +68,15 @@
       // presentations (centred overlay here, side card there).
       titleEl.textContent = trigger.dataset.calloutHeadline || '';
       setBody(trigger.dataset.modalBody || '');
-      if (ctaEl) ctaEl.textContent = trigger.dataset.calloutCta || '';
+      if (ctaEl) {
+        // Names the next sign, same as the desktop callout's CTA -- just
+        // as a preview here, since tapping it only closes the modal
+        // (mobile always leaves picking the next sign to the reader, see
+        // initRoute), not a link to that sign the way desktop's is.
+        const nextStage = Number(trigger.dataset.stage) + 1;
+        const nextLabel = document.querySelector(`.route__pin[data-stage="${nextStage}"] .route__pin-label`);
+        ctaEl.textContent = nextLabel ? nextLabel.textContent : 'IMPACT';
+      }
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
