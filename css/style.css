@@ -3093,16 +3093,10 @@ body.modal-open {
     --amass-h-toggle: 40px;
     --amass-row-height: calc(2 * var(--amass-h-half) + var(--amass-h-toggle));
     --amass-row-gap: 32px;
-    /* 85px, not --divider-gap, so the gap above row 1's icons roughly
-       matches the gap below an open row-1 bubble and row 2's icons. That
-       gap now depends on the bubble's own min-height (113px) vs. its
-       actual wrapped line count, which varies by viewport width -- ~95px
-       at 1920px where min-height governs, down to ~0px at ~900px where
-       long copy grows past it. 85px (95px minus the 9.4px of centering
-       in row 1's own content cell) matches the common wide-desktop case
-       rather than the full range. */
+    /* Fixed 60px gap from the subtitle to row 1, per spec -- not tied to
+       --divider-gap or to the bubble's own height. */
     max-width: none;
-    margin-top: 85px;
+    margin-top: 60px;
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
