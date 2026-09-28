@@ -350,10 +350,9 @@
       });
     }
 
-    // Fixed distance of the connector's dot/bullet from the card's own
-    // left edge -- always the left side of the callout, never the pin's
-    // side (see openCallout below).
-    const CONNECTOR_DOT_X = 20;
+    // Inset of the connector's dot/bullet from whichever card edge is
+    // farthest from the label (see openCallout below).
+    const CONNECTOR_DOT_INSET = 20;
 
     function openCallout(pin) {
       if (!callout) return;
@@ -376,22 +375,31 @@
       const align = side === 'left' ? 'right' : 'left';
       callout.dataset.align = align;
       const top = labelRect.bottom - stageRect.top + 22;
-      const attachX = align === 'left' ? labelRect.left : labelRect.right;
+      const cardAttachX = align === 'left' ? labelRect.left : labelRect.right;
       const left = align === 'left'
-        ? attachX - stageRect.left
-        : attachX - stageRect.left - callout.offsetWidth;
+        ? cardAttachX - stageRect.left
+        : cardAttachX - stageRect.left - callout.offsetWidth;
       callout.style.setProperty('--top', `${top}px`);
       callout.style.setProperty('--left', `${left}px`);
-      // The dot always sits CONNECTOR_DOT_X in from the card's left edge,
-      // regardless of which side the card opened on -- it reads as a
-      // bullet on the callout's own title, not a pointer stuck to the
-      // word. Straight down from there when the label's own edge already
-      // lines up with the dot (a left-aligned card, whose left edge IS
-      // that edge); a 90-degree jog to reach it otherwise (a right-aligned
-      // card, whose left edge sits a full card-width from the label).
+      // The connector runs from the very start of the title -- not the
+      // label box's near/far edge, which can sit past the title itself
+      // when the note line beneath it ("Bring it to life.") is wider --
+      // underneath the label, over to the dot, then down into the card.
+      // The dot sits toward whichever card edge is FARTHEST from that
+      // start point, so the line always travels away from the sign
+      // rather than doubling back over it: the far corner is the card's
+      // right edge for a left-aligned card (whose left edge already sits
+      // at the label), and its left edge for a right-aligned one -- the
+      // two sides mirror each other by construction.
+      const titleEl = label.querySelector('.route__pin-label') || label;
+      const attachX = titleEl.getBoundingClientRect().left;
+      const dotX = align === 'left'
+        ? callout.offsetWidth - CONNECTOR_DOT_INSET
+        : CONNECTOR_DOT_INSET;
       const attachXRelToCard = attachX - stageRect.left - left;
-      const bendLeft = Math.min(attachXRelToCard, CONNECTOR_DOT_X);
-      const bendWidth = Math.abs(attachXRelToCard - CONNECTOR_DOT_X);
+      const bendLeft = Math.min(attachXRelToCard, dotX);
+      const bendWidth = Math.abs(attachXRelToCard - dotX);
+      callout.style.setProperty('--connector-dot-x', `${dotX}px`);
       callout.style.setProperty('--connector-bend-left', `${bendLeft}px`);
       callout.style.setProperty('--connector-bend-width', `${bendWidth}px`);
       callout.classList.add('is-open');

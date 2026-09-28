@@ -2929,20 +2929,21 @@ body.modal-open {
     pointer-events: auto;
   }
 
-  /* The dot is a bullet on the card's own title -- always its left edge,
-     never switching to the right for a right-aligned card -- so the
-     vertical drop is always at that same fixed x. The label itself can sit
-     anywhere along the card's top edge (its own near edge, set by
-     data-align), so .route__callout-connector-bend jogs sideways to reach
-     it: zero width, and invisible, when that edge already lines up with
-     the dot (a left-aligned card); the card's full width when it's at the
-     opposite corner (a right-aligned card). Both custom properties are set
-     per open callout by openCallout in main.js, from the label's actual
-     measured position. */
+  /* The line runs from directly under the start of the title, across
+     underneath the label, to a dot near whichever card edge sits farthest
+     from it, then drops into the card from there -- so it always travels
+     away from the sign instead of doubling back over the label. That dot
+     lands near the card's right edge for a left-aligned card and its left
+     edge for a right-aligned one, mirroring each other by construction;
+     .route__callout-connector-bend is the underneath-the-label run and
+     spans zero width (invisible) on the rare case those two points
+     already coincide. All three custom properties are set per open
+     callout by openCallout in main.js, from the title's and card's actual
+     measured positions. */
   .route__callout-connector {
     position: absolute;
     bottom: 100%;
-    left: 20px;
+    left: var(--connector-dot-x, 20px);
     width: 1px;
     height: 22px;
     background: var(--color-card-border);
