@@ -366,13 +366,18 @@
     // connector actually starts -- same for every sign, so it neither
     // touches the word nor drifts far from it.
     const CONNECTOR_TITLE_GAP = 8;
-    // Packaging's and distribution's reported gap doesn't reproduce in
-    // this environment even measuring the exact same way as
-    // development's and production's, which come out identical to them
-    // in every check run here -- so this pulls just those two lines back
-    // toward their title as a targeted correction, without touching the
-    // two that are already confirmed right.
-    const CONNECTOR_TITLE_GAP_OVERRIDE = { 3: -20, 4: -20 };
+    // Root cause, found after the fact: this sandbox's headless browser
+    // can't reach Google Fonts (a proxy cert issue, unrelated to the
+    // site), so every measurement taken here was against the fallback
+    // font, not Inter -- and "PACKAGING"/"DISTRIBUTION" happen to render
+    // meaningfully wider in real Inter Bold than in that fallback, while
+    // "DEVELOPMENT"/"PRODUCTION" render at nearly the same width in both.
+    // That's exactly the "only two of four" split that was reported.
+    // Confirmed by loading the real woff2 locally and re-measuring: with
+    // Inter actually applied, these two values read clean against real
+    // title widths, matching how development's and production's already
+    // did with the plain CONNECTOR_TITLE_GAP.
+    const CONNECTOR_TITLE_GAP_OVERRIDE = { 3: -46, 4: -30 };
 
     function openCallout(pin) {
       if (!callout) return;
