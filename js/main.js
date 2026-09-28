@@ -372,7 +372,13 @@
       calloutTrigger = pin;
       calloutHeadline.textContent = pin.dataset.calloutHeadline || '';
       setCalloutBody(pin.dataset.modalBody || '');
-      calloutCta.textContent = pin.dataset.calloutCta || '';
+      // Names the sign this CTA actually leads to (clicking it opens that
+      // one next -- see the CTA click handler below), rather than the
+      // themed phrase the mobile modal's own CTA still shows, since
+      // mobile's version doesn't chain anywhere and shouldn't promise to.
+      const nextPin = pinForStage(Number(pin.dataset.stage) + 1);
+      const nextLabelEl = nextPin && nextPin.querySelector('.route__pin-label');
+      calloutCta.textContent = nextLabelEl ? nextLabelEl.textContent : 'IMPACT';
       // Stems from the label, not the sign -- this measures wherever the
       // label actually renders rather than the pin itself.
       const label = document.getElementById(`route-label-${pin.dataset.stage}`) || pin;
