@@ -713,8 +713,6 @@ a {
    sequence; only the sighted visual order changes. */
 .distance__body {
   width: 100%;
-  max-width: var(--content-max-width);
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
@@ -729,6 +727,9 @@ a {
 
 .distance__text {
   order: 3;
+  width: min(100%, var(--measure-wide));
+  margin-inline: auto;
+  text-align: center;
 }
 
 .distance__text-heading {
@@ -742,6 +743,7 @@ a {
   font-size: 0.95rem;
   line-height: 1.6;
   max-width: var(--measure-body);
+  margin-inline: auto;
 }
 
 .distance__text-p + .distance__text-p {
@@ -2855,31 +2857,6 @@ body.modal-open {
 
   .dilemma__column .billboard__copy {
     max-width: 38ch;
-  }
-
-  /* The title/copy groups sit at the same left content margin as their parent
-     section headers. Only their readable text measure remains constrained. */
-  .distance__body {
-    max-width: none;
-  }
-
-  .distance__text {
-    width: min(100%, var(--measure-wide));
-    margin-inline: auto;
-  }
-
-  .distance__text-heading,
-  .distance__text-p {
-    text-align: center;
-  }
-
-  .distance__text-p {
-    margin-inline: auto;
-  }
-
-  .distance__divider {
-    width: calc(100% + 2 * var(--section-padding-x));
-    margin-inline: calc(-1 * var(--section-padding-x));
   }
 
   /* 12/5 is the size that actually matches the request: the combined
