@@ -3291,10 +3291,10 @@ body.modal-open {
   /* The vertical layout gets its top/bottom breathing room from the first
      and last item's own padding (see the comment on .amass__timeline-block);
      horizontally there's no equivalent last item, so the block resumes
-     owning its own bottom padding, and .amass__timeline's own margin-top
-     above provides the matching top gap. */
+     owning its own bottom padding -- a fixed 60px per spec, matching
+     .amass__timeline's own margin-top above. */
   .amass__timeline-block {
-    padding-bottom: var(--divider-gap);
+    padding-bottom: 60px;
   }
 
   /* Preserve the established desktop constellation height while allowing the
