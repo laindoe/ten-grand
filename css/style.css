@@ -2981,7 +2981,14 @@ body.modal-open {
     background: var(--color-card-border);
   }
 
-  .route__callout-connector::before {
+  /* ::after, not ::before -- it needs to paint on top of both the
+     underline (.route__callout-connector-bend, a real child, which
+     paints after a ::before at this same stacking level) and the
+     connector's own vertical drop (its plain background), so its
+     opaque fill covers where each line would otherwise run straight
+     through its centre, leaving them looking like they stop right at
+     its edge instead of crossing into it. */
+  .route__callout-connector::after {
     content: '';
     position: absolute;
     top: 0;

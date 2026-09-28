@@ -390,31 +390,30 @@
         : cardAttachX - stageRect.left - callout.offsetWidth;
       callout.style.setProperty('--top', `${top}px`);
       callout.style.setProperty('--left', `${left}px`);
-      // The connector runs from the very start of the title -- not the
-      // label box's near/far edge, which can sit past the title itself
-      // when the note line beneath it ("Bring it to life.") is wider --
-      // underneath the label, over to the dot, then down into the card.
-      // The dot sits toward whichever card edge is FARTHEST from that
-      // start point, so the line always travels away from the sign
-      // rather than doubling back over it: the far corner is the card's
-      // right edge for a left-aligned card (whose left edge already sits
-      // at the label), and its left edge for a right-aligned one -- the
-      // two sides mirror each other by construction.
+      // The connector runs from the title's own trailing edge -- whichever
+      // side already faces the dot, so the line only ever travels away
+      // from the sign, never doubles back over the word first -- at the
+      // title's own vertical middle, across to the dot, then down into
+      // the card. The dot sits toward whichever card edge is FARTHEST
+      // from that point, so the far corner is the card's right edge for a
+      // left-aligned card (whose left edge already sits at the label),
+      // and its left edge for a right-aligned one -- the two sides mirror
+      // each other by construction.
       const titleEl = label.querySelector('.route__pin-label') || label;
       const titleRect = titleEl.getBoundingClientRect();
-      const attachX = titleRect.left;
+      const attachX = align === 'left' ? titleRect.right : titleRect.left;
+      const titleMidY = (titleRect.top + titleRect.bottom) / 2;
       const dotX = align === 'left'
         ? callout.offsetWidth - CONNECTOR_DOT_INSET
         : CONNECTOR_DOT_INSET;
       const attachXRelToCard = attachX - stageRect.left - left;
       const bendLeft = Math.min(attachXRelToCard, dotX);
       const bendWidth = Math.abs(attachXRelToCard - dotX);
-      // The underline sits right under the TITLE specifically, not the
-      // label box as a whole -- which runs on past it to the note line
-      // beneath ("Map out the idea."), so the connector's total height
-      // has to stretch past that note too to still reach the card's own
-      // top unchanged.
-      const connectorHeight = top - (titleRect.bottom - stageRect.top);
+      // Runs from the title's own vertical middle, not its bottom edge --
+      // so the connector's total height has to stretch past the rest of
+      // the title and the note line beneath it ("Map out the idea.") to
+      // still reach the card's own top unchanged.
+      const connectorHeight = top - (titleMidY - stageRect.top);
       callout.style.setProperty('--connector-height', `${connectorHeight}px`);
       callout.style.setProperty('--connector-dot-x', `${dotX}px`);
       callout.style.setProperty('--connector-bend-left', `${bendLeft}px`);
