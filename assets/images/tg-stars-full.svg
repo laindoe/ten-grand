@@ -281,7 +281,7 @@
     <circle class="st0" cx="2189.5" cy="1475.6" r="7.5"/>
     <circle class="st0" cx="2378.4" cy="926.9" r="7.5"/>
   </g>
-  <g id="G">
+  <g id="G" transform="translate(0, 55.55)">
     <circle class="st1" cx="1665.4" cy="977.2" r="2.2"/>
     <circle class="st1" cx="1612" cy="958.2" r="2.2"/>
     <circle class="st1" cx="1696" cy="1019.3" r="2.2"/>
@@ -316,7 +316,7 @@
     <circle class="st0" cx="1660.8" cy="1215.2" r="7.5"/>
     <circle class="st0" cx="1499.2" cy="1268.5" r="7.5"/>
   </g>
-  <g id="_x30_">
+  <g id="_x30_" transform="translate(0, 5.55)">
     <circle class="st1" cx="1778.7" cy="383.6" r="2.2"/>
     <circle class="st0" cx="1592.7" cy="181.4" r="7.5"/>
     <circle class="st0" cx="1508" cy="323.2" r="7.5"/>
@@ -356,7 +356,7 @@
     <circle class="st1" cx="1794.2" cy="285.5" r="2.2"/>
     <circle class="st1" cx="1755" cy="211.1" r="2.2"/>
   </g>
-  <g id="_x31_">
+  <g id="_x31_" transform="translate(0, 5.55)">
     <circle class="st1" cx="1300" cy="273.6" r="2.2"/>
     <circle class="st0" cx="1409.5" cy="367.5" r="7.5"/>
     <circle class="st0" cx="1411.1" cy="228.4" r="7.5"/>
