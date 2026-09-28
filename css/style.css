@@ -349,13 +349,13 @@ a {
   margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
+  text-align: center;
 }
 
 .dilemma__headline {
   font-size: clamp(1.75rem, 8vw, 2.5rem);
   font-weight: 700;
   line-height: 1.15;
-  text-align: left;
   margin: 12px 0 20px;
 }
 
@@ -363,6 +363,7 @@ a {
   font-size: 1rem;
   line-height: 1.4;
   max-width: var(--measure-subhead);
+  margin-inline: auto;
 }
 
 .dilemma__grid-wrap {
@@ -688,6 +689,7 @@ a {
   margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
+  text-align: center;
 }
 
 .distance__headline {
@@ -701,6 +703,7 @@ a {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
   max-width: var(--measure-subhead);
+  margin-inline: auto;
 }
 
 /* flex + order (rather than a DOM reorder) puts the animation above the
@@ -1173,6 +1176,7 @@ a {
   margin: 0 calc(-1 * var(--section-padding-x)) 60px;
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
+  text-align: center;
 }
 
 .engine__headline {
@@ -1186,6 +1190,7 @@ a {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
   max-width: var(--measure-subhead);
+  margin-inline: auto;
 }
 
 /* The drawing is tall and narrow — 1:4.1 — so it is deliberately not sized to
@@ -1899,6 +1904,7 @@ a {
   margin: 0 calc(-1 * var(--section-padding-x)) 0;
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
+  text-align: center;
 }
 
 .amass__headline {
@@ -1912,6 +1918,7 @@ a {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
   max-width: var(--measure-subhead);
+  margin-inline: auto;
 }
 
 /* Each content block is full-bleed with its own bottom rule, standing
@@ -2820,13 +2827,6 @@ body.modal-open {
     width: 100%;
   }
 
-  .dilemma__header .section-eyebrow,
-  .dilemma__headline,
-  .dilemma__subhead {
-    text-align: center;
-    margin-inline: auto;
-  }
-
   .dilemma__column {
     min-width: 0;
     padding-inline: clamp(40px, 6vw, 120px);
@@ -2861,13 +2861,6 @@ body.modal-open {
      section headers. Only their readable text measure remains constrained. */
   .distance__body {
     max-width: none;
-  }
-
-  .distance__header .section-eyebrow,
-  .distance__headline,
-  .distance__subhead {
-    text-align: center;
-    margin-inline: auto;
   }
 
   .distance__text {
@@ -2911,13 +2904,6 @@ body.modal-open {
     inset-inline: 0;
     top: 0;
     transform: translateY(-44%);
-  }
-
-  .engine__header .section-eyebrow,
-  .engine__headline,
-  .engine__subhead {
-    text-align: center;
-    margin-inline: auto;
   }
 
   .engine__route {
@@ -3092,13 +3078,6 @@ body.modal-open {
 
   .bridge__art {
     max-width: 760px;
-  }
-
-  .amass__header .section-eyebrow,
-  .amass__headline,
-  .amass__subhead {
-    text-align: center;
-    margin-inline: auto;
   }
 
   .amass__intro {
