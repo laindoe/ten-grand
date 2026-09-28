@@ -3056,8 +3056,19 @@ body.modal-open {
   }
 
   .route__callout-cta {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
     color: var(--color-text-muted);
     white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.15s var(--ease-out);
+  }
+
+  .route__callout-cta:hover,
+  .route__callout-cta:focus-visible {
+    color: var(--color-text);
   }
 
   .route__callout-cta::after {

@@ -299,6 +299,11 @@
 
     let currentStage = 0;
     let armFrame = 0;
+    // The stage to auto-open once its marker lights up, armed only by the
+    // desktop callout's CTA -- closing via the X, backdrop-equivalent
+    // click-outside, or Escape just advances the road, same as always,
+    // leaving the reader to click the next sign themselves.
+    let pendingAutoOpenStage = 0;
 
     function setStage(n) {
       currentStage = n;
@@ -325,6 +330,10 @@
         const n = Number(route.dataset.stage);
         const pin = pinForStage(n);
         if (pin) pin.classList.add('is-reached');
+        if (pin && n === pendingAutoOpenStage && desktopQuery.matches) {
+          pendingAutoOpenStage = 0;
+          openCallout(pin);
+        }
       });
     });
 
@@ -441,6 +450,29 @@
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') closeCallout(true);
       });
+      // Clicking anywhere outside the card closes it -- the desktop
+      // equivalent of the mobile modal's backdrop tap. Signs are excluded
+      // since they already open/close callouts through their own handler
+      // below; without this guard, opening one from outside the current
+      // callout would close it again the instant the click bubbles here.
+      document.addEventListener('click', (event) => {
+        if (!callout.classList.contains('is-open')) return;
+        if (callout.contains(event.target)) return;
+        if (event.target.closest('.route__pin')) return;
+        closeCallout(true);
+      });
+      const calloutNext = callout.querySelector('[data-callout-next]');
+      if (calloutNext) {
+        calloutNext.addEventListener('click', () => {
+          // Only chains into the next callout when this sign is the actual
+          // frontier -- reopening a past sign's callout and hitting this
+          // just closes it, same as the X, since there's nothing to advance.
+          if (calloutTrigger && Number(calloutTrigger.dataset.stage) === currentStage) {
+            pendingAutoOpenStage = currentStage + 1;
+          }
+          closeCallout(true);
+        });
+      }
     }
 
     pins.forEach((pin) => {
@@ -544,6 +576,7 @@
         route.classList.remove('route--running');
         pins.forEach((pin) => pin.classList.remove('is-reached'));
         markers.forEach((marker) => marker.classList.remove('is-lit'));
+        pendingAutoOpenStage = 0;
         closeCallout(false);
       }
     }
