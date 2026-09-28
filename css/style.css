@@ -3005,7 +3005,7 @@ body.modal-open {
     position: relative;
     background: var(--color-bg);
     border: 1px solid var(--color-card-border);
-    padding: 28px 24px 20px;
+    padding: 28px 24px 24px;
   }
 
   .route__callout-close {
@@ -3043,12 +3043,19 @@ body.modal-open {
     margin-top: 12px;
   }
 
+  /* Full-bleed to the card's own edges, same technique as the section
+     dividers elsewhere -- the divider above it would otherwise stop at
+     the card's own padding instead of reaching its border, unlike every
+     other full-width rule in this file. padding-inline puts the tag and
+     CTA back at the card's normal content margin once the rule itself
+     is edge to edge. */
   .route__callout-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding-top: 14px;
+    margin-inline: -24px;
+    padding: 18px 24px 0;
     border-top: 1px solid var(--color-card-border);
     font-size: 0.75rem;
     font-weight: 600;

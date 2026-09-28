@@ -362,6 +362,10 @@
     // Inset of the connector's dot/bullet from whichever card edge is
     // farthest from the label (see openCallout below).
     const CONNECTOR_DOT_INSET = 20;
+    // Breathing room between the title's own edge and where the
+    // connector actually starts -- same for every sign, so it neither
+    // touches the word nor drifts far from it.
+    const CONNECTOR_TITLE_GAP = 8;
 
     function openCallout(pin) {
       if (!callout) return;
@@ -401,7 +405,9 @@
       // each other by construction.
       const titleEl = label.querySelector('.route__pin-label') || label;
       const titleRect = titleEl.getBoundingClientRect();
-      const attachX = align === 'left' ? titleRect.right : titleRect.left;
+      const attachX = align === 'left'
+        ? titleRect.right + CONNECTOR_TITLE_GAP
+        : titleRect.left - CONNECTOR_TITLE_GAP;
       const titleMidY = (titleRect.top + titleRect.bottom) / 2;
       const dotX = align === 'left'
         ? callout.offsetWidth - CONNECTOR_DOT_INSET
