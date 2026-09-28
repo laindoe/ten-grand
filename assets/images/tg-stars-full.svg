@@ -95,7 +95,7 @@
     <circle class="st1" cx="1572.6" cy="1128.2" r="2.2"/>
     <circle class="st1" cx="1593" cy="1219.5" r="2.2"/>
     <circle class="st1" cx="1889.5" cy="1354.5" r="2.2"/>
-    <circle class="st1" cx="1727.2" cy="1354.1" r="2.2"/>
+    <circle class="st1" cx="1682.2" cy="1495.7" r="2.2"/>
     <circle class="st1" cx="1633.7" cy="1311" r="2.2"/>
     <circle class="st1" cx="1862.8" cy="1049.9" r="2.2"/>
     <circle class="st1" cx="1865.7" cy="1260.8" r="2.2"/>
@@ -107,7 +107,7 @@
     <circle class="st2" cx="1996" cy="1222.5" r="3.8"/>
     <circle class="st2" cx="1360" cy="1136.9" r="3.8"/>
     <circle class="st2" cx="1216.5" cy="1298.3" r="3.8"/>
-    <circle class="st2" cx="1107.4" cy="1352.8" r="3.8"/>
+    <circle class="st2" cx="1066.1" cy="1348" r="3.8"/>
     <circle class="st2" cx="1218.6" cy="1201.2" r="3.8"/>
     <circle class="st0" cx="1517.9" cy="985.2" r="7.5"/>
     <circle class="st0" cx="1296.2" cy="983.8" r="7.5"/>
@@ -164,32 +164,29 @@
     <circle class="st1" cx="1927.1" cy="684.8" r="2.2"/>
     <circle class="st1" cx="2022" cy="770.2" r="2.2"/>
     <circle class="st1" cx="2008.7" cy="290.5" r="2.2"/>
-    <circle class="st1" cx="1763.1" cy="129.9" r="2.2"/>
+    <circle class="st1" cx="1725.4" cy="92.8" r="2.2"/>
     <circle class="st1" cx="1106.2" cy="437.6" r="2.2"/>
     <circle class="st1" cx="1233.5" cy="309.4" r="2.2"/>
     <circle class="st1" cx="1231.6" cy="477.3" r="2.2"/>
     <circle class="st1" cx="1115.8" cy="172.4" r="2.2"/>
-    <circle class="st1" cx="1407.1" cy="132.9" r="2.2"/>
-    <circle class="st2" cx="1896.5" cy="50.5" r="3.8"/>
+    <circle class="st2" cx="1897.5" cy="94.5" r="3.8"/>
     <circle class="st2" cx="1586.7" cy="32.3" r="3.8"/>
     <circle class="st2" cx="1197.9" cy="17.2" r="3.8"/>
-    <circle class="st2" cx="1358.1" cy="49.5" r="3.8"/>
     <circle class="st1" cx="1763.1" cy="17.6" r="2.2"/>
-    <circle class="st1" cx="1994" cy="61.6" r="2.2"/>
-    <circle class="st1" cx="1478.3" cy="77.8" r="2.2"/>
+    <circle class="st1" cx="2020.8" cy="44.3" r="2.2"/>
+    <circle class="st1" cx="1456.9" cy="102.5" r="2.2"/>
     <circle class="st1" cx="1115.8" cy="60.1" r="2.2"/>
-    <circle class="st1" cx="1407.1" cy="20.6" r="2.2"/>
+    <circle class="st1" cx="1398.9" cy="38.2" r="2.2"/>
     <circle class="st1" cx="1278.5" cy="74.2" r="2.2"/>
     <circle class="st2" cx="1896.5" cy="1451" r="3.8"/>
-    <circle class="st2" cx="1586.7" cy="1432.7" r="3.8"/>
-    <circle class="st2" cx="1197.9" cy="1417.7" r="3.8"/>
-    <circle class="st2" cx="1375.5" cy="1458.4" r="3.8"/>
-    <circle class="st1" cx="1763.1" cy="1418.1" r="2.2"/>
+    <circle class="st2" cx="1632.2" cy="1408.4" r="3.8"/>
+    <circle class="st2" cx="1167.6" cy="1415.2" r="3.8"/>
+    <circle class="st2" cx="1482.6" cy="1477.7" r="3.8"/>
+    <circle class="st1" cx="1757.4" cy="1418.6" r="2.2"/>
     <circle class="st1" cx="1994" cy="1462.1" r="2.2"/>
-    <circle class="st1" cx="1115.8" cy="1460.5" r="2.2"/>
+    <circle class="st1" cx="1057.7" cy="1483.9" r="2.2"/>
     <circle class="st1" cx="1407.1" cy="1421" r="2.2"/>
-    <circle class="st1" cx="1263.1" cy="1400.7" r="2.2"/>
-    <circle class="st1" cx="1278.5" cy="1474.7" r="2.2"/>
+    <circle class="st1" cx="1272.4" cy="1478" r="2.2"/>
     <circle class="st1" cx="1923.4" cy="395.2" r="2.2"/>
     <circle class="st0" cx="1477.7" cy="1174.1" r="7.5"/>
     <circle class="st0" cx="1582.9" cy="1171.3" r="7.5"/>
@@ -354,7 +351,7 @@
   <circle class="st2" cx="2112.5" cy="47.8" r="3.7"/>
   <circle class="st2" cx="2422.3" cy="29.6" r="3.8"/>
   <circle class="st2" cx="2721.3" cy="195.5" r="3.8"/>
-  <circle class="st1" cx="2245.9" cy="14.9" r="2.2" transform="translate(0 9.3) rotate(-.2)"/>
+  <circle class="st1" cx="2245.9" cy="16.4" r="2.2" transform="translate(0 9.3) rotate(-.2)"/>
   <circle class="st1" cx="2426.5" cy="123.3" r="2.2"/>
   <circle class="st1" cx="2601.9" cy="17.9" r="2.2"/>
   <circle class="st1" cx="2730.5" cy="71.5" r="2.2"/>
@@ -365,7 +362,7 @@
   <circle class="st2" cx="2138.3" cy="1234.4" r="3.8"/>
   <circle class="st2" cx="2195.8" cy="824.9" r="3.8"/>
   <circle class="st2" cx="2365.8" cy="787.5" r="3.8"/>
-  <circle class="st1" cx="2226.9" cy="951.3" r="2.2" transform="translate(-3.9 9.2) rotate(-.2)"/>
+  <circle class="st1" cx="2226.3" cy="952.7" r="2.2" transform="translate(-3.9 9.2) rotate(-.2)"/>
   <circle class="st1" cx="2110.1" cy="1035" r="2.2"/>
   <circle class="st1" cx="2599.2" cy="829.2" r="2.2"/>
   <circle class="st1" cx="2209.7" cy="416.6" r="2.2"/>
