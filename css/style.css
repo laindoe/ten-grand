@@ -349,13 +349,13 @@ a {
   margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
+  text-align: center;
 }
 
 .dilemma__headline {
   font-size: clamp(1.75rem, 8vw, 2.5rem);
   font-weight: 700;
   line-height: 1.15;
-  text-align: left;
   margin: 12px 0 20px;
 }
 
@@ -363,6 +363,7 @@ a {
   font-size: 1rem;
   line-height: 1.4;
   max-width: var(--measure-subhead);
+  margin-inline: auto;
 }
 
 .dilemma__grid-wrap {
@@ -688,6 +689,7 @@ a {
   margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
+  text-align: center;
 }
 
 .distance__headline {
@@ -701,6 +703,7 @@ a {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
   max-width: var(--measure-subhead);
+  margin-inline: auto;
 }
 
 /* flex + order (rather than a DOM reorder) puts the animation above the
@@ -710,8 +713,6 @@ a {
    sequence; only the sighted visual order changes. */
 .distance__body {
   width: 100%;
-  max-width: var(--content-max-width);
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
@@ -726,6 +727,9 @@ a {
 
 .distance__text {
   order: 3;
+  width: min(100%, var(--measure-wide));
+  margin-inline: auto;
+  text-align: center;
 }
 
 .distance__text-heading {
@@ -739,6 +743,7 @@ a {
   font-size: 0.95rem;
   line-height: 1.6;
   max-width: var(--measure-body);
+  margin-inline: auto;
 }
 
 .distance__text-p + .distance__text-p {
@@ -1173,6 +1178,7 @@ a {
   margin: 0 calc(-1 * var(--section-padding-x)) 60px;
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
+  text-align: center;
 }
 
 .engine__headline {
@@ -1186,6 +1192,7 @@ a {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
   max-width: var(--measure-subhead);
+  margin-inline: auto;
 }
 
 /* The drawing is tall and narrow — 1:4.1 — so it is deliberately not sized to
@@ -1541,7 +1548,7 @@ a {
 
 .route__art .rt3-road-base { opacity:1; }
 .route__art .rt3-road-active { opacity:0; }
-.route__art .rt3-centre-base { opacity:.25; }
+.route__art .rt3-centre-base { opacity:1; }
 .route__art .rt3-lit-route { opacity:0; }
 .route--armed .rt3-lit-route { opacity:0 !important; }
 .route__art .rt3-centre-active {
@@ -1683,7 +1690,6 @@ a {
 /* Measured directly from the 1064.05 x 1954.31 export. */
 .route__stage {
   --rt-h:min(clamp(380px, calc(100svh - 130px), 720px), calc((100vw - 2px) * 1.8367));
-  --rt-label-outset:clamp(0px, calc(31vw - 116.25px), 30px);
   width:calc(var(--rt-h) * .54447);
 }
 .route__art { transform:translateX(5.5%); }
@@ -1696,32 +1702,10 @@ a {
 .route__pin--2{left:18.586%;top:27.014%;width:28.666%;height:12.193%;}
 .route__pin--3{left:66.243%;top:36.139%;width:17.37%;height:17.505%;}
 .route__pin--4{left:26.087%;top:53.824%;width:17.37%;height:17.521%;}
-/* Packaging's label anchor -- distribution's own box (same numbers as
-   .route__pin--4 above), so the relocated label reads as if it lived
-   there. Not a real hit target: .route__pin--3 itself, over the u-turn
-   sign, still owns the click. */
-.route__pin-ghost {
-  position: absolute;
-  pointer-events: none;
-}
-
-.route__pin-ghost.route__pin--3 {
-  left: 26.087%;
-  top: 53.824%;
-  width: 17.37%;
-  height: 17.521%;
-}
 .route__pin--1 .route__pin-text,
 .route__pin--2 .route__pin-text,
 .route__pin--3 .route__pin-text,
 .route__pin--4 .route__pin-text{max-width:150px;}
-.route__pin--3 .route__pin-text{margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
-.route__pin--3 .route__pin-text{
-  margin-right:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset) + clamp(29px, 9.02vw, 35px));
-}
-.route__pin--1 .route__pin-text,
-.route__pin--2 .route__pin-text,
-.route__pin--4 .route__pin-text{margin-left:calc(clamp(92px, 16vw, 115px) + var(--rt-label-outset));}
 @media (min-width:500px) {
   .route__pin--1 .route__pin-text,
   .route__pin--2 .route__pin-text,
@@ -1922,6 +1906,7 @@ a {
   margin: 0 calc(-1 * var(--section-padding-x)) 0;
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
+  text-align: center;
 }
 
 .amass__headline {
@@ -1935,6 +1920,7 @@ a {
   font-size: clamp(1rem, 4vw, 1.15rem);
   line-height: 1.4;
   max-width: var(--measure-subhead);
+  margin-inline: auto;
 }
 
 /* Each content block is full-bleed with its own bottom rule, standing
@@ -2854,13 +2840,6 @@ body.modal-open {
     width: 100%;
   }
 
-  .dilemma__header .section-eyebrow,
-  .dilemma__headline,
-  .dilemma__subhead {
-    text-align: center;
-    margin-inline: auto;
-  }
-
   .dilemma__column {
     min-width: 0;
     padding-inline: clamp(40px, 6vw, 120px);
@@ -2891,38 +2870,6 @@ body.modal-open {
     max-width: 38ch;
   }
 
-  /* The title/copy groups sit at the same left content margin as their parent
-     section headers. Only their readable text measure remains constrained. */
-  .distance__body {
-    max-width: none;
-  }
-
-  .distance__header .section-eyebrow,
-  .distance__headline,
-  .distance__subhead {
-    text-align: center;
-    margin-inline: auto;
-  }
-
-  .distance__text {
-    width: min(100%, var(--measure-wide));
-    margin-inline: auto;
-  }
-
-  .distance__text-heading,
-  .distance__text-p {
-    text-align: center;
-  }
-
-  .distance__text-p {
-    margin-inline: auto;
-  }
-
-  .distance__divider {
-    width: calc(100% + 2 * var(--section-padding-x));
-    margin-inline: calc(-1 * var(--section-padding-x));
-  }
-
   /* 12/5 is the size that actually matches the request: the combined
      height of the old (separate) text+divider+crop, measured at ~661px
      vs this crop's ~659px at a 1600px viewport -- the taller ratios
@@ -2945,13 +2892,6 @@ body.modal-open {
     inset-inline: 0;
     top: 0;
     transform: translateY(-44%);
-  }
-
-  .engine__header .section-eyebrow,
-  .engine__headline,
-  .engine__subhead {
-    text-align: center;
-    margin-inline: auto;
   }
 
   .engine__route {
@@ -3000,26 +2940,52 @@ body.modal-open {
     pointer-events: auto;
   }
 
-  /* The dot sits inset from the card's outer edge, into the word above it
-     rather than at its far corner, and the line drops from there to the
-     card's own top edge. */
+  /* The line runs from directly under the start of the title (not the
+     label box as a whole, which runs on past it to the note line
+     beneath), across underneath the label, to a dot near whichever card
+     edge sits farthest from it, then drops into the card from there -- so
+     it always travels away from the sign instead of doubling back over
+     the label. That dot lands near the card's right edge for a
+     left-aligned card and its left edge for a right-aligned one,
+     mirroring each other by construction; .route__callout-connector-bend
+     is the underneath-the-title run and spans zero width (invisible) on
+     the rare case those two points already coincide. The connector's own
+     height stretches past the note line to still reach the card's top
+     unchanged, so it varies with how tall that note is. All four custom
+     properties are set per open callout by openCallout in main.js, from
+     the title's and card's actual measured positions. */
   .route__callout-connector {
     position: absolute;
     bottom: 100%;
+    left: var(--connector-dot-x, 20px);
     width: 1px;
-    height: 22px;
+    height: var(--connector-height, 22px);
     background: var(--color-card-border);
   }
 
-  .route__callout[data-align="left"] .route__callout-connector {
-    left: 24px;
+  /* --connector-bend-left already accounts for this element's own
+     positioning parent, .route__callout-connector, sitting --connector-
+     dot-x away from the card's edge -- openCallout in main.js resolves
+     that back into this element's own local space itself (a single plain
+     value) rather than leaving it to a calc() of two custom properties
+     here. */
+  .route__callout-connector-bend {
+    position: absolute;
+    top: 0;
+    left: var(--connector-bend-left, 0px);
+    width: var(--connector-bend-width, 0px);
+    height: 1px;
+    background: var(--color-card-border);
   }
 
-  .route__callout[data-align="right"] .route__callout-connector {
-    right: 24px;
-  }
-
-  .route__callout-connector::before {
+  /* ::after, not ::before -- it needs to paint on top of both the
+     underline (.route__callout-connector-bend, a real child, which
+     paints after a ::before at this same stacking level) and the
+     connector's own vertical drop (its plain background), so its
+     opaque fill covers where each line would otherwise run straight
+     through its centre, leaving them looking like they stop right at
+     its edge instead of crossing into it. */
+  .route__callout-connector::after {
     content: '';
     position: absolute;
     top: 0;
@@ -3036,7 +3002,7 @@ body.modal-open {
     position: relative;
     background: var(--color-bg);
     border: 1px solid var(--color-card-border);
-    padding: 28px 24px 20px;
+    padding: 28px 24px 24px;
   }
 
   .route__callout-close {
@@ -3074,12 +3040,19 @@ body.modal-open {
     margin-top: 12px;
   }
 
+  /* Full-bleed to the card's own edges, same technique as the section
+     dividers elsewhere -- the divider above it would otherwise stop at
+     the card's own padding instead of reaching its border, unlike every
+     other full-width rule in this file. padding-inline puts the tag and
+     CTA back at the card's normal content margin once the rule itself
+     is edge to edge. */
   .route__callout-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding-top: 14px;
+    margin-inline: -24px;
+    padding: 18px 24px 0;
     border-top: 1px solid var(--color-card-border);
     font-size: 0.75rem;
     font-weight: 600;
@@ -3103,8 +3076,19 @@ body.modal-open {
   }
 
   .route__callout-cta {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
     color: var(--color-text-muted);
     white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.15s var(--ease-out);
+  }
+
+  .route__callout-cta:hover,
+  .route__callout-cta:focus-visible {
+    color: var(--color-text);
   }
 
   .route__callout-cta::after {
@@ -3117,13 +3101,6 @@ body.modal-open {
 
   .bridge__art {
     max-width: 760px;
-  }
-
-  .amass__header .section-eyebrow,
-  .amass__headline,
-  .amass__subhead {
-    text-align: center;
-    margin-inline: auto;
   }
 
   .amass__intro {
@@ -3261,8 +3238,8 @@ body.modal-open {
   }
 
   .amass__timeline-icon {
-    width: clamp(72px, 6vw, 96px);
-    height: clamp(72px, 6vw, 96px);
+    width: clamp(90px, 8vw, 130px);
+    height: clamp(90px, 8vw, 130px);
   }
 
   .amass__timeline-content {

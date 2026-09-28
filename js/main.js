@@ -68,7 +68,15 @@
       // presentations (centred overlay here, side card there).
       titleEl.textContent = trigger.dataset.calloutHeadline || '';
       setBody(trigger.dataset.modalBody || '');
-      if (ctaEl) ctaEl.textContent = trigger.dataset.calloutCta || '';
+      if (ctaEl) {
+        // Names the next sign, same as the desktop callout's CTA -- just
+        // as a preview here, since tapping it only closes the modal
+        // (mobile always leaves picking the next sign to the reader, see
+        // initRoute), not a link to that sign the way desktop's is.
+        const nextStage = Number(trigger.dataset.stage) + 1;
+        const nextLabel = document.querySelector(`.route__pin[data-stage="${nextStage}"] .route__pin-label`);
+        ctaEl.textContent = nextLabel ? nextLabel.textContent : 'IMPACT';
+      }
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
@@ -299,14 +307,10 @@
 
     let currentStage = 0;
     let armFrame = 0;
-    // Set right before routeModal.open(pin) on mobile, so the "next" button
-    // (see below) knows which sign's modal is on screen without initModal
-    // having to expose its own private trigger.
-    let mobileModalPin = null;
     // The stage to auto-open once its marker lights up, armed only by the
-    // modal's "next" button -- closing via the X or the backdrop advances
-    // the road same as always, but leaves the reader to tap the next sign
-    // themselves.
+    // desktop callout's CTA -- closing via the X, backdrop-equivalent
+    // click-outside, or Escape just advances the road, same as always,
+    // leaving the reader to click the next sign themselves.
     let pendingAutoOpenStage = 0;
 
     function setStage(n) {
@@ -334,10 +338,9 @@
         const n = Number(route.dataset.stage);
         const pin = pinForStage(n);
         if (pin) pin.classList.add('is-reached');
-        if (pin && n === pendingAutoOpenStage && routeModal && !desktopQuery.matches) {
+        if (pin && n === pendingAutoOpenStage && desktopQuery.matches) {
           pendingAutoOpenStage = 0;
-          mobileModalPin = pin;
-          routeModal.open(pin);
+          openCallout(pin);
         }
       });
     });
@@ -364,16 +367,40 @@
       });
     }
 
+    // Inset of the connector's dot/bullet from whichever card edge is
+    // farthest from the label (see openCallout below).
+    const CONNECTOR_DOT_INSET = 20;
+    // Breathing room between the title's own edge and where the
+    // connector actually starts -- same for every sign, so it neither
+    // touches the word nor drifts far from it.
+    const CONNECTOR_TITLE_GAP = 8;
+    // Root cause, found after the fact: this sandbox's headless browser
+    // can't reach Google Fonts (a proxy cert issue, unrelated to the
+    // site), so every measurement taken here was against the fallback
+    // font, not Inter -- and "PACKAGING"/"DISTRIBUTION" happen to render
+    // meaningfully wider in real Inter Bold than in that fallback, while
+    // "DEVELOPMENT"/"PRODUCTION" render at nearly the same width in both.
+    // That's exactly the "only two of four" split that was reported.
+    // Confirmed by loading the real woff2 locally and re-measuring: with
+    // Inter actually applied, these two values read clean against real
+    // title widths, matching how development's and production's already
+    // did with the plain CONNECTOR_TITLE_GAP.
+    const CONNECTOR_TITLE_GAP_OVERRIDE = { 3: -46, 4: -28 };
+
     function openCallout(pin) {
       if (!callout) return;
       calloutTrigger = pin;
       calloutHeadline.textContent = pin.dataset.calloutHeadline || '';
       setCalloutBody(pin.dataset.modalBody || '');
-      calloutCta.textContent = pin.dataset.calloutCta || '';
-      // Stems from the label, not the sign -- most labels sit right by
-      // their own sign, but packaging's is relocated well away from it
-      // (see #route-label-3 / .route__pin-ghost), so this measures
-      // wherever the label actually renders rather than the pin itself.
+      // Names the sign this CTA actually leads to (clicking it opens that
+      // one next -- see the CTA click handler below), rather than the
+      // themed phrase the mobile modal's own CTA still shows, since
+      // mobile's version doesn't chain anywhere and shouldn't promise to.
+      const nextPin = pinForStage(Number(pin.dataset.stage) + 1);
+      const nextLabelEl = nextPin && nextPin.querySelector('.route__pin-label');
+      calloutCta.textContent = nextLabelEl ? nextLabelEl.textContent : 'IMPACT';
+      // Stems from the label, not the sign -- this measures wherever the
+      // label actually renders rather than the pin itself.
       const label = document.getElementById(`route-label-${pin.dataset.stage}`) || pin;
       const stageRect = stage.getBoundingClientRect();
       const labelRect = label.getBoundingClientRect();
@@ -382,24 +409,61 @@
       // The card's near-the-road edge (right edge for a left-side label,
       // left edge for a right-side one -- the stable edge that side's
       // text already hugs, see .route__pin--left/--right .route__pin-text)
-      // lines up under that same edge of the label, so the connector's dot
-      // lands inside the word rather than off past either end of it.
+      // lines up under that same edge of the label.
       const side = pin.dataset.calloutSide || 'right';
       const align = side === 'left' ? 'right' : 'left';
       callout.dataset.align = align;
       const top = labelRect.bottom - stageRect.top + 22;
+      const cardAttachX = align === 'left' ? labelRect.left : labelRect.right;
       const left = align === 'left'
-        ? labelRect.left - stageRect.left
-        : labelRect.right - stageRect.left - callout.offsetWidth;
+        ? cardAttachX - stageRect.left
+        : cardAttachX - stageRect.left - callout.offsetWidth;
       callout.style.setProperty('--top', `${top}px`);
       callout.style.setProperty('--left', `${left}px`);
+      // The connector runs from the title's own trailing edge -- whichever
+      // side already faces the dot, so the line only ever travels away
+      // from the sign, never doubles back over the word first -- at the
+      // title's own vertical middle, across to the dot, then down into
+      // the card. The dot sits toward whichever card edge is FARTHEST
+      // from that point, so the far corner is the card's right edge for a
+      // left-aligned card (whose left edge already sits at the label),
+      // and its left edge for a right-aligned one -- the two sides mirror
+      // each other by construction.
+      const titleEl = label.querySelector('.route__pin-label') || label;
+      const titleRect = titleEl.getBoundingClientRect();
+      const titleGap = CONNECTOR_TITLE_GAP_OVERRIDE[pin.dataset.stage] ?? CONNECTOR_TITLE_GAP;
+      const attachX = align === 'left'
+        ? titleRect.right + titleGap
+        : titleRect.left - titleGap;
+      const titleMidY = (titleRect.top + titleRect.bottom) / 2;
+      const dotX = align === 'left'
+        ? callout.offsetWidth - CONNECTOR_DOT_INSET
+        : CONNECTOR_DOT_INSET;
+      const attachXRelToCard = attachX - stageRect.left - left;
+      const bendLeft = Math.min(attachXRelToCard, dotX);
+      const bendWidth = Math.abs(attachXRelToCard - dotX);
+      // .route__callout-connector-bend's own positioning parent is
+      // .route__callout-connector, which is already offset by dotX from
+      // the card -- bendLeft above is in the CARD's coordinate space, so
+      // it has to be re-based into the bend's local space by subtracting
+      // that same offset back out. Done here in JS, as a single already-
+      // resolved value, rather than as a calc() of two custom properties
+      // in CSS.
+      const bendLeftLocal = bendLeft - dotX;
+      // Runs from the title's own vertical middle, not its bottom edge --
+      // so the connector's total height has to stretch past the rest of
+      // the title and the note line beneath it ("Map out the idea.") to
+      // still reach the card's own top unchanged.
+      const connectorHeight = top - (titleMidY - stageRect.top);
+      callout.style.setProperty('--connector-height', `${connectorHeight}px`);
+      callout.style.setProperty('--connector-dot-x', `${dotX}px`);
+      callout.style.setProperty('--connector-bend-left', `${bendLeftLocal}px`);
+      callout.style.setProperty('--connector-bend-width', `${bendWidth}px`);
       callout.classList.add('is-open');
       callout.setAttribute('aria-hidden', 'false');
       route.classList.add('route--callout-open');
-      // Dims every label but this one's -- toggled on whichever element
-      // actually holds the label (the pin itself, or packaging's ghost
-      // anchor), not on the pins themselves.
-      route.querySelectorAll('.route__pin, .route__pin-ghost').forEach((el) => {
+      // Dims every label but this one's.
+      route.querySelectorAll('.route__pin').forEach((el) => {
         el.classList.remove('is-callout-active');
       });
       if (label.parentElement) label.parentElement.classList.add('is-callout-active');
@@ -411,7 +475,7 @@
       callout.classList.remove('is-open');
       callout.setAttribute('aria-hidden', 'true');
       route.classList.remove('route--callout-open');
-      route.querySelectorAll('.route__pin, .route__pin-ghost').forEach((el) => {
+      route.querySelectorAll('.route__pin').forEach((el) => {
         el.classList.remove('is-callout-active');
       });
       if (calloutTrigger) calloutTrigger.focus();
@@ -426,6 +490,29 @@
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') closeCallout(true);
       });
+      // Clicking anywhere outside the card closes it -- the desktop
+      // equivalent of the mobile modal's backdrop tap. Signs are excluded
+      // since they already open/close callouts through their own handler
+      // below; without this guard, opening one from outside the current
+      // callout would close it again the instant the click bubbles here.
+      document.addEventListener('click', (event) => {
+        if (!callout.classList.contains('is-open')) return;
+        if (callout.contains(event.target)) return;
+        if (event.target.closest('.route__pin')) return;
+        closeCallout(true);
+      });
+      const calloutNext = callout.querySelector('[data-callout-next]');
+      if (calloutNext) {
+        calloutNext.addEventListener('click', () => {
+          // Only chains into the next callout when this sign is the actual
+          // frontier -- reopening a past sign's callout and hitting this
+          // just closes it, same as the X, since there's nothing to advance.
+          if (calloutTrigger && Number(calloutTrigger.dataset.stage) === currentStage) {
+            pendingAutoOpenStage = currentStage + 1;
+          }
+          closeCallout(true);
+        });
+      }
     }
 
     pins.forEach((pin) => {
@@ -441,27 +528,12 @@
           // Mobile always reopens the modal, current sign or a past one --
           // advancing (if this is the current sign) waits for its close,
           // handled by the modal:close listener below.
-          mobileModalPin = pin;
           routeModal.open(pin);
         }
       });
     });
 
     if (routeModal) {
-      const nextBtn = routeModal.modal.querySelector('[data-modal-next]');
-      if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-          if (!mobileModalPin) return;
-          // Only chains into the next modal when this sign is the actual
-          // frontier -- reopening a past sign's modal and hitting "next"
-          // just closes it, same as the X, since there's nothing to advance.
-          if (Number(mobileModalPin.dataset.stage) === currentStage) {
-            pendingAutoOpenStage = currentStage + 1;
-          }
-          routeModal.close();
-        });
-      }
-
       routeModal.modal.addEventListener('modal:close', (event) => {
         const trigger = event.detail && event.detail.trigger;
         if (!trigger || !trigger.classList.contains('route__pin')) return;
@@ -545,7 +617,6 @@
         pins.forEach((pin) => pin.classList.remove('is-reached'));
         markers.forEach((marker) => marker.classList.remove('is-lit'));
         pendingAutoOpenStage = 0;
-        mobileModalPin = null;
         closeCallout(false);
       }
     }
