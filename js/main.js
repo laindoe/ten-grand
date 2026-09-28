@@ -421,6 +421,14 @@
       const attachXRelToCard = attachX - stageRect.left - left;
       const bendLeft = Math.min(attachXRelToCard, dotX);
       const bendWidth = Math.abs(attachXRelToCard - dotX);
+      // .route__callout-connector-bend's own positioning parent is
+      // .route__callout-connector, which is already offset by dotX from
+      // the card -- bendLeft above is in the CARD's coordinate space, so
+      // it has to be re-based into the bend's local space by subtracting
+      // that same offset back out. Done here in JS, as a single already-
+      // resolved value, rather than as a calc() of two custom properties
+      // in CSS.
+      const bendLeftLocal = bendLeft - dotX;
       // Runs from the title's own vertical middle, not its bottom edge --
       // so the connector's total height has to stretch past the rest of
       // the title and the note line beneath it ("Map out the idea.") to
@@ -428,7 +436,7 @@
       const connectorHeight = top - (titleMidY - stageRect.top);
       callout.style.setProperty('--connector-height', `${connectorHeight}px`);
       callout.style.setProperty('--connector-dot-x', `${dotX}px`);
-      callout.style.setProperty('--connector-bend-left', `${bendLeft}px`);
+      callout.style.setProperty('--connector-bend-left', `${bendLeftLocal}px`);
       callout.style.setProperty('--connector-bend-width', `${bendWidth}px`);
       callout.classList.add('is-open');
       callout.setAttribute('aria-hidden', 'false');

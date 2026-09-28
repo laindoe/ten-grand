@@ -2963,19 +2963,16 @@ body.modal-open {
     background: var(--color-card-border);
   }
 
-  /* --connector-bend-left is in the CARD's own coordinate space (0 = the
-     card's left edge), matching how openCallout in main.js computes it --
-     but this element's positioning parent is .route__callout-connector,
-     which is itself already offset by --connector-dot-x from that same
-     edge. Subtracting that dot offset back out re-expresses the value in
-     the bend's own local space, so it lands where it was actually meant
-     to; without it, the whole run was shifted an extra --connector-dot-x
-     to the right of the card, poking out past its edge instead of running
-     underneath the label. */
+  /* --connector-bend-left already accounts for this element's own
+     positioning parent, .route__callout-connector, sitting --connector-
+     dot-x away from the card's edge -- openCallout in main.js resolves
+     that back into this element's own local space itself (a single plain
+     value) rather than leaving it to a calc() of two custom properties
+     here. */
   .route__callout-connector-bend {
     position: absolute;
     top: 0;
-    left: calc(var(--connector-bend-left, 0px) - var(--connector-dot-x, 20px));
+    left: var(--connector-bend-left, 0px);
     width: var(--connector-bend-width, 0px);
     height: 1px;
     background: var(--color-card-border);
