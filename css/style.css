@@ -3238,8 +3238,8 @@ body.modal-open {
   }
 
   .amass__timeline-icon {
-    width: clamp(72px, 6vw, 96px);
-    height: clamp(72px, 6vw, 96px);
+    width: clamp(90px, 8vw, 130px);
+    height: clamp(90px, 8vw, 130px);
   }
 
   .amass__timeline-content {
