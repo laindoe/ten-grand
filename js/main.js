@@ -392,13 +392,21 @@
       // at the label), and its left edge for a right-aligned one -- the
       // two sides mirror each other by construction.
       const titleEl = label.querySelector('.route__pin-label') || label;
-      const attachX = titleEl.getBoundingClientRect().left;
+      const titleRect = titleEl.getBoundingClientRect();
+      const attachX = titleRect.left;
       const dotX = align === 'left'
         ? callout.offsetWidth - CONNECTOR_DOT_INSET
         : CONNECTOR_DOT_INSET;
       const attachXRelToCard = attachX - stageRect.left - left;
       const bendLeft = Math.min(attachXRelToCard, dotX);
       const bendWidth = Math.abs(attachXRelToCard - dotX);
+      // The underline sits right under the TITLE specifically, not the
+      // label box as a whole -- which runs on past it to the note line
+      // beneath ("Map out the idea."), so the connector's total height
+      // has to stretch past that note too to still reach the card's own
+      // top unchanged.
+      const connectorHeight = top - (titleRect.bottom - stageRect.top);
+      callout.style.setProperty('--connector-height', `${connectorHeight}px`);
       callout.style.setProperty('--connector-dot-x', `${dotX}px`);
       callout.style.setProperty('--connector-bend-left', `${bendLeft}px`);
       callout.style.setProperty('--connector-bend-width', `${bendWidth}px`);

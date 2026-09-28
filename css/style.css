@@ -2929,23 +2929,26 @@ body.modal-open {
     pointer-events: auto;
   }
 
-  /* The line runs from directly under the start of the title, across
-     underneath the label, to a dot near whichever card edge sits farthest
-     from it, then drops into the card from there -- so it always travels
-     away from the sign instead of doubling back over the label. That dot
-     lands near the card's right edge for a left-aligned card and its left
-     edge for a right-aligned one, mirroring each other by construction;
-     .route__callout-connector-bend is the underneath-the-label run and
-     spans zero width (invisible) on the rare case those two points
-     already coincide. All three custom properties are set per open
-     callout by openCallout in main.js, from the title's and card's actual
-     measured positions. */
+  /* The line runs from directly under the start of the title (not the
+     label box as a whole, which runs on past it to the note line
+     beneath), across underneath the label, to a dot near whichever card
+     edge sits farthest from it, then drops into the card from there -- so
+     it always travels away from the sign instead of doubling back over
+     the label. That dot lands near the card's right edge for a
+     left-aligned card and its left edge for a right-aligned one,
+     mirroring each other by construction; .route__callout-connector-bend
+     is the underneath-the-title run and spans zero width (invisible) on
+     the rare case those two points already coincide. The connector's own
+     height stretches past the note line to still reach the card's top
+     unchanged, so it varies with how tall that note is. All four custom
+     properties are set per open callout by openCallout in main.js, from
+     the title's and card's actual measured positions. */
   .route__callout-connector {
     position: absolute;
     bottom: 100%;
     left: var(--connector-dot-x, 20px);
     width: 1px;
-    height: 22px;
+    height: var(--connector-height, 22px);
     background: var(--color-card-border);
   }
 
