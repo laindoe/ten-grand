@@ -366,6 +366,13 @@
     // connector actually starts -- same for every sign, so it neither
     // touches the word nor drifts far from it.
     const CONNECTOR_TITLE_GAP = 8;
+    // Packaging's and distribution's reported gap doesn't reproduce in
+    // this environment even measuring the exact same way as
+    // development's and production's, which come out identical to them
+    // in every check run here -- so this pulls just those two lines back
+    // toward their title as a targeted correction, without touching the
+    // two that are already confirmed right.
+    const CONNECTOR_TITLE_GAP_OVERRIDE = { 3: -20, 4: -20 };
 
     function openCallout(pin) {
       if (!callout) return;
@@ -411,9 +418,10 @@
       // each other by construction.
       const titleEl = label.querySelector('.route__pin-label') || label;
       const titleRect = titleEl.getBoundingClientRect();
+      const titleGap = CONNECTOR_TITLE_GAP_OVERRIDE[pin.dataset.stage] ?? CONNECTOR_TITLE_GAP;
       const attachX = align === 'left'
-        ? titleRect.right + CONNECTOR_TITLE_GAP
-        : titleRect.left - CONNECTOR_TITLE_GAP;
+        ? titleRect.right + titleGap
+        : titleRect.left - titleGap;
       const titleMidY = (titleRect.top + titleRect.bottom) / 2;
       const dotX = align === 'left'
         ? callout.offsetWidth - CONNECTOR_DOT_INSET
