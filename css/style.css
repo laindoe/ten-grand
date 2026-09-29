@@ -930,9 +930,9 @@ a {
   .hw-bush-l{animation:hwProp_bush-l 9.579s linear infinite;animation-play-state:paused;}
   .hw-bush-r{animation:hwProp_bush-r 9.579s linear infinite;animation-play-state:paused;}
   .highway__bob{animation:hwBob 2.00s linear infinite;animation-play-state:paused;}
-  .highway__car--centre{animation:hwCar_centre 17.999s linear infinite,hwZ 17.999s step-end infinite;animation-play-state:paused;}
-  .highway__car--left{animation:hwCar_left 22.498s linear infinite,hwZ 22.498s step-end infinite;animation-play-state:paused;}
-  .highway__car--right{animation:hwCar_right 14.399s linear infinite,hwZ 14.399s step-end infinite;animation-play-state:paused;}
+  .highway__car--centre{animation:hwCar_centre 26.999s linear infinite,hwZ 26.999s step-end infinite;animation-play-state:paused;}
+  .highway__car--left{animation:hwCar_left 33.747s linear infinite,hwZ 33.747s step-end infinite;animation-play-state:paused;}
+  .highway__car--right{animation:hwCar_right 21.599s linear infinite,hwZ 21.599s step-end infinite;animation-play-state:paused;}
   .distance__visual.is-visible .hw-move,.distance__visual.is-visible .highway__car,.distance__visual.is-visible .highway__bob{animation-play-state:running;}
 }
 

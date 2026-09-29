@@ -153,13 +153,21 @@
     const elements = Array.from(stage.querySelectorAll('.highway__car'));
     if (!elements.length) return;
 
+    // Durations are 1.5x the original 17999/22498/14399ms -- slowed down so
+    // each car's crossing reads less like a jump cut, more like a car
+    // actually receding into the distance.
     const lanes = {
-      centre: { duration: 17999, from: 1.65300, to: 0.01680 },
-      left:   { duration: 22498, from: 4.09987, to: 0.04167 },
-      right:  { duration: 14399, from: 4.12350, to: 0.04191 },
+      centre: { duration: 26999, from: 1.65300, to: 0.01680 },
+      left:   { duration: 33747, from: 4.09987, to: 0.04167 },
+      right:  { duration: 21599, from: 4.12350, to: 0.04191 },
     };
+    // Mirrors the tail's fade-out (1/3 of the loop, 66.7%-100%) onto the
+    // head as a fade-in, so a car eases into view instead of snapping to
+    // full opacity the instant its loop wraps.
     const opacityStops = [
-      [0, 1], [2 / 3, 1], [0.708333, 0.827], [0.75, 0.632],
+      [0, 0], [0.041667, 0.062], [0.083333, 0.137], [0.125, 0.228],
+      [0.166667, 0.338], [0.208333, 0.471], [0.25, 0.632], [0.291667, 0.827],
+      [1 / 3, 1], [2 / 3, 1], [0.708333, 0.827], [0.75, 0.632],
       [0.791667, 0.471], [0.833333, 0.338], [0.875, 0.228],
       [0.916667, 0.137], [0.958333, 0.062], [1, 0],
     ];
@@ -248,18 +256,21 @@
         const bottom = top + height;
         // A small nick off a car's edge (a few percent of its own height) is
         // an unremarkable, ordinary hard crop -- cars have always looked like
-        // that at the frame's edges. Only a severe cut (more than a third of
-        // the car itself) reads as broken, so only that gets hidden outright;
-        // anything milder is left to the crop's normal overflow clip.
+        // that at the frame's edges. A severe cut fades the car out instead
+        // of leaving it hard-clipped, so a car entering or leaving the
+        // crop's top/bottom edge eases away rather than snapping to
+        // invisible -- ramped over the 25%-55%-hidden band rather than a
+        // single hide/show threshold.
         const hiddenAbovePx = top < clipTop ? Math.min(clipTop, bottom) - top : 0;
         const hiddenBelowPx = bottom > clipBottom ? bottom - Math.max(clipBottom, top) : 0;
-        const severelyClipped = Math.max(hiddenAbovePx, hiddenBelowPx) / height > 0.35;
+        const hiddenFrac = Math.max(hiddenAbovePx, hiddenBelowPx) / height;
+        const clipVisibility = 1 - Math.min(1, Math.max(0, (hiddenFrac - 0.25) / 0.3));
 
         car.el.style.left = `${left}px`;
         car.el.style.top = `${top}px`;
         car.el.style.width = `${baseWidth * scale}px`;
         car.el.style.height = `${height}px`;
-        car.el.style.opacity = severelyClipped ? '0' : String(opacityAt(progress));
+        car.el.style.opacity = String(opacityAt(progress) * clipVisibility);
         car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
         car.plate.style.fontSize = `${car.plateFont * scale}px`;
       });
