@@ -63,7 +63,7 @@ SIZE_ADJUST = {'left-1': 1.12, 'left-2': 0.92, 'right-2': 1.08}
 # the other model sharing the lane, so an odd instance count just repeats
 # the pair rather than needing a third name). A model not listed here yet
 # keeps whatever text is already sitting in index.html.
-PLATE_NAMES = {'left-1': ['D3SIGNR', 'PUBLISHR']}
+PLATE_NAMES = {'left-1': ['D3SIGNR', 'PUBLISHR'], 'left-2': ['WRITER', 'DIRECTOR']}
 
 LIGHT_COLOUR = '#ff003d'   # the brighter of the two reds across the exports
 BEZEL = '#141414'          # the page background
