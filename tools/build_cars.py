@@ -65,7 +65,7 @@ SIZE_ADJUST = {'left-1': 1.12, 'left-2': 0.92, 'right-2': 1.08}
 # keeps whatever text is already sitting in index.html.
 PLATE_NAMES = {'left-1': ['D3SIGNR', 'PUBLISHR'], 'left-2': ['WRITER', 'DIRECTOR'],
                 'centre-1': ['ARTIST', 'CREATOR'], 'centre-2': ['PHOTGRAPHR', 'PRODUCER'],
-                'right-2': ['VENUE', 'MANUFACTR']}
+                'right-2': ['VENUE', 'MANUFACTR'], 'right-1': ['STYLIST', 'INVESTOR']}
 
 LIGHT_COLOUR = '#ff003d'   # the brighter of the two reds across the exports
 BEZEL = '#141414'          # the page background
