@@ -99,14 +99,20 @@ PLATE_HEIGHT_FRAC = 0.134
 EM_PER_CHAR = 0.623
 LONGEST_LABEL = 'PHOTOGRAPHR'
 
-# Each lane's own share of .distance__visual's width, from
-# .highway__car--LANE{width:...%} in css/style.css. .highway__plate's other
-# geometry (left/top/width/height) is a percentage of the car's own box, but
-# its font-size is set in cqw, which sizes against .distance__visual (the
-# query container) instead -- so turning a label's target width in "percent
-# of this car" into a font-size needs the car's own share of the container
-# folded in, or it renders many times too large.
+# Each lane's own share of .distance__visual's width and height, from
+# .highway__car--LANE{width:...%;height:...%} in css/style.css.
+# .highway__plate's other geometry (left/top/width/height) is a percentage
+# of the car's own box, but its font-size is set in cqw, which sizes
+# against .distance__visual (the query container) instead -- so turning a
+# label's target width in "percent of this car" into a font-size needs the
+# car's own share of the container folded in, or it renders many times too
+# large. The height figures serve a second purpose below: computing each
+# lane box's own aspect ratio, fixed regardless of viewport width since
+# .distance__visual has no aspect-ratio of its own -- its height instead
+# comes from the fixed-aspect background scene SVG sized to 100% width, so
+# both these percentages scale together and their ratio never changes.
 LANE_WIDTH_PCT = {'centre': 61.0573, 'left': 31.3222, 'right': 31.0767}
+LANE_HEIGHT_PCT = {'centre': 33.3225, 'left': 13.5068, 'right': 13.4221}
 
 # How much of the label box a car's own longest assigned name should fill,
 # once sized from its real measured width -- comfortable margin on every
@@ -410,15 +416,50 @@ def main():
         # rather than a flat per-character constant: a per-char average
         # tuned against one word drifted for others once cars stopped
         # sharing a single global anchor length -- some now ran past 100%.
+        lane = LANES[name]
+        # .highway__plate is positioned (and, via cqw, sized) as a
+        # percentage of its lane's own CSS box, but that box's aspect ratio
+        # doesn't match this drawing's own aspect ratio for any of the six
+        # models -- <use> fits a symbol's viewBox into its box by "meet", so
+        # every car is letterboxed (height-constrained, confirmed by
+        # content_frac < 1 below) with equal empty margin left and right. A
+        # left/width taken straight from the viewBox fraction ignores that
+        # margin and drifts the label away from the plate the further the
+        # car sits from the viewBox's own horizontal centre -- worst on the
+        # boxiest models (the jeep), barely visible on the ones closest to
+        # their box's own aspect. Corrected here by mapping the raw
+        # fraction through the same letterbox transform the real rendered
+        # art goes through, and folded into the font size too (its own
+        # formula multiplies by this same raw width) so the two stay
+        # consistent -- sizing text for the box's full width while actually
+        # placing it in the narrower letterboxed one overflows the plate.
+        box_aspect = LANE_WIDTH_PCT[lane] / LANE_HEIGHT_PCT[lane]
+        symbol_aspect = vb[2] / vb[3]
+        content_frac = symbol_aspect / box_aspect
+        assert content_frac < 1, \
+            '%s: expected height-constrained letterboxing, got content_frac=%.3f' % (name, content_frac)
+        margin_frac = (1 - content_frac) / 2
+        raw_left, raw_width = (lx - vb[0]) / vb[2], lw / vb[2]
+        corrected_width = raw_width * content_frac
+        # Sized to this car's own longest assigned name, not a single
+        # global anchor -- the six models' pairs range from 5 to 10
+        # characters, and a font-size calibrated to the longest of all of
+        # them left short names (VENUE) looking lost and long ones
+        # (MANUFACTR) looking cramped by comparison instead of each
+        # filling its own plate the same way. Uses the real rendered width
+        # of that specific word (geo['_labelWidth'], from measure_cars.js)
+        # rather than a flat per-character constant: a per-char average
+        # tuned against one word drifted for others once cars stopped
+        # sharing a single global anchor length -- some now ran past 100%.
         names = PLATE_NAMES.get(name, [LONGEST_LABEL])
         longest = max(names, key=len)
         em_width = geo['_labelWidth'].get(longest, len(longest) * EM_PER_CHAR)
-        font_cqw = ((lw / vb[2]) * LANE_WIDTH_PCT[LANES[name]]
+        font_cqw = (corrected_width * LANE_WIDTH_PCT[lane]
                     / em_width * PLATE_FILL_TARGET)
         report[name] = dict(
             body=len(body), lamps=len(lamps), clusters=len(clusters), halos=len(g), vb=vb,
-            left=(lx - vb[0]) / vb[2] * 100, top=(ly - vb[1]) / vb[3] * 100,
-            width=lw / vb[2] * 100, height=lh / vb[3] * 100, font_units=font_cqw)
+            left=(margin_frac + raw_left * content_frac) * 100, top=(ly - vb[1]) / vb[3] * 100,
+            width=corrected_width * 100, height=lh / vb[3] * 100, font_units=font_cqw)
 
     # --- symbols into the highway include ---
     doc = SVG_INC.read_text()
