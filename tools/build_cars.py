@@ -51,6 +51,13 @@ CARS = ['left-1', 'left-2', 'centre-1', 'centre-2', 'right-1', 'right-2']
 LANES = {name: name.split('-')[0] for name in CARS}
 LANE_COUNTS = {'left': 5, 'centre': 5, 'right': 4}   # instances per lane in index.html
 
+# Two variants share one lane's CSS box, sized for the closer-to-square of
+# the two -- a low, wide car (a sports car) fills most of that box's width,
+# but a boxier one (the jeep) only reaches it at the same height, since
+# <use> fits by "meet" and only the narrower dimension grows to match. Eyed
+# against each lane's other variant, not derived from any measurement.
+SIZE_ADJUST = {'left-1': 1.12, 'left-2': 0.92, 'right-2': 1.08}
+
 LIGHT_COLOUR = '#ff003d'   # the brighter of the two reds across the exports
 BEZEL = '#141414'          # the page background
 
@@ -307,7 +314,7 @@ def assign_car_variants(html, report):
 
     car_re = re.compile(
         r'(<div class="highway__car highway__car--(centre|left|right)"[^>]*>'
-        r'<div class="highway__bob"[^>]*>)'
+        r'<div class="highway__bob" style=")([^"]*)(">)'
         r'<svg class="highway__car-art" aria-hidden="true">'
         r'<use href="#hw-car-([\w-]+)"/></svg>'
         r'<span class="highway__plate"(?: style="[^"]*")?>(<span[^>]*>[A-Z]+</span>)</span>'
@@ -315,17 +322,18 @@ def assign_car_variants(html, report):
 
     seen = {}
     def rewrite(m):
-        lane, current = m.group(2), m.group(3)
+        lane = m.group(2)
         vs = variants[lane]
         variant = vs[seen.get(lane, 0) % len(vs)]
         seen[lane] = seen.get(lane, 0) + 1
         r = report[variant]
         style = ('left:%.3f%%;top:%.3f%%;width:%.3f%%;height:%.3f%%;font-size:%.4fcqw'
                  % (r['left'], r['top'], r['width'], r['height'], r['font_units']))
-        return ('%s<svg class="highway__car-art" aria-hidden="true">'
+        bob_style = '%s;--car-scale:%.4f;' % (m.group(3), SIZE_ADJUST.get(variant, 1.0))
+        return ('%s%s%s<svg class="highway__car-art" aria-hidden="true">'
                 '<use href="#hw-car-%s"/></svg>'
                 '<span class="highway__plate" style="%s">%s</span>%s'
-                % (m.group(1), variant, style, m.group(4), m.group(5)))
+                % (m.group(1), bob_style, m.group(4), variant, style, m.group(6), m.group(7)))
 
     html, n = car_re.subn(rewrite, html)
     assert n == 14, 'rewrote %d car instances, expected 14' % n
