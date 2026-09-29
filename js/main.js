@@ -179,7 +179,7 @@
         heightRatio: el.offsetHeight / stage.clientHeight,
         originXRatio: origin[0] / el.offsetWidth,
         originYRatio: origin[1] / el.offsetHeight,
-        plateFont: parseFloat(getComputedStyle(plate).fontSize),
+        plateFontRatio: parseFloat(getComputedStyle(plate).fontSize) / stage.clientWidth,
       };
     });
 
@@ -217,7 +217,7 @@
         car.el.style.width = `${baseWidth * scale}px`;
         car.el.style.height = `${height}px`;
         car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
-        car.plate.style.fontSize = `${car.plateFont * scale}px`;
+        car.plate.style.fontSize = `${car.plateFontRatio * stageWidth * scale}px`;
       });
       frame = requestAnimationFrame(draw);
     }

@@ -31,7 +31,7 @@ const CARS = ['left-1', 'left-2', 'centre-1', 'centre-2', 'right-1', 'right-2'];
 const LABELS = JSON.parse(process.env.PLATE_LABELS || '[]');
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
   const labelPage = await browser.newPage();
   await labelPage.setContent(`
     <div style="position:absolute;visibility:hidden;white-space:nowrap;

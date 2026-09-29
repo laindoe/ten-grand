@@ -840,11 +840,8 @@ a {
   overflow: visible;
 }
 
-/* Live text, so the plates stay legible at the size the artwork draws them —
-   the same reason the middle path's billboards are text. Black on the white
-   face the artwork draws. No scaleX squeeze any more: the three plates are
-   one shape at one aspect, and the two names that would not fit are
-   abbreviated in the markup instead of being distorted to suit. */
+/* Live labels fit each word to its actual plate face, inset clear of the
+   bolts. Per-instance geometry follows the SVG letterboxing transform. */
 .highway__plate {
   position: absolute;
   display: flex;

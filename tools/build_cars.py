@@ -81,16 +81,6 @@ GLOW = [(14.0, 0.14), (9.0, 0.26), (5.0, 0.42), (2.0, 0.62)]
 BOLT_CLEARANCE = 3.5
 LABEL_INSET_Y = 5.0
 
-# Plate size, as a fraction of each drawing's own ink box, applied the same
-# way to all six cars regardless of how big or small that car's own artist
-# happened to draw its plate -- the average natural proportion measured
-# across the six real exports (widths ranged 22%-34%, heights 10%-15.5%).
-# Position still comes from each car's own detected plate location; only the
-# size is normalised, per "i want all the license plates to be the same
-# size."
-PLATE_WIDTH_FRAC = 0.286
-PLATE_HEIGHT_FRAC = 0.134
-
 # Fallback only, for a model with no PLATE_NAMES entry (or a word
 # measure_cars.js wasn't asked to measure): a flat per-character estimate,
 # less accurate than the real measurement every named model's own longest
@@ -359,6 +349,8 @@ def assign_car_variants(html, report):
             plate = '<span>%s</span>' % names[i % len(names)]
         else:
             plate = m.group(6)
+        word = re.search(r'>([A-Z0-9]+)</span>', plate).group(1)
+        style = re.sub(r'font-size:[^;]+', 'font-size:%.4fcqw' % r['fonts'].get(word, r['font_units']), style)
         return ('%s%s%s<svg class="highway__car-art" aria-hidden="true">'
                 '<use href="#hw-car-%s"/></svg>'
                 '<span class="highway__plate" style="%s">%s</span>%s'
@@ -395,71 +387,33 @@ def main():
         parts.append('  </symbol>')
         blocks.append('\n'.join(parts))
 
-        # Label box: a canonical size (same fraction of every car's own ink
-        # box) centred on this car's own detected plate location, inset
-        # clear of its bolt holes by that same drawing's own margin.
+        # Use the actual white face, with room for the corner bolts.
         fx, fy, fw, fh = geo[name]['face']
-        inset_frac = (geo[name]['boltInset'] + geo[name]['boltRadius'] + BOLT_CLEARANCE) / fw
-        cx, cy = fx + fw / 2, fy + fh / 2
-        pw, ph = vb[2] * PLATE_WIDTH_FRAC, vb[3] * PLATE_HEIGHT_FRAC
-        px, py = cx - pw / 2, cy - ph / 2
-        inset = pw * inset_frac
-        lx, lw = px + inset, pw - 2 * inset
-        ly, lh = py + LABEL_INSET_Y, ph - 2 * LABEL_INSET_Y
-        # Sized to this car's own longest assigned name, not a single
-        # global anchor -- the six models' pairs range from 5 to 10
-        # characters, and a font-size calibrated to the longest of all of
-        # them left short names (VENUE) looking lost and long ones
-        # (MANUFACTR) looking cramped by comparison instead of each
-        # filling its own plate the same way. Uses the real rendered width
-        # of that specific word (geo['_labelWidth'], from measure_cars.js)
-        # rather than a flat per-character constant: a per-char average
-        # tuned against one word drifted for others once cars stopped
-        # sharing a single global anchor length -- some now ran past 100%.
+        inset = geo[name]['boltInset'] + geo[name]['boltRadius'] + BOLT_CLEARANCE
+        lx, ly = fx + inset, fy + LABEL_INSET_Y
+        lw, lh = fw - 2 * inset, fh - 2 * LABEL_INSET_Y
         lane = LANES[name]
-        # .highway__plate is positioned (and, via cqw, sized) as a
-        # percentage of its lane's own CSS box, but that box's aspect ratio
-        # doesn't match this drawing's own aspect ratio for any of the six
-        # models -- <use> fits a symbol's viewBox into its box by "meet", so
-        # every car is letterboxed (height-constrained, confirmed by
-        # content_frac < 1 below) with equal empty margin left and right. A
-        # left/width taken straight from the viewBox fraction ignores that
-        # margin and drifts the label away from the plate the further the
-        # car sits from the viewBox's own horizontal centre -- worst on the
-        # boxiest models (the jeep), barely visible on the ones closest to
-        # their box's own aspect. Corrected here by mapping the raw
-        # fraction through the same letterbox transform the real rendered
-        # art goes through, and folded into the font size too (its own
-        # formula multiplies by this same raw width) so the two stay
-        # consistent -- sizing text for the box's full width while actually
-        # placing it in the narrower letterboxed one overflows the plate.
-        box_aspect = LANE_WIDTH_PCT[lane] / LANE_HEIGHT_PCT[lane]
+        # CSS width and height percentages have different reference lengths.
+        # Match SVG's xMidYMid meet transform in both dimensions.
+        stage_aspect = 1272.6 / 1761.4
+        box_aspect = LANE_WIDTH_PCT[lane] / LANE_HEIGHT_PCT[lane] * stage_aspect
         symbol_aspect = vb[2] / vb[3]
-        content_frac = symbol_aspect / box_aspect
-        assert content_frac < 1, \
-            '%s: expected height-constrained letterboxing, got content_frac=%.3f' % (name, content_frac)
-        margin_frac = (1 - content_frac) / 2
-        raw_left, raw_width = (lx - vb[0]) / vb[2], lw / vb[2]
-        corrected_width = raw_width * content_frac
-        # Sized to this car's own longest assigned name, not a single
-        # global anchor -- the six models' pairs range from 5 to 10
-        # characters, and a font-size calibrated to the longest of all of
-        # them left short names (VENUE) looking lost and long ones
-        # (MANUFACTR) looking cramped by comparison instead of each
-        # filling its own plate the same way. Uses the real rendered width
-        # of that specific word (geo['_labelWidth'], from measure_cars.js)
-        # rather than a flat per-character constant: a per-char average
-        # tuned against one word drifted for others once cars stopped
-        # sharing a single global anchor length -- some now ran past 100%.
+        x_fraction = min(1, symbol_aspect / box_aspect)
+        y_fraction = min(1, box_aspect / symbol_aspect)
+        width = lw / vb[2] * x_fraction
+        height = lh / vb[3] * y_fraction
         names = PLATE_NAMES.get(name, [LONGEST_LABEL])
-        longest = max(names, key=len)
-        em_width = geo['_labelWidth'].get(longest, len(longest) * EM_PER_CHAR)
-        font_cqw = (corrected_width * LANE_WIDTH_PCT[lane]
-                    / em_width * PLATE_FILL_TARGET)
+        fonts = {}
+        for word in names:
+            em_width = geo['_labelWidth'].get(word, len(word) * EM_PER_CHAR)
+            fonts[word] = min(width * LANE_WIDTH_PCT[lane] / em_width,
+                              height * LANE_HEIGHT_PCT[lane] / stage_aspect) * PLATE_FILL_TARGET
         report[name] = dict(
             body=len(body), lamps=len(lamps), clusters=len(clusters), halos=len(g), vb=vb,
-            left=(margin_frac + raw_left * content_frac) * 100, top=(ly - vb[1]) / vb[3] * 100,
-            width=corrected_width * 100, height=lh / vb[3] * 100, font_units=font_cqw)
+            left=((1 - x_fraction) / 2 + (lx - vb[0]) / vb[2] * x_fraction) * 100,
+            top=((1 - y_fraction) / 2 + (ly - vb[1]) / vb[3] * y_fraction) * 100,
+            width=width * 100, height=height * 100,
+            font_units=min(fonts.values()), fonts=fonts)
 
     # --- symbols into the highway include ---
     doc = SVG_INC.read_text()
