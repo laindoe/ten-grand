@@ -58,6 +58,13 @@ LANE_COUNTS = {'left': 5, 'centre': 5, 'right': 4}   # instances per lane in ind
 # against each lane's other variant, not derived from any measurement.
 SIZE_ADJUST = {'left-1': 1.12, 'left-2': 0.92, 'right-2': 1.08}
 
+# Two plate names per model, chosen by the site owner one car at a time and
+# cycled across that model's own occurrences in its lane (independently of
+# the other model sharing the lane, so an odd instance count just repeats
+# the pair rather than needing a third name). A model not listed here yet
+# keeps whatever text is already sitting in index.html.
+PLATE_NAMES = {'left-1': ['D3SIGNR', 'PUBLISHR']}
+
 LIGHT_COLOUR = '#ff003d'   # the brighter of the two reds across the exports
 BEZEL = '#141414'          # the page background
 
@@ -307,7 +314,9 @@ def assign_car_variants(html, report):
     """Point each of the 14 car instances at one of its lane's two drawings,
     alternating in document order, and inject that variant's own plate
     geometry as an inline style -- the lane-level CSS rule can't be correct
-    for two differently-proportioned models sharing a lane."""
+    for two differently-proportioned models sharing a lane. Also relabels
+    the plate for any model listed in PLATE_NAMES, cycling that model's own
+    two names across its own occurrences."""
     variants = {}
     for name in CARS:
         variants.setdefault(LANES[name], []).append(name)
@@ -317,10 +326,10 @@ def assign_car_variants(html, report):
         r'<div class="highway__bob" style=")([^"]*)(">)'
         r'<svg class="highway__car-art" aria-hidden="true">'
         r'<use href="#hw-car-([\w-]+)"/></svg>'
-        r'<span class="highway__plate"(?: style="[^"]*")?>(<span[^>]*>[A-Z]+</span>)</span>'
+        r'<span class="highway__plate"(?: style="[^"]*")?>(<span[^>]*>[A-Z0-9]+</span>)</span>'
         r'(</div></div>)')
 
-    seen = {}
+    seen, seen_variant = {}, {}
     def rewrite(m):
         lane = m.group(2)
         vs = variants[lane]
@@ -329,11 +338,22 @@ def assign_car_variants(html, report):
         r = report[variant]
         style = ('left:%.3f%%;top:%.3f%%;width:%.3f%%;height:%.3f%%;font-size:%.4fcqw'
                  % (r['left'], r['top'], r['width'], r['height'], r['font_units']))
-        bob_style = '%s;--car-scale:%.4f;' % (m.group(3), SIZE_ADJUST.get(variant, 1.0))
+        # Strip any --car-scale this same rewrite left behind on a previous
+        # run, so re-running the build stays idempotent instead of piling
+        # up a duplicate declaration on every pass.
+        prior_style = re.sub(r';?--car-scale:[^;]*;?', '', m.group(3))
+        bob_style = '%s;--car-scale:%.4f;' % (prior_style, SIZE_ADJUST.get(variant, 1.0))
+        names = PLATE_NAMES.get(variant)
+        if names:
+            i = seen_variant.get(variant, 0)
+            seen_variant[variant] = i + 1
+            plate = '<span>%s</span>' % names[i % len(names)]
+        else:
+            plate = m.group(6)
         return ('%s%s%s<svg class="highway__car-art" aria-hidden="true">'
                 '<use href="#hw-car-%s"/></svg>'
                 '<span class="highway__plate" style="%s">%s</span>%s'
-                % (m.group(1), bob_style, m.group(4), variant, style, m.group(6), m.group(7)))
+                % (m.group(1), bob_style, m.group(4), variant, style, plate, m.group(7)))
 
     html, n = car_re.subn(rewrite, html)
     assert n == 14, 'rewrote %d car instances, expected 14' % n
