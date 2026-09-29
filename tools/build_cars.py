@@ -121,13 +121,15 @@ def add_drive_delays(html):
         r'<div class="highway__car highway__car--(centre|left|right)"'
         r'([^>]*style=")([^"]*)(">)')
     def delay_rewrite(m):
-        if '--drive-delay:' in m.group(3):
-            return m.group(0)
-        delay = re.search(r'animation-delay:(-?[\d.]+s)', m.group(3))
-        assert delay, 'car is missing its drive animation delay'
-        return ('<div class="highway__car highway__car--%s"%s'
-                '--drive-delay:%s;%s%s'
-                % (m.group(1), m.group(2), delay.group(1), m.group(3), m.group(4)))
+        # Old sampled fade values override the frame-driven opacity rule.
+        # Cars now stay opaque; only the separate lamp glow is translucent.
+        style = re.sub(r'opacity:[\d.]+;?', '', m.group(3))
+        if '--drive-delay:' not in style:
+            delay = re.search(r'animation-delay:(-?[\d.]+s)', style)
+            assert delay, 'car is missing its drive animation delay'
+            style = '--drive-delay:%s;%s' % (delay.group(1), style)
+        return ('<div class="highway__car highway__car--%s"%s%s%s'
+                % (m.group(1), m.group(2), style, m.group(4)))
     html, matched = car_open.subn(delay_rewrite, html)
     assert matched == 14, 'found %d cars, expected 14' % matched
 
