@@ -1,10 +1,15 @@
 #!/usr/bin/env node
-// Measure each car drawing's ink box and its licence plate, and print it as
-// JSON for tools/build_cars.py.
+// Measure each car drawing's ink box, its licence plate, and every shape's
+// bounding box, and print it as JSON for tools/build_cars.py.
 //
 // This needs a browser: the extent of a <path> is not derivable from the
-// markup without a path parser, and the plate's face is rotated in one of the
-// three exports, so its real position only comes out of a layout engine.
+// markup without a path parser, and the plate's face is rotated in some
+// exports, so its real position only comes out of a layout engine. Per-shape
+// boxes are needed too, because the artist's taillights are drawn as
+// freeform paths (housings, lenses, reflectors) rather than plain rects, so
+// build_cars.py can no longer size a lamp's glow from its own x/width
+// attributes -- it has to come from measured geometry, matched back to the
+// same shape by walking the file in the same order.
 //
 //   NODE_PATH=/opt/node22/lib/node_modules node tools/measure_cars.js
 //
@@ -14,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ART = path.join(__dirname, '..', 'art', 'cars');
-const CARS = ['centre', 'left', 'right'];
+const CARS = ['left-1', 'left-2', 'centre-1', 'centre-2', 'right-1', 'right-2'];
 
 (async () => {
   const browser = await chromium.launch();
@@ -41,16 +46,34 @@ const CARS = ['centre', 'left', 'right'];
         x1: Math.max(a.x1, b.u.x + b.u.w), y1: Math.max(a.y1, b.u.y + b.u.h),
       }), { x0: 1e9, y0: 1e9, x1: -1e9, y1: -1e9 });
 
-      // The plate: its bezel is the only near-black shape, and its face is the
-      // white shape filling that bezel. Identified by paint, not class name --
-      // the three exports number their classes differently.
-      const bez = boxes.find((b) => getComputedStyle(b.el).fill === 'rgb(12, 12, 12)');
-      const face = bez && boxes.find((b) =>
-        getComputedStyle(b.el).fill === 'rgb(255, 255, 255)' &&
-        b.u.w > bez.u.w * 0.8 && b.u.w < bez.u.w &&
-        b.u.x >= bez.u.x - 1 && b.u.x + b.u.w <= bez.u.x + bez.u.w + 1);
-      // Bolt holes, so the label can be inset clear of them.
-      const bolts = boxes.filter((b) => /circle|ellipse/i.test(b.el.tagName) && b.u.w < 8);
+      // The plate face: the largest roughly plate-sized white shape (this
+      // rules out the small white bolt-hole dots). The bezel used to be
+      // found first, by a placeholder #0c0c0c fill, but the real art draws
+      // it as a bare stroke (no fill) sized to the face, so it's found
+      // second instead, as the smallest unfilled shape whose box encloses
+      // the face -- direction reversed from the old convention, not just
+      // the paint value.
+      const isWhite = (el) => getComputedStyle(el).fill === 'rgb(255, 255, 255)';
+      const whites = boxes.filter((b) => isWhite(b.el) && b.u.w > 20 && b.u.h > 8);
+      const face = whites.sort((a, b) => (b.u.w * b.u.h) - (a.u.w * a.u.h))[0] || null;
+      const pad = 0.75;
+      const bezCandidates = face ? boxes.filter((b) =>
+        getComputedStyle(b.el).fill === 'none' &&
+        b.u.x <= face.u.x + pad && b.u.y <= face.u.y + pad &&
+        b.u.x + b.u.w >= face.u.x + face.u.w - pad &&
+        b.u.y + b.u.h >= face.u.y + face.u.h - pad) : [];
+      const bez = bezCandidates.sort((a, b) => (a.u.w * a.u.h) - (b.u.w * b.u.h))[0] || null;
+      // Bolt holes, so the label can be inset clear of them. Any small,
+      // roughly round/square shape near the face -- the exports use
+      // <circle>, <ellipse> and plain <path> corner dots interchangeably.
+      const bolts = face ? boxes.filter((b) => {
+        const { w, h } = b.u;
+        if (w < 0.5 || h < 0.5 || w > 10 || h > 10) return false;
+        if (Math.max(w, h) / Math.min(w, h) > 2) return false;
+        const m = 15;
+        return b.u.x >= face.u.x - m && b.u.x + w <= face.u.x + face.u.w + m &&
+          b.u.y >= face.u.y - m && b.u.y + h <= face.u.y + face.u.h + m;
+      }) : [];
       const r4 = (v) => +v.toFixed(2);
       return {
         ink: [r4(ink.x0), r4(ink.y0), r4(ink.x1 - ink.x0), r4(ink.y1 - ink.y0)],
@@ -58,6 +81,9 @@ const CARS = ['centre', 'left', 'right'];
         boltInset: bolts.length && face
           ? r4(Math.min(...bolts.map((b) => b.u.x + b.u.w / 2)) - face.u.x) : null,
         boltRadius: bolts.length ? r4(bolts[0].u.w / 2) : null,
+        // Every shape's box, in the same document order build_cars.py's own
+        // regex walk visits them, so it can zip the two lists by index.
+        shapeBoxes: boxes.map((b) => [r4(b.u.x), r4(b.u.y), r4(b.u.w), r4(b.u.h)]),
       };
     });
     await page.close();
