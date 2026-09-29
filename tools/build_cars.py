@@ -229,6 +229,38 @@ def cluster_lamps(lamps):
     return groups
 
 
+def _contained_frac(box, cluster):
+    """What fraction of box's own area falls inside cluster."""
+    bx, by, bw, bh = box
+    x0, y0, x1, y1 = cluster
+    iw = max(0.0, min(bx + bw, x1) - max(bx, x0))
+    ih = max(0.0, min(by + bh, y1) - max(by, y0))
+    area = bw * bh
+    return (iw * ih) / area if area else 0.0
+
+
+def split_overlay(body, clusters):
+    """Body shapes drawn on top of a lamp -- a housing rim, a reflector bar
+    -- almost entirely inside one lamp cluster's box. The artist draws
+    these over the light; convert() has already bucketed them into body
+    purely by paint, so left alone they'd render before the glow and the
+    lamp fill both, burying the accent under the light it frames. Two
+    guards keep this from sweeping up ordinary bodywork that merely grazes
+    a cluster's box: it must not be painted the plain body-panel colour --
+    an accent is always some other paint (a stroke outline, or the bar's
+    own off-white fill), where a fender or door seam left at the panel
+    default never is; and it must be almost fully (>=90%) inside the
+    cluster, not just overlapping it, which is what actually separates a
+    rim or bar sized to the lamp from a much larger panel that happens to
+    pass nearby."""
+    main, overlay = [], []
+    for el, box in body:
+        is_overlay = (box and ('fill="%s"' % BEZEL) not in el and
+                      any(_contained_frac(box, c) >= 0.9 for c in clusters))
+        (overlay if is_overlay else main).append((el, box))
+    return main, overlay
+
+
 def halos(clusters):
     out = []
     for x0, y0, x1, y1 in clusters:
@@ -294,11 +326,12 @@ def main():
         clusters = cluster_lamps(lamps)
         assert len(clusters) >= 2 and len(clusters) % 2 == 0, \
             '%s: expected an even number (>=2) of lamp clusters, found %d' % (name, len(clusters))
+        body, overlay = split_overlay(body, clusters)
         g = halos(clusters)
         vb = geo[name]['ink']
         parts = ['  <symbol id="hw-car-%s" viewBox="%g %g %g %g">' % ((name,) + tuple(vb))]
         parts += ['    ' + e for e, _ in body] + ['    ' + e for e in g] + \
-                 ['    ' + e for e, _ in lamps]
+                 ['    ' + e for e, _ in lamps] + ['    ' + e for e, _ in overlay]
         parts.append('  </symbol>')
         blocks.append('\n'.join(parts))
 
