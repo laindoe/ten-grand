@@ -74,7 +74,7 @@ BEZEL = '#141414'          # the page background
 # Translucent copies behind each lamp, (units to inflate, opacity), painted
 # largest first. Plain geometry rather than a blur filter: fourteen cars
 # animate their scale continuously and a filter would re-rasterise per frame.
-GLOW = [(14.0, 0.14), (9.0, 0.26), (5.0, 0.42), (2.0, 0.62)]
+GLOW = [(9.0, 0.22), (5.0, 0.36), (2.0, 0.56)]
 
 # Label inset inside the plate's white face: enough to clear a bolt hole
 # (its centre inset plus its radius) with a little air after it.

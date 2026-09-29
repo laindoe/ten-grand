@@ -150,6 +150,7 @@
 
     const stage = document.querySelector('.distance__visual');
     if (!stage) return;
+    const crop = stage.closest('.distance__crop') || stage;
     const elements = Array.from(stage.querySelectorAll('.highway__car'));
     if (!elements.length) return;
 
@@ -172,6 +173,8 @@
         el,
         plate,
         lane,
+        modelScale: parseFloat(getComputedStyle(el.querySelector('.highway__bob')).getPropertyValue('--car-scale')) || 1,
+        culled: false,
         delay: Math.abs(parseFloat(style.getPropertyValue('--drive-delay'))) * 1000,
         leftRatio: el.offsetLeft / stage.clientWidth,
         topRatio: el.offsetTop / stage.clientHeight,
@@ -186,10 +189,23 @@
     let stageWidth = stage.clientWidth;
     let stageHeight = stage.clientHeight;
 
-    new ResizeObserver(() => {
+    let clip;
+    function measureCrop() {
       stageWidth = stage.clientWidth;
       stageHeight = stage.clientHeight;
-    }).observe(stage);
+      const stageRect = stage.getBoundingClientRect();
+      const cropRect = crop.getBoundingClientRect();
+      clip = {
+        left: cropRect.left - stageRect.left,
+        top: cropRect.top - stageRect.top,
+        right: cropRect.right - stageRect.left,
+        bottom: cropRect.bottom - stageRect.top,
+      };
+    }
+    measureCrop();
+    const resizeObserver = new ResizeObserver(measureCrop);
+    resizeObserver.observe(stage);
+    if (crop !== stage) resizeObserver.observe(crop);
 
     let running = false;
     let frame = 0;
@@ -210,12 +226,27 @@
         const left = baseLeft + baseWidth * car.originXRatio * (1 - scale);
         const top = baseTop + baseHeight * car.originYRatio * (1 - scale);
         const height = baseHeight * scale;
+        const width = baseWidth * scale;
+        // Conservative bounds include the model scale and overflowing glow.
+        // Keep partially visible cars alive; no layout reads in this loop.
+        const halfWidth = width * car.modelScale * 0.6;
+        const halfHeight = height * car.modelScale * 0.6;
+        const cx = left + width / 2;
+        const cy = top + height / 2;
+        const culled = cx + halfWidth < clip.left || cx - halfWidth > clip.right ||
+          cy + halfHeight < clip.top || cy - halfHeight > clip.bottom;
+        if (culled !== car.culled) {
+          car.el.style.visibility = culled ? 'hidden' : '';
+          car.culled = culled;
+        }
+        // Progress still follows the shared clock, so reentry stays in sync.
+        if (culled) return;
         // Full opacity always -- .distance__crop's overflow:hidden already
         // clips a car that's grown past the visible window, so there's
         // nothing for opacity to do here.
         car.el.style.left = `${left}px`;
         car.el.style.top = `${top}px`;
-        car.el.style.width = `${baseWidth * scale}px`;
+        car.el.style.width = `${width}px`;
         car.el.style.height = `${height}px`;
         car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
         car.plate.style.fontSize = `${car.plateFontRatio * stageWidth * scale}px`;
