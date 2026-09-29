@@ -161,13 +161,11 @@
       left:   { duration: 33747, from: 4.09987, to: 0.04167 },
       right:  { duration: 21599, from: 4.12350, to: 0.04191 },
     };
-    // Mirrors the tail's fade-out (1/3 of the loop, 66.7%-100%) onto the
-    // head as a fade-in, so a car eases into view instead of snapping to
-    // full opacity the instant its loop wraps.
+    // Fades in fast (5% of the loop) so a car reaches full opacity quickly
+    // after its loop wraps instead of snapping there instantly, then holds
+    // until the slower, eased fade-out over the last third of the loop.
     const opacityStops = [
-      [0, 0], [0.041667, 0.062], [0.083333, 0.137], [0.125, 0.228],
-      [0.166667, 0.338], [0.208333, 0.471], [0.25, 0.632], [0.291667, 0.827],
-      [1 / 3, 1], [2 / 3, 1], [0.708333, 0.827], [0.75, 0.632],
+      [0, 0], [0.05, 1], [2 / 3, 1], [0.708333, 0.827], [0.75, 0.632],
       [0.791667, 0.471], [0.833333, 0.338], [0.875, 0.228],
       [0.916667, 0.137], [0.958333, 0.062], [1, 0],
     ];
