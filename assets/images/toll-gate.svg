@@ -4,7 +4,7 @@
 .cls-3{stroke-width:.75px;}
 .cls-5{fill:#f3f3f4;}
 .cls-4{stroke-width:2px;}
-.gate-housing{fill:#191414;}
+.gate-housing{fill:#141414;}
 .gate-arm{animation-duration:6s;animation-timing-function:ease-in-out;animation-iteration-count:infinite;}
 .gate-left{transform-origin:220.4px 320.34px;animation-name:swingLeft;}
 .gate-right{transform-origin:702.39px 320.36px;animation-name:swingRight;}
