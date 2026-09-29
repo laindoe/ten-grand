@@ -209,10 +209,13 @@ def convert(name, shape_boxes):
 def cluster_lamps(lamps):
     """Group lamp shapes whose boxes touch or overlap into logical lamp
     units -- a housing+lens pair, a segmented light bar -- so each becomes
-    one glow instead of one glow per shape. Returns a list of (x0,y0,x1,y1)
-    union boxes."""
-    groups = []
-    for _, box in lamps:
+    one glow instead of one glow per shape. Returns a list of (box, members)
+    where box is the (x0,y0,x1,y1) union and members is the (el, box) lamp
+    shapes that made it up, kept around so the glow can be drawn to their
+    own outlines instead of the union's bounding rectangle."""
+    groups = []  # each: [x0, y0, x1, y1, members]
+    for item in lamps:
+        _, box = item
         if box is None:
             continue
         x, y, w, h = box
@@ -225,8 +228,11 @@ def cluster_lamps(lamps):
         ny0 = min([y] + [g[1] for g in hit])
         nx1 = max([x + w] + [g[2] for g in hit])
         ny1 = max([y + h] + [g[3] for g in hit])
-        groups.append((nx0, ny0, nx1, ny1))
-    return groups
+        members = [item]
+        for g in hit:
+            members += g[4]
+        groups.append([nx0, ny0, nx1, ny1, members])
+    return [((g[0], g[1], g[2], g[3]), g[4]) for g in groups]
 
 
 def _contained_frac(box, cluster):
@@ -261,15 +267,32 @@ def split_overlay(body, clusters):
     return main, overlay
 
 
+def _glow_stroke(el, width, opacity):
+    """A lamp shape's own geometry, repainted as a thick round-jointed
+    outline instead of its fill -- stroke straddles the shape's edge, so a
+    width of 2x the wanted bleed pushes color that far past the actual
+    silhouette while the same amount lands back inside it, where the lamp's
+    own solid fill (drawn afterwards) covers it regardless."""
+    tag, attrs = re.match(r'<(\w+)\s+(.*?)\s*/>', el).groups()
+    attrs = re.sub(r'\s*\bid="[^"]*"', '', attrs)
+    attrs = re.sub(r'\s*\bfill="[^"]*"', '', attrs)
+    return ('<%s %s fill="none" stroke="%s" stroke-width="%.2f" '
+            'stroke-linejoin="round" stroke-linecap="round" opacity="%.2f"/>'
+            % (tag, attrs, LIGHT_COLOUR, width, opacity))
+
+
 def halos(clusters):
+    """One glow per lamp shape, not per cluster -- stroking each shape's own
+    outline (see _glow_stroke) instead of inflating the cluster's bounding
+    box, so an angled or wedge-shaped lamp gets a halo that hugs its actual
+    silhouette rather than a rectangle sized to its widest and tallest
+    points. Layered widest/faintest first, across every member, so the
+    steps still stack the same way a single shape's would."""
     out = []
-    for x0, y0, x1, y1 in clusters:
-        w, h = x1 - x0, y1 - y0
-        r = min(w, h) * 0.18
+    for _, members in clusters:
         for d, o in GLOW:
-            out.append('<rect x="%.2f" y="%.2f" width="%.2f" height="%.2f" rx="%.2f" '
-                       'fill="%s" opacity="%.2f"/>'
-                       % (x0 - d, y0 - d, w + 2 * d, h + 2 * d, r + d, LIGHT_COLOUR, o))
+            for el, _ in members:
+                out.append(_glow_stroke(el, 2 * d, o))
     return out
 
 
@@ -326,7 +349,7 @@ def main():
         clusters = cluster_lamps(lamps)
         assert len(clusters) >= 2 and len(clusters) % 2 == 0, \
             '%s: expected an even number (>=2) of lamp clusters, found %d' % (name, len(clusters))
-        body, overlay = split_overlay(body, clusters)
+        body, overlay = split_overlay(body, [box for box, _ in clusters])
         g = halos(clusters)
         vb = geo[name]['ink']
         parts = ['  <symbol id="hw-car-%s" viewBox="%g %g %g %g">' % ((name,) + tuple(vb))]
