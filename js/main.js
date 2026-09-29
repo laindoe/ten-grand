@@ -161,15 +161,6 @@
       left:   { duration: 33747, from: 4.09987, to: 0.04167 },
       right:  { duration: 21599, from: 4.12350, to: 0.04191 },
     };
-    // Fades in fast (5% of the loop) so a car reaches full opacity quickly
-    // after its loop wraps instead of snapping there instantly, then holds
-    // until the slower, eased fade-out over the last third of the loop.
-    const opacityStops = [
-      [0, 0], [0.05, 1], [2 / 3, 1], [0.708333, 0.827], [0.75, 0.632],
-      [0.791667, 0.471], [0.833333, 0.338], [0.875, 0.228],
-      [0.916667, 0.137], [0.958333, 0.062], [1, 0],
-    ];
-
     const cars = elements.map((el) => {
       const lane = el.classList.contains('highway__car--centre')
         ? 'centre'
@@ -191,19 +182,6 @@
         plateFont: parseFloat(getComputedStyle(plate).fontSize),
       };
     });
-
-    function opacityAt(progress) {
-      for (let i = 1; i < opacityStops.length; i++) {
-        const next = opacityStops[i];
-        if (progress <= next[0]) {
-          const prev = opacityStops[i - 1];
-          const span = next[0] - prev[0];
-          const local = span ? (progress - prev[0]) / span : 0;
-          return prev[1] + (next[1] - prev[1]) * local;
-        }
-      }
-      return 0;
-    }
 
     let stageWidth = stage.clientWidth;
     let stageHeight = stage.clientHeight;
@@ -252,13 +230,11 @@
         const top = baseTop + baseHeight * car.originYRatio * (1 - scale);
         const height = baseHeight * scale;
         const bottom = top + height;
-        // A small nick off a car's edge (a few percent of its own height) is
-        // an unremarkable, ordinary hard crop -- cars have always looked like
-        // that at the frame's edges. A severe cut fades the car out instead
-        // of leaving it hard-clipped, so a car entering or leaving the
-        // crop's top/bottom edge eases away rather than snapping to
-        // invisible -- ramped over the 25%-55%-hidden band rather than a
-        // single hide/show threshold.
+        // A car is at full opacity everywhere except right at the crop's
+        // top/bottom edge -- no fade-in on arrival, no fade-out over
+        // distance, just fully visible until it actually leaves the frame,
+        // where it eases out over the 25%-55%-hidden band rather than
+        // snapping straight to invisible.
         const hiddenAbovePx = top < clipTop ? Math.min(clipTop, bottom) - top : 0;
         const hiddenBelowPx = bottom > clipBottom ? bottom - Math.max(clipBottom, top) : 0;
         const hiddenFrac = Math.max(hiddenAbovePx, hiddenBelowPx) / height;
@@ -268,7 +244,7 @@
         car.el.style.top = `${top}px`;
         car.el.style.width = `${baseWidth * scale}px`;
         car.el.style.height = `${height}px`;
-        car.el.style.opacity = String(opacityAt(progress) * clipVisibility);
+        car.el.style.opacity = String(clipVisibility);
         car.el.style.zIndex = String(Math.max(1, 48 - Math.floor(progress * 48)));
         car.plate.style.fontSize = `${car.plateFont * scale}px`;
       });
