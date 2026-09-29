@@ -194,10 +194,11 @@
     let running = false;
     let frame = 0;
     let startedAt = 0;
+    let elapsedBeforePause = 0;
 
     function draw(now) {
       if (!running) return;
-      const elapsed = now - startedAt;
+      const elapsed = elapsedBeforePause + now - startedAt;
       cars.forEach((car) => {
         const lane = lanes[car.lane];
         const progress = ((elapsed + car.delay) % lane.duration) / lane.duration;
@@ -231,6 +232,7 @@
         startedAt = performance.now();
         frame = requestAnimationFrame(draw);
       } else {
+        elapsedBeforePause += performance.now() - startedAt;
         cancelAnimationFrame(frame);
       }
     });

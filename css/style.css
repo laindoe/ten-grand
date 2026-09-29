@@ -932,7 +932,8 @@ a {
   .hw-cactus-r{animation:hwProp_cactus-l 9.579s linear infinite;animation-play-state:paused;}
   .hw-bush-l{animation:hwProp_bush-l 9.579s linear infinite;animation-play-state:paused;}
   .hw-bush-r{animation:hwProp_bush-r 9.579s linear infinite;animation-play-state:paused;}
-  .highway__bob{animation:hwBob 2.00s linear infinite;animation-play-state:paused;}
+  /* Keep each model's static scale, without the suspension bounce. */
+  .highway__bob{animation:none;}
   .highway__car--centre{animation:hwCar_centre 26.999s linear infinite,hwZ 26.999s step-end infinite;animation-play-state:paused;}
   .highway__car--left{animation:hwCar_left 33.747s linear infinite,hwZ 33.747s step-end infinite;animation-play-state:paused;}
   .highway__car--right{animation:hwCar_right 21.599s linear infinite,hwZ 21.599s step-end infinite;animation-play-state:paused;}
