@@ -21,9 +21,34 @@ const path = require('path');
 const ART = path.join(__dirname, '..', 'art', 'cars');
 const CARS = ['left-1', 'left-2', 'centre-1', 'centre-2', 'right-1', 'right-2'];
 
+// Plate-label font metrics, needed to size each car's font so its own
+// longest assigned name fills the label box consistently -- monospace
+// letters aren't perfectly uniform advance in every real font (a "1" or "3"
+// can differ from a "W"), so a per-character constant tuned against one
+// word (PHOTOGRAPHR) drifted off for others. Measured directly instead:
+// PLATE_LABELS is a JSON array of every distinct word build_cars.py will
+// place on a plate, passed in as an env var since it's Python-side data.
+const LABELS = JSON.parse(process.env.PLATE_LABELS || '[]');
+
 (async () => {
   const browser = await chromium.launch();
-  const out = {};
+  const labelPage = await browser.newPage();
+  await labelPage.setContent(`
+    <div style="position:absolute;visibility:hidden;white-space:nowrap;
+      font-family:ui-monospace,Menlo,Consolas,'Liberation Mono',monospace;
+      font-weight:700;line-height:1;letter-spacing:-0.02em;font-size:200px"
+      id="m"></div>`);
+  const labelWidth = {};
+  for (const word of LABELS) {
+    labelWidth[word] = await labelPage.evaluate((w) => {
+      const el = document.getElementById('m');
+      el.textContent = w;
+      return el.getBoundingClientRect().width / 200;
+    }, word);
+  }
+  await labelPage.close();
+
+  const out = { _labelWidth: labelWidth };
   for (const name of CARS) {
     const page = await browser.newPage();
     await page.setContent('<div id="h" style="width:1400px"></div>');
