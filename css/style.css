@@ -1083,35 +1083,15 @@ a {
   opacity: 0;
 }
 
-/* Birds climb the frame through a real 3-frame flap sequence (start/wings
-   up/wings down, drawn by the site owner -- each bird is a <g class="mp-bird">
-   holding all 3 poses stacked in registration, cycled via opacity so only
-   one is visible at a time, rather than a faked scale/rotate flap); clouds
-   drift side to side. Same reveal-gated, continuous-loop pattern as
-   .sun-rise above -- paused until .is-visible, then looping for as long as
-   the section stays in view, no new JS. The rise duration matches sunArc's
-   11s exactly, so a bird that's climbed off the top resets in step with
-   the next sunrise rather than drifting in and out of phase with it; each
-   of the 5 birds/clouds still gets its own delay via nth-child so the
-   flock/sky doesn't move in lockstep, mirroring the highway cars'
-   --drive-delay stagger. */
+/* Each bird stays fixed in the composition. Its registered neutral,
+   wings-up and wings-down poses cycle with hard cuts, one at a time.
+   Clouds retain their independent drift. */
 @media (prefers-reduced-motion: no-preference) {
-  .middle-path__art #mp-birds .mp-bird {
-    animation: mpBirdRise 11s linear infinite;
-    animation-play-state: paused;
-  }
-
-  .middle-path__art #mp-birds .mp-bird:nth-child(1) { animation-delay: 0s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(2) { animation-delay: -2.2s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(3) { animation-delay: -4.4s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(4) { animation-delay: -6.6s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(5) { animation-delay: -8.8s; }
-
   /* animation-delay is set per bird below via the longhand properties, so
      it can be overridden per nth-child without re-specifying the rest. */
   .middle-path__art #mp-birds :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) {
     animation-duration: .6s;
-    animation-timing-function: linear;
+    animation-timing-function: steps(1, end);
     animation-iteration-count: infinite;
     animation-play-state: paused;
   }
@@ -1137,32 +1117,23 @@ a {
   .middle-path__art #mp-clouds svg:nth-child(5) { animation-delay: -19s; }
 }
 
-@keyframes mpBirdRise {
-  0% { translate: 0 0; opacity: 1; }
-  90% { opacity: 1; }
-  100% { translate: 0 -220px; opacity: 0; }
-}
-
-/* One shared 3-phase cycle, each frame given its own keyframe (rather than
-   one keyframe reused via animation-delay math) so which third of the
-   cycle each pose owns is explicit: a (start) is visible first, b (wings
-   up) second, c (wings down) third, then it loops back to a. The 33.32/
-   33.34-style pairs are a near-instant cut, not a crossfade -- deliberate,
-   since real wingbeats don't dissolve between poses. */
+/* Shared boundaries and stepped opacity ensure exactly one visible pose. */
 @keyframes mpBirdFrameA {
-  0%, 33.32% { opacity: 1; }
-  33.34%, 100% { opacity: 0; }
+  0% { opacity: 1; }
+  33.333333%, 66.666667% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @keyframes mpBirdFrameB {
-  0%, 33.32% { opacity: 0; }
-  33.34%, 66.65% { opacity: 1; }
-  66.67%, 100% { opacity: 0; }
+  0% { opacity: 0; }
+  33.333333% { opacity: 1; }
+  66.666667%, 100% { opacity: 0; }
 }
 
 @keyframes mpBirdFrameC {
-  0%, 66.65% { opacity: 0; }
-  66.67%, 100% { opacity: 1; }
+  0%, 33.333333% { opacity: 0; }
+  66.666667% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes mpCloudDrift {
@@ -1170,7 +1141,6 @@ a {
   100% { transform: translateX(30px); }
 }
 
-.middle-path__scene.is-visible .middle-path__art #mp-birds .mp-bird,
 .middle-path__scene.is-visible .middle-path__art #mp-birds :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c),
 .middle-path__scene.is-visible .middle-path__art #mp-clouds svg {
   animation-play-state: running;
