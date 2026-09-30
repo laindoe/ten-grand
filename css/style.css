@@ -773,11 +773,17 @@ a {
   width: calc(100% + 2 * var(--section-padding-x));
   margin-inline: calc(-1 * var(--section-padding-x));
   overflow: hidden;
+  position: relative;
+  aspect-ratio: 1272.6 / 1488.2;
 }
 
 .distance__visual {
   width: 100%;
-  position: relative;
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  /* Start the viewport at the supplied scenery, below the mountain band. */
+  transform: translateY(-15.51038946%);
   container-type: inline-size;
 }
 
