@@ -1034,25 +1034,25 @@ a {
   shape-rendering: geometricPrecision;
 }
 
-/* Matches the highway section's actual rendered mountain widths
-   (.highway__art .st7/.st13, un-pinned, ~0.295px/~0.236px at that
-   SVG's own scale) -- not the highway's own nominal 1px/.8px, which
-   only renders that thin because it ISN'T pinned there. */
+/* Originally matched the highway section's faint background mountain
+   weight (~0.295px/~0.236px), but that read as too thin next to the
+   guard rails' own ~1px line -- bumped up (~3x) so the range still
+   scenery/background, just clearly visible and closer to the rails'
+   visual strength instead of near-invisible. */
 .middle-path__art #mp-mountains :is(.cls-2, .cls-4) {
-  stroke-width: .295px;
+  stroke-width: .9px;
 }
 
 .middle-path__art #mp-mountains :is(.cls-10, .cls-11, .cls-12) {
-  stroke-width: .236px;
+  stroke-width: .72px;
 }
 
-/* The tunnel arch's inner line (.cls-8, 1.24px nominal) sits inside
-   #mp-mountains too, so it inherits that group's non-scaling-stroke pin
-   and was rendering at a literal 1.24 device px -- thicker than every
-   other line in the scene. Scaled down by the same ratio as the pairs
-   above (1.24 * ~0.2947) so it reads at the same weight. */
+/* The tunnel arch's inner line (.cls-8) sits inside #mp-mountains too,
+   so it inherits that group's non-scaling-stroke pin. Scaled up by the
+   same ~3x as the pairs above so it keeps reading as the boldest of the
+   mountain tiers, proportionate to the others. */
 .middle-path__art #mp-mountains .cls-8 {
-  stroke-width: .365px;
+  stroke-width: 1.1px;
 }
 
 .middle-path__plate {
@@ -1091,25 +1091,56 @@ a {
   animation-play-state: running;
 }
 
-/* Birds climb the frame flapping as they go; clouds drift side to side.
-   Same reveal-gated, continuous-loop pattern as .sun-rise above -- paused
-   until .is-visible, then looping for as long as the section stays in
-   view, no new JS. Each of the 5 birds/clouds gets its own delay via
-   nth-child so the flock/sky doesn't move in lockstep, mirroring the
-   highway cars' --drive-delay stagger. */
+/* Frames b/c start hidden outside the animation itself (not just at each
+   keyframe's 0%), so prefers-reduced-motion -- which never applies the
+   animation below at all -- still lands on a single resting pose (frame a)
+   instead of all three poses stacked and overlapping. */
+.middle-path__art #mp-birds .mp-bird-frame-b,
+.middle-path__art #mp-birds .mp-bird-frame-c {
+  opacity: 0;
+}
+
+/* Birds climb the frame through a real 3-frame flap sequence (start/wings
+   up/wings down, drawn by the site owner -- each bird is a <g class="mp-bird">
+   holding all 3 poses stacked in registration, cycled via opacity so only
+   one is visible at a time, rather than a faked scale/rotate flap); clouds
+   drift side to side. Same reveal-gated, continuous-loop pattern as
+   .sun-rise above -- paused until .is-visible, then looping for as long as
+   the section stays in view, no new JS. The rise duration matches sunArc's
+   11s exactly, so a bird that's climbed off the top resets in step with
+   the next sunrise rather than drifting in and out of phase with it; each
+   of the 5 birds/clouds still gets its own delay via nth-child so the
+   flock/sky doesn't move in lockstep, mirroring the highway cars'
+   --drive-delay stagger. */
 @media (prefers-reduced-motion: no-preference) {
-  .middle-path__art #mp-birds path {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: mpBirdRise 7s linear infinite, mpBirdFlap 0.55s ease-in-out infinite;
+  .middle-path__art #mp-birds .mp-bird {
+    animation: mpBirdRise 11s linear infinite;
     animation-play-state: paused;
   }
 
-  .middle-path__art #mp-birds path:nth-child(1) { animation-delay: 0s, 0s; }
-  .middle-path__art #mp-birds path:nth-child(2) { animation-delay: -1.4s, -.1s; }
-  .middle-path__art #mp-birds path:nth-child(3) { animation-delay: -2.8s, -.2s; }
-  .middle-path__art #mp-birds path:nth-child(4) { animation-delay: -4.2s, -.3s; }
-  .middle-path__art #mp-birds path:nth-child(5) { animation-delay: -5.6s, -.15s; }
+  .middle-path__art #mp-birds .mp-bird:nth-child(1) { animation-delay: 0s; }
+  .middle-path__art #mp-birds .mp-bird:nth-child(2) { animation-delay: -2.2s; }
+  .middle-path__art #mp-birds .mp-bird:nth-child(3) { animation-delay: -4.4s; }
+  .middle-path__art #mp-birds .mp-bird:nth-child(4) { animation-delay: -6.6s; }
+  .middle-path__art #mp-birds .mp-bird:nth-child(5) { animation-delay: -8.8s; }
+
+  /* animation-delay is set per bird below via the longhand properties, so
+     it can be overridden per nth-child without re-specifying the rest. */
+  .middle-path__art #mp-birds :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) {
+    animation-duration: .6s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: paused;
+  }
+  .middle-path__art #mp-birds .mp-bird-frame-a { animation-name: mpBirdFrameA; }
+  .middle-path__art #mp-birds .mp-bird-frame-b { animation-name: mpBirdFrameB; }
+  .middle-path__art #mp-birds .mp-bird-frame-c { animation-name: mpBirdFrameC; }
+
+  .middle-path__art #mp-birds .mp-bird:nth-child(1) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: 0s; }
+  .middle-path__art #mp-birds .mp-bird:nth-child(2) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.12s; }
+  .middle-path__art #mp-birds .mp-bird:nth-child(3) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.24s; }
+  .middle-path__art #mp-birds .mp-bird:nth-child(4) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.36s; }
+  .middle-path__art #mp-birds .mp-bird:nth-child(5) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.48s; }
 
   .middle-path__art #mp-clouds svg {
     animation: mpCloudDrift 26s ease-in-out infinite alternate;
@@ -1123,18 +1154,32 @@ a {
   .middle-path__art #mp-clouds svg:nth-child(5) { animation-delay: -19s; }
 }
 
-/* translate/scale/rotate (not the transform shorthand) so the rise and
-   the flap -- two separate animations touching the same element -- compose
-   instead of one overwriting the other's transform value each frame. */
 @keyframes mpBirdRise {
   0% { translate: 0 0; opacity: 1; }
-  92% { opacity: 1; }
-  100% { translate: 0 -140px; opacity: 0; }
+  90% { opacity: 1; }
+  100% { translate: 0 -220px; opacity: 0; }
 }
 
-@keyframes mpBirdFlap {
-  0%, 100% { scale: 1 1; rotate: 0deg; }
-  50% { scale: 1 .55; rotate: -4deg; }
+/* One shared 3-phase cycle, each frame given its own keyframe (rather than
+   one keyframe reused via animation-delay math) so which third of the
+   cycle each pose owns is explicit: a (start) is visible first, b (wings
+   up) second, c (wings down) third, then it loops back to a. The 33.32/
+   33.34-style pairs are a near-instant cut, not a crossfade -- deliberate,
+   since real wingbeats don't dissolve between poses. */
+@keyframes mpBirdFrameA {
+  0%, 33.32% { opacity: 1; }
+  33.34%, 100% { opacity: 0; }
+}
+
+@keyframes mpBirdFrameB {
+  0%, 33.32% { opacity: 0; }
+  33.34%, 66.65% { opacity: 1; }
+  66.67%, 100% { opacity: 0; }
+}
+
+@keyframes mpBirdFrameC {
+  0%, 66.65% { opacity: 0; }
+  66.67%, 100% { opacity: 1; }
 }
 
 @keyframes mpCloudDrift {
@@ -1142,7 +1187,8 @@ a {
   100% { transform: translateX(30px); }
 }
 
-.middle-path__scene.is-visible .middle-path__art #mp-birds path,
+.middle-path__scene.is-visible .middle-path__art #mp-birds .mp-bird,
+.middle-path__scene.is-visible .middle-path__art #mp-birds :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c),
 .middle-path__scene.is-visible .middle-path__art #mp-clouds svg {
   animation-play-state: running;
 }
