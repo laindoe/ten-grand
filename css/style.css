@@ -1246,20 +1246,28 @@ a {
        text on the black bumper instead of the white plate below it. cqw
        is anchored to the same container the art's width:100% scales
        against, so N SVG units converts once (N * 100 / 1272.56, the
-       viewBox width) and then tracks correctly at every mobile width. */
+       viewBox width) and then tracks correctly at every mobile width.
+
+       font-size is also cqw (not a flat px) and sized directly off the
+       plate's own 9.27%-of-container width (9.27 * 0.93 / 6.381, where
+       6.381 is this font stack's measured width-per-font-size ratio for
+       "FREEDOM4ALL") so the text naturally fills the plate at ~93% --
+       centered, full-width-looking, without a horizontal scaleX squeeze
+       distorting the letterforms. The uniform scale(1.15) then enlarges
+       plate and text together, same as the bus, so nothing stretches. */
     transform-origin: 46.9% -1203.28%;
-    transform: translateY(4.322cqw) scale(1.15) scaleX(0.62);
-    font-size: 9px;
+    transform: translateY(4.322cqw) scale(1.15);
+    font-size: 1.3512cqw;
   }
 
   .middle-path__art #mp-signs > use {
     transform-origin: 142.26px 415.1px;
-    transform: scale(1.25);
+    transform: translateX(-20px) scale(1.25);
   }
 
   .middle-path__art #mp-signs > g > use {
     transform-origin: -1155.32px 415.1px;
-    transform: scale(1.25);
+    transform: translateX(-20px) scale(1.25);
   }
 
   .middle-path__board--left {
@@ -1270,6 +1278,35 @@ a {
   .middle-path__board--right {
     transform-origin: 100.01% 283.73%;
     transform: scale(1.25);
+  }
+
+  /* The two bushes nearer the road on each side (2nd/3rd in document
+     order) sit close enough to the guardrail that the signs' outward
+     translateX above prompted moving these out too, for the same
+     clearance -- outer bushes (1st/4th) get a smaller nudge since they
+     already read further from the rail. */
+  .middle-path__art #mp-cacti > use:nth-child(1) {
+    transform: translateX(-10px);
+  }
+  .middle-path__art #mp-cacti > use:nth-child(2) {
+    transform: translateX(-20px);
+  }
+  .middle-path__art #mp-cacti > use:nth-child(3) {
+    transform: translateX(20px);
+  }
+  .middle-path__art #mp-cacti > use:nth-child(4) {
+    transform: translateX(10px);
+  }
+
+  /* The bus's downward push (above) bleeds past the canvas edge via the
+     overflow:visible on .middle-path__art, eating into this margin --
+     without compensation the gap from the bus's new, lower visible
+     bottom edge up to .middle-path__text below would shrink by exactly
+     that bleed. Adding it back (same unit conversion as the plate's
+     translateY above) keeps that gap the same as if the bus had stayed
+     inside its box. */
+  .middle-path__scene {
+    margin-bottom: calc(var(--divider-gap) + 1.7736cqw);
   }
 }
 
