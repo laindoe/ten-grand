@@ -3344,3 +3344,25 @@ body.modal-open {
     animation: none !important;
   }
 }
+
+/* Mobile highway scenery: body-weight contours and finer ridge detail. */
+@media (max-width: 767px) {
+  .highway__art #hw-mountains .st7,
+  .highway__art > line.st7,
+  .highway__art > g[transform] > line.st7 {
+    stroke-width: 2px;
+  }
+  .highway__art #hw-mountains .st10,
+  .highway__art #hw-mountains .st13 {
+    stroke-width: 1.2px;
+  }
+  .highway__art #hw-post .st7 {
+    fill: var(--color-bg);
+    stroke-width: 1px;
+  }
+}
+/* Opaque post faces use the page background instead of SVG's default black. */
+.highway__art #hw-post .st7 {
+  fill: var(--color-bg);
+  stroke: #f3f3f4;
+}
