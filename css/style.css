@@ -1057,15 +1057,15 @@ a {
 
 .middle-path__plate {
   position: absolute;
-  left: 44.67%;
-  top: 70.69%;
-  width: 11.32%;
-  height: 3.46%;
+  left: 45.63%;
+  top: 73.95%;
+  width: 9.27%;
+  height: 2.83%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 1.43cqw;
+  font-size: 1.17cqw;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -.02em;
@@ -1111,16 +1111,16 @@ a {
   .middle-path__art #mp-birds path:nth-child(4) { animation-delay: -4.2s, -.3s; }
   .middle-path__art #mp-birds path:nth-child(5) { animation-delay: -5.6s, -.15s; }
 
-  .middle-path__art #mp-clouds path {
+  .middle-path__art #mp-clouds svg {
     animation: mpCloudDrift 26s ease-in-out infinite alternate;
     animation-play-state: paused;
   }
 
-  .middle-path__art #mp-clouds path:nth-child(1) { animation-delay: 0s; }
-  .middle-path__art #mp-clouds path:nth-child(2) { animation-delay: -4s; }
-  .middle-path__art #mp-clouds path:nth-child(3) { animation-delay: -9s; }
-  .middle-path__art #mp-clouds path:nth-child(4) { animation-delay: -14s; }
-  .middle-path__art #mp-clouds path:nth-child(5) { animation-delay: -19s; }
+  .middle-path__art #mp-clouds svg:nth-child(1) { animation-delay: 0s; }
+  .middle-path__art #mp-clouds svg:nth-child(2) { animation-delay: -4s; }
+  .middle-path__art #mp-clouds svg:nth-child(3) { animation-delay: -9s; }
+  .middle-path__art #mp-clouds svg:nth-child(4) { animation-delay: -14s; }
+  .middle-path__art #mp-clouds svg:nth-child(5) { animation-delay: -19s; }
 }
 
 /* translate/scale/rotate (not the transform shorthand) so the rise and
@@ -1143,7 +1143,7 @@ a {
 }
 
 .middle-path__scene.is-visible .middle-path__art #mp-birds path,
-.middle-path__scene.is-visible .middle-path__art #mp-clouds path {
+.middle-path__scene.is-visible .middle-path__art #mp-clouds svg {
   animation-play-state: running;
 }
 
@@ -1152,19 +1152,22 @@ a {
    1272.56 x 825.95 viewBox: the new sign art places the boards at x
    153.01–364.53 and x 933.05–1144.57, y 226.43–334.05, with the arrow icon
    in the lower ~28% of each, so the copy gets the top band, y 231.81–296.38.
-   The font size is unchanged from the old sign art -- the new panels are
-   almost exactly the same width (211.52 vs 209.75), so "INFRASTRUCTURE"
-   still just fills a board. */
+   box-sizing: border-box + the side padding below guarantee a real margin
+   inside the green face regardless of word length; font-size is sized down
+   from the old sign art's "just fills a board" fit so even "INFRASTRUCTURE"
+   (the longest line) sits inside that padded area with room to spare. */
 .middle-path__board {
   position: absolute;
   top: 28.07%;    /* 231.81 / 825.95 */
   height: 7.82%;  /*  64.57 / 825.95 */
+  box-sizing: border-box;
+  padding: 0 9%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
   font-family: var(--font-display);
-  font-size: 2.16cqw;
+  font-size: 1.65cqw;
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: -0.015em;
