@@ -1057,15 +1057,15 @@ a {
 
 .middle-path__plate {
   position: absolute;
-  left: 43.58%;
-  top: 75.3%;
-  width: 12.52%;
-  height: 4.54%;
+  left: 44.67%;
+  top: 70.69%;
+  width: 11.32%;
+  height: 3.46%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 1.58cqw;
+  font-size: 1.43cqw;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -.02em;
@@ -1091,16 +1091,74 @@ a {
   animation-play-state: running;
 }
 
+/* Birds climb the frame flapping as they go; clouds drift side to side.
+   Same reveal-gated, continuous-loop pattern as .sun-rise above -- paused
+   until .is-visible, then looping for as long as the section stays in
+   view, no new JS. Each of the 5 birds/clouds gets its own delay via
+   nth-child so the flock/sky doesn't move in lockstep, mirroring the
+   highway cars' --drive-delay stagger. */
+@media (prefers-reduced-motion: no-preference) {
+  .middle-path__art #mp-birds path {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: mpBirdRise 7s linear infinite, mpBirdFlap 0.55s ease-in-out infinite;
+    animation-play-state: paused;
+  }
+
+  .middle-path__art #mp-birds path:nth-child(1) { animation-delay: 0s, 0s; }
+  .middle-path__art #mp-birds path:nth-child(2) { animation-delay: -1.4s, -.1s; }
+  .middle-path__art #mp-birds path:nth-child(3) { animation-delay: -2.8s, -.2s; }
+  .middle-path__art #mp-birds path:nth-child(4) { animation-delay: -4.2s, -.3s; }
+  .middle-path__art #mp-birds path:nth-child(5) { animation-delay: -5.6s, -.15s; }
+
+  .middle-path__art #mp-clouds path {
+    animation: mpCloudDrift 26s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+
+  .middle-path__art #mp-clouds path:nth-child(1) { animation-delay: 0s; }
+  .middle-path__art #mp-clouds path:nth-child(2) { animation-delay: -4s; }
+  .middle-path__art #mp-clouds path:nth-child(3) { animation-delay: -9s; }
+  .middle-path__art #mp-clouds path:nth-child(4) { animation-delay: -14s; }
+  .middle-path__art #mp-clouds path:nth-child(5) { animation-delay: -19s; }
+}
+
+/* translate/scale/rotate (not the transform shorthand) so the rise and
+   the flap -- two separate animations touching the same element -- compose
+   instead of one overwriting the other's transform value each frame. */
+@keyframes mpBirdRise {
+  0% { translate: 0 0; opacity: 1; }
+  92% { opacity: 1; }
+  100% { translate: 0 -140px; opacity: 0; }
+}
+
+@keyframes mpBirdFlap {
+  0%, 100% { scale: 1 1; rotate: 0deg; }
+  50% { scale: 1 .55; rotate: -4deg; }
+}
+
+@keyframes mpCloudDrift {
+  0% { transform: translateX(-30px); }
+  100% { transform: translateX(30px); }
+}
+
+.middle-path__scene.is-visible .middle-path__art #mp-birds path,
+.middle-path__scene.is-visible .middle-path__art #mp-clouds path {
+  animation-play-state: running;
+}
+
 /* Billboard copy is live text rather than outlines, so it stays legible at
    the size the artwork draws the boards. Percentages come off the artwork's
-   1272.56 x 825.95 viewBox: the boards sit at x 152.39–362.14 and
-   x 935.44–1145.19, y 265.56–377.55, and the painted arrow takes the lower
-   third of each, so the copy only gets y 269–338. The font size is the one
-   that makes the longest line ("INFRASTRUCTURE") just fill a board. */
+   1272.56 x 825.95 viewBox: the new sign art places the boards at x
+   153.01–364.53 and x 933.05–1144.57, y 226.43–334.05, with the arrow icon
+   in the lower ~28% of each, so the copy gets the top band, y 231.81–296.38.
+   The font size is unchanged from the old sign art -- the new panels are
+   almost exactly the same width (211.52 vs 209.75), so "INFRASTRUCTURE"
+   still just fills a board. */
 .middle-path__board {
   position: absolute;
-  top: 32.57%;    /* 269 / 825.95 */
-  height: 8.35%;  /*  69 / 825.95 */
+  top: 28.07%;    /* 231.81 / 825.95 */
+  height: 7.82%;  /*  64.57 / 825.95 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1123,13 +1181,13 @@ a {
 }
 
 .middle-path__board--left {
-  left: 12.6%;    /* 160.4 / 1272.56 */
-  right: 72.19%;  /* 1272.56 - 353.9 */
+  left: 12.02%;   /* 153.01 / 1272.56 */
+  right: 71.36%;  /* 1272.56 - 364.53 */
 }
 
 .middle-path__board--right {
-  left: 74.14%;   /* 943.4 / 1272.56 */
-  right: 10.64%;  /* 1272.56 - 1137.2 */
+  left: 73.32%;   /* 933.05 / 1272.56 */
+  right: 10.06%;  /* 1272.56 - 1144.57 */
 }
 
 .middle-path__body {
