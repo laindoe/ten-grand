@@ -1041,9 +1041,9 @@ a {
 .middle-path__plate {
   position: absolute;
   left: 45.63%;
-  top: 83.42%;
+  top: 73.95%;
   width: 9.27%;
-  height: 2.6%;
+  height: 2.83%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1178,19 +1178,17 @@ a {
 
 /* Billboard copy is live text rather than outlines, so it stays legible at
    the size the artwork draws the boards. Percentages come off the artwork's
-   1272.56 x 900 viewBox (the scene's canvas is extended downward, below
-   the boards' own y, to give the bus room to sit lower -- the boards'
-   absolute position never moves): the sign art places the boards at x
-   153.01–364.53 and x 933.05–1144.57, y 226.43–334.05, with the arrow icon
-   in the lower ~28% of each, so the copy gets the top band, y 231.81–296.38.
+   1272.56 x 825.95 viewBox: the sign art places the boards at x 153.01–
+   364.53 and x 933.05–1144.57, y 226.43–334.05, with the arrow icon in the
+   lower ~28% of each, so the copy gets the top band, y 231.81–296.38.
    box-sizing: border-box + the side padding below guarantee a real margin
    inside the green face regardless of word length; font-size is sized down
    from the old sign art's "just fills a board" fit so even "INFRASTRUCTURE"
    (the longest line) sits inside that padded area with room to spare. */
 .middle-path__board {
   position: absolute;
-  top: 25.76%;    /* 231.81 / 900 */
-  height: 7.17%;  /*  64.57 / 900 */
+  top: 28.07%;    /* 231.81 / 825.95 */
+  height: 7.82%;  /*  64.57 / 825.95 */
   box-sizing: border-box;
   padding: 0 9%;
   display: flex;
