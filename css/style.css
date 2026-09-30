@@ -3428,10 +3428,3 @@ body.modal-open {
   .distance__crop { aspect-ratio: 1272.6 / 1398.2; }
   .distance__crop .distance__visual { transform: translateY(-20.619966%); }
 }
-
-/* Slightly enlarge mobile highway cars around their existing centers. */
-@media (max-width: 767px) {
-  .distance__visual .highway__bob {
-    transform: scale(calc(var(--car-scale, 1) * 1.1));
-  }
-}
