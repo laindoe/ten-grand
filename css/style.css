@@ -1222,6 +1222,73 @@ a {
   right: 10.06%;  /* 1272.56 - 1144.57 */
 }
 
+/* Mobile-only: the bus reads small and far away at phone width, and the
+   sign panels get lost against the desert linework -- both get a plain
+   CSS transform scoped to this query rather than touching the shared SVG
+   coordinates the desktop layout depends on.
+
+   Values are chosen to stay inside the scene's own 1272.56 x 825.95
+   canvas: the root <svg> isn't overflow:visible (only #mp-bus's own
+   nested viewport is, for its part sticking past its own box), so
+   anything pushed past the canvas edge would be silently clipped --
+   the bus is scaled from its top edge so it only grows downward, and
+   translateY is small enough that the new bottom (823.5) still lands
+   inside 825.95; the signs are scaled from their own outward/bottom
+   corner so growth is entirely inward, toward the open sky above the
+   road, never toward the canvas edge.
+
+   transform-origin is given in absolute user-space px (the SVG's own
+   coordinate units), not percentages: percentages resolve against
+   transform-box: fill-box's *painted-ink* bounding box, which for a
+   <use> insets a few units from its declared x/y/width/height (measured
+   directly: 142.26/230 declared vs. ~149.5/218.6 painted) -- close
+   enough to matter once you're anchoring a whole-percent origin. The
+   left and right signs need their own rule (not one shared selector):
+   the right one's <use> sits inside a scale(-1,1) mirror group, so its
+   *local* origin has to be the local coordinate that renders on the
+   outward side after the flip, not the same local x as the left one.
+
+   .middle-path__plate and .middle-path__board--left/--right are plain
+   HTML overlays positioned by percentage of the whole scene, not part
+   of the SVG, so a transform on the bus/signs alone wouldn't move them
+   -- they get the identical transform (same translateY/scale), but with
+   transform-origin expressed as a point *outside* their own box (CSS
+   allows this) that maps to the exact same absolute anchor point the
+   bus/sign uses, so they scale and shift in lockstep with the artwork
+   under them instead of drifting off it. These stay percentage-based:
+   plain HTML elements don't have the SVG fill-box/declared-box gap. */
+@media (max-width: 767px) {
+  .middle-path__art #mp-bus {
+    transform-origin: 636px 329.53px;
+    transform: translateY(30px) scale(1.15);
+  }
+
+  .middle-path__plate {
+    transform-origin: 46.9% -1203.28%;
+    transform: translateY(30px) scale(1.15);
+  }
+
+  .middle-path__art #mp-signs > use {
+    transform-origin: 142.26px 415.1px;
+    transform: scale(1.25);
+  }
+
+  .middle-path__art #mp-signs > g > use {
+    transform-origin: -1155.32px 415.1px;
+    transform: scale(1.25);
+  }
+
+  .middle-path__board--left {
+    transform-origin: -5.06% 283.73%;
+    transform: scale(1.25);
+  }
+
+  .middle-path__board--right {
+    transform-origin: 100.01% 283.73%;
+    transform: scale(1.25);
+  }
+}
+
 .middle-path__body {
   width: 100%;
   max-width: var(--measure-wide);
