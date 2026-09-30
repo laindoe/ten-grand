@@ -1000,50 +1000,18 @@ a {
   height: auto;
 }
 
-/* Match the multi-car desert linework. Dedicated classes prevent the SVG
-   exporter's generic .cls-* rules from changing mountains and rails too. */
-/* mp-cacti's own cactus/bush shapes are the highway's own hw-cactus-l/r
-   and hw-bush-l/r groups, copied in wholesale (same site owner redraw, same
-   desert scene) rather than referenced via <use> across files -- exactly
-   that kind of cross-include symbol reference broke once already (the old
-   #hw-car-centre reference in this file going stale when the highway
-   pipeline was restructured). They carry their own inline fill/stroke, so
-   no CSS is needed for them here. */
-
-/* Keep the mountain contours at device-pixel widths when this wide SVG is
-   responsively scaled. This avoids the soft half-pixel rasterization. */
+/* Mountains match the guardrails' 1-unit stroke. */
 .middle-path__art #mp-mountains path {
-  vector-effect: non-scaling-stroke;
+  stroke-width: 1px;
   shape-rendering: geometricPrecision;
-}
-
-/* Originally matched the highway section's faint background mountain
-   weight (~0.295px/~0.236px), but that read as too thin next to the
-   guard rails' own ~1px line -- bumped up (~3x) so the range still
-   scenery/background, just clearly visible and closer to the rails'
-   visual strength instead of near-invisible. */
-.middle-path__art #mp-mountains :is(.cls-2, .cls-4) {
-  stroke-width: .9px;
-}
-
-.middle-path__art #mp-mountains :is(.cls-10, .cls-11, .cls-12) {
-  stroke-width: .72px;
-}
-
-/* The tunnel arch's inner line (.cls-8) sits inside #mp-mountains too,
-   so it inherits that group's non-scaling-stroke pin. Scaled up by the
-   same ~3x as the pairs above so it keeps reading as the boldest of the
-   mountain tiers, proportionate to the others. */
-.middle-path__art #mp-mountains .cls-8 {
-  stroke-width: 1.1px;
 }
 
 .middle-path__plate {
   position: absolute;
   left: 45.63%;
-  top: 73.95%;
+  top: 76.50963753%;
   width: 9.27%;
-  height: 2.83%;
+  height: 2.55192805%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1063,7 +1031,7 @@ a {
    because an inline <svg>'s <style> is not scoped -- it would apply
    document-wide, leaking .cls-1 .. .cls-18 into the page. Every selector is
    therefore prefixed with .middle-path__art. */
-.middle-path__art .cls-1,.middle-path__art .cls-2,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{fill:none;}.middle-path__art .cls-3{fill:#141414;}.middle-path__art .cls-14{fill:url(#mp-sun);}.middle-path__art .cls-15{fill:#f3f3f4;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke-miterlimit:10;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke:#f3f3f4;}.middle-path__art .cls-16{clip-path:url(#mp-clip-b);}.middle-path__art .cls-3,.middle-path__art .cls-9{stroke-width:2px;}.middle-path__art .cls-17{fill:url(#mp-sky);}.middle-path__art .cls-4{stroke-width:.5px;}.middle-path__art .cls-5{stroke-width:.53px;}.middle-path__art .cls-6{stroke-width:.8px;}.middle-path__art .cls-7{stroke-width:.27px;}.middle-path__art .cls-8{stroke-width:1.24px;}.middle-path__art .cls-9{stroke:#f3f3f4;}.middle-path__art .cls-10{stroke-width:.95px;}.middle-path__art .cls-11{stroke-width:.75px;}.middle-path__art .cls-12{stroke-width:.78px;}.middle-path__art .cls-13{stroke-width:1.06px;}.middle-path__art .cls-18{clip-path:url(#mp-clip-a);}.middle-path__art .mask-in{fill:#fff;}.middle-path__art .mask-out{fill:#000;}.middle-path__art .hill-fill,.middle-path__art .rail-fill,.middle-path__art .portal-fill{fill:#141414;}.middle-path__art .post-fill{fill:#141414;}@media (prefers-reduced-motion:no-preference){.middle-path__art .sun-rise{animation:sunArc 11s linear infinite;animation-fill-mode:backwards;animation-play-state:paused;animation-delay:.35s;}}@keyframes sunArc{0%{transform:translateY(95px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}20%{transform:translateY(0);}58%{transform:translateY(0);animation-timing-function:cubic-bezier(.45,.05,.55,.95);}78%{transform:translateY(95px);}100%{transform:translateY(95px);}}
+.middle-path__art .cls-1,.middle-path__art .cls-2,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{fill:none;}.middle-path__art .cls-3{fill:#141414;}.middle-path__art .cls-14{fill:url(#mp-sun);}.middle-path__art .cls-15{fill:#f3f3f4;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-9,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke-miterlimit:10;}.middle-path__art .cls-2,.middle-path__art .cls-3,.middle-path__art .cls-4,.middle-path__art .cls-5,.middle-path__art .cls-6,.middle-path__art .cls-7,.middle-path__art .cls-8,.middle-path__art .cls-10,.middle-path__art .cls-11,.middle-path__art .cls-12,.middle-path__art .cls-13{stroke:#f3f3f4;}.middle-path__art .cls-16{clip-path:url(#mp-clip-b);}.middle-path__art .cls-3,.middle-path__art .cls-9{stroke-width:2px;}.middle-path__art .cls-17{fill:url(#mp-sky);}.middle-path__art .cls-4{stroke-width:.5px;}.middle-path__art .cls-5{stroke-width:.53px;}.middle-path__art .cls-6{stroke-width:.8px;}.middle-path__art .cls-7{stroke-width:.27px;}.middle-path__art .cls-8{stroke-width:1.24px;}.middle-path__art .cls-9{stroke:#f3f3f4;}.middle-path__art .cls-10{stroke-width:.95px;}.middle-path__art .cls-11{stroke-width:.75px;}.middle-path__art .cls-12{stroke-width:.78px;}.middle-path__art .cls-13{stroke-width:1.06px;}.middle-path__art .cls-18{clip-path:url(#mp-clip-a);}.middle-path__art .mask-in{fill:#fff;}.middle-path__art .mask-out{fill:#000;}.middle-path__art .hill-fill,.middle-path__art .rail-fill,.middle-path__art .portal-fill{fill:#141414;}.middle-path__art .post-fill{fill:#141414;}@media (prefers-reduced-motion:no-preference){.middle-path__art .sun-rise{animation:sunArc 11s linear infinite;animation-fill-mode:backwards;animation-play-state:paused;animation-delay:.35s;}}@keyframes sunArc{0%{transform:translateY(115px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}20%{transform:translateY(0);}58%{transform:translateY(0);animation-timing-function:cubic-bezier(.45,.05,.55,.95);}78%{transform:translateY(115px);}100%{transform:translateY(115px);}}
 
 /* The sun waits for the section instead of looping on its own schedule, so
    the rise is seen rather than caught by luck. Reuses the existing
@@ -1083,35 +1051,21 @@ a {
   opacity: 0;
 }
 
-/* Birds climb the frame through a real 3-frame flap sequence (start/wings
-   up/wings down, drawn by the site owner -- each bird is a <g class="mp-bird">
-   holding all 3 poses stacked in registration, cycled via opacity so only
-   one is visible at a time, rather than a faked scale/rotate flap); clouds
-   drift side to side. Same reveal-gated, continuous-loop pattern as
-   .sun-rise above -- paused until .is-visible, then looping for as long as
-   the section stays in view, no new JS. The rise duration matches sunArc's
-   11s exactly, so a bird that's climbed off the top resets in step with
-   the next sunrise rather than drifting in and out of phase with it; each
-   of the 5 birds/clouds still gets its own delay via nth-child so the
-   flock/sky doesn't move in lockstep, mirroring the highway cars'
-   --drive-delay stagger. */
+/* Reduced motion keeps the resting flock in the open sky. */
+.middle-path__art #mp-birds { transform: translateY(-215px); }
+
+/* The flock flies above the viewport and restarts on the sun's 11s cycle.
+   Its independent, registered flap poses still switch one at a time. */
 @media (prefers-reduced-motion: no-preference) {
-  .middle-path__art #mp-birds .mp-bird {
-    animation: mpBirdRise 11s linear infinite;
+  .middle-path__art #mp-birds {
+    animation: mpBirdFlight 11s linear .35s infinite both;
     animation-play-state: paused;
   }
-
-  .middle-path__art #mp-birds .mp-bird:nth-child(1) { animation-delay: 0s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(2) { animation-delay: -2.2s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(3) { animation-delay: -4.4s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(4) { animation-delay: -6.6s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(5) { animation-delay: -8.8s; }
-
   /* animation-delay is set per bird below via the longhand properties, so
      it can be overridden per nth-child without re-specifying the rest. */
   .middle-path__art #mp-birds :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) {
     animation-duration: .6s;
-    animation-timing-function: linear;
+    animation-timing-function: steps(1, end);
     animation-iteration-count: infinite;
     animation-play-state: paused;
   }
@@ -1137,32 +1091,31 @@ a {
   .middle-path__art #mp-clouds svg:nth-child(5) { animation-delay: -19s; }
 }
 
-@keyframes mpBirdRise {
-  0% { translate: 0 0; opacity: 1; }
-  90% { opacity: 1; }
-  100% { translate: 0 -220px; opacity: 0; }
+/* Travel uses scene coordinates outside the nested bird SVG. The flock
+   clears the top before resetting; only that offscreen reset is hidden. */
+@keyframes mpBirdFlight {
+  0% { transform: translateY(0); opacity: 1; }
+  78% { transform: translateY(-400px); opacity: 1; }
+  78.01%, 100% { transform: translateY(-400px); opacity: 0; }
 }
 
-/* One shared 3-phase cycle, each frame given its own keyframe (rather than
-   one keyframe reused via animation-delay math) so which third of the
-   cycle each pose owns is explicit: a (start) is visible first, b (wings
-   up) second, c (wings down) third, then it loops back to a. The 33.32/
-   33.34-style pairs are a near-instant cut, not a crossfade -- deliberate,
-   since real wingbeats don't dissolve between poses. */
+/* Shared boundaries and stepped opacity ensure exactly one visible pose. */
 @keyframes mpBirdFrameA {
-  0%, 33.32% { opacity: 1; }
-  33.34%, 100% { opacity: 0; }
+  0% { opacity: 1; }
+  33.333333%, 66.666667% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @keyframes mpBirdFrameB {
-  0%, 33.32% { opacity: 0; }
-  33.34%, 66.65% { opacity: 1; }
-  66.67%, 100% { opacity: 0; }
+  0% { opacity: 0; }
+  33.333333% { opacity: 1; }
+  66.666667%, 100% { opacity: 0; }
 }
 
 @keyframes mpBirdFrameC {
-  0%, 66.65% { opacity: 0; }
-  66.67%, 100% { opacity: 1; }
+  0%, 33.333333% { opacity: 0; }
+  66.666667% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes mpCloudDrift {
@@ -1170,7 +1123,7 @@ a {
   100% { transform: translateX(30px); }
 }
 
-.middle-path__scene.is-visible .middle-path__art #mp-birds .mp-bird,
+.middle-path__scene.is-visible .middle-path__art #mp-birds,
 .middle-path__scene.is-visible .middle-path__art #mp-birds :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c),
 .middle-path__scene.is-visible .middle-path__art #mp-clouds svg {
   animation-play-state: running;
@@ -1178,7 +1131,8 @@ a {
 
 /* Billboard copy is live text rather than outlines, so it stays legible at
    the size the artwork draws the boards. Percentages come off the artwork's
-   1272.56 x 825.95 viewBox: the sign art places the boards at x 153.01–
+   1272.56 x 915.95 viewBox adds 90 sky units above y=0.
+   The sign art places the boards at x 153.01–
    364.53 and x 933.05–1144.57, y 226.43–334.05, with the arrow icon in the
    lower ~28% of each, so the copy gets the top band, y 231.81–296.38.
    box-sizing: border-box + the side padding below guarantee a real margin
@@ -1187,8 +1141,8 @@ a {
    (the longest line) sits inside that padded area with room to spare. */
 .middle-path__board {
   position: absolute;
-  top: 28.07%;    /* 231.81 / 825.95 */
-  height: 7.82%;  /*  64.57 / 825.95 */
+  top: 35.13774387%; /* (231.81 + 90) / 915.95 */
+  height: 7.05161745%; /* 64.57 / 915.95 */
   box-sizing: border-box;
   padding: 0 9%;
   display: flex;
@@ -3522,4 +3476,10 @@ body.modal-open {
 .highway__art #hw-post .st7 {
   fill: var(--color-bg);
   stroke: #f3f3f4;
+}
+
+/* Hide the tiny-car horizon area on phones without changing car geometry. */
+@media (max-width: 767px) {
+  .distance__crop { aspect-ratio: 1272.6 / 1398.2; }
+  .distance__crop .distance__visual { transform: translateY(-20.619966%); }
 }
