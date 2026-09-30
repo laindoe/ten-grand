@@ -1150,9 +1150,11 @@ a {
     overflow: visible;
   }
 
-  .middle-path__art #mp-bus {
-    transform-origin: 636px 329.53px;
-    transform: translateY(220px) scale(2);
+  /* Transform a group, not a nested SVG viewport (mobile Safari).
+     Matrix encodes a uniform 2x scale about the bus roof plus 400 units down. */
+  .middle-path__art #mp-bus-position {
+    transform-origin: 0 0;
+    transform: matrix(2, 0, 0, 2, -636, 70.47);
   }
 
   /* SVG text shares the bus's exact geometry and transform on mobile. */
@@ -1166,14 +1168,14 @@ a {
   }
 
 
-  .middle-path__art #mp-signs > .mp-sign-left {
-    transform-origin: 142.26px 415.1px;
-    transform: translateX(-20px) scale(1.25);
+  /* Identical scales and vertical offsets put both panel bottoms on
+     y=331.1, beside the tunnel horizon. Only horizontal offsets differ. */
+  .middle-path__art .mp-sign-position { transform-origin: 0 0; }
+  .middle-path__art .mp-sign-position--left {
+    transform: matrix(1.1, 0, 0, 1.1, -71.486, -33.11);
   }
-
-  .middle-path__art #mp-signs > .mp-sign-right {
-    transform-origin: 1155.32px 415.1px;
-    transform: translateX(20px) scale(1.25);
+  .middle-path__art .mp-sign-position--right {
+    transform: matrix(1.1, 0, 0, 1.1, -83.292, -33.11);
   }
 
   /* The bus's downward push (above) bleeds past the canvas edge via the
@@ -1184,8 +1186,8 @@ a {
      translateY above) keeps that gap the same as if the bus had stayed
      inside its box. */
   .middle-path__scene {
-    clip-path: inset(0 0 -44cqw);
-    margin-bottom: calc(var(--divider-gap) + 41.6892cqw);
+    clip-path: inset(0 0 -59cqw);
+    margin-bottom: calc(var(--divider-gap) + 55.834cqw);
   }
 }
 
