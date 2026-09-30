@@ -1000,6 +1000,16 @@ a {
   height: auto;
 }
 
+/* Release the reveal transform once visible so the static SVG can paint
+   directly at its final size rather than retaining a transformed surface. */
+.middle-path__scene.is-visible { transform: none; }
+.middle-path__art #mp-rails {
+  shape-rendering: geometricPrecision;
+}
+.middle-path__art .mp-source-hills {
+  shape-rendering: geometricPrecision;
+}
+
 /* Preserve the source line hierarchy at responsive screen-pixel widths. */
 .middle-path__art .mp-mountain-outer { stroke-width: 2px; }
 .middle-path__art .mp-mountain-detail { stroke-width: 1px; }
@@ -1175,57 +1185,13 @@ a {
   right: 10.06%;  /* 1272.56 - 1144.57 */
 }
 
-/* Mobile-only: the bus reads small and far away at phone width, and the
-   sign panels get lost against the desert linework -- both get a plain
-   CSS transform scoped to this query rather than touching the shared SVG
-   coordinates the desktop layout depends on.
+.middle-path__art .mp-mobile-plate-text { display: none; }
 
-   The bus's downward push now exceeds the scene's own 1272.56 x 825.95
-   canvas, so .middle-path__art gets overflow:visible here (mobile only
-   -- nothing bleeds past the canvas at desktop sizes, so the root <svg>
-   stays clipped there): the bled pixels land in .middle-path__scene's
-   own trailing margin below, which isn't itself clipped, rather than
-   being cut off by the viewBox edge. The bus is scaled from its top
-   edge so it only grows downward; the signs are scaled from their own
-   outward/bottom corner so growth is entirely inward, toward the open
-   sky above the road, never toward the canvas edge.
-
-   transform-origin is given in absolute user-space px (the SVG's own
-   coordinate units), not percentages: percentages resolve against
-   transform-box: fill-box's *painted-ink* bounding box, which for a
-   <use> insets a few units from its declared x/y/width/height (measured
-   directly: 142.26/230 declared vs. ~149.5/218.6 painted) -- close
-   enough to matter once you're anchoring a whole-percent origin. The
-   left and right signs need their own rule (not one shared selector):
-   the right one's <use> sits inside a scale(-1,1) mirror group, so its
-   *local* origin has to be the local coordinate that renders on the
-   outward side after the flip, not the same local x as the left one.
-
-   .middle-path__plate and .middle-path__board--left/--right are plain
-   HTML overlays positioned by percentage of the whole scene, not part
-   of the SVG, so a transform on the bus/signs alone wouldn't move them
-   -- they get the identical transform (same translateY/scale), but with
-   transform-origin expressed as a point *outside* their own box (CSS
-   allows this) that maps to the exact same absolute anchor point the
-   bus/sign uses, so they scale and shift in lockstep with the artwork
-   under them instead of drifting off it. These stay percentage-based:
-   plain HTML elements don't have the SVG fill-box/declared-box gap.
-
-   The plate's translateY is the one exception: it has to move by the
-   same *rendered* distance as #mp-bus's translateY, but "px" means two
-   different things for the two elements. On #mp-bus (an SVG element)
-   CSS px resolves as the root <svg>'s own user-space units -- there
-   .middle-path__art's viewBox is 1272.56 wide, and the pixels these
-   units render as is set entirely by the CSS width:100% on the
-   container. On .middle-path__plate (a plain HTML element) px is
-   always a literal CSS pixel, independent of that scaling -- so the
-   same number meant wildly different real distances (this is what
-   originally sent the plate text down onto the black bumper, dark on
-   dark, i.e. invisible, rather than onto the white plate itself: the
-   bug behind "the license plate name isn't showing"). cqw is anchored
-   to the same container the art's width:100% scales against, so
-   converting the bus's N units to N * 100 / 1272.56 cqw once and using
-   that keeps the two in lockstep at every width in this breakpoint. */
+/* Mobile bus/sign enlargement keeps the existing SVG anchors. The bus
+   grows downward from its top; signs grow inward from their outer corners.
+   Sign text remains an HTML overlay with the matching transform. Plate
+   text lives inside the bus SVG on mobile so it follows the bus exactly.
+   The scene clips its side edges while allowing room below for the bus. */
 @media (max-width: 767px) {
   .middle-path__art {
     overflow: visible;
@@ -1233,31 +1199,19 @@ a {
 
   .middle-path__art #mp-bus {
     transform-origin: 636px 329.53px;
-    transform: translateY(55px) scale(1.15);
+    transform: translateY(100px) scale(1.15);
   }
 
-  .middle-path__plate {
-    /* translateY can't reuse the bus's "55px": that px is resolved in the
-       SVG's own user-space (the coordinate system #mp-bus is defined in,
-       roughly 0.29 real px per unit at phone widths), while this is a
-       plain HTML element where px is always a real CSS pixel -- the two
-       "55px"s used to name completely different distances, landing the
-       text on the black bumper instead of the white plate below it. cqw
-       is anchored to the same container the art's width:100% scales
-       against, so N SVG units converts once (N * 100 / 1272.56, the
-       viewBox width) and then tracks correctly at every mobile width.
+  /* SVG text shares the bus's exact geometry and transform on mobile. */
+  .middle-path__plate { display: none; }
+  .middle-path__art .mp-mobile-plate-text { display: block; }
 
-       font-size is also cqw (not a flat px) and sized directly off the
-       plate's own 9.27%-of-container width (9.27 * 0.93 / 6.381, where
-       6.381 is this font stack's measured width-per-font-size ratio for
-       "FREEDOM4ALL") so the text naturally fills the plate at ~93% --
-       centered, full-width-looking, without a horizontal scaleX squeeze
-       distorting the letterforms. The uniform scale(1.15) then enlarges
-       plate and text together, same as the bus, so nothing stretches. */
-    transform-origin: 46.9% -1203.28%;
-    transform: translateY(4.322cqw) scale(1.15);
-    font-size: 1.3512cqw;
+  /* Scale the source's 2:1 line hierarchy with the scene, like the bus
+     and guardrails, instead of retaining desktop pixel widths. */
+  .middle-path__art :is(.mp-mountain-outer, .mp-mountain-detail) {
+    vector-effect: none;
   }
+
 
   .middle-path__art #mp-signs > use {
     transform-origin: 142.26px 415.1px;
@@ -1305,7 +1259,8 @@ a {
      translateY above) keeps that gap the same as if the bus had stayed
      inside its box. */
   .middle-path__scene {
-    margin-bottom: calc(var(--divider-gap) + 1.7736cqw);
+    clip-path: inset(0 0 -6cqw);
+    margin-bottom: calc(var(--divider-gap) + 5.3099cqw);
   }
 }
 
