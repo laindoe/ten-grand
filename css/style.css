@@ -3426,3 +3426,9 @@ body.modal-open {
   fill: var(--color-bg);
   stroke: #f3f3f4;
 }
+
+/* Hide the tiny-car horizon area on phones without changing car geometry. */
+@media (max-width: 767px) {
+  .distance__crop { aspect-ratio: 1272.6 / 1398.2; }
+  .distance__crop .distance__visual { transform: translateY(-20.619966%); }
+}
