@@ -1181,15 +1181,15 @@ a {
    CSS transform scoped to this query rather than touching the shared SVG
    coordinates the desktop layout depends on.
 
-   Values are chosen to stay inside the scene's own 1272.56 x 825.95
-   canvas: the root <svg> isn't overflow:visible (only #mp-bus's own
-   nested viewport is, for its part sticking past its own box), so
-   anything pushed past the canvas edge would be silently clipped --
-   the bus is scaled from its top edge so it only grows downward, and
-   translateY is small enough that the new bottom (823.5) still lands
-   inside 825.95; the signs are scaled from their own outward/bottom
-   corner so growth is entirely inward, toward the open sky above the
-   road, never toward the canvas edge.
+   The bus's downward push now exceeds the scene's own 1272.56 x 825.95
+   canvas, so .middle-path__art gets overflow:visible here (mobile only
+   -- nothing bleeds past the canvas at desktop sizes, so the root <svg>
+   stays clipped there): the bled pixels land in .middle-path__scene's
+   own trailing margin below, which isn't itself clipped, rather than
+   being cut off by the viewBox edge. The bus is scaled from its top
+   edge so it only grows downward; the signs are scaled from their own
+   outward/bottom corner so growth is entirely inward, toward the open
+   sky above the road, never toward the canvas edge.
 
    transform-origin is given in absolute user-space px (the SVG's own
    coordinate units), not percentages: percentages resolve against
@@ -1210,16 +1210,46 @@ a {
    allows this) that maps to the exact same absolute anchor point the
    bus/sign uses, so they scale and shift in lockstep with the artwork
    under them instead of drifting off it. These stay percentage-based:
-   plain HTML elements don't have the SVG fill-box/declared-box gap. */
+   plain HTML elements don't have the SVG fill-box/declared-box gap.
+
+   The plate's translateY is the one exception: it has to move by the
+   same *rendered* distance as #mp-bus's translateY, but "px" means two
+   different things for the two elements. On #mp-bus (an SVG element)
+   CSS px resolves as the root <svg>'s own user-space units -- there
+   .middle-path__art's viewBox is 1272.56 wide, and the pixels these
+   units render as is set entirely by the CSS width:100% on the
+   container. On .middle-path__plate (a plain HTML element) px is
+   always a literal CSS pixel, independent of that scaling -- so the
+   same number meant wildly different real distances (this is what
+   originally sent the plate text down onto the black bumper, dark on
+   dark, i.e. invisible, rather than onto the white plate itself: the
+   bug behind "the license plate name isn't showing"). cqw is anchored
+   to the same container the art's width:100% scales against, so
+   converting the bus's N units to N * 100 / 1272.56 cqw once and using
+   that keeps the two in lockstep at every width in this breakpoint. */
 @media (max-width: 767px) {
+  .middle-path__art {
+    overflow: visible;
+  }
+
   .middle-path__art #mp-bus {
     transform-origin: 636px 329.53px;
-    transform: translateY(30px) scale(1.15);
+    transform: translateY(55px) scale(1.15);
   }
 
   .middle-path__plate {
+    /* translateY can't reuse the bus's "55px": that px is resolved in the
+       SVG's own user-space (the coordinate system #mp-bus is defined in,
+       roughly 0.29 real px per unit at phone widths), while this is a
+       plain HTML element where px is always a real CSS pixel -- the two
+       "55px"s used to name completely different distances, landing the
+       text on the black bumper instead of the white plate below it. cqw
+       is anchored to the same container the art's width:100% scales
+       against, so N SVG units converts once (N * 100 / 1272.56, the
+       viewBox width) and then tracks correctly at every mobile width. */
     transform-origin: 46.9% -1203.28%;
-    transform: translateY(30px) scale(1.15);
+    transform: translateY(4.322cqw) scale(1.15) scaleX(0.62);
+    font-size: 9px;
   }
 
   .middle-path__art #mp-signs > use {
