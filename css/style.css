@@ -963,7 +963,7 @@ a {
    a plain straight divider, no road styling. */
 .middle-path__header {
   width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
+  margin: 0 calc(-1 * var(--section-padding-x)) 0;
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
   border-bottom: 1px solid var(--color-card-border);
   text-align: center;
@@ -1000,18 +1000,17 @@ a {
   height: auto;
 }
 
-/* Mountains match the guardrails' 1-unit stroke. */
-.middle-path__art #mp-mountains path {
-  stroke-width: 1px;
-  shape-rendering: geometricPrecision;
-}
+/* Preserve the source line hierarchy at responsive screen-pixel widths. */
+.middle-path__art .mp-mountain-outer { stroke-width: 2px; }
+.middle-path__art .mp-mountain-detail { stroke-width: 1px; }
+.middle-path__art #mp-mountains { shape-rendering: geometricPrecision; }
 
 .middle-path__plate {
   position: absolute;
   left: 45.63%;
-  top: 76.50963753%;
+  top: 77.25461440%;
   width: 9.27%;
-  height: 2.55192805%;
+  height: 2.47099582%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1131,7 +1130,7 @@ a {
 
 /* Billboard copy is live text rather than outlines, so it stays legible at
    the size the artwork draws the boards. Percentages come off the artwork's
-   1272.56 x 915.95 viewBox adds 90 sky units above y=0.
+   1272.56 x 945.95 viewBox adds 120 sky units above y=0.
    The sign art places the boards at x 153.01–
    364.53 and x 933.05–1144.57, y 226.43–334.05, with the arrow icon in the
    lower ~28% of each, so the copy gets the top band, y 231.81–296.38.
@@ -1141,8 +1140,8 @@ a {
    (the longest line) sits inside that padded area with room to spare. */
 .middle-path__board {
   position: absolute;
-  top: 35.13774387%; /* (231.81 + 90) / 915.95 */
-  height: 7.05161745%; /* 64.57 / 915.95 */
+  top: 37.19479518%; /* (231.81 + 120) / 945.95 */
+  height: 6.82798140%; /* 64.57 / 945.95 */
   box-sizing: border-box;
   padding: 0 9%;
   display: flex;
