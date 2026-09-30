@@ -1138,58 +1138,11 @@ a {
   animation-play-state: running;
 }
 
-/* Billboard copy is live text rather than outlines, so it stays legible at
-   the size the artwork draws the boards. Percentages come off the artwork's
-   1272.56 x 945.95 viewBox adds 120 sky units above y=0.
-   The sign art places the boards at x 153.01–
-   364.53 and x 933.05–1144.57, y 226.43–334.05, with the arrow icon in the
-   lower ~28% of each, so the copy gets the top band, y 231.81–296.38.
-   box-sizing: border-box + the side padding below guarantee a real margin
-   inside the green face regardless of word length; font-size is sized down
-   from the old sign art's "just fills a board" fit so even "INFRASTRUCTURE"
-   (the longest line) sits inside that padded area with room to spare. */
-.middle-path__board {
-  position: absolute;
-  top: 37.19479518%; /* (231.81 + 120) / 945.95 */
-  height: 6.82798140%; /* 64.57 / 945.95 */
-  box-sizing: border-box;
-  padding: 0 9%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.65cqw;
-  font-weight: 600;
-  line-height: 1.12;
-  letter-spacing: -0.015em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--color-text);
-}
-
-/* The boards are narrow for the word count, so the copy is condensed
-   horizontally instead of being shrunk down out of readability. */
-.middle-path__board span {
-  display: block;
-  transform: scaleX(0.8);
-}
-
-.middle-path__board--left {
-  left: 12.02%;   /* 153.01 / 1272.56 */
-  right: 71.36%;  /* 1272.56 - 364.53 */
-}
-
-.middle-path__board--right {
-  left: 73.32%;   /* 933.05 / 1272.56 */
-  right: 10.06%;  /* 1272.56 - 1144.57 */
-}
-
 .middle-path__art .mp-mobile-plate-text { display: none; }
 
 /* Mobile bus/sign enlargement keeps the existing SVG anchors. The bus
    grows downward from its top; signs grow inward from their outer corners.
-   Sign text remains an HTML overlay with the matching transform. Plate
+   Sign text lives inside each sign SVG and scales with it. Plate
    text lives inside the bus SVG on mobile so it follows the bus exactly.
    The scene clips its side edges while allowing room below for the bus. */
 @media (max-width: 767px) {
@@ -1199,7 +1152,7 @@ a {
 
   .middle-path__art #mp-bus {
     transform-origin: 636px 329.53px;
-    transform: translateY(100px) scale(1.15);
+    transform: translateY(220px) scale(2);
   }
 
   /* SVG text shares the bus's exact geometry and transform on mobile. */
@@ -1213,42 +1166,14 @@ a {
   }
 
 
-  .middle-path__art #mp-signs > use {
+  .middle-path__art #mp-signs > .mp-sign-left {
     transform-origin: 142.26px 415.1px;
     transform: translateX(-20px) scale(1.25);
   }
 
-  .middle-path__art #mp-signs > g > use {
-    transform-origin: -1155.32px 415.1px;
-    transform: translateX(-20px) scale(1.25);
-  }
-
-  .middle-path__board--left {
-    transform-origin: -5.06% 283.73%;
-    transform: scale(1.25);
-  }
-
-  .middle-path__board--right {
-    transform-origin: 100.01% 283.73%;
-    transform: scale(1.25);
-  }
-
-  /* The two bushes nearer the road on each side (2nd/3rd in document
-     order) sit close enough to the guardrail that the signs' outward
-     translateX above prompted moving these out too, for the same
-     clearance -- outer bushes (1st/4th) get a smaller nudge since they
-     already read further from the rail. */
-  .middle-path__art #mp-cacti > use:nth-child(1) {
-    transform: translateX(-10px);
-  }
-  .middle-path__art #mp-cacti > use:nth-child(2) {
-    transform: translateX(-20px);
-  }
-  .middle-path__art #mp-cacti > use:nth-child(3) {
-    transform: translateX(20px);
-  }
-  .middle-path__art #mp-cacti > use:nth-child(4) {
-    transform: translateX(10px);
+  .middle-path__art #mp-signs > .mp-sign-right {
+    transform-origin: 1155.32px 415.1px;
+    transform: translateX(20px) scale(1.25);
   }
 
   /* The bus's downward push (above) bleeds past the canvas edge via the
@@ -1259,8 +1184,8 @@ a {
      translateY above) keeps that gap the same as if the bus had stayed
      inside its box. */
   .middle-path__scene {
-    clip-path: inset(0 0 -6cqw);
-    margin-bottom: calc(var(--divider-gap) + 5.3099cqw);
+    clip-path: inset(0 0 -44cqw);
+    margin-bottom: calc(var(--divider-gap) + 41.6892cqw);
   }
 }
 
