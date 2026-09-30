@@ -996,36 +996,13 @@ a {
 
 /* Match the multi-car desert linework. Dedicated classes prevent the SVG
    exporter's generic .cls-* rules from changing mountains and rails too. */
-/* Widths below are the highway's own cactus/bush/mountain strokes'
-   real rendered device-pixel size (measured directly: e.g. the
-   highway's un-pinned hw-cactus-outline renders at ~0.141 device px,
-   its 0.48px nominal width times that SVG's ~0.2947 scale-to-viewport
-   ratio), reproduced here as literal pinned values via vector-effect,
-   since this SVG's own scale-to-viewport ratio is nearly identical
-   (~0.2947 vs the highway's ~0.29467) but not guaranteed to stay that
-   way if either artwork's container sizing changes independently. */
-.middle-path__art #mp-cacti .mp-cactus-outline {
-  fill: none;
-  stroke: #f3f3f4;
-  stroke-width: .141px;
-  vector-effect: non-scaling-stroke;
-}
-
-.middle-path__art #mp-cacti .mp-cactus-rib {
-  fill: none;
-  stroke: #f3f3f4;
-  stroke-width: .094px;
-  vector-effect: non-scaling-stroke;
-}
-
-.middle-path__art #mp-cacti .mp-bush {
-  fill: none;
-  stroke: #f3f3f4;
-  stroke-width: .065px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
+/* mp-cacti's own cactus/bush shapes are the highway's own hw-cactus-l/r
+   and hw-bush-l/r groups, copied in wholesale (same site owner redraw, same
+   desert scene) rather than referenced via <use> across files -- exactly
+   that kind of cross-include symbol reference broke once already (the old
+   #hw-car-centre reference in this file going stale when the highway
+   pipeline was restructured). They carry their own inline fill/stroke, so
+   no CSS is needed for them here. */
 
 /* Keep the mountain contours at device-pixel widths when this wide SVG is
    responsively scaled. This avoids the soft half-pixel rasterization. */
