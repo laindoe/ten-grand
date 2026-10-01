@@ -983,10 +983,9 @@ a {
   margin: 0 auto;
 }
 
-/* The tunnel artwork. Full-bleed, matching .distance__visual above it, so
-   the billboards at either edge of the composition are not cropped.
-   container-type lets the billboard copy be sized in cqw, i.e. against the
-   artwork's own width rather than the viewport's. */
+/* The tunnel artwork stays fluid on smaller screens, then stops growing at
+   the preferred laptop composition. Keeping it in normal flow prevents the
+   scene from drifting beyond the site frame on wide desktop viewports. */
 .middle-path__scene {
   position: relative;
   width: min(100vw, 2000px);
@@ -1012,6 +1011,33 @@ a {
 .middle-path__art {
   position: relative;
   z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .middle-path__scene {
+    width: min(100%, 1280px);
+    margin: 0 auto var(--divider-gap);
+  }
+
+  /* The illustration's authored centreline is x=632.94, 0.2625% left of
+     the exported viewBox midpoint. Shift both canvases together so the
+     tunnel, road, bus, and dashed line align with the centred body copy. */
+  .middle-path__effects,
+  .middle-path__art {
+    transform: translateX(.2625%);
+  }
+
+  /* Scale the bus around its visual centre and move it down slightly. This
+     reveals more of the centre dashes while keeping the bus centred. */
+  .middle-path__art #mp-bus-position {
+    transform-origin: 0 0;
+    transform: matrix(.9, 0, 0, .9, 63.294, 71.127);
+  }
+
+  .middle-path__plate {
+    transform-origin: center;
+    transform: translateY(.94cqw) scale(.9);
+  }
 }
 
 .middle-path__plate { z-index: 3; }
