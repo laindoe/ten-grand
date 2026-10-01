@@ -1018,7 +1018,7 @@ a {
 
 /* Keep the replacement destination inside the original tunnel group so it
    shares the source artwork's viewport, clipping, and responsive geometry. */
-.middle-path__art #mp-sun-group > :not(.mp-new-destination) { display: none; }
+.middle-path__art #mp-sun-group > :not(.mp-new-destination):not(.mp-source-hills) { display: none; }
 .middle-path__art .mp-orb-core { fill: url(#mp-orb); }
 .middle-path__art .mp-orb-glow {
   fill: #00b0e0;
