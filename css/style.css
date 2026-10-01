@@ -989,15 +989,70 @@ a {
    artwork's own width rather than the viewport's. */
 .middle-path__scene {
   position: relative;
-  width: calc(100% + 2 * var(--section-padding-x));
-  margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
+  width: min(100vw, 2000px);
+  margin: 0 0 var(--divider-gap) calc(50% - min(50vw, 1000px));
   container-type: inline-size;
 }
 
+.middle-path__effects,
+.middle-path__destination-overlay,
 .middle-path__art {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.middle-path__effects,
+.middle-path__destination-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.middle-path__effects { z-index: 0; }
+.middle-path__destination-overlay { z-index: 2; }
+
+.middle-path__art {
+  position: relative;
+  z-index: 1;
+}
+
+.middle-path__plate { z-index: 3; }
+
+/* The destination is composited below the source illustration so the tunnel,
+   rails, signs, and bus naturally mask it. */
+.middle-path__art #mp-sun-group { visibility: hidden; }
+.middle-path__effects .mp-tunnel-destination { display: none; }
+.middle-path__destination-overlay .mp-orb-core { fill: url(#mp-overlay-orb); }
+.middle-path__destination-overlay .mp-orb-glow {
+  fill: #00b0e0;
+  opacity: .58;
+  filter: url(#mp-overlay-orb-glow);
+}
+.middle-path__effects .mp-road-centre {
+  fill: none;
+  stroke: #f3f3f4;
+  stroke-width: 9px;
+  stroke-dasharray: 80 50;
+  stroke-linecap: butt;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .middle-path__destination-overlay .mp-orb-rise {
+    animation: mpOrbArc 11s linear .35s infinite backwards;
+    animation-play-state: paused;
+  }
+}
+
+@keyframes mpOrbArc {
+  0% { transform: translateY(115px); animation-timing-function: cubic-bezier(.22,.61,.36,1); }
+  20%, 58% { transform: translateY(0); }
+  58% { animation-timing-function: cubic-bezier(.45,.05,.55,.95); }
+  78%, 100% { transform: translateY(115px); }
+}
+
+.middle-path__scene.is-visible .middle-path__destination-overlay .mp-orb-rise {
+  animation-play-state: running;
 }
 
 /* Release the reveal transform once visible so the static SVG can paint
@@ -1146,6 +1201,10 @@ a {
    text lives inside the bus SVG on mobile so it follows the bus exactly.
    The scene clips its side edges while allowing room below for the bus. */
 @media (max-width: 767px) {
+  .middle-path__effects {
+    overflow: visible;
+  }
+
   .middle-path__art {
     overflow: visible;
   }
@@ -1164,8 +1223,21 @@ a {
   /* Scale the source's 2:1 line hierarchy with the scene, like the bus
      and guardrails, instead of retaining desktop pixel widths. */
   .middle-path__art :is(.mp-mountain-outer, .mp-mountain-detail) {
-    vector-effect: none;
+    vector-effect: non-scaling-stroke;
   }
+
+  .middle-path__art .mp-mountain-outer { stroke-width: 1.75px; }
+  .middle-path__art .mp-mountain-detail { stroke-width: 1px; }
+
+  .middle-path__art #mp-rails [stroke="#f3f3f4"],
+  .middle-path__art #mp-bus [stroke="#f3f3f4"] {
+    vector-effect: non-scaling-stroke;
+    stroke-width: 1.2px;
+  }
+
+  /* Preserve more open sky above the flock on the narrow composition. The
+     translate longhand composes with the existing flight keyframes. */
+  .middle-path__art #mp-birds { translate: 0 28px; }
 
 
   /* Identical scales and vertical offsets put both panel bottoms on
