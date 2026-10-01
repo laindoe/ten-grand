@@ -3284,6 +3284,21 @@ body.modal-open {
     text-align: left;
   }
 
+  .amass__timeline-item--left .amass__timeline-content {
+    grid-template-columns: minmax(0, 1fr) 88px;
+    text-align: right;
+  }
+
+  .amass__timeline-item--left .amass__timeline-icon {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .amass__timeline-item--left .amass__timeline-text {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
   .amass__timeline-icon {
     width: 88px;
     height: 88px;
