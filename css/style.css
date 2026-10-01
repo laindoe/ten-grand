@@ -2071,6 +2071,17 @@ a {
    .rt3-start-orb/.rt3-start-glow). No pulse: both reference
    implementations are static at rest, and the sun is not in the list of
    things this scene animates. */
+/* The glow's blur radius pushes its painted edge well past the mountain's
+   own lowest silhouette point (bbox bottom ~1408.47) into the open water
+   below, where nothing occludes it -- so its rounded bottom edge showed up
+   floating in the ripples. A soft vertical fade (white-to-black gradient
+   mask, not a hard clip) lets the glow keep peeking through gaps in the
+   mountain silhouette but dissolves it out by the mountain's lowest point,
+   before the open water begins -- a hard-edged clip left a visible ruled
+   line across the water instead. */
+.bridge__art .br-sun-mask {
+  mask: url(#br-sun-mask-fade);
+}
 .bridge__art .bridge-sun-core,
 .bridge__art .bridge-sun-glow {
   transform-box: view-box;
