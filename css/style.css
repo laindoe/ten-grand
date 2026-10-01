@@ -2057,11 +2057,11 @@ a {
   transform-box: view-box;
 }
 
-/* Scene width (3413.142346) + the bus's own rendered width (1050), so the
+/* Scene width (3413.142346) + the bus's own rendered width (1450), so the
    bus's leading edge fully clears the right side before the loop resets. */
 @keyframes brBusCross {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(4463.142346px); }
+  100% { transform: translateX(4863.142346px); }
 }
 
 /* The sun sits behind the mountain mass (id="br-ridge-base" in the SVG,
@@ -2145,7 +2145,7 @@ a {
    be seen at all -- parked there, centered on the deck, instead. */
 @media (prefers-reduced-motion: reduce) {
   .bridge__art #br-bus-position {
-    transform: translateX(2231.571173px);
+    transform: translateX(2431.571173px);
   }
 }
 
