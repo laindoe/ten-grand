@@ -3297,6 +3297,12 @@ body.modal-open {
   .amass__timeline-item--left .amass__timeline-text {
     grid-column: 1;
     grid-row: 1;
+    justify-self: end;
+  }
+
+  .amass__timeline-text {
+    width: 100%;
+    max-width: 240px;
   }
 
   .amass__timeline-icon {
@@ -3324,7 +3330,10 @@ body.modal-open {
 
   .amass__timeline-year { font-size: 1rem; }
   .amass__timeline-label { font-size: 1rem; }
-  .amass__timeline-desc { font-size: .95rem; }
+  .amass__timeline-desc {
+    font-size: .95rem;
+    text-wrap: balance;
+  }
 
   /* Preserve the established desktop constellation height while allowing the
      new, wider artwork to extend across the full framed section. */
