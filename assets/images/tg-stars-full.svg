@@ -44,11 +44,13 @@
 
       @keyframes starFlashLarge {
         0%, 100% {
+          opacity: .4;
           filter:
             drop-shadow(0 0 0 rgba(243, 243, 244, 0))
             drop-shadow(0 0 0 rgba(243, 243, 244, 0));
         }
         42%, 58% {
+          opacity: 1;
           filter:
             drop-shadow(0 0 10px rgba(243, 243, 244, .95))
             drop-shadow(0 0 22px rgba(243, 243, 244, .72));
@@ -57,11 +59,13 @@
 
       @keyframes starFlashSmall {
         0%, 100% {
+          opacity: .4;
           filter:
             drop-shadow(0 0 0 rgba(243, 243, 244, 0))
             drop-shadow(0 0 0 rgba(243, 243, 244, 0));
         }
         44%, 56% {
+          opacity: 1;
           filter:
             drop-shadow(0 0 7px rgba(243, 243, 244, .9))
             drop-shadow(0 0 14px rgba(243, 243, 244, .58));
@@ -69,7 +73,8 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .st0, .st2 { animation: none; }
+        #G .st0, #G .st2, #_x30_ .st0, #_x30_ .st2,
+        #_x31_ .st0, #_x31_ .st2 { animation: none; opacity: 1; }
       }
     </style>
   </defs>
