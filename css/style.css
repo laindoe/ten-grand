@@ -1987,31 +1987,118 @@ a {
   color: var(--color-text);
 }
 
-/* ---------- Bridge (placeholder) section ---------- */
+/* ---------- Bridge section ---------- */
 
-/* Placeholder for a future animated sequence (bridge closing, then a bus
-   crossing it) -- for now just a static line-art illustration sized to
-   roughly match .amass__header + .amass__intro combined, so swapping in
-   the real animation later won't visibly shift the sections around it.
-   min-height carries that sizing directly (measured ~433px/545px) rather
-   than aspect-ratio, since the illustration's own proportions don't scale
-   at the same rate as the text block they're standing in for. */
 .section--bridge {
-  min-height: 545px;
-  padding: 40px var(--section-padding-x);
+  min-height: auto;
+  padding: 0 var(--section-padding-x);
   border-top: 1px solid var(--color-card-border);
 }
 
-.bridge__art {
-  width: 100%;
-  max-width: 620px;
+/* Same viewport-breakout technique as .middle-path__scene: centers on the
+   viewport rather than the section's own content box, so this large
+   illustrated stage can run wider than .site-frame the way the tunnel
+   scene does. */
+.bridge__scene {
+  position: relative;
+  width: min(100vw, 2000px);
+  margin: 0 0 var(--divider-gap) calc(50% - min(50vw, 1000px));
+  container-type: inline-size;
 }
 
-.bridge__illustration {
+.bridge__art {
   display: block;
   width: 100%;
   height: auto;
-  color: var(--color-text);
+}
+
+/* The bus is the only element that travels the full scene; everything else
+   (mountains, arch, towers, bushes) stays fixed. transform-box: view-box
+   keeps its translateX in the root SVG's own user-space units regardless
+   of where the element sits in the document. */
+.bridge__art #br-bus-position,
+.bridge__art #br-bus {
+  transform-box: view-box;
+}
+
+/* Scene width (3413.142346) + the bus's own rendered width (507), so the
+   bus's leading edge fully clears the right side before the loop resets. */
+@keyframes brBusCross {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(3920px); }
+}
+
+/* The sun sits behind the mountain mass (id="br-ridge-base" in the SVG,
+   despite its misleading export name) -- a plain static core + blurred
+   glow circle, the same two-circle technique as .middle-path__art's
+   .mp-orb-core/.mp-orb-glow (itself adapted from .route__art's
+   .rt3-start-orb/.rt3-start-glow). No pulse: both reference
+   implementations are static at rest, and the sun is not in the list of
+   things this scene animates. */
+.bridge__art .bridge-sun-core,
+.bridge__art .bridge-sun-glow {
+  transform-box: view-box;
+}
+.bridge__art .bridge-sun-core { fill: url(#br-sun-gradient); }
+.bridge__art .bridge-sun-glow {
+  fill: #00b0e0;
+  opacity: .48;
+  transform: scale(1.12);
+  filter: url(#br-sun-glow-blur);
+}
+
+/* The water's light-streaks get the same glow technique as the sun -- a
+   feGaussianBlur filter, no new shapes, no color changes -- but with its
+   own much lighter blur: the sun's 40-unit blur is tuned for a 700-radius
+   circle and turns these thin streak paths into a shapeless haze at that
+   strength. Static, like the sun. */
+.bridge__art #br-ripples {
+  filter: url(#br-ripple-glow-blur);
+}
+
+/* Clouds drift the way Middle Path's do (css/style.css's #mp-clouds), but
+   with the amplitude scaled up to this scene's much wider canvas (3413.14
+   vs. 1272.56 units) so the drift reads at the same proportional scale
+   rather than looking nearly static. These are bare <path> elements (not
+   nested <svg>s like Middle Path's clouds), so transform-box: view-box has
+   to be set explicitly for translateX to resolve against the scene's own
+   coordinate space. */
+.bridge__art #br-clouds path {
+  transform-box: view-box;
+}
+@keyframes bridgeCloudDrift {
+  0%   { transform: translateX(-80px); }
+  100% { transform: translateX(80px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bridge__art #br-bus-position {
+    animation: brBusCross 14s linear infinite;
+    animation-play-state: paused;
+  }
+
+  .bridge__art #br-clouds path {
+    animation: bridgeCloudDrift 26s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+  .bridge__art #br-clouds path:nth-child(1) { animation-delay: 0s; }
+  .bridge__art #br-clouds path:nth-child(2) { animation-delay: -6s; }
+  .bridge__art #br-clouds path:nth-child(3) { animation-delay: -13s; }
+  .bridge__art #br-clouds path:nth-child(4) { animation-delay: -19s; }
+}
+
+/* Reduced motion gets no crossing animation, so the bus's authored rest
+   position (off-canvas left, where the loop starts) would otherwise never
+   be seen at all -- parked there, centered on the deck, instead. */
+@media (prefers-reduced-motion: reduce) {
+  .bridge__art #br-bus-position {
+    transform: translateX(1960px);
+  }
+}
+
+.bridge__scene.is-visible .bridge__art #br-bus-position,
+.bridge__scene.is-visible .bridge__art #br-clouds path {
+  animation-play-state: running;
 }
 
 /* ---------- Amass Comm[unity] section ---------- */
@@ -3235,14 +3322,6 @@ body.modal-open {
 
   .route__callout-cta::after {
     content: ' \2192';
-  }
-
-  .section--bridge {
-    min-height: 433px;
-  }
-
-  .bridge__art {
-    max-width: 760px;
   }
 
   .amass__intro {
