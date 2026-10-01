@@ -2082,9 +2082,15 @@ a {
 .bridge__art .br-sun-mask {
   mask: url(#br-sun-mask-fade);
 }
+/* transform-origin must be pinned explicitly in view-box units (the same
+   convention as .route__art's rt3-start-orb/-glow and .hw-move) -- without
+   it, the default 50% 50% resolves against the SVG's own origin corner
+   instead of the circle's center, dragging the scaled glow off to the
+   side instead of growing evenly around the core. */
 .bridge__art .bridge-sun-core,
 .bridge__art .bridge-sun-glow {
   transform-box: view-box;
+  transform-origin: 1710px 950px;
 }
 .bridge__art .bridge-sun-core { fill: url(#br-sun-gradient); }
 .bridge__art .bridge-sun-glow {
