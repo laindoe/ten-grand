@@ -2134,24 +2134,30 @@ a {
    feGaussianBlur filter, no new shapes, no color changes -- but with its
    own much lighter blur: the sun's 40-unit blur is tuned for a 700-radius
    circle and turns these thin streak paths into a shapeless haze at that
-   strength. The gradient wash underneath stays static; only the 20 white
-   highlight streaks drawn on top of it shimmer (below). */
+   strength. */
 .bridge__art #br-ripples {
   filter: url(#br-ripple-glow-blur);
 }
 
-/* A light opacity/vertical shimmer on the water's highlight streaks, like
-   light glinting off a moving surface -- translateY needs no pinned
-   transform-origin (unlike the sun's scale) since a pure translation is
-   origin-independent. Bucketed into 5 staggered delays across the 20
-   streaks rather than one rule per path, same spirit as the clouds'
-   per-child delays. */
-.bridge__art #br-ripples path[fill="#f3f3f4"] {
+/* An opacity/vertical shimmer on the water's highlight streaks and the
+   colored gradient wash beneath them, like light glinting off a moving
+   surface -- translateY needs no pinned transform-origin (unlike the
+   sun's scale) since a pure translation is origin-independent. The 20
+   white streaks are bucketed into 5 staggered delays rather than one
+   rule per path, same spirit as the clouds' per-child delays; the single
+   gradient wash path gets its own slower, opposite-direction drift so
+   the two layers don't move in lockstep. */
+.bridge__art #br-ripples path[fill="#f3f3f4"],
+.bridge__art #br-ripples path[fill="url(#br-ripple-gradient)"] {
   transform-box: view-box;
 }
 @keyframes bridgeRippleShimmer {
   0%, 100% { opacity: 1; transform: translateY(0); }
-  50% { opacity: .65; transform: translateY(4px); }
+  50% { opacity: .35; transform: translateY(9px); }
+}
+@keyframes bridgeRippleGradientShimmer {
+  0%, 100% { opacity: 1; transform: translateY(0); }
+  50% { opacity: .55; transform: translateY(-7px); }
 }
 
 /* Clouds drift the way Middle Path's do (css/style.css's #mp-clouds), but
@@ -2185,14 +2191,19 @@ a {
   .bridge__art #br-clouds path:nth-child(4) { animation-delay: -19s; }
 
   .bridge__art #br-ripples path[fill="#f3f3f4"] {
-    animation: bridgeRippleShimmer 6s ease-in-out infinite;
+    animation: bridgeRippleShimmer 4.5s ease-in-out infinite;
     animation-play-state: paused;
   }
   .bridge__art #br-ripples path[fill="#f3f3f4"]:nth-of-type(5n+1) { animation-delay: 0s; }
-  .bridge__art #br-ripples path[fill="#f3f3f4"]:nth-of-type(5n+2) { animation-delay: -1.2s; }
-  .bridge__art #br-ripples path[fill="#f3f3f4"]:nth-of-type(5n+3) { animation-delay: -2.4s; }
-  .bridge__art #br-ripples path[fill="#f3f3f4"]:nth-of-type(5n+4) { animation-delay: -3.6s; }
-  .bridge__art #br-ripples path[fill="#f3f3f4"]:nth-of-type(5n+5) { animation-delay: -4.8s; }
+  .bridge__art #br-ripples path[fill="#f3f3f4"]:nth-of-type(5n+2) { animation-delay: -.9s; }
+  .bridge__art #br-ripples path[fill="#f3f3f4"]:nth-of-type(5n+3) { animation-delay: -1.8s; }
+  .bridge__art #br-ripples path[fill="#f3f3f4"]:nth-of-type(5n+4) { animation-delay: -2.7s; }
+  .bridge__art #br-ripples path[fill="#f3f3f4"]:nth-of-type(5n+5) { animation-delay: -3.6s; }
+
+  .bridge__art #br-ripples path[fill="url(#br-ripple-gradient)"] {
+    animation: bridgeRippleGradientShimmer 5.5s ease-in-out infinite;
+    animation-play-state: paused;
+  }
 }
 
 /* Reduced motion gets no crossing animation, so the bus's authored rest
@@ -2206,7 +2217,8 @@ a {
 
 .bridge__scene.is-visible .bridge__art #br-bus-position,
 .bridge__scene.is-visible .bridge__art #br-clouds path,
-.bridge__scene.is-visible .bridge__art #br-ripples path[fill="#f3f3f4"] {
+.bridge__scene.is-visible .bridge__art #br-ripples path[fill="#f3f3f4"],
+.bridge__scene.is-visible .bridge__art #br-ripples path[fill="url(#br-ripple-gradient)"] {
   animation-play-state: running;
 }
 
