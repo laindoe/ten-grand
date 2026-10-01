@@ -1968,7 +1968,6 @@ a {
   width: calc(100% + 2 * var(--section-padding-x));
   margin: 0 calc(-1 * var(--section-padding-x)) 0;
   padding: var(--divider-gap) var(--section-padding-x) var(--divider-gap);
-  border-bottom: 1px solid var(--color-card-border);
   text-align: center;
 }
 
@@ -2293,12 +2292,8 @@ a {
   display: none;
 }
 
-/* Horizontal pointer aimed at the toggle on the centerline: a pair of
-   sideways triangles, the outer one border-colored and the inner one
-   background-colored and offset inward, faking a 1px outline on the
-   tail the same way the bubble itself is outlined. Anchored at the
-   bubble's own vertical center, which — since the bubble stretches to
-   the row's full height — always matches the toggle's position. */
+/* The inner triangle overlaps the box border so the tail and rounded
+   rectangle read as one continuous outline, including on mobile. */
 .amass__timeline-bubble::before,
 .amass__timeline-bubble::after {
   content: '';
@@ -2306,29 +2301,35 @@ a {
   top: 50%;
   width: 0;
   height: 0;
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
   transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.amass__timeline-bubble::after {
+  border-top-width: 11px;
+  border-bottom-width: 11px;
 }
 
 .amass__timeline-item--left .amass__timeline-bubble::before {
-  left: -8px;
-  border-right: 8px solid var(--color-card-border);
+  left: -16px;
+  border-right: 16px solid var(--color-card-border);
 }
 
 .amass__timeline-item--left .amass__timeline-bubble::after {
-  left: -6.5px;
-  border-right: 7px solid var(--color-bg);
+  left: -14px;
+  border-right: 16px solid var(--color-bg);
 }
 
 .amass__timeline-item--right .amass__timeline-bubble::before {
-  right: -8px;
-  border-left: 8px solid var(--color-card-border);
+  right: -16px;
+  border-left: 16px solid var(--color-card-border);
 }
 
 .amass__timeline-item--right .amass__timeline-bubble::after {
-  right: -6.5px;
-  border-left: 7px solid var(--color-bg);
+  right: -14px;
+  border-left: 16px solid var(--color-bg);
 }
 
 /* ---------- Director section ---------- */
@@ -3140,137 +3141,52 @@ body.modal-open {
     text-align: center;
   }
 
-  /* Rotates the whole timeline 90°: the vertical track and its left/right
-     alternation become two horizontal tracks (3 items per row) with
-     above/below alternation. Every item reserves the same fixed height on
-     both sides of its row's track (rather than sizing to its own content,
-     as the vertical layout does), so every toggle in a row lands on one
-     straight line regardless of which side currently holds a bubble.
-     --left keeps the content above the line (row 1) with its bubble below
-     (row 3); --right is the mirror, continuing the same odd/even
-     alternation across both rows rather than restarting it per row. The
-     bubble stays a normal grid cell rather than an overlay, so it can
-     never drift off that shared line the way an absolutely positioned
-     popover could. */
+  /* Compact alternating entries: icon beside preview on its own side,
+     with expanded details opposite it across the centered track. */
   .amass__timeline {
-    /* 260px, not 220px -- the icon itself grows with viewport width
-       (clamp(90px, 8vw, 130px)), so the icon+text stack's natural height
-       isn't fixed: it's ~195px at the icon's smallest size but ~235px once
-       the icon clamps to its 130px max around 1625px wide. 220px only left
-       room for the smaller case, so on a wide desktop the icon grew right
-       up against (and past) the toggle above/below it. 260px covers the
-       stack's tallest case with ~25px clear on each side, matching the
-       original margin at the icon's small end. */
-    --amass-h-half: 260px;
-    --amass-h-toggle: 40px;
-    --amass-row-height: calc(2 * var(--amass-h-half) + var(--amass-h-toggle));
-    --amass-row-gap: 32px;
-    /* Fixed 60px gap from the subtitle to row 1, per spec -- not tied to
-       --divider-gap or to the bubble's own height. */
-    max-width: none;
-    margin-top: 60px;
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: var(--amass-row-height);
-    column-gap: 20px;
-    row-gap: var(--amass-row-gap);
+    max-width: 920px;
+    margin: 0 auto;
   }
 
-  /* Each row gets its own full-bleed line rather than reusing the single
-     vertical .amass__timeline-track (hidden below): a <span> mid-DOM can't
-     represent two lines, and these need to reach past .amass__timeline's
-     own inset all the way to the site frame's edge (the same edge
-     .amass__timeline-block's full-bleed box already sits flush against),
-     which a normal-flow element inside a fixed-width grid track can't do
-     without escaping the grid entirely. */
-  .amass__timeline::before,
-  .amass__timeline::after {
-    content: '';
-    position: absolute;
-    left: calc(-1 * var(--section-padding-x));
-    right: calc(-1 * var(--section-padding-x));
-    height: 1px;
-    background: var(--color-card-border);
-  }
-
-  .amass__timeline::before {
-    top: calc(var(--amass-h-half) + var(--amass-h-toggle) / 2);
-  }
-
-  .amass__timeline::after {
-    top: calc(var(--amass-row-height) + var(--amass-row-gap) + var(--amass-h-half) + var(--amass-h-toggle) / 2);
-  }
-
-  .amass__timeline-track {
-    display: none;
-  }
-
-  /* The two full-bleed row tracks below already carry the section's own
-     dividing lines; this one (between the subtitle and the timeline) is
-     redundant with them at this width. */
-  .amass__timeline-divider {
-    display: none;
-  }
+  .amass__timeline-track { left: 50%; }
+  .amass__timeline-divider { display: block; }
 
   .amass__timeline-item,
   .amass__timeline-item:first-of-type,
   .amass__timeline-item:last-of-type {
-    min-width: 0;
-    min-height: 0;
-    grid-template-columns: 1fr;
-    grid-template-rows: var(--amass-h-half) var(--amass-h-toggle) var(--amass-h-half);
-    padding: 0;
+    grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr);
+    column-gap: 24px;
+    min-height: 120px;
+    padding: 24px 0;
   }
 
-  /* Placement within the outer 3-column/2-row grid -- distinct from the
-     grid-column/grid-row rules below, which place each item's own
-     content/toggle/bubble within that item's own inner 3-row grid. */
-  .amass__timeline-item:nth-of-type(1) { grid-column: 1; grid-row: 1; }
-  .amass__timeline-item:nth-of-type(2) { grid-column: 2; grid-row: 1; }
-  .amass__timeline-item:nth-of-type(3) { grid-column: 3; grid-row: 1; }
-  .amass__timeline-item:nth-of-type(4) { grid-column: 1; grid-row: 2; }
-  .amass__timeline-item:nth-of-type(5) { grid-column: 2; grid-row: 2; }
-  .amass__timeline-item:nth-of-type(6) { grid-column: 3; grid-row: 2; }
+  .amass__timeline-item:first-of-type { padding-top: 60px; }
+  .amass__timeline-item:last-of-type { padding-bottom: 60px; }
 
-  /* Content sits above the line and the bubble opens below it by default,
-     on both rows -- the --left/--right split (used to alternate sides in
-     the single-row version) is ignored here, not removed, since mobile
-     still relies on it. The middle column of each row (--flipped) reverses
-     this, below. */
-  .amass__timeline-item--left .amass__timeline-content,
-  .amass__timeline-item--right .amass__timeline-content {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .amass__timeline-toggle {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .amass__timeline-item--left .amass__timeline-bubble,
-  .amass__timeline-item--right .amass__timeline-bubble {
-    grid-column: 1;
-    grid-row: 3;
-    width: 75%;
-    justify-self: center;
-    /* Sized to the copy's worst realistic case in the common desktop range
-       (~1280px, 5 lines, measured at 120.5px with the bubble's current
-       padding/font-size); align-self stays center (the base rule) so a
-       bubble that needs more -- a longer line count at a narrower width
-       -- still grows past this floor rather than clipping. Re-measure and
-       adjust this if the bubble's padding or font-size changes again. */
-    min-height: 121px;
+  .amass__timeline-content {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 20px;
+    align-items: center;
+    text-align: left;
   }
 
   .amass__timeline-icon {
-    width: clamp(90px, 8vw, 130px);
-    height: clamp(90px, 8vw, 130px);
+    width: 88px;
+    height: 88px;
   }
 
-  .amass__timeline-content {
-    gap: 6px;
+  .amass__timeline-bubble {
+    padding: 12px 16px;
+    font-size: .9rem;
+  }
+
+  /* Keep closed bubbles in the grid's sizing calculation so each row
+     reserves exactly the space its full copy needs at this width. */
+  .amass__timeline-bubble[hidden] {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .amass__timeline-subtitle {
@@ -3278,96 +3194,9 @@ body.modal-open {
     max-width: 44ch;
   }
 
-  .amass__timeline-year {
-    font-size: 1rem;
-  }
-
-  .amass__timeline-label {
-    font-size: 0.95rem;
-  }
-
-  .amass__timeline-desc {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    max-width: 28ch;
-  }
-
-  .amass__timeline-bubble {
-    padding: 10px 12px;
-    font-size: 0.85rem;
-    line-height: 1.45;
-  }
-
-  /* The pointer flips from a sideways tail (aimed at a toggle beside it) to
-     a vertical one aimed at the toggle above -- every bubble opens below
-     its item now, so both variants point the same way. Every property the
-     vertical version set is restated in full -- a partial reset at a lower
-     specificity than the vertical item-variant rules would lose to them
-     regardless of source order, since those selectors are just as specific. */
-  .amass__timeline-item--left .amass__timeline-bubble::before,
-  .amass__timeline-item--right .amass__timeline-bubble::before {
-    top: -8px;
-    bottom: auto;
-    left: 50%;
-    right: auto;
-    border-bottom: 8px solid var(--color-card-border);
-    border-top: none;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    transform: translateX(-50%);
-  }
-
-  .amass__timeline-item--left .amass__timeline-bubble::after,
-  .amass__timeline-item--right .amass__timeline-bubble::after {
-    top: -6.5px;
-    bottom: auto;
-    left: 50%;
-    right: auto;
-    border-bottom: 7px solid var(--color-bg);
-    border-top: none;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    transform: translateX(-50%);
-  }
-
-  /* The middle column of each row reverses the stack: the bubble opens
-     above the line and the icon+text content sits below it, so the row
-     reads icon-top / icon-bottom / icon-top across each set of three.
-     Only content and the bubble swap rows -- the toggle stays put in the
-     middle row for all six items, so the divider lines and the pulsing
-     color animation (keyed to nth-of-type) are unaffected. */
-  .amass__timeline-item--flipped .amass__timeline-content {
-    grid-row: 3;
-  }
-
-  .amass__timeline-item--flipped .amass__timeline-bubble {
-    grid-row: 1;
-  }
-
-  /* The pointer mirrors too: it now hangs off the bubble's bottom edge,
-     pointing down at the toggle below instead of up at one above. */
-  .amass__timeline-item--flipped .amass__timeline-bubble::before {
-    top: auto;
-    bottom: -8px;
-    border-top: 8px solid var(--color-card-border);
-    border-bottom: none;
-  }
-
-  .amass__timeline-item--flipped .amass__timeline-bubble::after {
-    top: auto;
-    bottom: -6.5px;
-    border-top: 7px solid var(--color-bg);
-    border-bottom: none;
-  }
-
-  /* The vertical layout gets its top/bottom breathing room from the first
-     and last item's own padding (see the comment on .amass__timeline-block);
-     horizontally there's no equivalent last item, so the block resumes
-     owning its own bottom padding -- a fixed 60px per spec, matching
-     .amass__timeline's own margin-top above. */
-  .amass__timeline-block {
-    padding-bottom: 60px;
-  }
+  .amass__timeline-year { font-size: 1rem; }
+  .amass__timeline-label { font-size: 1rem; }
+  .amass__timeline-desc { font-size: .95rem; }
 
   /* Preserve the established desktop constellation height while allowing the
      new, wider artwork to extend across the full framed section. */
