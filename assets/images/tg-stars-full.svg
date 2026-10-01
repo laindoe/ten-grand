@@ -18,65 +18,24 @@
         filter: drop-shadow(0 0 5px rgba(243, 243, 244, .68));
       }
 
-      #G .st0, #_x30_ .st0, #_x31_ .st0 {
-        filter:
-          drop-shadow(0 0 10px rgba(243, 243, 244, .95))
-          drop-shadow(0 0 22px rgba(243, 243, 244, .72));
-        animation: starFlashLarge 4.8s ease-in-out infinite;
+      /* Keep the star cores bright; animate only their surrounding glow. */
+      #G .st0, #G .st2, #_x30_ .st0, #_x30_ .st2,
+      #_x31_ .st0, #_x31_ .st2 { filter: none; }
+      .star-halo { fill: url(#star-halo-gradient); animation: starGlow 4.8s ease-in-out infinite; }
+      @keyframes starGlow {
+        0%, 100% { opacity: 0; }
+        42%, 58% { opacity: 1; }
       }
-
-      #G .st2, #_x30_ .st2, #_x31_ .st2 {
-        filter:
-          drop-shadow(0 0 7px rgba(243, 243, 244, .9))
-          drop-shadow(0 0 14px rgba(243, 243, 244, .58));
-        animation: starFlashSmall 4.1s ease-in-out infinite;
-      }
-
-      #G .st0:nth-child(3n), #G .st2:nth-child(3n),
-      #_x30_ .st0:nth-child(3n), #_x30_ .st2:nth-child(3n),
-      #_x31_ .st0:nth-child(3n), #_x31_ .st2:nth-child(3n) { animation-delay: -1.7s; }
-      #G .st0:nth-child(4n), #G .st2:nth-child(4n),
-      #_x30_ .st0:nth-child(4n), #_x30_ .st2:nth-child(4n),
-      #_x31_ .st0:nth-child(4n), #_x31_ .st2:nth-child(4n) { animation-delay: -3.2s; }
-      #G .st0:nth-child(5n), #G .st2:nth-child(5n),
-      #_x30_ .st0:nth-child(5n), #_x30_ .st2:nth-child(5n),
-      #_x31_ .st0:nth-child(5n), #_x31_ .st2:nth-child(5n) { animation-delay: -4.4s; }
-
-      @keyframes starFlashLarge {
-        0%, 100% {
-          opacity: .4;
-          filter:
-            drop-shadow(0 0 0 rgba(243, 243, 244, 0))
-            drop-shadow(0 0 0 rgba(243, 243, 244, 0));
-        }
-        42%, 58% {
-          opacity: 1;
-          filter:
-            drop-shadow(0 0 10px rgba(243, 243, 244, .95))
-            drop-shadow(0 0 22px rgba(243, 243, 244, .72));
-        }
-      }
-
-      @keyframes starFlashSmall {
-        0%, 100% {
-          opacity: .4;
-          filter:
-            drop-shadow(0 0 0 rgba(243, 243, 244, 0))
-            drop-shadow(0 0 0 rgba(243, 243, 244, 0));
-        }
-        44%, 56% {
-          opacity: 1;
-          filter:
-            drop-shadow(0 0 7px rgba(243, 243, 244, .9))
-            drop-shadow(0 0 14px rgba(243, 243, 244, .58));
-        }
-      }
-
       @media (prefers-reduced-motion: reduce) {
-        #G .st0, #G .st2, #_x30_ .st0, #_x30_ .st2,
-        #_x31_ .st0, #_x31_ .st2 { animation: none; opacity: 1; }
+        .star-halo { animation: none; opacity: .7; }
       }
     </style>
+    <radialGradient id="star-halo-gradient">
+      <stop offset="0" stop-color="#f3f3f4" stop-opacity=".95"/>
+      <stop offset=".2" stop-color="#f3f3f4" stop-opacity=".65"/>
+      <stop offset=".5" stop-color="#f3f3f4" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#f3f3f4" stop-opacity="0"/>
+    </radialGradient>
   </defs>
   <g id="ambient_stars">
     <circle class="st0" cx="1969.5" cy="1134.3" r="7.5"/>
@@ -287,6 +246,25 @@
     <circle class="st0" cx="2378.4" cy="926.9" r="7.5"/>
   </g>
   <g id="G" transform="translate(0, 55.55)">
+    <circle class="star-halo" cx="1701.5" cy="1218.2" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1567.1" cy="957.6" r="23" style="animation-duration:4.1s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1714.5" cy="1136.1" r="23" style="animation-duration:4.1s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1710.8" cy="1168.2" r="32" style="animation-duration:4.8s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1399.2" cy="1134.8" r="32" style="animation-duration:4.8s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1526.2" cy="966.3" r="32" style="animation-duration:4.8s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1454.4" cy="1097.5" r="32" style="animation-duration:4.8s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1420.5" cy="1208.2" r="32" style="animation-duration:4.8s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1452.9" cy="999.2" r="32" style="animation-duration:4.8s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1524.3" cy="1282.4" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1642.6" cy="1272.2" r="23" style="animation-duration:4.1s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1666.5" cy="1253.7" r="23" style="animation-duration:4.1s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1416" cy="1034.8" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1465.3" cy="1047.7" r="23" style="animation-duration:4.1s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1494.5" cy="997.9" r="23" style="animation-duration:4.1s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1458.3" cy="1175.3" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1450.6" cy="1246.7" r="23" style="animation-duration:4.1s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1660.8" cy="1215.2" r="32" style="animation-duration:4.8s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1499.2" cy="1268.5" r="32" style="animation-duration:4.8s;animation-delay:-1.7s"/>
     <circle class="st1" cx="1665.4" cy="977.2" r="2.2"/>
     <circle class="st1" cx="1612" cy="958.2" r="2.2"/>
     <circle class="st1" cx="1696" cy="1019.3" r="2.2"/>
@@ -322,6 +300,26 @@
     <circle class="st0" cx="1499.2" cy="1268.5" r="7.5"/>
   </g>
   <g id="_x30_" transform="translate(0, 5.55)">
+    <circle class="star-halo" cx="1592.7" cy="181.4" r="32" style="animation-duration:4.8s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1508" cy="323.2" r="32" style="animation-duration:4.8s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1718.2" cy="181.6" r="32" style="animation-duration:4.8s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1805.4" cy="318.8" r="32" style="animation-duration:4.8s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1724.5" cy="469.5" r="32" style="animation-duration:4.8s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1588.9" cy="472.2" r="32" style="animation-duration:4.8s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1567.4" cy="289.9" r="23" style="animation-duration:4.1s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1743.9" cy="367.3" r="23" style="animation-duration:4.1s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1806.1" cy="352.2" r="23" style="animation-duration:4.1s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1785.6" cy="235.5" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1733.6" cy="224.1" r="23" style="animation-duration:4.1s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1573.5" cy="406" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1773.5" cy="438" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1542" cy="444.6" r="23" style="animation-duration:4.1s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1520.9" cy="247.6" r="23" style="animation-duration:4.1s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1514.2" cy="385.4" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1615.1" cy="169.7" r="23" style="animation-duration:4.1s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1701.7" cy="171.1" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1612.4" cy="486.8" r="23" style="animation-duration:4.1s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1704.7" cy="484.6" r="23" style="animation-duration:4.1s;animation-delay:-1.7s"/>
     <circle class="st1" cx="1778.7" cy="383.6" r="2.2"/>
     <circle class="st0" cx="1592.7" cy="181.4" r="7.5"/>
     <circle class="st0" cx="1508" cy="323.2" r="7.5"/>
@@ -362,6 +360,16 @@
     <circle class="st1" cx="1755" cy="211.1" r="2.2"/>
   </g>
   <g id="_x31_" transform="translate(0, 5.55)">
+    <circle class="star-halo" cx="1409.5" cy="367.5" r="32" style="animation-duration:4.8s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1411.1" cy="228.4" r="32" style="animation-duration:4.8s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1361.8" cy="282.3" r="32" style="animation-duration:4.8s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1361.4" cy="484" r="32" style="animation-duration:4.8s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1412.6" cy="291.7" r="23" style="animation-duration:4.1s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1377.1" cy="220.6" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
+    <circle class="star-halo" cx="1413.3" cy="166.7" r="23" style="animation-duration:4.1s;animation-delay:-3.2s"/>
+    <circle class="star-halo" cx="1357.4" cy="424.7" r="23" style="animation-duration:4.1s;animation-delay:-1.7s"/>
+    <circle class="star-halo" cx="1357.6" cy="336.1" r="23" style="animation-duration:4.1s;animation-delay:-4.4s"/>
+    <circle class="star-halo" cx="1410.4" cy="487.7" r="23" style="animation-duration:4.1s;animation-delay:0s"/>
     <circle class="st1" cx="1300" cy="273.6" r="2.2"/>
     <circle class="st0" cx="1409.5" cy="367.5" r="7.5"/>
     <circle class="st0" cx="1411.1" cy="228.4" r="7.5"/>
