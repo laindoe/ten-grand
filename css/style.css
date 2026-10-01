@@ -995,22 +995,19 @@ a {
 }
 
 .middle-path__effects,
-.middle-path__destination-overlay,
 .middle-path__art {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.middle-path__effects,
-.middle-path__destination-overlay {
+.middle-path__effects {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
 .middle-path__effects { z-index: 0; }
-.middle-path__destination-overlay { z-index: 2; }
 
 .middle-path__art {
   position: relative;
@@ -1019,15 +1016,14 @@ a {
 
 .middle-path__plate { z-index: 3; }
 
-/* The destination is composited below the source illustration so the tunnel,
-   rails, signs, and bus naturally mask it. */
-.middle-path__art #mp-sun-group { visibility: hidden; }
-.middle-path__effects .mp-tunnel-destination { display: none; }
-.middle-path__destination-overlay .mp-orb-core { fill: url(#mp-overlay-orb); }
-.middle-path__destination-overlay .mp-orb-glow {
+/* Keep the replacement destination inside the original tunnel group so it
+   shares the source artwork's viewport, clipping, and responsive geometry. */
+.middle-path__art #mp-sun-group > :not(.mp-new-destination) { display: none; }
+.middle-path__art .mp-orb-core { fill: url(#mp-orb); }
+.middle-path__art .mp-orb-glow {
   fill: #00b0e0;
   opacity: .58;
-  filter: url(#mp-overlay-orb-glow);
+  filter: url(#mp-orb-glow);
 }
 .middle-path__effects .mp-road-centre {
   fill: none;
@@ -1038,7 +1034,7 @@ a {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .middle-path__destination-overlay .mp-orb-rise {
+  .middle-path__art .mp-orb-rise {
     animation: mpOrbArc 11s linear .35s infinite backwards;
     animation-play-state: paused;
   }
@@ -1051,7 +1047,7 @@ a {
   78%, 100% { transform: translateY(115px); }
 }
 
-.middle-path__scene.is-visible .middle-path__destination-overlay .mp-orb-rise {
+.middle-path__scene.is-visible .middle-path__art .mp-orb-rise {
   animation-play-state: running;
 }
 

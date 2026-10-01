@@ -422,59 +422,9 @@
 
       <div class="middle-path__scene reveal">
         <svg class="middle-path__effects" viewBox="0 -120 1272.56 945.95" aria-hidden="true">
-          <defs>
-            <clipPath id="mp-effects-tunnel-window">
-              <path d="M564.23 324.26V289.02c0-36.43 30.82-66.06 68.71-66.06s68.71 29.63 68.71 66.06v35.24Z"/>
-            </clipPath>
-            <radialGradient id="mp-effects-orb" cx="50%" cy="50%" r="50%">
-              <stop offset=".13" stop-color="#be2026"/>
-              <stop offset=".52" stop-color="#e5dc16"/>
-              <stop offset=".75" stop-color="#007938"/>
-              <stop offset=".93" stop-color="#00b0e0"/>
-            </radialGradient>
-            <filter id="mp-effects-orb-glow" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
-              <feGaussianBlur stdDeviation="9"/>
-            </filter>
-          </defs>
-          <g class="mp-tunnel-destination" clip-path="url(#mp-effects-tunnel-window)">
-            <rect x="560" y="218" width="146" height="111" fill="#141414"/>
-            <circle class="mp-orb-glow" cx="632.94" cy="273.5" r="46"/>
-            <circle class="mp-orb-core" cx="632.94" cy="273.5" r="46"/>
-            <g class="mp-color-mountains">
-              <path d="M562 315L579 302L588 307L603 294L619 306L633 299L649 311L663 294L680 307L691 300L704 313V328H562Z" fill="#fb2f7b"/>
-              <path d="M561 309L572 299L584 303L591 317L602 310L612 313L620 325H561Z" fill="#91b823"/>
-              <path d="M651 323L660 310L670 315L680 304L690 310L703 303L706 328H651Z" fill="#91b823"/>
-              <path d="M562 321L576 315L589 319L603 311L616 318L629 313L643 321L656 315L669 320L684 313L703 320V329H562Z" fill="#141414"/>
-              <path d="M562 315L579 302L588 307L603 294L619 306L633 299L649 311L663 294L680 307L691 300L704 313" fill="none" stroke="#f3f3f4" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-            </g>
-          </g>
           <path class="mp-road-centre" d="M632.94 324V1620"/>
         </svg>
         {% include middle-path-svg.html %}
-        <svg class="middle-path__destination-overlay" viewBox="0 -120 1272.56 945.95" aria-hidden="true">
-          <defs>
-            <clipPath id="mp-overlay-tunnel-window">
-              <path d="M564.23 324.26V289.02c0-36.43 30.82-66.06 68.71-66.06s68.71 29.63 68.71 66.06v35.24Z"/>
-            </clipPath>
-            <radialGradient id="mp-overlay-orb" cx="50%" cy="50%" r="50%">
-              <stop offset=".13" stop-color="#be2026"/>
-              <stop offset=".52" stop-color="#e5dc16"/>
-              <stop offset=".75" stop-color="#007938"/>
-              <stop offset=".93" stop-color="#00b0e0"/>
-            </radialGradient>
-            <filter id="mp-overlay-orb-glow" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
-              <feGaussianBlur stdDeviation="9"/>
-            </filter>
-          </defs>
-          <g class="mp-tunnel-destination" clip-path="url(#mp-overlay-tunnel-window)">
-            <rect x="560" y="218" width="146" height="111" fill="#141414"/>
-            <g class="mp-orb-rise">
-              <circle class="mp-orb-glow" cx="632.94" cy="273.5" r="46"/>
-              <circle class="mp-orb-core" cx="632.94" cy="273.5" r="46"/>
-            </g>
-            <image class="mp-color-mountains" href="art/bridge-mountains.svg" x="560" y="286" width="146" height="42" preserveAspectRatio="none"/>
-          </g>
-        </svg>
         <span class="middle-path__plate" aria-hidden="true">FREEDOM4ALL</span>
       </div>
 
