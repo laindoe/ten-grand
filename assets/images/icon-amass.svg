@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="58" height="51" viewBox="88 95 780 686" fill="none">
+  <g stroke="#F3F3F4" stroke-linecap="butt" stroke-linejoin="miter">
+    <!-- Concentric semicircles and evenly mirrored rays. -->
+    <path d="M515 233a201 201 0 0 1 0 402" stroke-width="15"/>
+    <path d="M515 296a138 138 0 0 1 0 276" stroke-width="15"/>
+    <path d="M515 359a75 75 0 0 1 0 150" stroke-width="15"/>
+    <path d="M716 434h151 M680 269l111-111 M680 599l111 111" stroke-width="15"/>
+    <!-- 9.924828 × 58 / 780 = 0.738px, matching the target crosshair. -->
+    <path d="M606 215l37-89 M729 345l94-39 M729 523l94 39 M606 653l37 89" stroke-width="9.924828"/>
+    <!-- Connected door and projection cone with a thin shared divider. -->
+    <path d="M260 305V563" stroke-width="9.924828"/>
+    <path d="M96 305H260L515 113V755L260 563H96Z" stroke-width="15"/>
+  </g>
+</svg>

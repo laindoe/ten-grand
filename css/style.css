@@ -1985,6 +1985,13 @@ a {
   margin-inline: auto;
 }
 
+.amass__icon {
+  display: block;
+  width: 58px;
+  height: auto;
+  margin: 40px auto 0;
+}
+
 /* Each content block is full-bleed with its own bottom rule, standing
    in for the "divider below this block" requirement — same technique
    as .amass__header, just centered text instead of left-aligned. */
