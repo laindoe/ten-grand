@@ -2270,27 +2270,15 @@ a {
   margin-inline: auto;
 }
 
-/* Same interaction-cue treatment as .dilemma__cue/.route__cue (reuses
-   dilemma-cue-pulse by name) -- in normal flow here, not absolutely
-   positioned, since the header is just a simple centered stack. Now
-   trails the icon button, so its top margin is the icon-to-cue gap. */
-.amass__cue {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: var(--color-vandalism);
-  margin: 14px 0 0;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .amass__cue {
-    animation: dilemma-cue-pulse 2s ease-in-out infinite;
-  }
-}
-
+/* Icon + cue are now a single clickable control: the button lays
+   them out as a centered column, and the cue's accessible text is
+   what names the button (no separate aria-label needed). */
 .amass__icon-button {
   appearance: none;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
   margin: 40px auto 0;
   padding: 8px;
   background: none;
@@ -2304,19 +2292,19 @@ a {
   height: auto;
 }
 
-@keyframes amassIconGlow {
-  0%,
-  100% {
-    filter: drop-shadow(0 0 2px rgba(243, 243, 244, 0.25));
-  }
-  50% {
-    filter: drop-shadow(0 0 8px rgba(243, 243, 244, 0.65));
-  }
+/* Same interaction-cue treatment as .dilemma__cue/.route__cue (reuses
+   dilemma-cue-pulse by name) -- in normal flow here, not absolutely
+   positioned, since the header is just a simple centered stack. */
+.amass__cue {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-vandalism);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .amass__icon {
-    animation: amassIconGlow 2.6s ease-in-out infinite;
+  .amass__cue {
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
   }
 }
 
