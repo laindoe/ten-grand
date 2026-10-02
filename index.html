@@ -774,46 +774,96 @@
   <!-- Share-your-voice modal for the AMASS Comm(unity) megaphone -->
   <div class="modal" id="amass-modal" aria-hidden="true">
     <div class="modal__backdrop" data-modal-close></div>
-    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="amass-modal-title">
+    <div class="modal__panel amass-flow__panel" role="dialog" aria-modal="true" aria-labelledby="amass-modal-title">
+      <button type="button" class="amass-flow__back" aria-label="Go back" hidden>&larr;</button>
       <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
-      <h3 class="modal__title" id="amass-modal-title">Share Your Voice</h3>
+      <h3 class="modal__title" id="amass-modal-title">Add Your Voice</h3>
       <div class="modal__body">
-        <form id="amass-voice-form">
-          <p>
-            <label for="amass-name">Name</label><br>
-            <input id="amass-name" name="name" type="text" required>
-          </p>
-          <p>
-            <label for="amass-social-platform">Social platform</label><br>
-            <input id="amass-social-platform" name="social_platform" type="text" required>
-          </p>
-          <p>
-            <label for="amass-social-handle">Social handle</label><br>
-            <input id="amass-social-handle" name="social_handle" type="text" required>
-          </p>
-          <p>
-            <label for="amass-role">Role</label><br>
-            <select id="amass-role" name="role" required>
-              <option value="">Select a role</option>
-              <option value="create">Create</option>
-              <option value="build">Build</option>
-              <option value="fund">Fund</option>
-              <option value="support">Support</option>
+        <form id="amass-voice-form" novalidate>
+          <section class="amass-flow__step" data-amass-step="1">
+            <p class="amass-flow__intro">AMASS Comm(unity) is about being yourself while building something bigger together. If you&rsquo;re down to contribute what you have, share your voice.</p>
+            <button type="button" class="amass-flow__cta" data-amass-next>Get Started</button>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="2" hidden>
+            <p class="amass-flow__helper">Use your real name or an alias. It&rsquo;s up to you.</p>
+            <label class="amass-flow__label" for="amass-name">Name / Alias</label>
+            <input class="amass-flow__field" id="amass-name" name="name" type="text" placeholder="Your name or alias" autocomplete="name" required>
+            <button type="button" class="amass-flow__cta" data-amass-next disabled>Next</button>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="3" hidden>
+            <div class="amass-role-grid" role="radiogroup" aria-label="How do you show up?">
+              <label class="amass-role-card">
+                <input type="radio" name="role" value="create" required>
+                <span class="amass-role-card__content"><strong>I Create</strong><span>Artists and creatives making the work.</span></span>
+              </label>
+              <label class="amass-role-card">
+                <input type="radio" name="role" value="build">
+                <span class="amass-role-card__content"><strong>I Build</strong><span>People creating the infrastructure that helps the work move.</span></span>
+              </label>
+              <label class="amass-role-card">
+                <input type="radio" name="role" value="fund">
+                <span class="amass-role-card__content"><strong>I Fund</strong><span>People and organizations putting financial resources behind ideas.</span></span>
+              </label>
+              <label class="amass-role-card">
+                <input type="radio" name="role" value="support">
+                <span class="amass-role-card__content"><strong>I Support</strong><span>Audiences and community members helping culture grow.</span></span>
+              </label>
+            </div>
+            <button type="button" class="amass-flow__cta" data-amass-next disabled>Next</button>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="4" hidden>
+            <p class="amass-flow__helper">Optional &middot; 200 characters</p>
+            <textarea class="amass-flow__field amass-flow__textarea" id="amass-what-detail" name="what_detail" maxlength="200"></textarea>
+            <p class="amass-flow__counter"><span data-counter-for="amass-what-detail">0</span>/200</p>
+            <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="5" hidden>
+            <p class="amass-flow__helper">Optional &middot; get to the heart of why you do what you do.</p>
+            <textarea class="amass-flow__field amass-flow__textarea" id="amass-why-detail" name="why_detail" maxlength="200"></textarea>
+            <p class="amass-flow__counter"><span data-counter-for="amass-why-detail">0</span>/200</p>
+            <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="6" hidden>
+            <p class="amass-flow__helper">Add a social platform and your handle so others in the Comm(unity) can connect.</p>
+            <label class="amass-flow__label" for="amass-social-platform">Social Platform</label>
+            <select class="amass-flow__field" id="amass-social-platform" name="social_platform">
+              <option value="">Select a platform</option>
+              <option value="instagram">Instagram</option>
+              <option value="facebook">Facebook</option>
+              <option value="x">X</option>
+              <option value="threads">Threads</option>
+              <option value="tiktok">TikTok</option>
             </select>
-          </p>
-          <p>
-            <label for="amass-message">Message (optional)</label><br>
-            <textarea id="amass-message" name="message" rows="4" cols="30"></textarea>
-          </p>
-          <p id="amass-form-error" role="alert" hidden></p>
-          <p><button type="submit" class="modal__cta">Submit your voice</button></p>
+            <label class="amass-flow__label" for="amass-social-handle">Social Handle</label>
+            <input class="amass-flow__field" id="amass-social-handle" name="social_handle" type="text" placeholder="@yourhandle" autocomplete="off">
+            <p class="amass-flow__error" id="amass-social-error" role="alert" hidden>Please add both a platform and handle, or leave both blank.</p>
+            <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="7" hidden>
+            <div class="amass-flow__review" id="amass-review"></div>
+            <p class="amass-flow__error" id="amass-form-error" role="alert" hidden>Something went wrong. Please try again.</p>
+            <button type="submit" class="amass-flow__cta">Add My Voice</button>
+          </section>
         </form>
+
+        <section class="amass-flow__step amass-flow__success" data-amass-step="8" hidden>
+          <p class="amass-flow__success-welcome">Welcome to the Comm(unity).</p>
+          <p class="amass-flow__voice-count" id="amass-voice-count" hidden></p>
+          <p class="amass-flow__helper">Thank you for contributing your voice. Together we build a stronger, more connected community.</p>
+          <button type="button" class="amass-flow__cta" data-modal-close>Done</button>
+        </section>
       </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=2"></script>
+  <script src="js/main.js?v=3"></script>
 </body>
 </html>

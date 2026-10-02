@@ -3310,6 +3310,290 @@ a {
   content: ' \2192';
 }
 
+/* AMASS Add Your Voice flow. Everything is scoped to the existing AMASS
+   modal so the engine modal and the surrounding site retain their styling. */
+#amass-modal .amass-flow__panel {
+  width: min(100%, 430px);
+  max-width: 430px;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: 46px 24px 24px;
+  background: #101314;
+}
+
+#amass-modal .modal__title {
+  max-width: 330px;
+  margin: 0 auto 18px;
+  padding: 0;
+  font-family: 'Arial Narrow', var(--font-display);
+  font-size: clamp(1.85rem, 7vw, 2.55rem);
+  font-stretch: condensed;
+  line-height: 0.98;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+#amass-modal .modal__body {
+  margin: 0;
+}
+
+.amass-flow__back {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.amass-flow__step {
+  min-height: min(430px, calc(100dvh - 190px));
+  display: flex;
+  flex-direction: column;
+  animation: amassStepIn 0.28s var(--ease-out) both;
+}
+
+.amass-flow__step[hidden] {
+  display: none !important;
+}
+
+.amass-flow__intro,
+.amass-flow__helper {
+  color: var(--color-text);
+  text-align: center;
+}
+
+.amass-flow__intro {
+  max-width: 33ch;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.amass-flow__helper {
+  max-width: 36ch;
+  margin: 0 auto 18px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.amass-flow__label {
+  display: block;
+  margin: 0 0 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.amass-flow__field {
+  width: 100%;
+  border: 1px solid rgba(243, 243, 244, 0.72);
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--color-text);
+  padding: 12px 13px;
+  font: inherit;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.amass-flow__field:focus {
+  border-color: var(--color-text);
+  box-shadow: 0 0 0 1px var(--color-text);
+}
+
+.amass-flow__field::placeholder {
+  color: var(--color-text-muted);
+}
+
+select.amass-flow__field {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.amass-flow__textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.amass-flow__counter {
+  margin-top: 6px;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  text-align: right;
+}
+
+.amass-flow__cta {
+  width: 100%;
+  margin-top: auto;
+  border: 1px solid var(--color-text);
+  border-radius: 2px;
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 14px 18px;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.18s ease, background-color 0.18s ease;
+}
+
+.amass-flow__cta::after {
+  content: '  \2192';
+  margin-left: 8px;
+  font-size: 1rem;
+}
+
+.amass-flow__cta:hover,
+.amass-flow__cta:focus-visible {
+  background: #fff;
+}
+
+.amass-flow__cta:disabled {
+  opacity: 0.22;
+  cursor: not-allowed;
+}
+
+.amass-role-grid {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.amass-role-card {
+  display: block;
+  cursor: pointer;
+}
+
+.amass-role-card input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.amass-role-card__content {
+  display: grid;
+  gap: 1px;
+  padding: 10px 13px;
+  border: 1px solid rgba(243, 243, 244, 0.35);
+  border-radius: 3px;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.amass-role-card__content strong {
+  font-family: 'Arial Narrow', var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.amass-role-card__content span {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+.amass-role-card input:checked + .amass-role-card__content,
+.amass-role-card input:focus-visible + .amass-role-card__content {
+  border-color: var(--color-text);
+  background: rgba(243, 243, 244, 0.06);
+}
+
+.amass-flow__step[data-amass-step='2'] .amass-flow__field,
+.amass-flow__step[data-amass-step='6'] .amass-flow__field + .amass-flow__label {
+  margin-top: 18px;
+}
+
+.amass-flow__error {
+  margin-top: 10px;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.amass-flow__review {
+  display: grid;
+  gap: 13px;
+  margin-bottom: 22px;
+}
+
+.amass-flow__review-item {
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(243, 243, 244, 0.25);
+}
+
+.amass-flow__review-item strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.amass-flow__review-item p {
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.amass-flow__success {
+  justify-content: center;
+  text-align: center;
+}
+
+.amass-flow__success-welcome {
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.amass-flow__voice-count {
+  margin: 18px 0;
+  font-size: 0.95rem;
+}
+
+.amass-flow__success .amass-flow__helper {
+  margin-bottom: 28px;
+}
+
+.amass-flow__success .amass-flow__cta::after {
+  content: '';
+}
+
+@keyframes amassStepIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 480px) {
+  #amass-modal {
+    padding: 14px;
+  }
+
+  #amass-modal .amass-flow__panel {
+    max-height: calc(100dvh - 28px);
+    padding: 44px 20px 20px;
+  }
+
+  .amass-flow__step {
+    min-height: min(420px, calc(100dvh - 175px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .amass-flow__step {
+    animation: none;
+  }
+}
+
 body.modal-open {
   overflow: hidden;
 }

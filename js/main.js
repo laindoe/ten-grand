@@ -143,6 +143,7 @@
         modal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
         if (lastFocused) lastFocused.focus();
+        modal.dispatchEvent(new CustomEvent('modal:close'));
       }
 
       trigger.addEventListener('click', openModal);
@@ -162,39 +163,218 @@
     const form = document.getElementById('amass-voice-form');
     if (!modal || !form) return;
 
-    const body = modal.querySelector('.modal__body');
+    const titleEl = modal.querySelector('.modal__title');
+    const backButton = modal.querySelector('.amass-flow__back');
+    const steps = Array.from(modal.querySelectorAll('[data-amass-step]'));
+    const nameInput = form.elements.name;
+    const roleInputs = Array.from(form.elements.role);
+    const whatInput = form.elements.what_detail;
+    const whyInput = form.elements.why_detail;
+    const platformInput = form.elements.social_platform;
+    const handleInput = form.elements.social_handle;
+    const socialError = document.getElementById('amass-social-error');
     const errorEl = document.getElementById('amass-form-error');
     const submitButton = form.querySelector('[type="submit"]');
-    const allowedRoles = new Set(['create', 'build', 'fund', 'support']);
+    const reviewEl = document.getElementById('amass-review');
+    const countEl = document.getElementById('amass-voice-count');
+    const roleConfig = {
+      create: {
+        label: 'I CREATE',
+        verb: 'create',
+        whatTitle: 'WHAT DO YOU CREATE?',
+        whatPlaceholder: 'Tell us what you create...',
+        whyTitle: 'WHY DO YOU CREATE?',
+        whyPlaceholder: 'Tell us why you create...',
+      },
+      build: {
+        label: 'I BUILD',
+        verb: 'build',
+        whatTitle: 'WHAT DO YOU BUILD?',
+        whatPlaceholder: 'Tell us what you build...',
+        whyTitle: 'WHY DO YOU BUILD?',
+        whyPlaceholder: 'Tell us why you build...',
+      },
+      fund: {
+        label: 'I FUND',
+        verb: 'fund',
+        whatTitle: 'WHAT DO YOU FUND?',
+        whatPlaceholder: 'Tell us what you fund...',
+        whyTitle: 'WHY DO YOU FUND?',
+        whyPlaceholder: 'Tell us why you fund...',
+      },
+      support: {
+        label: 'I SUPPORT',
+        verb: 'support',
+        whatTitle: 'WHAT DO YOU SUPPORT?',
+        whatPlaceholder: 'Tell us what you support...',
+        whyTitle: 'WHY DO YOU SUPPORT?',
+        whyPlaceholder: 'Tell us why you support...',
+      },
+    };
+    const titles = {
+      1: 'ADD YOUR VOICE',
+      2: 'WHAT SHOULD WE CALL YOU?',
+      3: 'HOW DO YOU SHOW UP?',
+      6: 'WHERE CAN PEOPLE FIND YOU?',
+      7: 'READY TO ADD YOUR VOICE?',
+      8: 'YOUR VOICE HAS BEEN ADDED.',
+    };
+    let currentStep = 1;
     let isSubmitting = false;
 
-    function showError() {
-      errorEl.textContent = 'Something went wrong. Please try again.';
-      errorEl.hidden = false;
+    function selectedRole() {
+      const selected = roleInputs.find((input) => input.checked);
+      return selected ? selected.value : '';
     }
+
+    function socialIsValid() {
+      return Boolean(platformInput.value) === Boolean(handleInput.value.trim());
+    }
+
+    function setNextState() {
+      const next = modal.querySelector(`[data-amass-step="${currentStep}"] [data-amass-next]`);
+      if (!next) return;
+      if (currentStep === 2) next.disabled = !nameInput.value.trim();
+      if (currentStep === 3) next.disabled = !selectedRole();
+      if (currentStep === 6) next.disabled = !socialIsValid();
+    }
+
+    function updateRoleQuestions() {
+      const config = roleConfig[selectedRole()];
+      if (!config) return;
+      whatInput.placeholder = config.whatPlaceholder;
+      whyInput.placeholder = config.whyPlaceholder;
+    }
+
+    function addReviewItem(label, value) {
+      if (!value) return;
+      const item = document.createElement('div');
+      item.className = 'amass-flow__review-item';
+      const term = document.createElement('strong');
+      term.textContent = label;
+      const detail = document.createElement('p');
+      detail.textContent = value;
+      item.append(term, detail);
+      reviewEl.appendChild(item);
+    }
+
+    function buildReview() {
+      const config = roleConfig[selectedRole()];
+      reviewEl.replaceChildren();
+      addReviewItem('Name', nameInput.value.trim());
+      addReviewItem('Role', config.label);
+      addReviewItem(`What you ${config.verb}`, whatInput.value.trim());
+      addReviewItem(`Why you ${config.verb}`, whyInput.value.trim());
+      if (platformInput.value && handleInput.value.trim()) {
+        const label = platformInput.options[platformInput.selectedIndex].textContent;
+        addReviewItem('Find me', `${label} · ${handleInput.value.trim()}`);
+      }
+    }
+
+    function titleForStep(step) {
+      const config = roleConfig[selectedRole()];
+      if (step === 4 && config) return config.whatTitle;
+      if (step === 5 && config) return config.whyTitle;
+      return titles[step] || '';
+    }
+
+    function showStep(step) {
+      currentStep = step;
+      steps.forEach((panel) => {
+        const isCurrent = Number(panel.dataset.amassStep) === step;
+        panel.hidden = !isCurrent;
+        panel.classList.toggle('is-active', isCurrent);
+      });
+      form.hidden = step === 8;
+      titleEl.textContent = titleForStep(step);
+      backButton.hidden = step === 1 || step === 8;
+      errorEl.hidden = true;
+      socialError.hidden = true;
+      if (step === 4 || step === 5) updateRoleQuestions();
+      if (step === 7) buildReview();
+      setNextState();
+    }
+
+    function resetFlow() {
+      form.reset();
+      isSubmitting = false;
+      submitButton.disabled = false;
+      errorEl.hidden = true;
+      socialError.hidden = true;
+      countEl.hidden = true;
+      countEl.textContent = '';
+      modal.querySelectorAll('[data-counter-for]').forEach((counter) => {
+        counter.textContent = '0';
+      });
+      showStep(1);
+    }
+
+    async function loadApprovedCount() {
+      try {
+        const { count, error } = await window.tenGrandSupabase
+          .from('comm_voices')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'approved');
+        if (error || typeof count !== 'number') return;
+        countEl.textContent = `${count.toLocaleString('en-US')} voices heard`;
+        countEl.hidden = false;
+      } catch (error) {
+        console.error('Ten Grand voice count failed', error);
+      }
+    }
+
+    modal.querySelectorAll('[data-amass-next]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (currentStep === 2 && !nameInput.value.trim()) return;
+        if (currentStep === 3 && !selectedRole()) return;
+        if (currentStep === 6 && !socialIsValid()) {
+          socialError.hidden = false;
+          return;
+        }
+        showStep(currentStep + 1);
+      });
+    });
+
+    backButton.addEventListener('click', () => {
+      if (currentStep > 1 && currentStep < 8) showStep(currentStep - 1);
+    });
+
+    nameInput.addEventListener('input', setNextState);
+    roleInputs.forEach((input) => input.addEventListener('change', setNextState));
+    [platformInput, handleInput].forEach((input) => {
+      input.addEventListener('input', () => {
+        socialError.hidden = true;
+        setNextState();
+      });
+      input.addEventListener('change', () => {
+        socialError.hidden = true;
+        setNextState();
+      });
+    });
+
+    [whatInput, whyInput].forEach((input) => {
+      const counter = modal.querySelector(`[data-counter-for="${input.id}"]`);
+      input.addEventListener('input', () => {
+        counter.textContent = String(input.value.length);
+      });
+    });
+
+    modal.addEventListener('modal:close', resetFlow);
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      if (isSubmitting) return;
+      if (currentStep !== 7 || isSubmitting) return;
 
-      const formData = new FormData(form);
       const payload = {
-        name: String(formData.get('name') || '').trim(),
-        social_platform: String(formData.get('social_platform') || '').trim(),
-        social_handle: String(formData.get('social_handle') || '').trim(),
-        role: String(formData.get('role') || ''),
-        message: String(formData.get('message') || '').trim() || null,
+        name: nameInput.value.trim(),
+        role: selectedRole(),
+        what_detail: whatInput.value.trim() || null,
+        why_detail: whyInput.value.trim() || null,
+        social_platform: platformInput.value || null,
+        social_handle: handleInput.value.trim() || null,
       };
 
-      if (
-        !payload.name ||
-        !payload.social_platform ||
-        !payload.social_handle ||
-        !allowedRoles.has(payload.role)
-      ) {
-        showError();
-        return;
-      }
+      if (!payload.name || !roleConfig[payload.role] || !socialIsValid()) return;
 
       errorEl.hidden = true;
       isSubmitting = true;
@@ -209,14 +389,17 @@
 
         if (error) throw error;
 
-        body.innerHTML = '<p><strong>YOUR VOICE HAS BEEN HEARD.</strong></p><p><strong>Welcome to the Comm(unity).</strong></p>';
+        showStep(8);
+        loadApprovedCount();
       } catch (error) {
         console.error('Ten Grand voice submission failed', error);
-        showError();
+        errorEl.hidden = false;
         isSubmitting = false;
         submitButton.disabled = false;
       }
     });
+
+    resetFlow();
   }
 
   // Bubbles are independent — opening one does not close any others,
