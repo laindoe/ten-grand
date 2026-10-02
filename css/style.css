@@ -2085,6 +2085,33 @@ a {
   margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
 }
 
+/* On mobile the fixed --divider-gap reads as a much bigger gap below the
+   ripples than the scene's own proportional space above the clouds,
+   since the artwork itself shrinks with the viewport but that margin
+   doesn't. Below 768px, replace it with a margin sized so the
+   ripples-to-divider gap matches the divider-to-clouds gap, in the same
+   proportion as the SVG's own internal spacing: the clouds sit at 5.860%
+   of the viewBox width down from the top (200.014/3413.142), the
+   ripples' own bbox already leaves 1.938% of that below it
+   (66.143/3413.142), so the margin needs to add the remaining 3.922% --
+   expressed as vw rather than cqw: cqw can't cleanly resolve against
+   this element's own width when it's also the element declaring
+   container-type (self-reference), and testing it here produced a
+   margin well under half of what was declared. vw has no such
+   ambiguity -- the small fixed term corrects for .site-frame's own
+   1px border, which isn't part of the SVG's proportional space.
+   Calibrated against a live measurement at 390px wide, waiting for
+   the .reveal transition to finish settling first -- measuring mid-
+   transition (it animates transform: translateY, which doesn't
+   affect sibling layout but does skew getBoundingClientRect() on the
+   animating element and its descendants) gave readings nearly double
+   the true resting gap the first time through. */
+@media (max-width: 767px) {
+  .bridge__scene {
+    margin-bottom: calc(.29px + 3.9222vw);
+  }
+}
+
 .bridge__art {
   display: block;
   width: 100%;
@@ -2284,11 +2311,42 @@ a {
   margin-inline: auto;
 }
 
+/* Icon + cue are now a single clickable control: the button lays
+   them out as a centered column, and the cue's accessible text is
+   what names the button (no separate aria-label needed). */
+.amass__icon-button {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin: 40px auto 0;
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .amass__icon {
   display: block;
   width: 58px;
   height: auto;
-  margin: 40px auto 0;
+}
+
+/* Same interaction-cue treatment as .dilemma__cue/.route__cue (reuses
+   dilemma-cue-pulse by name) -- in normal flow here, not absolutely
+   positioned, since the header is just a simple centered stack. */
+.amass__cue {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-vandalism);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .amass__cue {
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
+  }
 }
 
 /* Each content block is full-bleed with its own bottom rule, standing

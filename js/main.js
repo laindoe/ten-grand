@@ -7,6 +7,10 @@
 //   3. Billboard toggle (Different Roads section) — tap a billboard to
 //      swap in its alternate title/body and reveal the vandalism
 //      placeholder; tap again to return to the default state.
+//   4. Simple static modals — a `[data-modal-open="id"]` trigger opens
+//      the `.modal` with that id. Content lives in the markup itself
+//      (unlike the engine modal above, nothing is populated from data
+//      attributes), so this just handles open/close/focus.
 // ============================================================
 
 (() => {
@@ -115,6 +119,42 @@
     });
 
     return { modal, open: openModal, close: closeModal };
+  }
+
+  // Each [data-modal-open="id"] trigger opens the .modal with that id.
+  // Content is static markup, so unlike initModal there's nothing to
+  // populate — just the same open/close/focus/backdrop/Escape mechanics.
+  function initSimpleModals() {
+    document.querySelectorAll('[data-modal-open]').forEach((trigger) => {
+      const modal = document.getElementById(trigger.dataset.modalOpen);
+      if (!modal) return;
+      let lastFocused = null;
+
+      function openModal() {
+        lastFocused = trigger;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        modal.querySelector('.modal__close').focus();
+      }
+
+      function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        if (lastFocused) lastFocused.focus();
+      }
+
+      trigger.addEventListener('click', openModal);
+      modal.querySelectorAll('[data-modal-close]').forEach((el) => {
+        el.addEventListener('click', closeModal);
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+          closeModal();
+        }
+      });
+    });
   }
 
   // Bubbles are independent — opening one does not close any others,
@@ -730,6 +770,7 @@
     initReveal();
     const routeModal = initModal();
     initRoute(routeModal);
+    initSimpleModals();
     initTimelineBubbles();
     initBillboards();
     initHighwayCars();
