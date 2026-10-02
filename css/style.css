@@ -1011,6 +1011,7 @@ a {
 .middle-path__art {
   position: relative;
   z-index: 1;
+  overflow: visible;
 }
 
 /* Replaced by the untouched extended tunnel export. Keeping the source group
