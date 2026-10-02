@@ -1354,6 +1354,64 @@ a {
   }
 }
 
+/* Mobile-only: clouds drift continuously right-to-left and loop, rather
+   than wobbling in place (desktop keeps the original mpCloudDrift wobble
+   above, unscoped). Each cloud travels from just off the scene's right
+   edge to just off its left edge, then (invisibly, since both ends are
+   off-canvas) snaps back to the right to repeat. --cloud-enter/
+   --cloud-exit are the exact translateX endpoints for each cloud's own
+   width and starting position (computed from the source art's geometry).
+   A negative animation-delay per cloud places it, at the moment the scene
+   becomes visible, at the position it already holds in the source
+   artwork -- avoiding an empty-sky flash -- while also spreading the
+   clouds across the loop so the sky is never without one. Two durations
+   (front/back) give the two nearer (larger) clouds a faster drift than
+   the three farther (smaller) ones, implying depth. */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  @keyframes mpCloudDriftContinuous {
+    0%   { transform: translateX(var(--cloud-enter)); }
+    100% { transform: translateX(var(--cloud-exit)); }
+  }
+
+  .middle-path__art #mp-clouds svg {
+    animation-name: mpCloudDriftContinuous;
+    animation-timing-function: linear;
+    animation-direction: normal;
+  }
+  /* Front (larger, nearer) clouds: #1 (350 wide), #4 (240 wide). */
+  .middle-path__art #mp-clouds svg:nth-child(1) {
+    --cloud-enter: 487.56px;
+    --cloud-exit: -1135px;
+    animation-duration: 12s;
+    animation-delay: -3.61s;
+  }
+  .middle-path__art #mp-clouds svg:nth-child(4) {
+    --cloud-enter: 1142.56px;
+    --cloud-exit: -370px;
+    animation-duration: 12s;
+    animation-delay: -9.07s;
+  }
+  /* Back (smaller, farther) clouds: #3 (175 wide), #5 (160 wide), #2 (155 wide). */
+  .middle-path__art #mp-clouds svg:nth-child(2) {
+    --cloud-enter: 172.56px;
+    --cloud-exit: -1255px;
+    animation-duration: 16s;
+    animation-delay: -1.93s;
+  }
+  .middle-path__art #mp-clouds svg:nth-child(3) {
+    --cloud-enter: 882.56px;
+    --cloud-exit: -565px;
+    animation-duration: 16s;
+    animation-delay: -9.76s;
+  }
+  .middle-path__art #mp-clouds svg:nth-child(5) {
+    --cloud-enter: 1257.56px;
+    --cloud-exit: -175px;
+    animation-duration: 16s;
+    animation-delay: -14.04s;
+  }
+}
+
 .middle-path__body {
   width: 100%;
   max-width: var(--measure-wide);
@@ -2227,19 +2285,29 @@ a {
   50% { opacity: .55; transform: translateY(-7px); }
 }
 
-/* Clouds drift the way Middle Path's do (css/style.css's #mp-clouds), but
-   with the amplitude scaled up to this scene's much wider canvas (3413.14
-   vs. 1272.56 units) so the drift reads at the same proportional scale
-   rather than looking nearly static. These are bare <path> elements (not
-   nested <svg>s like Middle Path's clouds), so transform-box: view-box has
-   to be set explicitly for translateX to resolve against the scene's own
-   coordinate space. */
+/* Clouds drift continuously right-to-left and loop, rather than wobbling in
+   place: each cloud travels from just off the scene's right edge to just
+   off its left edge, then (invisibly, since both ends are off-canvas) snaps
+   back to the right to repeat -- the same "enter/exit off-canvas" trick
+   used for the bus crossing. --cloud-enter/--cloud-exit are the exact
+   translateX endpoints for each cloud's own width and starting position
+   (computed from the source art's geometry, not estimated), so every cloud
+   fully clears the canvas at both ends regardless of its size. A negative
+   animation-delay per cloud places it, at the moment the scene becomes
+   visible, at the position it already holds in the source artwork --
+   avoiding an empty-sky flash -- while also spreading the clouds across
+   the loop so the sky is never without one. Two durations (front/back)
+   give nearer (larger) clouds a faster drift than farther (smaller) ones,
+   implying depth. These are bare <path> elements (not nested <svg>s like
+   Middle Path's clouds), so transform-box: view-box has to be set
+   explicitly for translateX to resolve against the scene's own coordinate
+   space. */
 .bridge__art #br-clouds path {
   transform-box: view-box;
 }
 @keyframes bridgeCloudDrift {
-  0%   { transform: translateX(-80px); }
-  100% { transform: translateX(80px); }
+  0%   { transform: translateX(var(--cloud-enter)); }
+  100% { transform: translateX(var(--cloud-exit)); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -2254,13 +2322,35 @@ a {
   }
 
   .bridge__art #br-clouds path {
-    animation: bridgeCloudDrift 18s ease-in-out infinite alternate;
+    animation: bridgeCloudDrift linear infinite;
     animation-play-state: paused;
   }
-  .bridge__art #br-clouds path:nth-child(1) { animation-delay: 0s; }
-  .bridge__art #br-clouds path:nth-child(2) { animation-delay: -6s; }
-  .bridge__art #br-clouds path:nth-child(3) { animation-delay: -13s; }
-  .bridge__art #br-clouds path:nth-child(4) { animation-delay: -19s; }
+  /* Front (larger, nearer) clouds: #3 (964.59 wide), #1 (843.65 wide). */
+  .bridge__art #br-clouds path:nth-child(1) {
+    --cloud-enter: 2883px;
+    --cloud-exit: -1373.79px;
+    animation-duration: 12s;
+    animation-delay: -8.13s;
+  }
+  .bridge__art #br-clouds path:nth-child(3) {
+    --cloud-enter: 1001.16px;
+    --cloud-exit: -3376.57px;
+    animation-duration: 12s;
+    animation-delay: -2.74s;
+  }
+  /* Back (smaller, farther) clouds: #2 (802.02 wide), #4 (598.05 wide). */
+  .bridge__art #br-clouds path:nth-child(2) {
+    --cloud-enter: 3372.38px;
+    --cloud-exit: -842.78px;
+    animation-duration: 16s;
+    animation-delay: -12.8s;
+  }
+  .bridge__art #br-clouds path:nth-child(4) {
+    --cloud-enter: 718.23px;
+    --cloud-exit: -3292.96px;
+    animation-duration: 16s;
+    animation-delay: -2.87s;
+  }
 
   .bridge__art #br-ripples path[fill="#f3f3f4"] {
     animation: bridgeRippleShimmer 4.5s ease-in-out infinite;
