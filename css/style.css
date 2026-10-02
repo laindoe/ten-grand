@@ -1365,11 +1365,23 @@ a {
     stroke-width: 2px;
   }
 
-  /* Do not flatten the bus to one stroke width. Its authored outer and inner
-     strokes scale together, preserving the same thick/thin hierarchy used on
-     desktop. */
-  .middle-path__art #mp-bus [stroke="#f3f3f4"] {
-    vector-effect: none;
+  /* Match the vehicle hierarchy in Passing Each Other By: a 1.5px exterior,
+     .75px interior details, and .5px fine accents. Keeping these strokes
+     non-scaling preserves that relationship after the mobile bus enlargement. */
+  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width="1.550211"],
+  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width="1.512984"] {
+    vector-effect: non-scaling-stroke;
+    stroke-width: 1.5px;
+  }
+
+  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width=".775106"] {
+    vector-effect: non-scaling-stroke;
+    stroke-width: .75px;
+  }
+
+  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width=".581329"] {
+    vector-effect: non-scaling-stroke;
+    stroke-width: .5px;
   }
 
   /* Preserve more open sky above the flock on the narrow composition. The
