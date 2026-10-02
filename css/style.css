@@ -1163,7 +1163,7 @@ a {
   .middle-path__art #mp-birds .mp-bird:nth-child(5) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.48s; }
 
   .middle-path__art #mp-clouds svg {
-    animation: mpCloudDrift 26s ease-in-out infinite alternate;
+    animation: mpCloudDrift 18s ease-in-out infinite alternate;
     animation-play-state: paused;
   }
 
@@ -2142,7 +2142,7 @@ a {
   }
 
   .bridge__art #br-clouds path {
-    animation: bridgeCloudDrift 26s ease-in-out infinite alternate;
+    animation: bridgeCloudDrift 18s ease-in-out infinite alternate;
     animation-play-state: paused;
   }
   .bridge__art #br-clouds path:nth-child(1) { animation-delay: 0s; }
