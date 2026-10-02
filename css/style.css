@@ -2271,7 +2271,8 @@ a {
    keeps its translateX in the root SVG's own user-space units regardless
    of where the element sits in the document. */
 .bridge__art #br-bus-position,
-.bridge__art #br-bus {
+.bridge__art #br-bus,
+.bridge__art .br-bus-window-rect {
   transform-box: view-box;
 }
 
@@ -2293,6 +2294,27 @@ a {
    midpoint rather than snapping straight back down. Unlike the stars,
    which fade all the way to invisible, the sun's glow only brightens off
    its resting opacity and back -- it needs to read as always-on. */
+/* Left at its one paint position (behind the mountain mass), the bus
+   crossed directly in front of the glow once per lap and its flat
+   roofline sliced a hard flat edge out of the glow's rounded top -- the
+   sun looked "clipped" exactly when the bus passed through it. An
+   always-on ambient glow shouldn't visibly interrupt like that.
+   Repainting the whole glow circle after the bus would fix that moment
+   but also wash color over the mountain silhouette and #br-arch the rest
+   of the time, since both sit earlier in paint order than the bus. So
+   instead there's a second, identical glow circle (same class, so it
+   picks up every rule below automatically) sitting right after
+   #br-bus-position closes, inside a <g clip-path="url(#br-bus-window)">
+   -- #br-bus-window is a plain rect, matching #br-bus's own x/y/width/
+   height exactly, that lives inside the <clipPath> rather than on the
+   group doing the clipping. That split matters: .br-bus-window-rect
+   carries the identical transform-box and brBusCross animation as
+   #br-bus-position below, so the clip shape -- not the glow circle
+   inside it -- is what slides across the scene in lockstep with the bus.
+   The circle itself never moves, so this second copy only ever shows
+   through the window into the exact footprint the bus currently
+   occupies, i.e. it paints the one spot the original, earlier-painted
+   glow is missing -- leaving every other pixel of the scene untouched. */
 /* The glow's blur radius pushes its painted edge well past the mountain's
    own lowest silhouette point (bbox bottom ~1408.47) into the open water
    below, where nothing occludes it -- so its rounded bottom edge showed up
@@ -2387,7 +2409,8 @@ a {
     animation-play-state: paused;
   }
 
-  .bridge__art #br-bus-position {
+  .bridge__art #br-bus-position,
+  .bridge__art .br-bus-window-rect {
     animation: brBusCross 14s linear infinite;
     animation-play-state: paused;
   }
@@ -2443,13 +2466,15 @@ a {
    position (off-canvas left, where the loop starts) would otherwise never
    be seen at all -- parked there, centered on the deck, instead. */
 @media (prefers-reduced-motion: reduce) {
-  .bridge__art #br-bus-position {
+  .bridge__art #br-bus-position,
+  .bridge__art .br-bus-window-rect {
     transform: translateX(2431.571173px);
   }
 }
 
 .bridge__scene.is-visible .bridge__art .bridge-sun-glow,
 .bridge__scene.is-visible .bridge__art #br-bus-position,
+.bridge__scene.is-visible .bridge__art .br-bus-window-rect,
 .bridge__scene.is-visible .bridge__art #br-clouds path,
 .bridge__scene.is-visible .bridge__art #br-ripples path[fill="#f3f3f4"],
 .bridge__scene.is-visible .bridge__art #br-ripples path[fill="url(#br-ripple-gradient)"] {
