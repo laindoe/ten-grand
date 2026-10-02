@@ -1355,8 +1355,8 @@ a {
     vector-effect: non-scaling-stroke;
   }
 
-  .middle-path__art .mp-mountain-outer { stroke-width: 1.75px; }
-  .middle-path__art .mp-mountain-detail { stroke-width: 1px; }
+  .middle-path__art .mp-mountain-outer { stroke-width: 1.5px; }
+  .middle-path__art .mp-mountain-detail { stroke-width: .75px; }
 
   /* Match the authored 2-unit guardrail strokes in Passing Each Other By.
      Keep them in SVG units so both scenes scale the same way on mobile. */
