@@ -1072,6 +1072,25 @@ a {
     height: 48px;
   }
 
+  /* End the desktop mountain panorama on the same baseline as the pink
+     destination mountains. Anything from the extended export below that
+     baseline is discarded, while the signs remain outside this crop. */
+  .middle-path__art #mp-tunnel-extended {
+    clip-path: inset(0 -100vw 14.35% -100vw);
+  }
+
+  /* Replace the source export's slightly angled horizon with one continuous
+     mountain baseline. It uses the established outer mountain treatment. */
+  .middle-path__art #mp-horizon-line {
+    x1: -1000px;
+    x2: 2300px;
+    y1: 324.26px;
+    y2: 324.26px;
+    stroke: #f3f3f4;
+    stroke-width: 2px;
+    vector-effect: non-scaling-stroke;
+  }
+
   /* The illustration's authored centreline is x=632.94, 0.2625% left of
      the exported viewBox midpoint. Shift both canvases together so the
      tunnel, road, bus, and dashed line align with the centred body copy. */
