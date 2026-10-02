@@ -1292,8 +1292,9 @@ a {
      horizontal artwork that would otherwise bleed past the side borders. */
   .middle-path__scene {
     width: 100%;
+    margin-top: 8cqw;
     margin-left: 0;
-    clip-path: inset(0 0 -69cqw);
+    clip-path: inset(-8cqw 0 -69cqw);
     margin-bottom: calc(var(--divider-gap) + 69cqw);
   }
 
