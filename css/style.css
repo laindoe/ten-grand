@@ -1293,8 +1293,8 @@ a {
   .middle-path__scene {
     width: 100%;
     margin-left: 0;
-    clip-path: inset(0 0 -84.5cqw);
-    margin-bottom: calc(var(--divider-gap) + 84.5cqw);
+    clip-path: inset(0 0 -69cqw);
+    margin-bottom: calc(var(--divider-gap) + 69cqw);
   }
 
   .middle-path__effects {
