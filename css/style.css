@@ -1044,7 +1044,7 @@ a {
   /* Enlarge the landscape alone until both mountain ends pass the frame.
      The scene clips those ends while the sky keeps its existing framing. */
   .middle-path__desktop-landscape {
-    display: block;
+    --middle-path-landscape-display: block;
     position: absolute;
     width: 81%;
     height: auto;
@@ -1219,38 +1219,38 @@ a {
    keyframe's 0%), so prefers-reduced-motion -- which never applies the
    animation below at all -- still lands on a single resting pose (frame a)
    instead of all three poses stacked and overlapping. */
-.middle-path__art #mp-birds .mp-bird-frame-b,
-.middle-path__art #mp-birds .mp-bird-frame-c {
+:is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird-frame-b,
+:is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird-frame-c {
   opacity: 0;
 }
 
 /* Reduced motion keeps the resting flock in the open sky. */
-.middle-path__art #mp-birds { transform: translateY(-215px); }
+:is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) { transform: translateY(-215px); }
 
 /* The flock flies above the viewport and restarts on the sun's 11s cycle.
    Its independent, registered flap poses still switch one at a time. */
 @media (prefers-reduced-motion: no-preference) {
-  .middle-path__art #mp-birds {
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) {
     animation: mpBirdFlight 11s linear .35s infinite both;
     animation-play-state: paused;
   }
   /* animation-delay is set per bird below via the longhand properties, so
      it can be overridden per nth-child without re-specifying the rest. */
-  .middle-path__art #mp-birds :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) {
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) {
     animation-duration: .6s;
     animation-timing-function: steps(1, end);
     animation-iteration-count: infinite;
     animation-play-state: paused;
   }
-  .middle-path__art #mp-birds .mp-bird-frame-a { animation-name: mpBirdFrameA; }
-  .middle-path__art #mp-birds .mp-bird-frame-b { animation-name: mpBirdFrameB; }
-  .middle-path__art #mp-birds .mp-bird-frame-c { animation-name: mpBirdFrameC; }
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird-frame-a { animation-name: mpBirdFrameA; }
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird-frame-b { animation-name: mpBirdFrameB; }
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird-frame-c { animation-name: mpBirdFrameC; }
 
-  .middle-path__art #mp-birds .mp-bird:nth-child(1) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: 0s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(2) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.12s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(3) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.24s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(4) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.36s; }
-  .middle-path__art #mp-birds .mp-bird:nth-child(5) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.48s; }
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird:nth-child(1) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: 0s; }
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird:nth-child(2) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.12s; }
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird:nth-child(3) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.24s; }
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird:nth-child(4) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.36s; }
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) .mp-bird:nth-child(5) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.48s; }
 
   .middle-path__art #mp-clouds svg {
     animation: mpCloudDrift 16s ease-in-out infinite alternate;
@@ -1302,8 +1302,8 @@ a {
   100% { transform: translateX(30px); }
 }
 
-.middle-path__scene.is-visible .middle-path__art #mp-birds,
-.middle-path__scene.is-visible .middle-path__art #mp-birds :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c),
+.middle-path__scene.is-visible :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds),
+.middle-path__scene.is-visible :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c),
 .middle-path__scene.is-visible .middle-path__art #mp-clouds svg {
   animation-play-state: running;
 }
@@ -1408,7 +1408,7 @@ a {
 
   /* Preserve more open sky above the flock on the narrow composition. The
      translate longhand composes with the existing flight keyframes. */
-  .middle-path__art #mp-birds { translate: 0 28px; }
+  :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) { translate: 0 28px; }
 
   /* Use the existing 8cqw of sky above the SVG instead of clipping the
      flock at its original y=-120 viewport edge. */
@@ -1418,7 +1418,7 @@ a {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .middle-path__art #mp-birds {
+    :is(.middle-path__art, .middle-path__desktop-landscape) :is(#mp-birds, #mp-desktop-birds) {
       animation-name: mpBirdFlightMobile;
       /* Longer travel at the same flight speed. */
       animation-duration: 14.85s;
@@ -3783,4 +3783,20 @@ body.modal-open {
 @media (max-width: 767px) {
   .distance__crop { aspect-ratio: 1272.6 / 1398.2; }
   .distance__crop .distance__visual { transform: translateY(-20.619966%); }
+}
+
+/* Paint the desktop flock before the opaque mountain silhouette so it
+   emerges from behind the ridge. Mobile retains its original flight. */
+@media (min-width: 768px) {
+  .middle-path__art #mp-birds { display: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .middle-path__desktop-landscape #mp-desktop-birds {
+      animation-name: mpBirdFlightDesktop;
+    }
+  }
+}
+@keyframes mpBirdFlightDesktop {
+  0% { transform: translateY(100px); opacity: 1; }
+  78% { transform: translateY(-400px); opacity: 1; }
+  78.01%, 100% { transform: translateY(-400px); opacity: 0; }
 }

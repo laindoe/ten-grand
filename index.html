@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=77" />
+  <link rel="stylesheet" href="css/style.css?v=79" />
 </head>
 <body>
 
@@ -424,7 +424,8 @@
       </div>
 
       <div class="middle-path__scene reveal">
-        <svg class="middle-path__desktop-landscape" viewBox="0 -120 1272.56 945.95" overflow="visible" aria-hidden="true">
+        <svg class="middle-path__desktop-landscape" style="display: var(--middle-path-landscape-display, none)" viewBox="0 -120 1272.56 945.95" overflow="visible" aria-hidden="true">
+          {% include middle-path-desktop-birds.html %}
           <image href="art/freedom-tunnel-desktop.svg?v=1" x="-276.646" y="21.696" width="1801.059969" height="380.505627"/>
         </svg>
         <svg class="middle-path__effects" viewBox="0 -120 1272.56 945.95" overflow="visible" aria-hidden="true">
