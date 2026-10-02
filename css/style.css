@@ -1054,8 +1054,13 @@ a {
   /* Leave the airborne elements in place while opening more sky above the
      destination. The signs move by a smaller amount so their posts still end
      cleanly before the paragraph begins. */
-  .middle-path__art :is(#mp-horizon, #mp-tunnel-extended, #mp-sun-group) {
+  .middle-path__art :is(#mp-tunnel-extended, #mp-sun-group) {
     translate: 0 28px;
+  }
+
+  /* The replacement mountain export includes its own finished lower edge. */
+  .middle-path__art #mp-horizon {
+    display: none;
   }
 
   .middle-path__art #mp-signs {
@@ -1072,24 +1077,6 @@ a {
     height: 48px;
   }
 
-  /* End the desktop mountain panorama on the same baseline as the pink
-     destination mountains. Anything from the extended export below that
-     baseline is discarded, while the signs remain outside this crop. */
-  .middle-path__art #mp-tunnel-extended {
-    clip-path: inset(0 -100vw 14.35% -100vw);
-  }
-
-  /* Replace the source export's slightly angled horizon with one continuous
-     mountain baseline. It uses the established outer mountain treatment. */
-  .middle-path__art #mp-horizon-line {
-    x1: -1000px;
-    x2: 2300px;
-    y1: 324.26px;
-    y2: 324.26px;
-    stroke: #f3f3f4;
-    stroke-width: 2px;
-    vector-effect: non-scaling-stroke;
-  }
 
   /* The illustration's authored centreline is x=632.94, 0.2625% left of
      the exported viewBox midpoint. Shift both canvases together so the
@@ -1298,6 +1285,16 @@ a {
 
   .middle-path__art {
     overflow: visible;
+  }
+
+  /* Restore the original authored guardrails on mobile. The later extended
+     replacement remains available in the SVG but is not used at this size. */
+  .middle-path__art #mp-rails {
+    display: block;
+  }
+
+  .middle-path__art #mp-guard-rails-extended {
+    display: none;
   }
 
   /* Transform a group, not a nested SVG viewport (mobile Safari).
