@@ -1302,8 +1302,15 @@ a {
     overflow: visible;
   }
 
+  /* Extend the complete composition evenly from its center so the mountain
+     and guardrails meet the site frame together without changing their
+     relationship to the tunnel, signs, road, or bus. The scene wrapper is
+     the final crop at the left and right borders. */
+  .middle-path__effects,
   .middle-path__art {
     overflow: visible;
+    transform-origin: 50% 0;
+    transform: scaleX(1.13);
   }
 
   /* The supplied background tunnel is authored 9.54 units left of the
