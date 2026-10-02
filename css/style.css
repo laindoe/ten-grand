@@ -1027,8 +1027,10 @@ a {
 
 @media (min-width: 768px) {
   .middle-path__scene {
-    width: min(100%, 1280px, calc(134.53svh - 43.05px));
-    aspect-ratio: 1272.56 / 550;
+    --middle-path-art-width: min(100%, 1280px, calc(134.53svh - 43.05px));
+    width: 100%;
+    height: calc(var(--middle-path-art-width) * .4322);
+    aspect-ratio: auto;
     margin: 0 auto var(--divider-gap);
     overflow: hidden;
   }
@@ -1039,7 +1041,8 @@ a {
      the final crop, so the artwork meets—but cannot cross—the site frame. */
   .middle-path__art {
     position: absolute;
-    inset: 0 auto auto 0;
+    width: var(--middle-path-art-width);
+    inset: 0 auto auto 50%;
     clip-path: inset(0 -100vw 41.856% -100vw);
   }
 
@@ -1067,14 +1070,17 @@ a {
     translate: 0 20px;
   }
 
-  /* Enlarge the supplied destination mountains inside their existing tunnel
-     mask. Their lower edge extends past the mask, producing a straight base,
-     while the separately drawn tunnel outline remains crisp in front. */
+  /* Align the supplied gradient mountain crop with the opening in the new
+     tunnel export instead of the removed legacy foreground tunnel. */
   .middle-path__art .mp-color-mountains {
-    x: 555px;
-    y: 282px;
-    width: 156px;
-    height: 48px;
+    x: 555.8px;
+    y: 288px;
+    width: 135.1px;
+    height: 22.6px;
+  }
+
+  .middle-path__art .mp-tunnel-end-outline {
+    display: none;
   }
 
 
@@ -1083,7 +1089,7 @@ a {
      tunnel, road, bus, and dashed line align with the centred body copy. */
   .middle-path__effects,
   .middle-path__art {
-    transform: translateX(.2625%);
+    transform: translateX(calc(-50% + .2625%));
   }
 
   /* Scale the bus around its visual centre and move it down slightly. This
