@@ -1358,9 +1358,11 @@ a {
   .middle-path__art .mp-mountain-outer { stroke-width: 1.75px; }
   .middle-path__art .mp-mountain-detail { stroke-width: 1px; }
 
-  .middle-path__art #mp-rails [stroke="#f3f3f4"] {
-    vector-effect: non-scaling-stroke;
-    stroke-width: 1.2px;
+  /* Match the authored 2-unit guardrail strokes in Passing Each Other By.
+     Keep them in SVG units so both scenes scale the same way on mobile. */
+  .middle-path__art #mp-rails .cls-2 {
+    vector-effect: none;
+    stroke-width: 2px;
   }
 
   /* Do not flatten the bus to one stroke width. Its authored outer and inner
