@@ -1000,10 +1000,6 @@ a {
   height: auto;
 }
 
-.middle-path__desktop-extension {
-  display: none;
-}
-
 .middle-path__effects {
   position: absolute;
   inset: 0;
@@ -1019,7 +1015,7 @@ a {
 
 @media (min-width: 768px) {
   .middle-path__scene {
-    width: min(100%, 1280px);
+    width: min(100%, 1280px, calc(134.53svh - 43.05px));
     margin: 0 auto var(--divider-gap);
   }
 
@@ -1043,38 +1039,6 @@ a {
     transform: translateY(2.20cqw) scale(.9);
   }
 
-  .middle-path__desktop-extension {
-    position: absolute;
-    top: 0;
-    display: block;
-    width: max(0px, calc((100vw - 1280px) / 2));
-    height: 100%;
-    overflow: visible;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .middle-path__desktop-extension--left {
-    right: 100%;
-  }
-
-  .middle-path__desktop-extension--right {
-    left: 100%;
-  }
-
-  .middle-path__desktop-extension :is(.mp-extension-mountain, .mp-extension-mountain-detail, .mp-extension-horizon, .mp-extension-rail) {
-    fill: none;
-    stroke: #f3f3f4;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .middle-path__desktop-extension :is(.mp-extension-mountain, .mp-extension-horizon, .mp-extension-rail) {
-    stroke-width: 2;
-  }
-
-  .middle-path__desktop-extension .mp-extension-mountain-detail {
-    stroke-width: 1;
-  }
 }
 
 .middle-path__plate { z-index: 3; }
@@ -1096,22 +1060,18 @@ a {
   stroke-linecap: butt;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .middle-path__art .mp-orb-rise {
-    animation: mpOrbArc 11s linear .35s infinite backwards;
-    animation-play-state: paused;
+.middle-path__effects .mp-road-extra-dash {
+  display: none;
+  fill: none;
+  stroke: #f3f3f4;
+  stroke-width: 9px;
+  stroke-linecap: butt;
+}
+
+@media (min-width: 768px) {
+  .middle-path__effects .mp-road-extra-dash {
+    display: inline;
   }
-}
-
-@keyframes mpOrbArc {
-  0% { transform: translateY(115px); animation-timing-function: cubic-bezier(.22,.61,.36,1); }
-  20%, 58% { transform: translateY(0); }
-  58% { animation-timing-function: cubic-bezier(.45,.05,.55,.95); }
-  78%, 100% { transform: translateY(115px); }
-}
-
-.middle-path__scene.is-visible .middle-path__art .mp-orb-rise {
-  animation-play-state: running;
 }
 
 /* Release the reveal transform once visible so the static SVG can paint
@@ -1203,7 +1163,7 @@ a {
   .middle-path__art #mp-birds .mp-bird:nth-child(5) :is(.mp-bird-frame-a, .mp-bird-frame-b, .mp-bird-frame-c) { animation-delay: -.48s; }
 
   .middle-path__art #mp-clouds svg {
-    animation: mpCloudDrift 26s ease-in-out infinite alternate;
+    animation: mpCloudDrift 18s ease-in-out infinite alternate;
     animation-play-state: paused;
   }
 
@@ -2182,7 +2142,7 @@ a {
   }
 
   .bridge__art #br-clouds path {
-    animation: bridgeCloudDrift 26s ease-in-out infinite alternate;
+    animation: bridgeCloudDrift 18s ease-in-out infinite alternate;
     animation-play-state: paused;
   }
   .bridge__art #br-clouds path:nth-child(1) { animation-delay: 0s; }
