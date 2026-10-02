@@ -1030,11 +1030,13 @@ a {
     width: min(100%, 1280px, calc(134.53svh - 43.05px));
     aspect-ratio: 1272.56 / 550;
     margin: 0 auto var(--divider-gap);
+    overflow: hidden;
   }
 
   /* Desktop layout experiment: retain the atmospheric destination scene and
-     signs, then end the illustration just below the sign posts. Negative side
-     insets preserve the full-bleed mountain artwork outside the locked canvas. */
+     signs, then end the illustration just below the sign posts. Allow the
+     extended mountain export past its SVG canvas; the scene wrapper above is
+     the final crop, so the artwork meets—but cannot cross—the site frame. */
   .middle-path__art {
     position: absolute;
     inset: 0 auto auto 0;
@@ -1044,8 +1046,30 @@ a {
   .middle-path__effects,
   .middle-path__art #mp-guard-rails-extended,
   .middle-path__art #mp-bus-position,
+  .middle-path__art .mp-mobile-plate-text,
   .middle-path__plate {
-    display: none;
+    display: none !important;
+  }
+
+  /* Leave the airborne elements in place while opening more sky above the
+     destination. The signs move by a smaller amount so their posts still end
+     cleanly before the paragraph begins. */
+  .middle-path__art :is(#mp-horizon, #mp-tunnel-extended, #mp-sun-group) {
+    translate: 0 28px;
+  }
+
+  .middle-path__art #mp-signs {
+    translate: 0 12px;
+  }
+
+  /* Enlarge the supplied destination mountains inside their existing tunnel
+     mask. Their lower edge extends past the mask, producing a straight base,
+     while the separately drawn tunnel outline remains crisp in front. */
+  .middle-path__art .mp-color-mountains {
+    x: 555px;
+    y: 282px;
+    width: 156px;
+    height: 48px;
   }
 
   /* The illustration's authored centreline is x=632.94, 0.2625% left of
