@@ -1025,7 +1025,11 @@ a {
   display: none;
 }
 
+.mp-desktop-mountain-art { display: none; }
 @media (min-width: 768px) {
+  .middle-path__art .mp-desktop-mountain-art { display: block; }
+  .middle-path__art #mp-tunnel-extended,
+  .middle-path__art #mp-sun-group { display: none; }
   .middle-path__scene {
     --middle-path-art-width: min(100%, 1280px, calc(134.53svh - 43.05px));
     width: 100%;
@@ -1114,7 +1118,9 @@ a {
    shares the source artwork's viewport, clipping, and responsive geometry. */
 .middle-path__art #mp-sun-group > :not(.mp-new-destination):not(.mp-tunnel-end-outline) { display: none; }
 .middle-path__art .mp-orb-core { fill: url(#mp-orb); }
-.middle-path__art .mp-mobile-destination-backdrop { display: none; }
+/* Cover duplicate source imagery inside each layout's tunnel window before
+   painting the orb and foreground mountains. */
+.middle-path__art .mp-destination-backdrop { display: block; }
 .middle-path__art .mp-mobile-mountain-art { display: none; }
 .middle-path__art .mp-orb-glow {
   fill: #00b0e0;
@@ -1323,7 +1329,6 @@ a {
     clip-path: url(#mp-tunnel-window-mobile);
   }
 
-  .middle-path__art .mp-mobile-destination-backdrop { display: block; }
   .middle-path__art #mp-tunnel-extended > image { display: none; }
   .middle-path__art #mp-tunnel-extended > .mp-mobile-mountain-art { display: block; }
   .middle-path__art #mp-horizon { display: none; }
