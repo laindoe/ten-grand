@@ -3796,7 +3796,8 @@ body.modal-open {
   }
 }
 @keyframes mpBirdFlightDesktop {
-  0% { transform: translateY(100px); opacity: 1; }
+  /* Start within the mountain silhouette, above its lower edge. */
+  0% { transform: translateY(0); opacity: 1; }
   78% { transform: translateY(-400px); opacity: 1; }
   78.01%, 100% { transform: translateY(-400px); opacity: 0; }
 }
