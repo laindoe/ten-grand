@@ -1028,7 +1028,24 @@ a {
 @media (min-width: 768px) {
   .middle-path__scene {
     width: min(100%, 1280px, calc(134.53svh - 43.05px));
+    aspect-ratio: 1272.56 / 550;
     margin: 0 auto var(--divider-gap);
+  }
+
+  /* Desktop layout experiment: retain the atmospheric destination scene and
+     signs, then end the illustration just below the sign posts. Negative side
+     insets preserve the full-bleed mountain artwork outside the locked canvas. */
+  .middle-path__art {
+    position: absolute;
+    inset: 0 auto auto 0;
+    clip-path: inset(0 -100vw 41.856% -100vw);
+  }
+
+  .middle-path__effects,
+  .middle-path__art #mp-guard-rails-extended,
+  .middle-path__art #mp-bus-position,
+  .middle-path__plate {
+    display: none;
   }
 
   /* The illustration's authored centreline is x=632.94, 0.2625% left of
