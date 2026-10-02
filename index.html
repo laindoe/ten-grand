@@ -774,12 +774,42 @@
       <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
       <h3 class="modal__title" id="amass-modal-title">Share Your Voice</h3>
       <div class="modal__body">
-        <p>Placeholder — this is where community members will be able to submit their own stories, messages, or shout-outs to be amplified across Ten Grand&rsquo;s platforms.</p>
-        <p>Form fields (name, message, platform tag, etc.) coming soon.</p>
+        <form id="amass-voice-form">
+          <p>
+            <label for="amass-name">Name</label><br>
+            <input id="amass-name" name="name" type="text" required>
+          </p>
+          <p>
+            <label for="amass-social-platform">Social platform</label><br>
+            <input id="amass-social-platform" name="social_platform" type="text" required>
+          </p>
+          <p>
+            <label for="amass-social-handle">Social handle</label><br>
+            <input id="amass-social-handle" name="social_handle" type="text" required>
+          </p>
+          <p>
+            <label for="amass-role">Role</label><br>
+            <select id="amass-role" name="role" required>
+              <option value="">Select a role</option>
+              <option value="create">Create</option>
+              <option value="build">Build</option>
+              <option value="fund">Fund</option>
+              <option value="support">Support</option>
+            </select>
+          </p>
+          <p>
+            <label for="amass-message">Message (optional)</label><br>
+            <textarea id="amass-message" name="message" rows="4" cols="30"></textarea>
+          </p>
+          <p id="amass-form-error" role="alert" hidden></p>
+          <p><button type="submit" class="modal__cta">Submit your voice</button></p>
+        </form>
       </div>
     </div>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase.js"></script>
+  <script src="js/main.js?v=2"></script>
 </body>
 </html>

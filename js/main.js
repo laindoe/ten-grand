@@ -157,6 +157,68 @@
     });
   }
 
+  function initAmassSubmission() {
+    const modal = document.getElementById('amass-modal');
+    const form = document.getElementById('amass-voice-form');
+    if (!modal || !form) return;
+
+    const body = modal.querySelector('.modal__body');
+    const errorEl = document.getElementById('amass-form-error');
+    const submitButton = form.querySelector('[type="submit"]');
+    const allowedRoles = new Set(['create', 'build', 'fund', 'support']);
+    let isSubmitting = false;
+
+    function showError() {
+      errorEl.textContent = 'Something went wrong. Please try again.';
+      errorEl.hidden = false;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (isSubmitting) return;
+
+      const formData = new FormData(form);
+      const payload = {
+        name: String(formData.get('name') || '').trim(),
+        social_platform: String(formData.get('social_platform') || '').trim(),
+        social_handle: String(formData.get('social_handle') || '').trim(),
+        role: String(formData.get('role') || ''),
+        message: String(formData.get('message') || '').trim() || null,
+      };
+
+      if (
+        !payload.name ||
+        !payload.social_platform ||
+        !payload.social_handle ||
+        !allowedRoles.has(payload.role)
+      ) {
+        showError();
+        return;
+      }
+
+      errorEl.hidden = true;
+      isSubmitting = true;
+      submitButton.disabled = true;
+
+      try {
+        if (!window.tenGrandSupabase) throw new Error('Supabase client unavailable');
+
+        const { error } = await window.tenGrandSupabase
+          .from('comm_voices')
+          .insert(payload);
+
+        if (error) throw error;
+
+        body.innerHTML = '<p><strong>YOUR VOICE HAS BEEN HEARD.</strong></p><p><strong>Welcome to the Comm(unity).</strong></p>';
+      } catch (error) {
+        console.error('Ten Grand voice submission failed', error);
+        showError();
+        isSubmitting = false;
+        submitButton.disabled = false;
+      }
+    });
+  }
+
   // Bubbles are independent — opening one does not close any others,
   // so several can stay open at once. Each item is a CSS grid row with
   // the bubble as a normal (not absolutely positioned) grid cell, so
@@ -771,6 +833,7 @@
     const routeModal = initModal();
     initRoute(routeModal);
     initSimpleModals();
+    initAmassSubmission();
     initTimelineBubbles();
     initBillboards();
     initHighwayCars();
