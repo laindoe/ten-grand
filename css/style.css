@@ -2058,9 +2058,13 @@ a {
    despite its misleading export name) -- a plain static core + blurred
    glow circle, the same two-circle technique as .middle-path__art's
    .mp-orb-core/.mp-orb-glow (itself adapted from .route__art's
-   .rt3-start-orb/.rt3-start-glow). No pulse: both reference
-   implementations are static at rest, and the sun is not in the list of
-   things this scene animates. */
+   .rt3-start-orb/.rt3-start-glow). The core stays static; the glow now
+   pulses, same shape as the quote section's star twinkle
+   (assets/images/tg-stars-full.svg's .star-halo/@keyframes starGlow) --
+   an ease-in-out loop that dwells at its brightest across the 42%-58%
+   midpoint rather than snapping straight back down. Unlike the stars,
+   which fade all the way to invisible, the sun's glow only brightens off
+   its resting opacity and back -- it needs to read as always-on. */
 /* The glow's blur radius pushes its painted edge well past the mountain's
    own lowest silhouette point (bbox bottom ~1408.47) into the open water
    below, where nothing occludes it -- so its rounded bottom edge showed up
@@ -2088,6 +2092,10 @@ a {
   opacity: .48;
   transform: scale(1.12);
   filter: url(#br-sun-glow-blur);
+}
+@keyframes bridgeSunGlowPulse {
+  0%, 100% { opacity: .48; }
+  42%, 58% { opacity: .8; }
 }
 
 /* The water's light-streaks get the same glow technique as the sun -- a
@@ -2136,6 +2144,11 @@ a {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .bridge__art .bridge-sun-glow {
+    animation: bridgeSunGlowPulse 4.8s ease-in-out infinite;
+    animation-play-state: paused;
+  }
+
   .bridge__art #br-bus-position {
     animation: brBusCross 14s linear infinite;
     animation-play-state: paused;
@@ -2175,6 +2188,7 @@ a {
   }
 }
 
+.bridge__scene.is-visible .bridge__art .bridge-sun-glow,
 .bridge__scene.is-visible .bridge__art #br-bus-position,
 .bridge__scene.is-visible .bridge__art #br-clouds path,
 .bridge__scene.is-visible .bridge__art #br-ripples path[fill="#f3f3f4"],
