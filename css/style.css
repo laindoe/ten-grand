@@ -1115,6 +1115,7 @@ a {
 .middle-path__art #mp-sun-group > :not(.mp-new-destination):not(.mp-tunnel-end-outline) { display: none; }
 .middle-path__art .mp-orb-core { fill: url(#mp-orb); }
 .middle-path__art .mp-mobile-destination-backdrop { display: none; }
+.middle-path__art .mp-mobile-mountain-art { display: none; }
 .middle-path__art .mp-orb-glow {
   fill: #00b0e0;
   opacity: .58;
@@ -1323,6 +1324,8 @@ a {
   }
 
   .middle-path__art .mp-mobile-destination-backdrop { display: block; }
+  .middle-path__art #mp-tunnel-extended > image { display: none; }
+  .middle-path__art #mp-tunnel-extended > .mp-mobile-mountain-art { display: block; }
   .middle-path__art #mp-horizon { display: none; }
 
   .middle-path__art .mp-new-destination :is(.mp-orb-rise, .mp-color-mountains) {
