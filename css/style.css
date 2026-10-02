@@ -1025,10 +1025,20 @@ a {
   display: none;
 }
 
+.mp-desktop-mountain-art { display: none; }
 @media (min-width: 768px) {
+  .middle-path__art .mp-desktop-mountain-art { display: block; }
+  .middle-path__art #mp-tunnel-extended,
+  .middle-path__art #mp-sun-group { display: none; }
   .middle-path__scene {
-    width: min(100%, 1280px, calc(134.53svh - 43.05px));
-    aspect-ratio: 1272.56 / 550;
+    /* Restore the mountain-to-sign ratio, then fit the complete 1801-unit
+       mountain within the frame without distorting or cropping its ends. */
+    --middle-path-art-width: min(69%, 1280px, calc(134.53svh - 43.05px));
+    width: 100%;
+    /* Equivalent to the art width's 1272.56:550 ratio, expanded term by
+       term so browsers do not need unsupported length multiplication. */
+    height: min(calc(29.82vw - 1.19px), 553.22px, calc(58.14svh - 18.61px));
+    aspect-ratio: auto;
     margin: 0 auto var(--divider-gap);
     overflow: hidden;
   }
@@ -1039,7 +1049,8 @@ a {
      the final crop, so the artwork meets—but cannot cross—the site frame. */
   .middle-path__art {
     position: absolute;
-    inset: 0 auto auto 0;
+    width: var(--middle-path-art-width);
+    inset: 0 auto auto 50%;
     clip-path: inset(0 -100vw 41.856% -100vw);
   }
 
@@ -1054,49 +1065,39 @@ a {
   /* Leave the airborne elements in place while opening more sky above the
      destination. The signs move by a smaller amount so their posts still end
      cleanly before the paragraph begins. */
-  .middle-path__art :is(#mp-horizon, #mp-tunnel-extended, #mp-sun-group) {
+  .middle-path__art :is(#mp-tunnel-extended, #mp-sun-group) {
     translate: 0 28px;
+  }
+
+  /* The replacement mountain export includes its own finished lower edge. */
+  .middle-path__art #mp-horizon {
+    display: none;
   }
 
   .middle-path__art #mp-signs {
     translate: 0 20px;
   }
 
-  /* Enlarge the supplied destination mountains inside their existing tunnel
-     mask. Their lower edge extends past the mask, producing a straight base,
-     while the separately drawn tunnel outline remains crisp in front. */
+  /* Align the supplied gradient mountain crop with the opening in the new
+     tunnel export instead of the removed legacy foreground tunnel. */
   .middle-path__art .mp-color-mountains {
-    x: 555px;
-    y: 282px;
-    width: 156px;
-    height: 48px;
+    x: 555.8px;
+    y: 288px;
+    width: 135.1px;
+    height: 22.6px;
   }
 
-  /* End the desktop mountain panorama on the same baseline as the pink
-     destination mountains. Anything from the extended export below that
-     baseline is discarded, while the signs remain outside this crop. */
-  .middle-path__art #mp-tunnel-extended {
-    clip-path: inset(0 -100vw 14.35% -100vw);
+  .middle-path__art .mp-tunnel-end-outline {
+    display: none;
   }
 
-  /* Replace the source export's slightly angled horizon with one continuous
-     mountain baseline. It uses the established outer mountain treatment. */
-  .middle-path__art #mp-horizon-line {
-    x1: -1000px;
-    x2: 2300px;
-    y1: 324.26px;
-    y2: 324.26px;
-    stroke: #f3f3f4;
-    stroke-width: 2px;
-    vector-effect: non-scaling-stroke;
-  }
 
   /* The illustration's authored centreline is x=632.94, 0.2625% left of
      the exported viewBox midpoint. Shift both canvases together so the
      tunnel, road, bus, and dashed line align with the centred body copy. */
   .middle-path__effects,
   .middle-path__art {
-    transform: translateX(.2625%);
+    transform: translateX(calc(-50% + .2625%));
   }
 
   /* Scale the bus around its visual centre and move it down slightly. This
@@ -1119,6 +1120,10 @@ a {
    shares the source artwork's viewport, clipping, and responsive geometry. */
 .middle-path__art #mp-sun-group > :not(.mp-new-destination):not(.mp-tunnel-end-outline) { display: none; }
 .middle-path__art .mp-orb-core { fill: url(#mp-orb); }
+/* Cover duplicate source imagery inside each layout's tunnel window before
+   painting the orb and foreground mountains. */
+.middle-path__art .mp-destination-backdrop { display: block; }
+.middle-path__art .mp-mobile-mountain-art { display: none; }
 .middle-path__art .mp-orb-glow {
   fill: #00b0e0;
   opacity: .58;
@@ -1254,6 +1259,12 @@ a {
   78.01%, 100% { transform: translateY(-400px); opacity: 0; }
 }
 
+@keyframes mpBirdFlightMobile {
+  0% { transform: translateY(0); opacity: 1; }
+  78% { transform: translateY(-540px); opacity: 1; }
+  78.01%, 100% { transform: translateY(-540px); opacity: 0; }
+}
+
 /* Shared boundaries and stepped opacity ensure exactly one visible pose. */
 @keyframes mpBirdFrameA {
   0% { opacity: 1; }
@@ -1292,12 +1303,48 @@ a {
    text lives inside the bus SVG on mobile so it follows the bus exactly.
    The scene clips its side edges while allowing room below for the bus. */
 @media (max-width: 767px) {
+  /* Span the section padding, like the header divider, so the proportional
+     artwork clips at the actual site borders rather than the text inset. */
+  .middle-path__scene {
+    width: calc(100% + 2 * var(--section-padding-x));
+    margin-top: 8cqw;
+    margin-inline: calc(-1 * var(--section-padding-x));
+    clip-path: inset(-8cqw 0 -69cqw);
+    margin-bottom: calc(var(--divider-gap) + 69cqw);
+  }
+
   .middle-path__effects {
     overflow: visible;
   }
 
   .middle-path__art {
     overflow: visible;
+  }
+
+  /* Center the complete tunnel asset on the road. The orb and mountains now
+     share the asset's own coordinates and tunnel opening. */
+  .middle-path__art #mp-tunnel-extended {
+    translate: 9.54px 0;
+  }
+
+  .middle-path__art #mp-sun-group { display: none; }
+
+  .middle-path__art #mp-tunnel-extended > image { display: none; }
+  .middle-path__art #mp-tunnel-extended > .mp-mobile-mountain-art { display: block; }
+  .middle-path__art #mp-horizon { display: none; }
+
+  .middle-path__art .mp-tunnel-end-outline {
+    display: none;
+  }
+
+  /* Restore the original authored guardrails on mobile. The later extended
+     replacement remains available in the SVG but is not used at this size. */
+  .middle-path__art #mp-rails {
+    display: block;
+  }
+
+  .middle-path__art #mp-guard-rails-extended {
+    display: none;
   }
 
   /* Transform a group, not a nested SVG viewport (mobile Safari).
@@ -1317,18 +1364,53 @@ a {
     vector-effect: non-scaling-stroke;
   }
 
-  .middle-path__art .mp-mountain-outer { stroke-width: 1.75px; }
-  .middle-path__art .mp-mountain-detail { stroke-width: 1px; }
+  .middle-path__art .mp-mountain-outer { stroke-width: 1.5px; }
+  .middle-path__art .mp-mountain-detail { stroke-width: .75px; }
 
-  .middle-path__art #mp-rails [stroke="#f3f3f4"],
-  .middle-path__art #mp-bus [stroke="#f3f3f4"] {
+  /* Match the authored 2-unit guardrail strokes in Passing Each Other By.
+     Keep them in SVG units so both scenes scale the same way on mobile. */
+  .middle-path__art #mp-rails .cls-2 {
+    vector-effect: none;
+    stroke-width: 2px;
+  }
+
+  /* Match the vehicle hierarchy in Passing Each Other By: a 1.5px exterior,
+     .75px interior details, and .5px fine accents. Keeping these strokes
+     non-scaling preserves that relationship after the mobile bus enlargement. */
+  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width="1.550211"],
+  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width="1.512984"] {
     vector-effect: non-scaling-stroke;
-    stroke-width: 1.2px;
+    stroke-width: 1.5px;
+  }
+
+  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width=".775106"] {
+    vector-effect: non-scaling-stroke;
+    stroke-width: .75px;
+  }
+
+  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width=".581329"] {
+    vector-effect: non-scaling-stroke;
+    stroke-width: .5px;
   }
 
   /* Preserve more open sky above the flock on the narrow composition. The
      translate longhand composes with the existing flight keyframes. */
   .middle-path__art #mp-birds { translate: 0 28px; }
+
+  /* Use the existing 8cqw of sky above the SVG instead of clipping the
+     flock at its original y=-120 viewport edge. */
+  .middle-path__art #mp-flight-window rect {
+    y: -220px;
+    height: 1046px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .middle-path__art #mp-birds {
+      animation-name: mpBirdFlightMobile;
+      /* Longer travel at the same flight speed. */
+      animation-duration: 14.85s;
+    }
+  }
 
 
   /* Identical scales and vertical offsets put both panel bottoms on
@@ -1341,17 +1423,6 @@ a {
     transform: matrix(1.1, 0, 0, 1.1, -83.292, -33.11);
   }
 
-  /* The bus's downward push (above) bleeds past the canvas edge via the
-     overflow:visible on .middle-path__art, eating into this margin --
-     without compensation the gap from the bus's new, lower visible
-     bottom edge up to .middle-path__text below would shrink by exactly
-     that bleed. Adding it back (same unit conversion as the plate's
-     translateY above) keeps that gap the same as if the bus had stayed
-     inside its box. */
-  .middle-path__scene {
-    clip-path: inset(0 0 -59cqw);
-    margin-bottom: calc(var(--divider-gap) + 55.834cqw);
-  }
 }
 
 /* Mobile-only: clouds drift continuously right-to-left and loop, rather
