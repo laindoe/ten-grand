@@ -1297,13 +1297,12 @@ a {
    text lives inside the bus SVG on mobile so it follows the bus exactly.
    The scene clips its side edges while allowing room below for the bus. */
 @media (max-width: 767px) {
-  /* Keep the mobile composition centered inside the site's own frame. The
-     scene still opens downward for the oversized bus and road, but clips any
-     horizontal artwork that would otherwise bleed past the side borders. */
+  /* Span the section padding, like the header divider, so the proportional
+     artwork clips at the actual site borders rather than the text inset. */
   .middle-path__scene {
-    width: 100%;
+    width: calc(100% + 2 * var(--section-padding-x));
     margin-top: 8cqw;
-    margin-left: 0;
+    margin-inline: calc(-1 * var(--section-padding-x));
     clip-path: inset(-8cqw 0 -69cqw);
     margin-bottom: calc(var(--divider-gap) + 69cqw);
   }
