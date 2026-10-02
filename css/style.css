@@ -1031,11 +1031,13 @@ a {
   .middle-path__art #mp-tunnel-extended,
   .middle-path__art #mp-sun-group { display: none; }
   .middle-path__scene {
-    --middle-path-art-width: min(100%, 1280px, calc(134.53svh - 43.05px));
+    /* Restore the mountain-to-sign ratio, then fit the complete 1801-unit
+       mountain within the frame without distorting or cropping its ends. */
+    --middle-path-art-width: min(69%, 1280px, calc(134.53svh - 43.05px));
     width: 100%;
     /* Equivalent to the art width's 1272.56:550 ratio, expanded term by
        term so browsers do not need unsupported length multiplication. */
-    height: min(calc(43.22vw - 1.73px), 553.22px, calc(58.14svh - 18.61px));
+    height: min(calc(29.82vw - 1.19px), 553.22px, calc(58.14svh - 18.61px));
     aspect-ratio: auto;
     margin: 0 auto var(--divider-gap);
     overflow: hidden;
