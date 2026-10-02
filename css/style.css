@@ -2270,11 +2270,37 @@ a {
   margin-inline: auto;
 }
 
+/* Same interaction-cue treatment as .dilemma__cue/.route__cue (reuses
+   dilemma-cue-pulse by name) -- in normal flow here, not absolutely
+   positioned, since the header is just a simple centered stack. */
+.amass__cue {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-vandalism);
+  margin: 40px 0 12px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .amass__cue {
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
+  }
+}
+
+.amass__icon-button {
+  appearance: none;
+  display: block;
+  margin: 0 auto;
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .amass__icon {
   display: block;
   width: 58px;
   height: auto;
-  margin: 40px auto 0;
 }
 
 /* Each content block is full-bleed with its own bottom rule, standing
