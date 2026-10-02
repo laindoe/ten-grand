@@ -2272,13 +2272,14 @@ a {
 
 /* Same interaction-cue treatment as .dilemma__cue/.route__cue (reuses
    dilemma-cue-pulse by name) -- in normal flow here, not absolutely
-   positioned, since the header is just a simple centered stack. */
+   positioned, since the header is just a simple centered stack. Now
+   trails the icon button, so its top margin is the icon-to-cue gap. */
 .amass__cue {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   color: var(--color-vandalism);
-  margin: 40px 0 12px;
+  margin: 14px 0 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -2290,7 +2291,7 @@ a {
 .amass__icon-button {
   appearance: none;
   display: block;
-  margin: 0 auto;
+  margin: 40px auto 0;
   padding: 8px;
   background: none;
   border: none;
@@ -2301,6 +2302,22 @@ a {
   display: block;
   width: 58px;
   height: auto;
+}
+
+@keyframes amassIconGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px rgba(243, 243, 244, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(243, 243, 244, 0.65));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .amass__icon {
+    animation: amassIconGlow 2.6s ease-in-out infinite;
+  }
 }
 
 /* Each content block is full-bleed with its own bottom rule, standing
