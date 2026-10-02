@@ -1096,24 +1096,6 @@ a {
   stroke-linecap: butt;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .middle-path__art .mp-orb-rise {
-    animation: mpOrbArc 11s linear .35s infinite backwards;
-    animation-play-state: paused;
-  }
-}
-
-@keyframes mpOrbArc {
-  0% { transform: translateY(115px); animation-timing-function: cubic-bezier(.22,.61,.36,1); }
-  20%, 58% { transform: translateY(0); }
-  58% { animation-timing-function: cubic-bezier(.45,.05,.55,.95); }
-  78%, 100% { transform: translateY(115px); }
-}
-
-.middle-path__scene.is-visible .middle-path__art .mp-orb-rise {
-  animation-play-state: running;
-}
-
 /* Release the reveal transform once visible so the static SVG can paint
    directly at its final size rather than retaining a transformed surface. */
 .middle-path__scene.is-visible { transform: none; }
