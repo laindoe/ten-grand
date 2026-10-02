@@ -1026,22 +1026,35 @@ a {
 }
 
 .mp-desktop-mountain-art { display: none; }
+.middle-path__desktop-landscape { display: none; }
 @media (min-width: 768px) {
-  .middle-path__art .mp-desktop-mountain-art { display: block; }
   .middle-path__art #mp-tunnel-extended,
   .middle-path__art #mp-sun-group { display: none; }
   .middle-path__scene {
-    /* Restore the mountain-to-sign ratio, then fit the complete 1801-unit
-       mountain within the frame without distorting or cropping its ends. */
-    --middle-path-art-width: min(69%, 1280px, calc(134.53svh - 43.05px));
-    width: 100%;
-    /* Equivalent to the art width's 1272.56:550 ratio, expanded term by
-       term so browsers do not need unsupported length multiplication. */
-    height: min(calc(29.82vw - 1.19px), 553.22px, calc(58.14svh - 18.61px));
+    /* Keep the signs and sky at their existing size within a full-bleed crop. */
+    --middle-path-art-width: min(calc(69% - 1.38 * var(--section-padding-x)), 1280px, calc(134.53svh - 43.05px));
+    width: calc(100% + 2 * var(--section-padding-x));
+    /* Retain the original scene height plus room for the lowered sign posts. */
+    height: calc(min(calc(29.82vw - 1.19px), 553.22px, calc(58.14svh - 18.61px)) + min(8vw, 100px));
     aspect-ratio: auto;
-    margin: 0 auto var(--divider-gap);
+    margin: 0 calc(-1 * var(--section-padding-x)) var(--divider-gap);
     overflow: hidden;
   }
+
+  /* Enlarge the landscape alone until both mountain ends pass the frame.
+     The scene clips those ends while the sky keeps its existing framing. */
+  .middle-path__desktop-landscape {
+    display: block;
+    position: absolute;
+    width: 81%;
+    height: auto;
+    left: 50%;
+    top: 0;
+    transform: translateX(calc(-50% + .2625%));
+    pointer-events: none;
+  }
+
+  .middle-path__art #mp-clouds { translate: 0 20px; }
 
   /* Desktop layout experiment: retain the atmospheric destination scene and
      signs, then end the illustration just below the sign posts. Allow the
@@ -1051,7 +1064,7 @@ a {
     position: absolute;
     width: var(--middle-path-art-width);
     inset: 0 auto auto 50%;
-    clip-path: inset(0 -100vw 41.856% -100vw);
+    clip-path: inset(0 -100vw 25% -100vw);
   }
 
   .middle-path__effects,
@@ -1075,7 +1088,7 @@ a {
   }
 
   .middle-path__art #mp-signs {
-    translate: 0 20px;
+    translate: 0 155px;
   }
 
   /* Align the supplied gradient mountain crop with the opening in the new
