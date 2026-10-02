@@ -2246,21 +2246,20 @@ a {
 .bridge__art .br-sun-mask {
   mask: url(#br-sun-mask-fade);
 }
-/* transform-origin must be pinned explicitly in view-box units (the same
-   convention as .route__art's rt3-start-orb/-glow and .hw-move) -- without
-   it, the default 50% 50% resolves against the SVG's own origin corner
-   instead of the circle's center, dragging the scaled glow off to the
-   side instead of growing evenly around the core. */
-.bridge__art .bridge-sun-core,
-.bridge__art .bridge-sun-glow {
-  transform-box: view-box;
-  transform-origin: 1710px 950px;
-}
+/* The glow used to be the same r="475" as the core, enlarged 12% with a
+   CSS transform: scale(1.12). Mobile Safari has a known bug where an SVG
+   filter's render region (feGaussianBlur here) gets computed against an
+   element's pre-transform size, then clips the already-blurred, now-
+   scaled-up result back down to that smaller box -- a hard rectangular
+   cutoff through the glow, worst along whichever edge the scale pushed
+   out the farthest. Baking the enlargement directly into the circle's own
+   r (532 = 475 * 1.12) instead means the filter is never paired with a
+   transform on the same element, so that bounding-box mismatch can't
+   happen regardless of how a given browser computes it. */
 .bridge__art .bridge-sun-core { fill: url(#br-sun-gradient); }
 .bridge__art .bridge-sun-glow {
   fill: #00b0e0;
   opacity: .48;
-  transform: scale(1.12);
   filter: url(#br-sun-glow-blur);
 }
 @keyframes bridgeSunGlowPulse {
