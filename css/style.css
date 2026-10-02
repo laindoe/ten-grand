@@ -1313,6 +1313,17 @@ a {
     translate: 9.54px 0;
   }
 
+  /* The mobile tunnel continues lower than the desktop crop. Extend its
+     destination window to the tunnel floor, then lower the orb and supplied
+     pink mountains together so the mountain baseline meets that floor. */
+  .middle-path__art .mp-new-destination {
+    clip-path: url(#mp-tunnel-window-mobile);
+  }
+
+  .middle-path__art .mp-new-destination :is(.mp-orb-rise, .mp-color-mountains) {
+    translate: 0 13.66px;
+  }
+
   .middle-path__art .mp-tunnel-end-outline {
     display: none;
   }
