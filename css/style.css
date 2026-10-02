@@ -1287,12 +1287,34 @@ a {
    text lives inside the bus SVG on mobile so it follows the bus exactly.
    The scene clips its side edges while allowing room below for the bus. */
 @media (max-width: 767px) {
+  /* Keep the mobile composition centered inside the site's own frame. The
+     scene still opens downward for the oversized bus and road, but clips any
+     horizontal artwork that would otherwise bleed past the side borders. */
+  .middle-path__scene {
+    width: 100%;
+    margin-left: 0;
+    clip-path: inset(0 0 -84.5cqw);
+    margin-bottom: calc(var(--divider-gap) + 84.5cqw);
+  }
+
   .middle-path__effects {
     overflow: visible;
   }
 
   .middle-path__art {
     overflow: visible;
+  }
+
+  /* The supplied background tunnel is authored 9.54 units left of the
+     correctly centered foreground outline. Move only the background artwork
+     and destination scene so the two tunnel layers register as one. */
+  .middle-path__art #mp-tunnel-extended,
+  .middle-path__art .mp-new-destination {
+    translate: 9.54px 0;
+  }
+
+  .middle-path__art .mp-tunnel-end-outline {
+    display: none;
   }
 
   /* Restore the original authored guardrails on mobile. The later extended
@@ -1325,10 +1347,16 @@ a {
   .middle-path__art .mp-mountain-outer { stroke-width: 1.75px; }
   .middle-path__art .mp-mountain-detail { stroke-width: 1px; }
 
-  .middle-path__art #mp-rails [stroke="#f3f3f4"],
-  .middle-path__art #mp-bus [stroke="#f3f3f4"] {
+  .middle-path__art #mp-rails [stroke="#f3f3f4"] {
     vector-effect: non-scaling-stroke;
     stroke-width: 1.2px;
+  }
+
+  /* Do not flatten the bus to one stroke width. Its authored outer and inner
+     strokes scale together, preserving the same thick/thin hierarchy used on
+     desktop. */
+  .middle-path__art #mp-bus [stroke="#f3f3f4"] {
+    vector-effect: none;
   }
 
   /* Preserve more open sky above the flock on the narrow composition. The
@@ -1346,17 +1374,6 @@ a {
     transform: matrix(1.1, 0, 0, 1.1, -83.292, -33.11);
   }
 
-  /* The bus's downward push (above) bleeds past the canvas edge via the
-     overflow:visible on .middle-path__art, eating into this margin --
-     without compensation the gap from the bus's new, lower visible
-     bottom edge up to .middle-path__text below would shrink by exactly
-     that bleed. Adding it back (same unit conversion as the plate's
-     translateY above) keeps that gap the same as if the bus had stayed
-     inside its box. */
-  .middle-path__scene {
-    clip-path: inset(0 0 -59cqw);
-    margin-bottom: calc(var(--divider-gap) + 55.834cqw);
-  }
 }
 
 .middle-path__body {
