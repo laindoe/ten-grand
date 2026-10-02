@@ -129,20 +129,62 @@
       const modal = document.getElementById(trigger.dataset.modalOpen);
       if (!modal) return;
       let lastFocused = null;
+      let scrollLock = null;
+
+      function lockAmassScroll() {
+        if (modal.id !== 'amass-modal' || scrollLock) return;
+        const body = document.body;
+        const properties = ['position', 'top', 'left', 'width', 'overflow', 'padding-right'];
+        scrollLock = {
+          x: window.scrollX, y: window.scrollY,
+          styles: properties.map((property) => [
+            property, body.style.getPropertyValue(property), body.style.getPropertyPriority(property),
+          ]),
+        };
+        const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+        const padding = parseFloat(getComputedStyle(body).paddingRight) || 0;
+        body.style.setProperty('position', 'fixed');
+        body.style.setProperty('top', `-${scrollLock.y}px`);
+        body.style.setProperty('left', `-${scrollLock.x}px`);
+        body.style.setProperty('width', '100%');
+        body.style.setProperty('overflow', 'hidden');
+        if (scrollbar > 0) body.style.setProperty('padding-right', `${padding + scrollbar}px`);
+      }
+
+      function unlockAmassScroll() {
+        if (!scrollLock) return;
+        const saved = scrollLock;
+        scrollLock = null;
+        saved.styles.forEach(([property, value, priority]) => {
+          if (value) document.body.style.setProperty(property, value, priority);
+          else document.body.style.removeProperty(property);
+        });
+        // Restore instantly even when the page uses smooth scrolling.
+        const root = document.documentElement;
+        const behavior = root.style.getPropertyValue('scroll-behavior');
+        const priority = root.style.getPropertyPriority('scroll-behavior');
+        root.style.setProperty('scroll-behavior', 'auto', 'important');
+        window.scrollTo(saved.x, saved.y);
+        if (behavior) root.style.setProperty('scroll-behavior', behavior, priority);
+        else root.style.removeProperty('scroll-behavior');
+      }
 
       function openModal() {
+        if (modal.classList.contains('is-open')) return;
         lastFocused = trigger;
+        lockAmassScroll();
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
-        modal.querySelector('.modal__close').focus();
+        modal.querySelector('.modal__close').focus({ preventScroll: true });
       }
 
       function closeModal() {
         modal.classList.remove('is-open');
         modal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
-        if (lastFocused) lastFocused.focus();
+        unlockAmassScroll();
+        if (lastFocused) lastFocused.focus({ preventScroll: true });
         modal.dispatchEvent(new CustomEvent('modal:close'));
       }
 
@@ -221,6 +263,7 @@
     };
     let currentStep = 1;
     let isSubmitting = false;
+    let flowVersion = 0;
 
     function selectedRole() {
       const selected = roleInputs.find((input) => input.checked);
@@ -297,8 +340,8 @@
 
     function resetFlow() {
       form.reset();
-      isSubmitting = false;
-      submitButton.disabled = false;
+      flowVersion += 1;
+      submitButton.disabled = isSubmitting;
       errorEl.hidden = true;
       socialError.hidden = true;
       countEl.hidden = true;
@@ -379,21 +422,28 @@
       errorEl.hidden = true;
       isSubmitting = true;
       submitButton.disabled = true;
+      const submittedVersion = flowVersion;
 
       try {
         if (!window.tenGrandSupabase) throw new Error('Supabase client unavailable');
 
-        const { error } = await window.tenGrandSupabase
+        const { data, error, status, statusText } = await window.tenGrandSupabase
           .from('comm_voices')
           .insert(payload);
+        if (error) console.error('Ten Grand Supabase insert response', { data, error, status, statusText });
 
         if (error) throw error;
 
+        if (submittedVersion !== flowVersion) return;
         showStep(8);
         loadApprovedCount();
       } catch (error) {
         console.error('Ten Grand voice submission failed', error);
-        errorEl.hidden = false;
+        if (submittedVersion === flowVersion) {
+          errorEl.textContent = 'Your voice could not be added. Please try again.';
+          errorEl.hidden = false;
+        }
+      } finally {
         isSubmitting = false;
         submitButton.disabled = false;
       }

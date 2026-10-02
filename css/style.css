@@ -4079,3 +4079,32 @@ body.modal-open {
   78% { transform: translateY(-400px); opacity: 1; }
   78.01%, 100% { transform: translateY(-400px); opacity: 0; }
 }
+
+/* Targeted AMASS fixes: dialog scrolling and iOS focus zoom. */
+#amass-modal { overscroll-behavior: none; }
+#amass-modal .amass-flow__panel {
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+#amass-modal .amass-flow__intro-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 58px;
+  height: 51px;
+  margin: 0 auto 18px;
+}
+@media (max-width: 480px) {
+  #amass-modal .amass-flow__panel {
+    max-height: calc(100vh - 28px);
+    max-height: calc(100dvh - 28px);
+  }
+}
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal input.amass-flow__field,
+  #amass-modal select.amass-flow__field,
+  #amass-modal textarea.amass-flow__field {
+    font-size: max(16px, 1rem);
+  }
+}
