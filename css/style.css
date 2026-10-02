@@ -1013,6 +1013,17 @@ a {
   z-index: 1;
 }
 
+/* Replaced by the untouched extended tunnel export. Keeping the source group
+   in the document avoids changing any unrelated scene or animation markup. */
+.middle-path__art #mp-mountains {
+  display: none;
+}
+
+/* Replaced by the supplied extended guardrail export. */
+.middle-path__art #mp-rails {
+  display: none;
+}
+
 @media (min-width: 768px) {
   .middle-path__scene {
     width: min(100%, 1280px, calc(134.53svh - 43.05px));
