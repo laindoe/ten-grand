@@ -1114,6 +1114,7 @@ a {
    shares the source artwork's viewport, clipping, and responsive geometry. */
 .middle-path__art #mp-sun-group > :not(.mp-new-destination):not(.mp-tunnel-end-outline) { display: none; }
 .middle-path__art .mp-orb-core { fill: url(#mp-orb); }
+.middle-path__art .mp-mobile-destination-backdrop { display: none; }
 .middle-path__art .mp-orb-glow {
   fill: #00b0e0;
   opacity: .58;
@@ -1320,6 +1321,9 @@ a {
   .middle-path__art .mp-new-destination {
     clip-path: url(#mp-tunnel-window-mobile);
   }
+
+  .middle-path__art .mp-mobile-destination-backdrop { display: block; }
+  .middle-path__art #mp-horizon { display: none; }
 
   .middle-path__art .mp-new-destination :is(.mp-orb-rise, .mp-color-mountains) {
     translate: 0 13.66px;
