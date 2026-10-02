@@ -4,3 +4,4 @@ _site/
 vendor/
 Gemfile.lock
 __pycache__/
+.DS_Store
