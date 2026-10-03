@@ -170,14 +170,14 @@ main {
    transmission. Only a bottom divider is declared (same convention as
    every other archive section): the line above comes from
    .archive-filters's own border-bottom just before it.
-   Mobile-first: the icon+label+subtitle row and the CTA stack as two
-   rows by default. At the sentence's real length ("See what's happening
-   with culture.") there's no icon/gap/CTA size that holds all four
-   elements on one row at phone widths without either truncating the
-   label mid-word or wrapping the sentence down to three lines -- both
-   worse than just giving the CTA its own line. The single-row layout
-   (icon, label, subtitle, divider, CTA all inline) is reintroduced at
-   the desktop breakpoint below, where there's width to spare. */
+   A grid, not a flex row, because the two breakpoints place the same
+   four items (icon, text, divider, cta) completely differently rather
+   than just resizing them: on mobile the icon is a tall left column
+   spanning the full height of the label+subtitle+CTA stack beside it
+   (grid-template-areas repeating "icon" across both rows is what makes
+   it span); on desktop everything sits in a single row with the
+   divider back in play. Grid areas place items by name regardless of
+   source order, so no DOM reshuffling is needed between the two. */
 .archive-community {
   border-bottom: 1px solid var(--color-card-border);
   padding-top: 20px;
@@ -185,38 +185,28 @@ main {
 }
 
 .archive-community__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "icon text"
+    "icon cta";
+  column-gap: 14px;
   row-gap: 10px;
-  column-gap: 16px;
-}
-
-.archive-community__info {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
+  align-items: start;
 }
 
 .archive-community__icon {
-  flex-shrink: 0;
-  width: 36px;
-  height: 32px;
+  grid-area: icon;
+  align-self: stretch;
+  width: 44px;
+  height: auto;
+  object-fit: contain;
+  object-position: top;
 }
 
 .archive-community__text {
+  grid-area: text;
   min-width: 0;
-}
-
-/* Guards against truncation mid-word in a pinch, but at the width this
-   row actually gets (the CTA is on its own line below, not competing
-   for space) neither line should ever need to use it. */
-.archive-community__title,
-.archive-community__subtitle {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .archive-community__title {
@@ -236,7 +226,9 @@ main {
 }
 
 .archive-community__cta {
-  flex-shrink: 0;
+  grid-area: cta;
+  align-self: start;
+  justify-self: start;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -503,16 +495,19 @@ main {
     grid-template-columns: 1fr 1fr;
   }
 
+  /* Single row: icon, text (title+subtitle stacked within their own
+     area), divider, a flexible empty column to push the CTA to the far
+     right, then the CTA. */
   .archive-community__inner {
-    flex-wrap: nowrap;
-    gap: 16px;
-  }
-
-  .archive-community__info {
-    gap: 14px;
+    grid-template-columns: auto auto auto 1fr auto;
+    grid-template-areas: "icon text divider . cta";
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 0;
   }
 
   .archive-community__icon {
+    align-self: center;
     width: 40px;
     height: 35px;
   }
@@ -527,14 +522,13 @@ main {
 
   .archive-community__divider {
     display: block;
-    flex-shrink: 0;
+    grid-area: divider;
     width: 1px;
     height: 32px;
     background: var(--color-card-border);
   }
 
   .archive-community__cta {
-    margin-left: auto;
     font-size: 0.8rem;
     letter-spacing: 0.03em;
   }
