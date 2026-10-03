@@ -1,0 +1,228 @@
+---
+title: Community Wall
+permalink: /community-wall/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Wall — Ten Grand</title>
+  <meta name="description" content="The live public wall for AMASS Comm(unity) — members, signals, and voices from the Ten Grand community." />
+  <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
+  <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}" />
+</head>
+<body>
+
+  <div class="site-frame">
+
+{% include nav.html %}
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="cw-hero">
+      <div class="cw-inner cw-hero__inner">
+        <div class="cw-hero__text">
+          <p class="section-eyebrow">AMASS Comm(unity)</p>
+          <h1 class="cw-hero__title">COMMUNITY WALL</h1>
+          <p class="cw-hero__subtitle">People. Ideas. Capital. Culture.<br />A global community building what&rsquo;s next.</p>
+        </div>
+        <div class="cw-hero__globe" aria-hidden="true">
+          {% include community-wall-globe.html %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MEMBER COUNT STATS ============ -->
+    <section class="cw-stats">
+      <div class="cw-inner cw-stats__grid">
+        <div class="cw-stat">
+          <p class="cw-stat__number" data-stat="total">12,482</p>
+          <p class="cw-stat__label">Total Members</p>
+        </div>
+        <div class="cw-stat">
+          <p class="cw-stat__number" data-stat="create">8,231</p>
+          <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--create" aria-hidden="true"></span>Creators</p>
+        </div>
+        <div class="cw-stat">
+          <p class="cw-stat__number" data-stat="build">2,914</p>
+          <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--build" aria-hidden="true"></span>Builders</p>
+        </div>
+        <div class="cw-stat">
+          <p class="cw-stat__number" data-stat="fund">892</p>
+          <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--fund" aria-hidden="true"></span>Investors</p>
+        </div>
+        <div class="cw-stat">
+          <p class="cw-stat__number" data-stat="support">445</p>
+          <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--support" aria-hidden="true"></span>Supporters</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LIVE TICKER ============ -->
+    <section class="cw-ticker">
+      <div class="cw-inner cw-ticker__inner">
+        <span class="cw-ticker__live"><span class="cw-ticker__live-dot" aria-hidden="true"></span>LIVE</span>
+        <div class="cw-ticker__viewport">
+          <div class="cw-ticker__marquee">
+            <span class="cw-ticker__group">
+              <span class="cw-ticker__item">New member 006 joined</span>
+              <span class="cw-ticker__item">3 builders in discussion</span>
+              <span class="cw-ticker__item">Beta testers wanted</span>
+              <span class="cw-ticker__item">2 new collaboration requests</span>
+            </span>
+            <span class="cw-ticker__group" aria-hidden="true">
+              <span class="cw-ticker__item">New member 006 joined</span>
+              <span class="cw-ticker__item">3 builders in discussion</span>
+              <span class="cw-ticker__item">Beta testers wanted</span>
+              <span class="cw-ticker__item">2 new collaboration requests</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LIVE SIGNALS ============ -->
+    <section class="cw-signals">
+      <div class="cw-inner">
+        <div class="cw-section-header">
+          <div class="cw-section-header__text">
+            <h2 class="cw-section-header__title"><span class="cw-section-header__slash" aria-hidden="true">/</span>LIVE SIGNALS</h2>
+            <p class="cw-section-header__subtitle">Real-time updates from across the community.</p>
+          </div>
+          <a class="cw-section-header__link" href="#" aria-disabled="true" tabindex="-1">VIEW ALL SIGNALS &rarr;</a>
+        </div>
+
+        <span class="sample-badge">SAMPLE DATA</span>
+
+        <div class="cw-signal-grid">
+          <article class="cw-signal-card">
+            <div class="cw-signal-card__meta">
+              <span class="cw-signal-card__category">OPEN CALL</span>
+              <span class="cw-signal-card__time"><span class="cw-signal-card__time-dot" aria-hidden="true"></span>NOW</span>
+            </div>
+            <h3 class="cw-signal-card__title">Who&rsquo;s new this week?</h3>
+            <p class="cw-signal-card__body">Introduce yourself. Tell us what you create, build, fund, or support.</p>
+            <span class="cw-signal-card__cta" aria-hidden="true">&rarr;</span>
+          </article>
+          <article class="cw-signal-card">
+            <div class="cw-signal-card__meta">
+              <span class="cw-signal-card__category">BETA TESTERS NEEDED</span>
+              <span class="cw-signal-card__time">2H AGO</span>
+            </div>
+            <h3 class="cw-signal-card__title">Early access: Grandure HQ</h3>
+            <p class="cw-signal-card__body">We&rsquo;re testing a new collaborative workspace. 10 members needed.</p>
+            <span class="cw-signal-card__cta" aria-hidden="true">&rarr;</span>
+          </article>
+          <article class="cw-signal-card">
+            <div class="cw-signal-card__meta">
+              <span class="cw-signal-card__category">COLLABORATION CALL</span>
+              <span class="cw-signal-card__time">5H AGO</span>
+            </div>
+            <h3 class="cw-signal-card__title">Seeking a motion designer + developer</h3>
+            <p class="cw-signal-card__body">Short-form series on modern builders. DM if you&rsquo;re in.</p>
+            <span class="cw-signal-card__cta" aria-hidden="true">&rarr;</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VOICES HEARD ============ -->
+    <section class="cw-voices">
+      <div class="cw-inner">
+        <div class="cw-section-header">
+          <div class="cw-section-header__text">
+            <h2 class="cw-section-header__title"><span class="cw-section-header__slash" aria-hidden="true">/</span>VOICES HEARD</h2>
+            <p class="cw-section-header__subtitle">Real people. Real work. Real perspectives.</p>
+          </div>
+          <a class="cw-section-header__link" href="#" aria-disabled="true" tabindex="-1">VIEW ALL MEMBERS &rarr;</a>
+        </div>
+
+        <span class="sample-badge">SAMPLE DATA</span>
+
+        <div class="cw-voice-grid">
+          <article class="cw-voice-card">
+            <div class="cw-voice-card__head">
+              <p class="cw-voice-card__name">Member Name</p>
+              <span class="cw-voice-card__badge" aria-hidden="true"><span class="cw-voice-card__badge-ring"></span><span class="cw-voice-card__badge-number">0001</span></span>
+            </div>
+            <p class="cw-voice-card__handle">@handle</p>
+            <span class="cw-voice-card__role cw-voice-card__role--create">CREATOR</span>
+            <p class="cw-voice-card__quote">&ldquo;Placeholder quote from an approved, pledged member goes here.&rdquo;</p>
+          </article>
+          <article class="cw-voice-card">
+            <div class="cw-voice-card__head">
+              <p class="cw-voice-card__name">Member Name</p>
+              <span class="cw-voice-card__badge" aria-hidden="true"><span class="cw-voice-card__badge-ring"></span><span class="cw-voice-card__badge-number">0002</span></span>
+            </div>
+            <p class="cw-voice-card__handle">@handle</p>
+            <span class="cw-voice-card__role cw-voice-card__role--build">BUILDER</span>
+            <p class="cw-voice-card__quote">&ldquo;Placeholder quote from an approved, pledged member goes here.&rdquo;</p>
+          </article>
+          <article class="cw-voice-card">
+            <div class="cw-voice-card__head">
+              <p class="cw-voice-card__name">Member Name</p>
+              <span class="cw-voice-card__badge" aria-hidden="true"><span class="cw-voice-card__badge-ring"></span><span class="cw-voice-card__badge-number">0003</span></span>
+            </div>
+            <p class="cw-voice-card__handle">@handle</p>
+            <span class="cw-voice-card__role cw-voice-card__role--support">SUPPORTER</span>
+            <p class="cw-voice-card__quote">&ldquo;Placeholder quote from an approved, pledged member goes here.&rdquo;</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MEMBER RESOURCES ============ -->
+    <section class="cw-resources">
+      <div class="cw-inner">
+        <div class="cw-section-header">
+          <div class="cw-section-header__text">
+            <h2 class="cw-section-header__title"><span class="cw-section-header__slash" aria-hidden="true">/</span>MEMBER RESOURCES</h2>
+            <p class="cw-section-header__subtitle">Different ways to get involved. Same destination.</p>
+          </div>
+        </div>
+
+        <div class="cw-resource-grid">
+          <div class="cw-resource-card cw-resource-card--create">
+            <svg class="cw-resource-card__icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="19" cy="24" r="13"/><circle cx="29" cy="24" r="13"/></svg>
+            <h3 class="cw-resource-card__title">I CREATE</h3>
+            <p class="cw-resource-card__body">Ideas. Art. Stories. New perspectives.</p>
+            <span class="cw-resource-card__cta">Coming soon</span>
+          </div>
+          <div class="cw-resource-card cw-resource-card--build">
+            <svg class="cw-resource-card__icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="7" width="22" height="22"/><rect x="19" y="19" width="22" height="22"/></svg>
+            <h3 class="cw-resource-card__title">I BUILD</h3>
+            <p class="cw-resource-card__body">Products. Tools. Infrastructure.</p>
+            <span class="cw-resource-card__cta">Coming soon</span>
+          </div>
+          <div class="cw-resource-card cw-resource-card--fund">
+            <svg class="cw-resource-card__icon" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="15" rx="15" ry="6"/><path d="M9,15 v9 a15,6 0 0 0 30,0 v-9" /><path d="M9,24 v9 a15,6 0 0 0 30,0 v-9" /></svg>
+            <h3 class="cw-resource-card__title">I FUND</h3>
+            <p class="cw-resource-card__body">Capital. Grants. Opportunities.</p>
+            <span class="cw-resource-card__cta">Coming soon</span>
+          </div>
+          <div class="cw-resource-card cw-resource-card--support">
+            <svg class="cw-resource-card__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24,4 L28,20 L44,24 L28,28 L24,44 L20,28 L4,24 L20,20 Z"/></svg>
+            <h3 class="cw-resource-card__title">I SUPPORT</h3>
+            <p class="cw-resource-card__body">Talent. Community. Amplification.</p>
+            <span class="cw-resource-card__cta">Coming soon</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  </div>
+
+{% include site-footer.html %}
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="{{ '/assets/js/supabase.js' | relative_url }}"></script>
+  <script src="{{ '/js/community-wall.js' | relative_url }}"></script>
+</body>
+</html>
