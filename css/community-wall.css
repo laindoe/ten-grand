@@ -138,11 +138,28 @@ main {
   height: auto;
 }
 
-.cw-globe__core { fill: url(#cw-globe-core); }
+/* Same expansion + glow transformation as the Philosophy page's route
+   globe (_includes/route-svg.html, #rt3-impact / rt3Impact*): the ring
+   sphere fades from dim to full opacity while the core and its glow
+   scale up from .75x to 1.7177x in sync, igniting as it "arrives". Here
+   it plays once on page load instead of on a JS-driven route stage. */
+.cw-globe__sphere {
+  opacity: 1;
+  transform-box: view-box;
+}
+.cw-globe__core {
+  fill: url(#cw-globe-core);
+  transform-box: view-box;
+  transform-origin: 478.86px 1742.74px;
+  transform: scale(1.7177);
+}
 .cw-globe__core-glow {
   fill: #00b0e0;
-  opacity: 0.4;
+  opacity: 0.58;
   filter: url(#cw-globe-core-glow);
+  transform-box: view-box;
+  transform-origin: 478.86px 1742.74px;
+  transform: scale(1.7177);
 }
 .cw-globe__ring--1 { fill: none; stroke: url(#cw-globe-ring-1); stroke-width: 4px; }
 .cw-globe__ring--2 { fill: none; stroke: url(#cw-globe-ring-2); stroke-width: 4px; }
@@ -151,6 +168,31 @@ main {
 .cw-globe__ring--5 { fill: none; stroke: url(#cw-globe-ring-5); stroke-width: 4px; }
 .cw-globe__ring--6 { fill: none; stroke: url(#cw-globe-ring-6); stroke-width: 4px; }
 .cw-globe__ring--7 { fill: none; stroke: url(#cw-globe-ring-7); stroke-width: 4px; }
+
+@keyframes cwGlobeSphereFade {
+  0% { opacity: .45; }
+  100% { opacity: 1; }
+}
+@keyframes cwGlobeCoreExpand {
+  0% { transform: scale(.75); }
+  100% { transform: scale(1.7177); }
+}
+@keyframes cwGlobeGlowExpand {
+  0% { opacity: 0; transform: scale(.75); }
+  100% { opacity: .58; transform: scale(1.7177); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cw-globe__sphere {
+    animation: cwGlobeSphereFade 1.8s ease-in-out .3s both;
+  }
+  .cw-globe__core {
+    animation: cwGlobeCoreExpand 1.8s ease-in-out .3s both;
+  }
+  .cw-globe__core-glow {
+    animation: cwGlobeGlowExpand 1.8s ease-in-out .3s both;
+  }
+}
 
 /* ---------- Member count stats ---------- */
 
