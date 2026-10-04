@@ -184,13 +184,13 @@ main {
 
 @media (prefers-reduced-motion: no-preference) {
   .cw-globe__sphere {
-    animation: cwGlobeSphereFade 1.8s ease-in-out .3s infinite alternate;
+    animation: cwGlobeSphereFade 4s ease-in-out .3s infinite alternate;
   }
   .cw-globe__core {
-    animation: cwGlobeCoreExpand 1.8s ease-in-out .3s infinite alternate;
+    animation: cwGlobeCoreExpand 4s ease-in-out .3s infinite alternate;
   }
   .cw-globe__core-glow {
-    animation: cwGlobeGlowExpand 1.8s ease-in-out .3s infinite alternate;
+    animation: cwGlobeGlowExpand 4s ease-in-out .3s infinite alternate;
   }
 }
 
