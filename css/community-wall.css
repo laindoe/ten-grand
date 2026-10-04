@@ -260,7 +260,11 @@ main {
   display: flex;
 }
 
-.cw-stats__row:first-of-type {
+/* :first-of-type would match by tag (div), not class -- .cw-stats__total
+   is also a div and sits first, so it would claim that slot instead of
+   either row. The adjacent-sibling selector targets the actual first
+   .cw-stats__row unambiguously. */
+.cw-stats__total + .cw-stats__row {
   border-bottom: 1px solid var(--color-card-border);
 }
 
