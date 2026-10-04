@@ -39,26 +39,42 @@ permalink: /community-wall/
 
     <!-- ============ MEMBER COUNT STATS ============ -->
     <section class="cw-stats">
-      <div class="cw-inner cw-stats__grid">
+      <div class="cw-stats__total">
+        <div class="cw-inner cw-stats__total-inner">
+          <p class="cw-stats__total-text">
+            <span class="cw-stats__total-number" data-stat="total">12,482</span>
+            <span class="cw-stats__total-label">Total Network Members</span>
+          </p>
+          <button type="button" class="cw-stats__join" data-join-trigger>JOIN &rarr;</button>
+        </div>
+      </div>
+
+      <div class="cw-stats__row">
         <div class="cw-stat">
-          <p class="cw-stat__number" data-stat="total">12,482</p>
-          <p class="cw-stat__label">Total Members</p>
+          <div class="cw-inner cw-stat__inner">
+            <p class="cw-stat__number" data-stat="build">2,914</p>
+            <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--build" aria-hidden="true"></span>Builders</p>
+          </div>
         </div>
         <div class="cw-stat">
-          <p class="cw-stat__number" data-stat="create">8,231</p>
-          <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--create" aria-hidden="true"></span>Creators</p>
+          <div class="cw-inner cw-stat__inner">
+            <p class="cw-stat__number" data-stat="create">8,231</p>
+            <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--create" aria-hidden="true"></span>Creators</p>
+          </div>
+        </div>
+      </div>
+      <div class="cw-stats__row">
+        <div class="cw-stat">
+          <div class="cw-inner cw-stat__inner">
+            <p class="cw-stat__number" data-stat="fund">892</p>
+            <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--fund" aria-hidden="true"></span>Investors</p>
+          </div>
         </div>
         <div class="cw-stat">
-          <p class="cw-stat__number" data-stat="build">2,914</p>
-          <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--build" aria-hidden="true"></span>Builders</p>
-        </div>
-        <div class="cw-stat">
-          <p class="cw-stat__number" data-stat="fund">892</p>
-          <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--fund" aria-hidden="true"></span>Investors</p>
-        </div>
-        <div class="cw-stat">
-          <p class="cw-stat__number" data-stat="support">445</p>
-          <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--support" aria-hidden="true"></span>Supporters</p>
+          <div class="cw-inner cw-stat__inner">
+            <p class="cw-stat__number" data-stat="support">445</p>
+            <p class="cw-stat__label"><span class="cw-stat__dot cw-stat__dot--support" aria-hidden="true"></span>Supporters</p>
+          </div>
         </div>
       </div>
     </section>
@@ -216,6 +232,18 @@ permalink: /community-wall/
     </section>
 
   </main>
+
+  <!-- Placeholder join flow -- opens until the real sign-up flow is wired up here. -->
+  <div class="modal" id="cw-join-modal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="cw-join-modal-title">
+      <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
+      <h3 class="modal__title" id="cw-join-modal-title">Coming Soon</h3>
+      <div class="modal__body">
+        <p>The Community Wall sign-up flow is still being built. Check back soon to join the network.</p>
+      </div>
+    </div>
+  </div>
 
   </div>
 

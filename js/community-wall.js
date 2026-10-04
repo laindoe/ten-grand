@@ -37,5 +37,37 @@
     }
   }
 
+  function initJoinModal() {
+    var modal = document.getElementById("cw-join-modal");
+    var trigger = document.querySelector("[data-join-trigger]");
+    if (!modal || !trigger) return;
+
+    var lastFocused = null;
+
+    function openModal() {
+      lastFocused = trigger;
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      modal.querySelector(".modal__close").focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      if (lastFocused) lastFocused.focus();
+    }
+
+    trigger.addEventListener("click", openModal);
+    modal.querySelectorAll("[data-modal-close]").forEach(function (el) {
+      el.addEventListener("click", closeModal);
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && modal.classList.contains("is-open")) closeModal();
+    });
+  }
+
   loadStats();
+  initJoinModal();
 })();
