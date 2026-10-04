@@ -4,13 +4,12 @@
 # thematic headline tied to that stage's sign, and a short call-to-action
 # closing line. Both read the same body copy.
 - title: DEVELOPMENT
-  headline: IDEAS HIT RED LIGHTS
+  headline: RED LIGHT, GREEN LIGHT
   body: |
-    Placeholder copy for the development stage. This is where the shape of the
-    idea gets decided — what it is, who it is for, and what it needs before
-    anyone else can touch it.
-
-    Replace this with the real write-up.
+    An idea can feel complete in your imagination long before it's ready to
+    move. Development is where the vision has to become clear. Without the
+    right guidance, resources, or collaborators, good ideas may never see a
+    green light.
   cta: PAUSE & REFINE
 - title: PRODUCTION
   headline: PLANS DOUBLE BACK
