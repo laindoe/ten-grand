@@ -209,7 +209,7 @@ main {
 
 .cw-stats__total-inner {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding-top: 24px;
