@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=85" />
+  <link rel="stylesheet" href="css/style.css?v=86" />
 </head>
 <body>
 
@@ -818,9 +818,10 @@
           </section>
 
           <section class="amass-flow__step" data-amass-step="4" hidden>
-            <p class="amass-flow__helper">Optional &middot; 200 characters</p>
-            <textarea class="amass-flow__field amass-flow__textarea" id="amass-what-detail" name="what_detail" maxlength="200"></textarea>
-            <p class="amass-flow__counter"><span data-counter-for="amass-what-detail">0</span>/200</p>
+            <p class="amass-flow__helper" id="amass-focus-helper">Select up to 3. This helps people know what you create at a glance.</p>
+            <div class="amass-focus-grid" id="amass-focus-grid" role="group" aria-label="What do you create?"></div>
+            <p class="amass-flow__counter amass-focus-counter" id="amass-focus-counter">0 / 3 selected</p>
+            <input class="amass-flow__field amass-focus-other" id="amass-focus-other" type="text" placeholder="Tell us more" maxlength="24" hidden>
             <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
           </section>
 
@@ -867,6 +868,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=3"></script>
+  <script src="js/main.js?v=4"></script>
 </body>
 </html>

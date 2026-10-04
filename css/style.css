@@ -3535,6 +3535,47 @@ select.amass-flow__field {
   margin-top: 18px;
 }
 
+/* Step 4's focus-area picker -- same bordered-button language as
+   .amass-role-card, just a two-column grid of plain toggle buttons
+   instead of radio cards, since up to 3 can be selected at once.
+   --focus-accent is set inline per role (see renderFocusGrid in
+   initAmassSubmission) so the selected state reads in that role's
+   color without four duplicated rulesets. */
+.amass-focus-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.amass-focus-option {
+  border: 1px solid rgba(243, 243, 244, 0.35);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--color-text);
+  padding: 12px 10px;
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+.amass-focus-option.is-selected {
+  border-color: var(--focus-accent, var(--color-text));
+  color: var(--focus-accent, var(--color-text));
+  background: rgba(243, 243, 244, 0.06);
+}
+
+.amass-focus-counter {
+  text-align: left;
+  margin-bottom: 14px;
+}
+
+.amass-focus-other {
+  margin-bottom: 14px;
+}
+
 .amass-flow__error {
   margin-top: 10px;
   font-size: 0.74rem;

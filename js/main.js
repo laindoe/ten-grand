@@ -210,7 +210,6 @@
     const steps = Array.from(modal.querySelectorAll('[data-amass-step]'));
     const nameInput = form.elements.name;
     const roleInputs = Array.from(form.elements.role);
-    const whatInput = form.elements.what_detail;
     const whyInput = form.elements.why_detail;
     const platformInput = form.elements.social_platform;
     const handleInput = form.elements.social_handle;
@@ -219,38 +218,46 @@
     const submitButton = form.querySelector('[type="submit"]');
     const reviewEl = document.getElementById('amass-review');
     const countEl = document.getElementById('amass-voice-count');
+    const focusHelper = document.getElementById('amass-focus-helper');
+    const focusGrid = document.getElementById('amass-focus-grid');
+    const focusCounter = document.getElementById('amass-focus-counter');
+    const focusOtherInput = document.getElementById('amass-focus-other');
     const roleConfig = {
       create: {
         label: 'I CREATE',
         verb: 'create',
         whatTitle: 'WHAT DO YOU CREATE?',
-        whatPlaceholder: 'Tell us what you create...',
         whyTitle: 'WHY DO YOU CREATE?',
         whyPlaceholder: 'Tell us why you create...',
+        accent: '#e5dc16',
+        focusOptions: ['Music', 'Film', 'Animation', 'Design', 'Writing', 'Photography', 'Fashion', 'Visual Art', 'Games', 'Live Experiences', 'Other'],
       },
       build: {
         label: 'I BUILD',
         verb: 'build',
         whatTitle: 'WHAT DO YOU BUILD?',
-        whatPlaceholder: 'Tell us what you build...',
         whyTitle: 'WHY DO YOU BUILD?',
         whyPlaceholder: 'Tell us why you build...',
+        accent: '#be2026',
+        focusOptions: ['Studios', 'Venues', 'Platforms', 'Technology', 'Agencies', 'Distribution', 'Manufacturing', 'Education', 'Communities', 'Creative Services', 'Other'],
       },
       fund: {
         label: 'I FUND',
         verb: 'fund',
         whatTitle: 'WHAT DO YOU FUND?',
-        whatPlaceholder: 'Tell us what you fund...',
         whyTitle: 'WHY DO YOU FUND?',
         whyPlaceholder: 'Tell us why you fund...',
+        accent: '#007938',
+        focusOptions: ['Artists', 'Music', 'Film', 'Media', 'Startups', 'Products', 'Events', 'Creative Spaces', 'Community Projects', 'Education', 'Other'],
       },
       support: {
         label: 'I SUPPORT',
         verb: 'support',
         whatTitle: 'WHAT DO YOU SUPPORT?',
-        whatPlaceholder: 'Tell us what you support...',
         whyTitle: 'WHY DO YOU SUPPORT?',
         whyPlaceholder: 'Tell us why you support...',
+        accent: '#00b0e0',
+        focusOptions: ['Music', 'Film', 'Art', 'Fashion', 'Games', 'Independent Creators', 'Local Culture', 'Live Events', 'Creative Businesses', 'Community Projects', 'Other'],
       },
     };
     const titles = {
@@ -264,6 +271,7 @@
     let currentStep = 1;
     let isSubmitting = false;
     let flowVersion = 0;
+    let lastFocusRole = null;
 
     function selectedRole() {
       const selected = roleInputs.find((input) => input.checked);
@@ -282,12 +290,67 @@
       if (currentStep === 6) next.disabled = !socialIsValid();
     }
 
-    function updateRoleQuestions() {
+    function updateWhyPlaceholder() {
       const config = roleConfig[selectedRole()];
-      if (!config) return;
-      whatInput.placeholder = config.whatPlaceholder;
-      whyInput.placeholder = config.whyPlaceholder;
+      if (config) whyInput.placeholder = config.whyPlaceholder;
     }
+
+    function selectedFocusButtons() {
+      return Array.from(focusGrid.querySelectorAll('.amass-focus-option.is-selected'));
+    }
+
+    function updateFocusCounter() {
+      focusCounter.textContent = `${selectedFocusButtons().length} / 3 selected`;
+    }
+
+    function updateFocusOtherVisibility() {
+      const otherSelected = selectedFocusButtons().some((button) => button.dataset.value === 'Other');
+      focusOtherInput.hidden = !otherSelected;
+      if (!otherSelected) focusOtherInput.value = '';
+    }
+
+    function renderFocusGrid(config) {
+      focusGrid.replaceChildren();
+      focusGrid.style.setProperty('--focus-accent', config.accent);
+      config.focusOptions.forEach((label) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'amass-focus-option';
+        button.dataset.value = label;
+        button.setAttribute('aria-pressed', 'false');
+        button.textContent = label;
+        focusGrid.appendChild(button);
+      });
+      focusOtherInput.hidden = true;
+      focusOtherInput.value = '';
+      updateFocusCounter();
+    }
+
+    // Only rebuilds (and so only clears prior selections) when the role
+    // actually changed since the grid was last built -- going back to
+    // step 3 and forward again without switching roles keeps whatever
+    // the user already picked.
+    function ensureFocusGrid() {
+      const role = selectedRole();
+      const config = roleConfig[role];
+      if (!config) return;
+      focusHelper.textContent = `Select up to 3. This helps people know what you ${config.verb} at a glance.`;
+      focusGrid.setAttribute('aria-label', config.whatTitle);
+      if (role === lastFocusRole) return;
+      lastFocusRole = role;
+      renderFocusGrid(config);
+    }
+
+    focusGrid.addEventListener('click', (event) => {
+      const button = event.target.closest('.amass-focus-option');
+      if (!button) return;
+      const isSelected = button.classList.contains('is-selected');
+      if (!isSelected && selectedFocusButtons().length >= 3) return;
+      button.classList.toggle('is-selected');
+      button.setAttribute('aria-pressed', String(button.classList.contains('is-selected')));
+      updateFocusCounter();
+      updateFocusOtherVisibility();
+    });
 
     function addReviewItem(label, value) {
       if (!value) return;
@@ -306,7 +369,12 @@
       reviewEl.replaceChildren();
       addReviewItem('Name', nameInput.value.trim());
       addReviewItem('Role', config.label);
-      addReviewItem(`What you ${config.verb}`, whatInput.value.trim());
+      const otherValue = focusOtherInput.hidden ? '' : focusOtherInput.value.trim();
+      const focusDisplay = selectedFocusButtons()
+        .map((button) => button.dataset.value)
+        .map((value) => (value === 'Other' && otherValue ? `Other (${otherValue})` : value))
+        .join(', ');
+      addReviewItem(`What you ${config.verb}`, focusDisplay);
       addReviewItem(`Why you ${config.verb}`, whyInput.value.trim());
       if (platformInput.value && handleInput.value.trim()) {
         const label = platformInput.options[platformInput.selectedIndex].textContent;
@@ -333,13 +401,15 @@
       backButton.hidden = step === 1 || step === 8;
       errorEl.hidden = true;
       socialError.hidden = true;
-      if (step === 4 || step === 5) updateRoleQuestions();
+      if (step === 4) ensureFocusGrid();
+      if (step === 5) updateWhyPlaceholder();
       if (step === 7) buildReview();
       setNextState();
     }
 
     function resetFlow() {
       form.reset();
+      lastFocusRole = null;
       flowVersion += 1;
       submitButton.disabled = isSubmitting;
       errorEl.hidden = true;
@@ -395,7 +465,7 @@
       });
     });
 
-    [whatInput, whyInput].forEach((input) => {
+    [whyInput].forEach((input) => {
       const counter = modal.querySelector(`[data-counter-for="${input.id}"]`);
       input.addEventListener('input', () => {
         counter.textContent = String(input.value.length);
@@ -411,7 +481,8 @@
       const payload = {
         name: nameInput.value.trim(),
         role: selectedRole(),
-        what_detail: whatInput.value.trim() || null,
+        focus_areas: selectedFocusButtons().map((button) => button.dataset.value),
+        focus_other: focusOtherInput.hidden ? null : focusOtherInput.value.trim() || null,
         why_detail: whyInput.value.trim() || null,
         social_platform: platformInput.value || null,
         social_handle: handleInput.value.trim() || null,
