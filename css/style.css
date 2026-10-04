@@ -2474,6 +2474,7 @@ a {
 /* Match the 40px gap between the subtitle and icon. */
 .amass__intro {
   padding-top: 40px;
+  padding-bottom: 60px;
 }
 
 /* Bottom padding is owned by the last timeline item's own 60px
