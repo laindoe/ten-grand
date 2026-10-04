@@ -2489,6 +2489,12 @@ a {
   margin: 0 auto;
 }
 
+/* .amass__culture still only ever holds one .amass__text paragraph, so
+   this is scoped to .amass__intro rather than the shared class. */
+.amass__intro .amass__text + .amass__text {
+  margin-top: 24px;
+}
+
 .amass__section-heading {
   font-size: clamp(0.85rem, 3.5vw, 1rem);
   font-weight: 400;
