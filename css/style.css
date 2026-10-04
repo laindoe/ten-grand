@@ -3288,25 +3288,30 @@ a {
   margin-top: 12px;
 }
 
-/* Stacked instead of side-by-side: the tag runs the full row on its own
-   line, and the CTA sits on the line below, right-aligned. */
-.modal__footer {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 8px;
-  padding-top: 14px;
-  border-top: 1px solid var(--color-card-border);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-}
-
 .modal__tag {
   display: flex;
   align-items: center;
   gap: 8px;
   color: var(--color-vandalism);
+  margin-bottom: 18px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Full-bleed to the panel's own edges (same technique as the desktop
+   callout's .route__callout-footer): negative margin equal to
+   .modal__panel's own horizontal padding, so the rule reaches the
+   panel's border instead of stopping at its padded content width. */
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-inline: -28px;
+  padding: 14px 28px 0;
+  border-top: 1px solid var(--color-card-border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
 }
 
 .modal__dot {
@@ -3318,7 +3323,6 @@ a {
 }
 
 .modal__cta {
-  align-self: flex-end;
   background: none;
   border: none;
   padding: 0;
@@ -3924,32 +3928,32 @@ body.modal-open {
     margin-top: 12px;
   }
 
+  .route__callout-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-vandalism);
+    margin-bottom: 18px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
   /* Full-bleed to the card's own edges, same technique as the section
      dividers elsewhere -- the divider above it would otherwise stop at
      the card's own padding instead of reaching its border, unlike every
-     other full-width rule in this file. padding-inline puts the tag and
-     CTA back at the card's normal content margin once the rule itself
-     is edge to edge. */
+     other full-width rule in this file. padding-inline puts the CTA
+     back at the card's normal content margin once the rule itself is
+     edge to edge. */
   .route__callout-footer {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    justify-content: flex-end;
     margin-inline: -24px;
     padding: 18px 24px 0;
     border-top: 1px solid var(--color-card-border);
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.05em;
-  }
-
-  .route__callout-tag {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--color-vandalism);
-    flex: 1 1 auto;
-    min-width: 0;
   }
 
   .route__callout-dot {
