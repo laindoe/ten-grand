@@ -218,9 +218,8 @@ main {
 
 .cw-stats__total-text {
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .cw-stats__total-number {
