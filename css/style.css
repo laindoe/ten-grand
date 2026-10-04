@@ -159,6 +159,19 @@ a {
   transition: background-color 180ms ease, color 180ms ease;
 }
 
+/* The clamp above floors at 0.5rem, which is already its value from here
+   down to ~365px -- so on the narrowest phones (iPhone SE class, ~320-
+   340px) "THE GRAND SCHEME" (the longest, nowrap label) no longer fits
+   its flex:1 share and pushes the page into a few pixels of horizontal
+   scroll. Shrinking the floor further only in this narrow band fixes
+   that without touching the clamp's behavior at any width it was
+   already scaling past 0.5rem. */
+@media (max-width: 340px) {
+  .nav__item {
+    font-size: 0.45rem;
+  }
+}
+
 .nav__item--inverse {
   background: var(--color-text);
   color: var(--color-bg);
