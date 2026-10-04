@@ -27,7 +27,7 @@ main {
 .cw-hero,
 .cw-stats,
 .cw-ticker,
-.cw-signals,
+.cw-broadcasts,
 .cw-voices,
 .cw-resources {
   width: 100%;
@@ -283,21 +283,21 @@ main {
   border-right: 1px solid var(--color-card-border);
 }
 
-/* ---------- Live Signals ---------- */
+/* ---------- Broadcasts ---------- */
 
-.cw-signals {
+.cw-broadcasts {
   border-bottom: 1px solid var(--color-card-border);
   padding-top: 40px;
   padding-bottom: 40px;
 }
 
-.cw-signal-grid {
+.cw-broadcast-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 }
 
-.cw-signal-card {
+.cw-broadcast-card {
   position: relative;
   border: 1px solid var(--color-card-border);
   border-left: 3px solid var(--color-accent);
@@ -305,21 +305,21 @@ main {
   background: linear-gradient(to right, rgba(217, 79, 48, 0.1), transparent 55%);
 }
 
-.cw-signal-card__meta {
+.cw-broadcast-card__meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.cw-signal-card__category {
+.cw-broadcast-card__category {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   color: var(--color-accent);
 }
 
-.cw-signal-card__time {
+.cw-broadcast-card__time {
   font-size: 0.68rem;
   color: var(--color-text-muted);
   display: flex;
@@ -327,26 +327,26 @@ main {
   gap: 5px;
 }
 
-.cw-signal-card__time-dot {
+.cw-broadcast-card__time-dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
   background: var(--color-vandalism);
 }
 
-.cw-signal-card__title {
+.cw-broadcast-card__title {
   font-size: 1.05rem;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
-.cw-signal-card__body {
+.cw-broadcast-card__body {
   font-size: 0.85rem;
   color: var(--color-text-muted);
   line-height: 1.5;
 }
 
-.cw-signal-card__cta {
+.cw-broadcast-card__cta {
   position: absolute;
   bottom: 14px;
   right: 18px;
@@ -524,7 +524,7 @@ main {
     padding-left: 0;
   }
 
-  .cw-signal-grid {
+  .cw-broadcast-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
