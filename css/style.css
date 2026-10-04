@@ -2516,10 +2516,9 @@ a {
 }
 
 .amass__timeline-subtitle {
-  font-size: clamp(0.75rem, 3vw, 0.85rem);
-  line-height: 1.4;
-  color: var(--color-text-muted);
-  max-width: 34ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: var(--measure-body);
   margin: 0 auto 32px;
 }
 
@@ -4055,11 +4054,6 @@ body.modal-open {
     display: flex;
     visibility: hidden;
     pointer-events: none;
-  }
-
-  .amass__timeline-subtitle {
-    font-size: 1rem;
-    max-width: 44ch;
   }
 
   .amass__timeline-year { font-size: 1rem; }
