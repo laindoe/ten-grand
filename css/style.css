@@ -670,13 +670,13 @@ a {
 
 /* ---------- Distance Between Us section ---------- */
 
-/* No bottom padding: the highway is the last thing in this section, and 60px
-   of it left a band of dead black between the road and the rule that starts
-   the next section — which read as a gap in the artwork. The road now runs
-   straight into that line. */
+/* .distance__text is the last thing in this section, preceded by
+   .distance__divider's own 40px margin-bottom above the heading — so the
+   section's bottom padding matches that same 40px, instead of the stale
+   60px left over from when the highway artwork (not text) was last. */
 .section--distance {
   min-height: auto;
-  padding: 0 var(--section-padding-x) 60px;
+  padding: 0 var(--section-padding-x) 40px;
   border-top: 1px solid var(--color-card-border);
 }
 
