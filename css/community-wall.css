@@ -184,13 +184,13 @@ main {
 
 @media (prefers-reduced-motion: no-preference) {
   .cw-globe__sphere {
-    animation: cwGlobeSphereFade 1.8s ease-in-out .3s both;
+    animation: cwGlobeSphereFade 1.8s ease-in-out .3s infinite alternate;
   }
   .cw-globe__core {
-    animation: cwGlobeCoreExpand 1.8s ease-in-out .3s both;
+    animation: cwGlobeCoreExpand 1.8s ease-in-out .3s infinite alternate;
   }
   .cw-globe__core-glow {
-    animation: cwGlobeGlowExpand 1.8s ease-in-out .3s both;
+    animation: cwGlobeGlowExpand 1.8s ease-in-out .3s infinite alternate;
   }
 }
 
@@ -579,9 +579,27 @@ main {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 759px) {
+  .cw-hero__inner {
+    gap: 16px;
+  }
+
+  .cw-hero__text {
+    flex: 1 1 50%;
+  }
+
+  .cw-hero__title {
+    font-size: clamp(1.4rem, 7vw, 2rem);
+  }
+
+  .cw-hero__subtitle {
+    font-size: 0.8rem;
+  }
+
   .cw-hero__globe {
-    width: 92px;
-    opacity: 0.7;
+    flex: 0 0 50%;
+    width: 50%;
+    max-width: none;
+    opacity: 0.85;
   }
 }
