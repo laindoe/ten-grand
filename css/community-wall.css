@@ -341,28 +341,19 @@ main {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--cw-color-fund);
-  box-shadow: 0 0 6px var(--cw-color-fund);
+  background: var(--color-text);
+  box-shadow: 0 0 6px var(--color-text);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .cw-ticker__live-dot {
-    animation: cwLiveDotPulse 1.8s ease-in-out infinite, cwLiveDotColor 6s linear infinite;
+    animation: cwLiveDotPulse 1.8s ease-in-out infinite;
   }
 }
 
 @keyframes cwLiveDotPulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.35; }
-}
-
-/* Cycles through the same four role colors as the stats row and globe,
-   red -> yellow -> green -> blue, rather than sitting on green alone. */
-@keyframes cwLiveDotColor {
-  0%, 100% { background-color: var(--cw-color-build); box-shadow: 0 0 6px var(--cw-color-build); }
-  25% { background-color: var(--cw-color-create); box-shadow: 0 0 6px var(--cw-color-create); }
-  50% { background-color: var(--cw-color-fund); box-shadow: 0 0 6px var(--cw-color-fund); }
-  75% { background-color: var(--cw-color-support); box-shadow: 0 0 6px var(--cw-color-support); }
 }
 
 .cw-ticker__viewport {
