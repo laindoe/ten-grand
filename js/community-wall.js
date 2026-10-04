@@ -10,7 +10,7 @@
 
   async function approvedCount(role) {
     var query = window.tenGrandSupabase
-      .from("comm_voices")
+      .from("voices_heard")
       .select("*", { count: "exact", head: true })
       .eq("status", "approved");
     if (role) query = query.eq("role", role);

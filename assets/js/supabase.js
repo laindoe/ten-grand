@@ -21,7 +21,7 @@
 
   async function testSupabaseConnection() {
     const { data, error } = await window.tenGrandSupabase
-      .from("comm_voices")
+      .from("voices_heard")
       .select("*")
       .eq("status", "approved");
 

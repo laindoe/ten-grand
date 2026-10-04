@@ -355,7 +355,7 @@
     async function loadApprovedCount() {
       try {
         const { count, error } = await window.tenGrandSupabase
-          .from('comm_voices')
+          .from('voices_heard')
           .select('*', { count: 'exact', head: true })
           .eq('status', 'approved');
         if (error || typeof count !== 'number') return;
@@ -428,7 +428,7 @@
         if (!window.tenGrandSupabase) throw new Error('Supabase client unavailable');
 
         const { data, error, status, statusText } = await window.tenGrandSupabase
-          .from('comm_voices')
+          .from('voices_heard')
           .insert(payload);
         if (error) console.error('Ten Grand Supabase insert response', { data, error, status, statusText });
 
