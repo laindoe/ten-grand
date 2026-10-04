@@ -3288,15 +3288,13 @@ a {
   margin-top: 12px;
 }
 
-/* nowrap: with wrap allowed here, the browser decides whether the CTA
-   fits using the tag's unshrunk width and pushes the whole CTA to a new
-   line rather than letting the tag shrink/wrap in place next to it. */
+/* Stacked instead of side-by-side: the tag runs the full row on its own
+   line, and the CTA sits on the line below, right-aligned. */
 .modal__footer {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  gap: 8px 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
   padding-top: 14px;
   border-top: 1px solid var(--color-card-border);
   font-size: 0.75rem;
@@ -3304,16 +3302,11 @@ a {
   letter-spacing: 0.05em;
 }
 
-/* flex:1 so the tag claims whatever space is left after the CTA's own
-   width is reserved, and wraps to a second line within that space
-   instead of overflowing -- the CTA (flex-shrink:0 below) never moves. */
 .modal__tag {
   display: flex;
   align-items: center;
   gap: 8px;
   color: var(--color-vandalism);
-  flex: 1 1 auto;
-  min-width: 0;
 }
 
 .modal__dot {
@@ -3325,13 +3318,13 @@ a {
 }
 
 .modal__cta {
+  align-self: flex-end;
   background: none;
   border: none;
   padding: 0;
   font: inherit;
   color: var(--color-text-muted);
   white-space: nowrap;
-  flex-shrink: 0;
   cursor: pointer;
   transition: color 0.15s var(--ease-out);
 }
