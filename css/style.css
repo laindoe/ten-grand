@@ -2926,10 +2926,18 @@ a {
    Same measure as the other body copy on the site so it reads as part of it. */
 .director__bio {
   max-width: var(--measure-body);
-  margin: 0 auto 64px;
+  margin: 0 auto;
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--color-text-muted);
+}
+
+.director__bio + .director__bio {
+  margin-top: 24px;
+}
+
+.director__bio:last-of-type {
+  margin-bottom: 64px;
 }
 
 .director__cta {
