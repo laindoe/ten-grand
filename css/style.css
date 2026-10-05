@@ -3296,7 +3296,7 @@ a {
    so the dot and text always match without a rule per color. */
 .modal__tag {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   color: var(--tag-accent, var(--color-vandalism));
   margin-bottom: 18px;
@@ -3325,6 +3325,7 @@ a {
   border-radius: 50%;
   background: var(--tag-accent, var(--color-vandalism));
   flex-shrink: 0;
+  margin-top: 5px;
 }
 
 .modal__cta,
@@ -3951,7 +3952,7 @@ body.modal-open {
      .route__callout-dot, so the dot and text always match. */
   .route__callout-tag {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
     color: var(--tag-accent, var(--color-vandalism));
     margin-bottom: 18px;
@@ -3982,6 +3983,7 @@ body.modal-open {
     border-radius: 50%;
     background: var(--tag-accent, var(--color-vandalism));
     flex-shrink: 0;
+    margin-top: 5px;
   }
 
   .route__callout-cta,
