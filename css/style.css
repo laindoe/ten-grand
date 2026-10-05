@@ -3382,7 +3382,7 @@ a {
   margin: 0 auto 18px;
   padding: 0;
   font-family: 'Arial Narrow', var(--font-display);
-  font-size: clamp(2.6rem, 11.5vw, 3.6rem);
+  font-size: clamp(2.1rem, 8.5vw, 2.9rem);
   font-stretch: condensed;
   line-height: 0.98;
   letter-spacing: 0.01em;
@@ -3440,6 +3440,19 @@ a {
   display: flex;
   flex-direction: column;
   animation: amassStepIn 0.28s var(--ease-out) both;
+}
+
+/* Step 1's content (icon + intro copy) is short and fixed-height, unlike
+   every other step's form content, so centering it as one block -- with
+   its own fixed gap before the CTA, instead of the shared margin-top:auto
+   that pins every other step's button to the very bottom -- gives it even
+   space above and below instead of one big gap floating in the middle. */
+.amass-flow__step[data-amass-step='1'] {
+  justify-content: center;
+}
+
+.amass-flow__step[data-amass-step='1'] .amass-flow__cta {
+  margin-top: 32px;
 }
 
 .amass-flow__step[hidden] {
