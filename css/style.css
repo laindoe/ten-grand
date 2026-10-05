@@ -3373,7 +3373,7 @@ a {
   max-width: 430px;
   max-height: calc(100dvh - 32px);
   overflow-y: auto;
-  padding: 46px 24px 24px;
+  padding: 60px 24px 60px;
   background: #101314;
 }
 
@@ -3804,7 +3804,7 @@ select.amass-flow__field {
 
   #amass-modal .amass-flow__panel {
     max-height: calc(100dvh - 28px);
-    padding: 44px 20px 20px;
+    padding: 60px 20px 60px;
   }
 }
 
