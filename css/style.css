@@ -3760,7 +3760,7 @@ select.amass-flow__field {
 .amass-focus-option.is-selected {
   border-color: var(--focus-accent, var(--color-text));
   color: var(--focus-accent, var(--color-text));
-  background: var(--color-text);
+  background: var(--color-bg);
 }
 
 .amass-focus-counter {
