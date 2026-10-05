@@ -196,13 +196,24 @@ main {
 
 .archive-community__inner {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto auto 1fr;
   grid-template-areas:
-    "icon text"
-    "icon cta";
+    "divider-left icon text"
+    "divider-left icon cta";
   column-gap: 14px;
   row-gap: 10px;
   align-items: start;
+}
+
+/* Mobile only -- a second divider ahead of the icon, same full-height
+   treatment as .archive-community__divider gets on desktop. Hidden
+   again once the desktop grid (no divider-left area) takes over. */
+.archive-community__divider-left {
+  display: block;
+  grid-area: divider-left;
+  align-self: stretch;
+  width: 1px;
+  background: var(--color-card-border);
 }
 
 /* height:100% (not auto) is what actually makes this stretch --
@@ -225,6 +236,7 @@ main {
 .archive-community__text {
   grid-area: text;
   min-width: 0;
+  text-align: right;
 }
 
 .archive-community__title {
@@ -246,7 +258,7 @@ main {
 .archive-community__cta {
   grid-area: cta;
   align-self: start;
-  justify-self: start;
+  justify-self: end;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -544,10 +556,20 @@ main {
     row-gap: 0;
   }
 
+  /* Mobile-only divider and right-aligned text -- not part of this
+     layout, so both revert back here. */
+  .archive-community__divider-left {
+    display: none;
+  }
+
   .archive-community__icon {
     align-self: center;
     width: 40px;
     height: 35px;
+  }
+
+  .archive-community__text {
+    text-align: left;
   }
 
   .archive-community__title {
@@ -579,6 +601,7 @@ main {
 
   .archive-community__cta {
     align-self: center;
+    justify-self: start;
     font-size: 0.8rem;
     letter-spacing: 0.03em;
   }
