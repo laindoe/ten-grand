@@ -205,11 +205,19 @@ main {
   align-items: start;
 }
 
+/* height:100% (not auto) is what actually makes this stretch --
+   align-self:stretch alone doesn't grow a replaced element like <img>
+   past its own intrinsic aspect ratio at a fixed width, so without an
+   explicit height it just sat at a small, auto-scaled size no matter
+   how tall its grid area (spanning both the text and cta rows) was.
+   object-fit:contain keeps the icon's own proportions undistorted
+   inside that now-taller box, growing to fill it rather than
+   stretching. */
 .archive-community__icon {
   grid-area: icon;
   align-self: stretch;
-  width: 44px;
-  height: auto;
+  width: 64px;
+  height: 100%;
   object-fit: contain;
   object-position: top;
 }
