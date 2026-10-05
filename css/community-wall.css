@@ -958,7 +958,14 @@ main {
   font-size: 0.85rem;
   color: var(--color-text-muted);
   line-height: 1.5;
-  margin-bottom: 16px;
+}
+
+.cw-network__actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
 }
 
 .cw-network__join {
@@ -977,7 +984,6 @@ main {
   text-align: center;
   cursor: pointer;
   transition: opacity 0.18s ease;
-  margin-bottom: 14px;
 }
 
 .cw-network__join:hover,
@@ -1012,9 +1018,31 @@ main {
     grid-template-columns: repeat(4, 1fr);
   }
 
+  /* Four even columns: the orb takes one, the heading/subtitle take
+     two, and the actions (button + login link) take the last one,
+     flush against the card's right edge -- same "push it to the far
+     right" language as the AMASS promo bar's CTA on the Transmissions
+     page. */
   .cw-network__card {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    column-gap: 24px;
     text-align: left;
+  }
+
+  .cw-network__visual {
+    width: 100%;
+  }
+
+  .cw-network__orb {
+    width: 72px;
+    height: 72px;
+  }
+
+  .cw-network__actions {
+    align-items: flex-end;
+    text-align: right;
   }
 }
 
