@@ -1059,16 +1059,14 @@ main {
 }
 
 @media (max-width: 759px) {
-  /* Heading (eyebrow + title) spans the full width, centered, above a
-     two-column row pairing the subtitle with the globe -- back to a
-     two-column layout, but paired differently than the original
-     (which put the globe beside the whole text block). */
+  /* Single centered column: globe on top, then the eyebrow+title
+     heading, then the subtitle. */
   .cw-hero__inner {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-template-areas:
-      "heading heading"
-      "subtitle globe";
-    column-gap: 16px;
+      "globe"
+      "heading"
+      "subtitle";
     row-gap: 16px;
   }
 
@@ -1102,13 +1100,14 @@ main {
 
   .cw-hero__subtitle {
     font-size: 0.8rem;
+    text-align: center;
+    margin: 0 auto;
   }
 
   .cw-hero__globe {
     justify-self: center;
-    align-self: center;
-    width: 100%;
-    max-width: 150px;
+    width: 50%;
+    max-width: 220px;
     opacity: 0.85;
   }
 }
