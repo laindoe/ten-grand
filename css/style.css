@@ -3746,7 +3746,7 @@ select.amass-flow__field {
 
 .amass-focus-option {
   border: 1px solid rgba(243, 243, 244, 0.35);
-  border-radius: 6px;
+  border-radius: 3px;
   background: rgba(0, 0, 0, 0.18);
   color: var(--color-text);
   padding: 12px 10px;
