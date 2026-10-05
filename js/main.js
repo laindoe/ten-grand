@@ -49,6 +49,7 @@
     const titleEl = modal.querySelector('.modal__title');
     const bodyEl = modal.querySelector('.modal__body');
     const ctaEl = modal.querySelector('.modal__cta');
+    const prevEl = modal.querySelector('.modal__cta-prev');
     const tagEl = modal.querySelector('.modal__tag');
     const tagTextEl = modal.querySelector('.modal__tag-text');
     let lastFocused = null;
@@ -89,6 +90,17 @@
         const nextLabel = document.querySelector(`.route__pin[data-stage="${nextStage}"] .route__pin-label`);
         ctaEl.textContent = nextLabel ? nextLabel.textContent : 'IMPACT';
       }
+      if (prevEl) {
+        // Stage 1 has nothing behind it, so it keeps showing only the
+        // single next button, exactly as before this link existed.
+        const prevStage = Number(trigger.dataset.stage) - 1;
+        const prevPin = prevStage >= 1
+          ? document.querySelector(`.route__pin[data-stage="${prevStage}"]`)
+          : null;
+        const prevLabel = prevPin && prevPin.querySelector('.route__pin-label');
+        prevEl.textContent = prevLabel ? prevLabel.textContent : '';
+        prevEl.hidden = !prevPin;
+      }
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
@@ -119,6 +131,17 @@
     modal.querySelectorAll('[data-modal-close]').forEach((el) => {
       el.addEventListener('click', closeModal);
     });
+
+    // Unlike the next/close button, this reopens the modal in place on
+    // the previous sign rather than closing it -- mobile never "advances"
+    // backward, it just re-populates the same overlay.
+    if (prevEl) {
+      prevEl.addEventListener('click', () => {
+        const prevStage = Number(lastFocused && lastFocused.dataset.stage) - 1;
+        const prevPin = document.querySelector(`.route__pin[data-stage="${prevStage}"]`);
+        if (prevPin) openModal(prevPin);
+      });
+    }
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && modal.classList.contains('is-open')) {
@@ -757,6 +780,7 @@
     const calloutHeadline = callout && callout.querySelector('.route__callout-headline');
     const calloutBody = callout && callout.querySelector('.route__callout-body');
     const calloutCta = callout && callout.querySelector('.route__callout-cta');
+    const calloutPrev = callout && callout.querySelector('.route__callout-cta-prev');
     const calloutTag = callout && callout.querySelector('.route__callout-tag');
     const calloutTagText = callout && callout.querySelector('.route__callout-tag-text');
     let calloutTrigger = null;
@@ -810,6 +834,15 @@
       const nextPin = pinForStage(Number(pin.dataset.stage) + 1);
       const nextLabelEl = nextPin && nextPin.querySelector('.route__pin-label');
       calloutCta.textContent = nextLabelEl ? nextLabelEl.textContent : 'IMPACT';
+      // Same idea in reverse -- stage 1 has no sign behind it, so it keeps
+      // showing only the single next button, exactly as before this link
+      // existed.
+      if (calloutPrev) {
+        const prevPin = pinForStage(Number(pin.dataset.stage) - 1);
+        const prevLabelEl = prevPin && prevPin.querySelector('.route__pin-label');
+        calloutPrev.textContent = prevLabelEl ? prevLabelEl.textContent : '';
+        calloutPrev.hidden = !prevPin;
+      }
       // Stems from the label, not the sign -- this measures wherever the
       // label actually renders rather than the pin itself.
       const label = document.getElementById(`route-label-${pin.dataset.stage}`) || pin;
@@ -922,6 +955,15 @@
             pendingAutoOpenStage = currentStage + 1;
           }
           closeCallout(true);
+        });
+      }
+      // The previous sign is always already reached by the time this one's
+      // callout is open, so this just reopens it directly -- no advance,
+      // no closing first, same as clicking any other reached pin.
+      if (calloutPrev) {
+        calloutPrev.addEventListener('click', () => {
+          const prevPin = calloutTrigger && pinForStage(Number(calloutTrigger.dataset.stage) - 1);
+          if (prevPin) openCallout(prevPin);
         });
       }
     }

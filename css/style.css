@@ -3308,7 +3308,6 @@ a {
    panel's border instead of stopping at its padded content width. */
 .modal__footer {
   display: flex;
-  justify-content: flex-end;
   margin-inline: -28px;
   padding: 14px 28px 0;
   border-top: 1px solid var(--color-card-border);
@@ -3325,7 +3324,8 @@ a {
   flex-shrink: 0;
 }
 
-.modal__cta {
+.modal__cta,
+.modal__cta-prev {
   background: none;
   border: none;
   padding: 0;
@@ -3337,12 +3337,24 @@ a {
 }
 
 .modal__cta:hover,
-.modal__cta:focus-visible {
+.modal__cta:focus-visible,
+.modal__cta-prev:hover,
+.modal__cta-prev:focus-visible {
   color: var(--color-text);
+}
+
+/* Pinned right regardless of whether the prev link is present, so stage
+   1's lone button stays exactly where it always was. */
+.modal__cta {
+  margin-left: auto;
 }
 
 .modal__cta::after {
   content: ' \2192';
+}
+
+.modal__cta-prev::before {
+  content: '\2190 ';
 }
 
 /* AMASS Add Your Voice flow. Everything is scoped to the existing AMASS
@@ -3953,7 +3965,6 @@ body.modal-open {
      edge to edge. */
   .route__callout-footer {
     display: flex;
-    justify-content: flex-end;
     margin-inline: -24px;
     padding: 18px 24px 0;
     border-top: 1px solid var(--color-card-border);
@@ -3970,7 +3981,8 @@ body.modal-open {
     flex-shrink: 0;
   }
 
-  .route__callout-cta {
+  .route__callout-cta,
+  .route__callout-cta-prev {
     background: none;
     border: none;
     padding: 0;
@@ -3983,12 +3995,24 @@ body.modal-open {
   }
 
   .route__callout-cta:hover,
-  .route__callout-cta:focus-visible {
+  .route__callout-cta:focus-visible,
+  .route__callout-cta-prev:hover,
+  .route__callout-cta-prev:focus-visible {
     color: var(--color-text);
+  }
+
+  /* Pinned right regardless of whether the prev link is present, so
+     stage 1's lone button stays exactly where it always was. */
+  .route__callout-cta {
+    margin-left: auto;
   }
 
   .route__callout-cta::after {
     content: ' \2192';
+  }
+
+  .route__callout-cta-prev::before {
+    content: '\2190 ';
   }
 
   .amass__intro {
