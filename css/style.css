@@ -1390,33 +1390,38 @@ a {
     vector-effect: non-scaling-stroke;
   }
 
-  .middle-path__art .mp-mountain-outer { stroke-width: 1.5px; }
-  .middle-path__art .mp-mountain-detail { stroke-width: .75px; }
+  /* Halved from the original 1.5px/.75px authored pair to bring this
+     scene's line weight down to roughly match the Bridge scene's at the
+     same mobile width -- same 2:1 hierarchy, just lighter overall. */
+  .middle-path__art .mp-mountain-outer { stroke-width: .75px; }
+  .middle-path__art .mp-mountain-detail { stroke-width: .375px; }
 
-  /* Match the authored 2-unit guardrail strokes in Passing Each Other By.
-     Keep them in SVG units so both scenes scale the same way on mobile. */
+  /* Match the authored 2-unit guardrail strokes in Passing Each Other By,
+     halved for the same reason as the bus/mountain lines above. Keep them
+     in SVG units so both scenes scale the same way on mobile. */
   .middle-path__art #mp-rails .cls-2 {
     vector-effect: none;
-    stroke-width: 2px;
+    stroke-width: 1px;
   }
 
-  /* Match the vehicle hierarchy in Passing Each Other By: a 1.5px exterior,
-     .75px interior details, and .5px fine accents. Keeping these strokes
-     non-scaling preserves that relationship after the mobile bus enlargement. */
+  /* Match the vehicle hierarchy in Passing Each Other By -- a 2:1:.67
+     exterior/interior/accent ratio -- halved overall for the same reason
+     as the mountain lines above. Keeping these strokes non-scaling
+     preserves that relationship after the mobile bus enlargement. */
   .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width="1.550211"],
   .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width="1.512984"] {
-    vector-effect: non-scaling-stroke;
-    stroke-width: 1.5px;
-  }
-
-  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width=".775106"] {
     vector-effect: non-scaling-stroke;
     stroke-width: .75px;
   }
 
+  .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width=".775106"] {
+    vector-effect: non-scaling-stroke;
+    stroke-width: .375px;
+  }
+
   .middle-path__art #mp-bus [stroke="#f3f3f4"][stroke-width=".581329"] {
     vector-effect: non-scaling-stroke;
-    stroke-width: .5px;
+    stroke-width: .25px;
   }
 
   /* Preserve more open sky above the flock on the narrow composition. The
