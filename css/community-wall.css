@@ -938,22 +938,26 @@ main {
 
 /* ---------- Network CTA ---------- */
 
+/* Full-bleed bottom divider, same pattern as .cw-broadcasts/
+   .cw-campaigns, instead of the card having its own box border. */
 .cw-network {
+  border-bottom: 1px solid var(--color-card-border);
   padding-top: 40px;
   padding-bottom: 40px;
 }
 
 /* Stacked on mobile -- the orb/lashes visual sits above the heading
    and button instead of beside them. Desktop restores the side-by-side
-   row (see the Desktop/tablet media query below). */
+   row (see the Desktop/tablet media query below). No border/padding of
+   its own anymore -- relies on .cw-network's section padding and
+   .cw-inner's horizontal gutter, same as the page's other boxless
+   sections. */
 .cw-network__card {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 18px;
-  border: 1px solid var(--color-card-border);
-  padding: 24px 20px;
 }
 
 /* Narrower than the reference's icon column on purpose -- leaves the
