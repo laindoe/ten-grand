@@ -13,7 +13,7 @@ permalink: /community-wall/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=1" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=2" />
 </head>
 <body>
 
@@ -174,31 +174,198 @@ permalink: /community-wall/
 
         <div class="cw-voice-grid">
           <article class="cw-voice-card">
-            <div class="cw-voice-card__head">
-              <p class="cw-voice-card__name">NAME / ALIAS</p>
-              <span class="cw-voice-card__badge" aria-hidden="true"><span class="cw-voice-card__badge-ring"></span><span class="cw-voice-card__badge-number">0001</span></span>
+            <div class="cw-voice-card__top">
+              <span class="cw-voice-card__avatar" aria-hidden="true">
+                <svg class="cw-voice-card__orb" viewBox="0 0 64 64">
+                  <defs>
+                    <linearGradient id="cw-orb-grad-0042" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0" style="stop-color:var(--cw-color-create)"/>
+                      <stop offset="1" style="stop-color:var(--cw-color-create-blend)"/>
+                    </linearGradient>
+                    <filter id="cw-orb-glow-0042" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+                      <feGaussianBlur stdDeviation="4"/>
+                    </filter>
+                  </defs>
+                  <circle class="cw-voice-card__orb-glow" cx="32" cy="32" r="22" style="fill:var(--cw-color-create)" opacity="0.52" filter="url(#cw-orb-glow-0042)"/>
+                  <circle class="cw-voice-card__orb-core" cx="32" cy="32" r="22" fill="url(#cw-orb-grad-0042)"/>
+                  <circle class="cw-voice-card__orb-ring" cx="32" cy="32" r="22" fill="none" style="stroke:var(--color-card-border)" stroke-width="2"/>
+                </svg>
+              </span>
+
+              <div class="cw-voice-card__identity">
+                <p class="cw-voice-card__name">RIVER</p>
+                <p class="cw-voice-card__links">
+                  <span class="cw-voice-card__handle">@river.builds</span>
+                  <a class="cw-voice-card__website" href="https://river.builds">river.builds</a>
+                </p>
+              </div>
+
+              <div class="cw-voice-card__badge-col">
+                <span class="cw-voice-card__badge" aria-hidden="true">
+                  <span class="cw-voice-card__badge-ring"></span>
+                  <span class="cw-voice-card__badge-number">0042</span>
+                </span>
+                <span class="cw-voice-card__role-label cw-voice-card__role-label--create">CREATOR</span>
+              </div>
             </div>
-            <p class="cw-voice-card__handle">@handle</p>
-            <span class="cw-voice-card__role cw-voice-card__role--create">CREATOR</span>
-            <p class="cw-voice-card__quote">&ldquo;Placeholder quote from an approved Voices Heard submission goes here.&rdquo;</p>
+
+            <span class="cw-voice-card__divider" aria-hidden="true"></span>
+
+            <div class="cw-voice-card__body">
+              <p class="cw-voice-card__subtitle">WHY I CREATE</p>
+              <p class="cw-voice-card__title">FOR THE ONES WHO NEEDED IT</p>
+
+              <div class="cw-voice-card__audio" role="group" aria-label="Audio response, 1 minute 24 seconds">
+                <span class="cw-voice-card__audio-play" aria-hidden="true"></span>
+                <span class="cw-voice-card__audio-wave" aria-hidden="true">
+                  <span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span>
+                </span>
+                <span class="cw-voice-card__audio-time" aria-hidden="true">0:00 / 1:24</span>
+                <span class="cw-voice-card__audio-menu" aria-hidden="true">&hellip;</span>
+              </div>
+            </div>
           </article>
+
           <article class="cw-voice-card">
-            <div class="cw-voice-card__head">
-              <p class="cw-voice-card__name">NAME / ALIAS</p>
-              <span class="cw-voice-card__badge" aria-hidden="true"><span class="cw-voice-card__badge-ring"></span><span class="cw-voice-card__badge-number">0002</span></span>
+            <div class="cw-voice-card__top">
+              <span class="cw-voice-card__avatar" aria-hidden="true">
+                <svg class="cw-voice-card__orb" viewBox="0 0 64 64">
+                  <defs>
+                    <linearGradient id="cw-orb-grad-0017" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0" style="stop-color:var(--cw-color-build)"/>
+                      <stop offset="1" style="stop-color:var(--cw-color-build-blend)"/>
+                    </linearGradient>
+                    <filter id="cw-orb-glow-0017" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+                      <feGaussianBlur stdDeviation="4"/>
+                    </filter>
+                  </defs>
+                  <circle class="cw-voice-card__orb-glow" cx="32" cy="32" r="22" style="fill:var(--cw-color-build)" opacity="0.52" filter="url(#cw-orb-glow-0017)"/>
+                  <circle class="cw-voice-card__orb-core" cx="32" cy="32" r="22" fill="url(#cw-orb-grad-0017)"/>
+                  <circle class="cw-voice-card__orb-ring" cx="32" cy="32" r="22" fill="none" style="stroke:var(--color-card-border)" stroke-width="2"/>
+                </svg>
+              </span>
+
+              <div class="cw-voice-card__identity">
+                <p class="cw-voice-card__name">MAYA CHEN</p>
+                <p class="cw-voice-card__links">
+                  <span class="cw-voice-card__handle">@maya.chen</span>
+                  <a class="cw-voice-card__website" href="https://mayachen.co">mayachen.co</a>
+                </p>
+              </div>
+
+              <div class="cw-voice-card__badge-col">
+                <span class="cw-voice-card__badge" aria-hidden="true">
+                  <span class="cw-voice-card__badge-ring"></span>
+                  <span class="cw-voice-card__badge-number">0017</span>
+                </span>
+                <span class="cw-voice-card__role-label cw-voice-card__role-label--build">BUILDER</span>
+              </div>
             </div>
-            <p class="cw-voice-card__handle">@handle</p>
-            <span class="cw-voice-card__role cw-voice-card__role--build">BUILDER</span>
-            <p class="cw-voice-card__quote">&ldquo;Placeholder quote from an approved Voices Heard submission goes here.&rdquo;</p>
+
+            <span class="cw-voice-card__divider" aria-hidden="true"></span>
+
+            <div class="cw-voice-card__body">
+              <p class="cw-voice-card__subtitle">WHY I BUILD</p>
+              <p class="cw-voice-card__title">BUILDING FOR THE LONG VIEW</p>
+              <p class="cw-voice-card__quote">&ldquo;Technology should expand what&rsquo;s possible for more people, not just a few. I build to create more builders.&rdquo;</p>
+            </div>
           </article>
+
           <article class="cw-voice-card">
-            <div class="cw-voice-card__head">
-              <p class="cw-voice-card__name">NAME / ALIAS</p>
-              <span class="cw-voice-card__badge" aria-hidden="true"><span class="cw-voice-card__badge-ring"></span><span class="cw-voice-card__badge-number">0003</span></span>
+            <div class="cw-voice-card__top">
+              <span class="cw-voice-card__avatar" aria-hidden="true">
+                <svg class="cw-voice-card__orb" viewBox="0 0 64 64">
+                  <defs>
+                    <linearGradient id="cw-orb-grad-0028" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0" style="stop-color:var(--cw-color-fund)"/>
+                      <stop offset="1" style="stop-color:var(--cw-color-fund-blend)"/>
+                    </linearGradient>
+                    <filter id="cw-orb-glow-0028" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+                      <feGaussianBlur stdDeviation="4"/>
+                    </filter>
+                  </defs>
+                  <circle class="cw-voice-card__orb-glow" cx="32" cy="32" r="22" style="fill:var(--cw-color-fund)" opacity="0.52" filter="url(#cw-orb-glow-0028)"/>
+                  <circle class="cw-voice-card__orb-core" cx="32" cy="32" r="22" fill="url(#cw-orb-grad-0028)"/>
+                  <circle class="cw-voice-card__orb-ring" cx="32" cy="32" r="22" fill="none" style="stroke:var(--color-card-border)" stroke-width="2"/>
+                </svg>
+              </span>
+
+              <div class="cw-voice-card__identity">
+                <p class="cw-voice-card__name">ELI GREEN</p>
+                <p class="cw-voice-card__links">
+                  <span class="cw-voice-card__handle">@eligreen</span>
+                  <a class="cw-voice-card__website" href="https://eligreen.fund">eligreen.fund</a>
+                </p>
+              </div>
+
+              <div class="cw-voice-card__badge-col">
+                <span class="cw-voice-card__badge" aria-hidden="true">
+                  <span class="cw-voice-card__badge-ring"></span>
+                  <span class="cw-voice-card__badge-number">0028</span>
+                </span>
+                <span class="cw-voice-card__role-label cw-voice-card__role-label--fund">INVESTOR</span>
+              </div>
             </div>
-            <p class="cw-voice-card__handle">@handle</p>
-            <span class="cw-voice-card__role cw-voice-card__role--support">SUPPORTER</span>
-            <p class="cw-voice-card__quote">&ldquo;Placeholder quote from an approved Voices Heard submission goes here.&rdquo;</p>
+
+            <span class="cw-voice-card__divider" aria-hidden="true"></span>
+
+            <div class="cw-voice-card__body">
+              <p class="cw-voice-card__subtitle">WHY I FUND</p>
+              <p class="cw-voice-card__title">BETTING ON POSSIBILITY</p>
+
+              <div class="cw-voice-card__audio" role="group" aria-label="Audio response, 2 minutes 11 seconds">
+                <span class="cw-voice-card__audio-play" aria-hidden="true"></span>
+                <span class="cw-voice-card__audio-wave" aria-hidden="true">
+                  <span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span><span class="cw-voice-card__audio-bar"></span>
+                </span>
+                <span class="cw-voice-card__audio-time" aria-hidden="true">0:00 / 2:11</span>
+                <span class="cw-voice-card__audio-menu" aria-hidden="true">&hellip;</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="cw-voice-card">
+            <div class="cw-voice-card__top">
+              <span class="cw-voice-card__avatar" aria-hidden="true">
+                <svg class="cw-voice-card__orb" viewBox="0 0 64 64">
+                  <defs>
+                    <linearGradient id="cw-orb-grad-0100" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0" style="stop-color:var(--cw-color-support)"/>
+                      <stop offset="1" style="stop-color:var(--cw-color-support-blend)"/>
+                    </linearGradient>
+                    <filter id="cw-orb-glow-0100" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+                      <feGaussianBlur stdDeviation="4"/>
+                    </filter>
+                  </defs>
+                  <circle class="cw-voice-card__orb-glow" cx="32" cy="32" r="22" style="fill:var(--cw-color-support)" opacity="0.52" filter="url(#cw-orb-glow-0100)"/>
+                  <circle class="cw-voice-card__orb-core" cx="32" cy="32" r="22" fill="url(#cw-orb-grad-0100)"/>
+                  <circle class="cw-voice-card__orb-ring" cx="32" cy="32" r="22" fill="none" style="stroke:var(--color-card-border)" stroke-width="2"/>
+                </svg>
+              </span>
+
+              <div class="cw-voice-card__identity">
+                <p class="cw-voice-card__name">JORDAN K.</p>
+                <p class="cw-voice-card__links">
+                  <span class="cw-voice-card__handle">@jordan.k</span>
+                  <a class="cw-voice-card__website" href="https://jordan.co">jordan.co</a>
+                </p>
+              </div>
+
+              <div class="cw-voice-card__badge-col">
+                <span class="cw-voice-card__badge" aria-hidden="true">
+                  <span class="cw-voice-card__badge-ring"></span>
+                  <span class="cw-voice-card__badge-number">0100</span>
+                </span>
+                <span class="cw-voice-card__role-label cw-voice-card__role-label--support">SUPPORTER</span>
+              </div>
+            </div>
+
+            <span class="cw-voice-card__divider" aria-hidden="true"></span>
+
+            <div class="cw-voice-card__body">
+              <p class="cw-voice-card__subtitle">WHY I SUPPORT</p>
+              <p class="cw-voice-card__quote">&ldquo;I support because a more open, creative future is possible &mdash; and it takes all of us.&rdquo;</p>
+            </div>
           </article>
         </div>
       </div>
