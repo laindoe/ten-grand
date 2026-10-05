@@ -330,7 +330,7 @@
       },
     };
     const titles = {
-      1: 'Leave your mark on the<br>AMASS<br>Comm(unity) wall',
+      1: 'AMASS Comm(unity) Wall',
       2: 'WHAT SHOULD WE CALL YOU?',
       3: 'HOW DO YOU SHOW UP?',
       6: 'WHERE CAN PEOPLE FIND YOU?',
@@ -466,11 +466,7 @@
         panel.classList.toggle('is-active', isCurrent);
       });
       form.hidden = step === 8;
-      // innerHTML, not textContent -- step 1's title needs the <br>s that
-      // put AMASS on its own line. Every title string here is static,
-      // developer-authored copy (see titles/titleForStep above), never
-      // user input, so this carries no injection risk.
-      titleEl.innerHTML = titleForStep(step);
+      titleEl.textContent = titleForStep(step);
       errorEl.hidden = true;
       socialError.hidden = true;
       if (step === 4) ensureFocusGrid();

@@ -138,6 +138,16 @@ main {
   color: var(--color-text-muted);
 }
 
+/* Below 16px, iOS Safari auto-zooms the viewport on focus -- same fix
+   as the AMASS modal's form fields (see #amass-modal's font-size rule
+   in style.css), scoped to touch/narrow viewports only. */
+@media (max-width: 900px), (pointer: coarse) {
+  .archive-select,
+  .archive-search {
+    font-size: max(16px, 1rem);
+  }
+}
+
 /* ---------- Sample badge / pillar tags (shared) ---------- */
 
 .sample-badge {
