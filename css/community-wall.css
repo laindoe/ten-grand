@@ -627,11 +627,20 @@ main {
   gap: 12px;
 }
 
+/* Grows to match the row's own height (name + links + badge stack)
+   instead of a fixed small size -- align-self:stretch overrides the
+   row's flex-start for this one item, and aspect-ratio keeps it a
+   circle as that height changes. max-width caps it for short rows
+   (e.g. no-website cards) so it can't balloon past a sensible size. */
 .cw-voice-card__avatar {
   flex-shrink: 0;
   display: block;
-  width: 48px;
-  height: 48px;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  max-width: 96px;
+  max-height: 96px;
 }
 
 .cw-voice-card__orb,
@@ -660,25 +669,48 @@ main {
 
 .cw-voice-card__name {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .cw-voice-card__links {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
-.cw-voice-card__handle {
-  font-size: 0.8rem;
+/* Icon + text as one tap target, with vertical padding added purely
+   for tap height (not visual spacing -- .cw-voice-card__links' own
+   gap handles that) since the text alone was too small/thin to tap
+   reliably. width:fit-content keeps the hit area close to the visible
+   icon+text instead of stretching to the full card width. */
+.cw-voice-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 5px 0;
+  font-size: 0.95rem;
   color: var(--color-text-muted);
+  text-decoration: none;
 }
 
 .cw-voice-card__website {
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
   text-decoration: underline;
+}
+
+.cw-voice-card__link-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.cw-voice-card__link-icon-dot {
+  fill: currentColor;
+  stroke: none;
 }
 
 .cw-voice-card__badge-col {
