@@ -36,7 +36,7 @@
     what they have.
   cta: PUSH THROUGH
   tag: Proper packaging prepares your work for the world
-  accent:
+  accent: "#58de68"
 - title: DISTRIBUTION
   headline: THE PATH NARROWS
   body: |
@@ -46,4 +46,4 @@
     Replace this with the real write-up.
   cta: FIND THE OPENING
   tag: Structure gives ideas a way forward
-  accent:
+  accent: "#27bfff"
