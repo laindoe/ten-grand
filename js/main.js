@@ -276,7 +276,6 @@
     if (!modal || !form) return;
 
     const titleEl = modal.querySelector('.modal__title');
-    const backButton = modal.querySelector('.amass-flow__back');
     const steps = Array.from(modal.querySelectorAll('[data-amass-step]'));
     const nameInput = form.elements.name;
     const roleInputs = Array.from(form.elements.role);
@@ -468,7 +467,6 @@
       });
       form.hidden = step === 8;
       titleEl.textContent = titleForStep(step);
-      backButton.hidden = step === 1 || step === 8;
       errorEl.hidden = true;
       socialError.hidden = true;
       if (step === 4) ensureFocusGrid();
@@ -518,8 +516,10 @@
       });
     });
 
-    backButton.addEventListener('click', () => {
-      if (currentStep > 1 && currentStep < 8) showStep(currentStep - 1);
+    modal.querySelectorAll('[data-amass-back]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (currentStep > 1 && currentStep < 8) showStep(currentStep - 1);
+      });
     });
 
     nameInput.addEventListener('input', setNextState);

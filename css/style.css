@@ -3393,17 +3393,46 @@ a {
   margin: 0;
 }
 
+/* Sits directly above its step's .amass-flow__cta as a single bottom-
+   pinned group -- the group itself carries the margin-top:auto that
+   .amass-flow__cta used to carry alone, so the pair still lands at the
+   bottom of the step exactly like the lone CTA on step 1 always has. */
+.amass-flow__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.amass-flow__actions .amass-flow__cta {
+  margin-top: 0;
+}
+
+/* Same shape as .amass-flow__cta (full-width, same padding/type scale)
+   but outlined and transparent so it reads as the secondary action. */
 .amass-flow__back {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  width: 40px;
-  height: 40px;
-  border: 0;
-  background: none;
+  width: 100%;
+  border: 1px solid var(--color-text);
+  border-radius: 2px;
+  background: transparent;
   color: var(--color-text);
-  font-size: 1.35rem;
+  padding: 14px 18px;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: opacity 0.18s ease, background-color 0.18s ease;
+}
+
+.amass-flow__back::before {
+  content: '\2190  ';
+}
+
+.amass-flow__back:hover,
+.amass-flow__back:focus-visible {
+  background: rgba(243, 243, 244, 0.08);
 }
 
 .amass-flow__step {
@@ -3477,6 +3506,35 @@ a {
 .amass-flow__field:focus {
   border-color: var(--color-text);
   box-shadow: 0 0 0 1px var(--color-text);
+}
+
+/* Browser/OS autofill (Safari's pale yellow highlight included) paints
+   its own background underneath the text, ignoring the authored one --
+   an opaque inset box-shadow the size of the whole field is the only
+   way to cover it. #101314 matches the modal panel's own background,
+   the same dark gray this field already sits on when not autofilled. */
+.amass-flow__field:-webkit-autofill,
+.amass-flow__field:-webkit-autofill:hover,
+.amass-flow__field:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--color-text);
+  -webkit-box-shadow: 0 0 0 1000px #101314 inset;
+  box-shadow: 0 0 0 1000px #101314 inset;
+  caret-color: var(--color-text);
+  transition: background-color 9999s ease-in-out 0s, color 9999s ease-in-out 0s;
+}
+
+.amass-flow__field:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text);
+  -webkit-box-shadow: 0 0 0 1000px #101314 inset, 0 0 0 1px var(--color-text);
+  box-shadow: 0 0 0 1000px #101314 inset, 0 0 0 1px var(--color-text);
+  border-color: var(--color-text);
+  caret-color: var(--color-text);
+  transition: background-color 9999s ease-in-out 0s, color 9999s ease-in-out 0s;
+}
+
+.amass-flow__field:autofill {
+  color: var(--color-text);
+  background: #101314;
 }
 
 .amass-flow__field::placeholder {
