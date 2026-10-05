@@ -3378,11 +3378,11 @@ a {
 }
 
 #amass-modal .modal__title {
-  max-width: 330px;
+  max-width: 360px;
   margin: 0 auto 18px;
   padding: 0;
   font-family: 'Arial Narrow', var(--font-display);
-  font-size: clamp(1.85rem, 7vw, 2.55rem);
+  font-size: clamp(2.6rem, 11.5vw, 3.6rem);
   font-stretch: condensed;
   line-height: 0.98;
   letter-spacing: 0.01em;
@@ -3464,8 +3464,10 @@ a {
 }
 
 /* Reads as a campaign label set inside the sentence -- small, uppercase,
-   red, with a soft glow (text-shadow off its own currentColor) rather
-   than the plain accent-color treatment used elsewhere on this page. */
+   with a soft glow (text-shadow off its own currentColor) rather than
+   the plain accent-color treatment used elsewhere on this page. The
+   glow tracks the animated color below automatically since both read
+   off currentColor. */
 .amass-flow__campaign-label {
   font-size: 0.78rem;
   font-weight: 700;
@@ -3473,6 +3475,25 @@ a {
   text-transform: uppercase;
   color: var(--color-vandalism);
   text-shadow: 0 0 6px currentColor, 0 0 14px currentColor;
+}
+
+/* Cycles through the same four role colors used for Create/Build/Fund/
+   Support everywhere else on the site (the Community Wall roles, the
+   route signs' accents), in the same red-yellow-green-blue order as
+   the orb gradients -- a loop, not a one-off, so it never "finishes"
+   on the vandalism red the static style above is the fallback for. */
+@media (prefers-reduced-motion: no-preference) {
+  .amass-flow__campaign-label {
+    animation: amassCampaignColorCycle 8s linear infinite;
+  }
+}
+
+@keyframes amassCampaignColorCycle {
+  0% { color: #be2026; }
+  25% { color: #e5dc16; }
+  50% { color: #007938; }
+  75% { color: #00b0e0; }
+  100% { color: #be2026; }
 }
 
 .amass-flow__helper {
