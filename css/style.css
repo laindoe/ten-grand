@@ -223,8 +223,14 @@ a {
   flex-direction: column;
   min-width: 240px;
   max-width: calc(100vw - 32px);
-  margin-top: -1px;
+  /* No border-top: the nav bar's own border-bottom already draws this
+     seam. Stacking a second 1px border here via a negative margin to
+     visually merge them is subject to sub-pixel rounding on high-
+     density screens and can leave a hairline gap -- top:100% alone is
+     an exact percentage of the containing block, so it's flush with
+     no rounding involved. */
   border: 1px solid var(--color-card-border);
+  border-top: none;
   background: var(--color-bg);
   padding: 6px 0;
 }
