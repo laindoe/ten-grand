@@ -3789,9 +3789,12 @@ select.amass-flow__field {
 
 .amass-photo-field {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  justify-content: center;
   margin-bottom: 18px;
+}
+
+.amass-photo-wrap {
+  position: relative;
 }
 
 .amass-photo-preview {
@@ -3849,43 +3852,34 @@ select.amass-flow__field {
   text-transform: uppercase;
 }
 
-.amass-photo-field__actions {
+.amass-photo-remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.amass-photo-field__btn {
-  width: 100px;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
   border: 1px solid rgba(243, 243, 244, 0.35);
-  border-radius: 2px;
-  background: transparent;
+  border-radius: 50%;
+  background: var(--color-bg);
   color: var(--color-text);
-  padding: 9px 16px;
-  font: inherit;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  padding: 0;
+  font-size: 0.95rem;
+  line-height: 1;
   cursor: pointer;
-  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
 }
 
-.amass-photo-field__btn:hover,
-.amass-photo-field__btn:focus-visible {
+.amass-photo-remove:hover,
+.amass-photo-remove:focus-visible {
   border-color: var(--color-text);
   background: rgba(243, 243, 244, 0.08);
 }
 
-.amass-photo-field__btn:disabled {
-  color: var(--color-text-muted);
-  border-color: rgba(243, 243, 244, 0.18);
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.amass-photo-field__btn:disabled:hover {
-  background: transparent;
+.amass-photo-remove[hidden] {
+  display: none;
 }
 
 .amass-disclosure {

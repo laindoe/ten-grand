@@ -286,8 +286,7 @@
     const photoInput = document.getElementById('amass-photo-input');
     const photoPreviewImg = document.getElementById('amass-photo-preview-img');
     const photoPreviewEmpty = document.getElementById('amass-photo-preview-empty');
-    const photoUploadBtn = document.getElementById('amass-photo-upload-btn');
-    const photoDeleteBtn = document.getElementById('amass-photo-delete-btn');
+    const photoRemoveBtn = document.getElementById('amass-photo-remove-btn');
     const removalToggle = document.getElementById('amass-removal-toggle');
     const removalPanel = document.getElementById('amass-removal-panel');
     const errorEl = document.getElementById('amass-form-error');
@@ -359,7 +358,7 @@
       photoPreviewImg.src = '';
       photoPreviewImg.hidden = true;
       photoPreviewEmpty.hidden = false;
-      photoDeleteBtn.disabled = true;
+      photoRemoveBtn.hidden = true;
     }
 
     function setPhoto(file) {
@@ -368,7 +367,7 @@
       photoPreviewImg.src = photoObjectUrl;
       photoPreviewImg.hidden = false;
       photoPreviewEmpty.hidden = true;
-      photoDeleteBtn.disabled = false;
+      photoRemoveBtn.hidden = false;
     }
 
     function selectedRole() {
@@ -574,8 +573,7 @@
       });
     });
 
-    photoUploadBtn.addEventListener('click', () => photoInput.click());
-    photoDeleteBtn.addEventListener('click', clearPhoto);
+    photoRemoveBtn.addEventListener('click', clearPhoto);
     photoInput.addEventListener('change', () => {
       const file = photoInput.files && photoInput.files[0];
       if (file) setPhoto(file);

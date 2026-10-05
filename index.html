@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=116" />
+  <link rel="stylesheet" href="css/style.css?v=117" />
 </head>
 <body>
 
@@ -863,18 +863,17 @@
 
             <label class="amass-flow__label" for="amass-photo-input">Photo</label>
             <div class="amass-photo-field">
-              <label class="amass-photo-preview" for="amass-photo-input" id="amass-photo-preview">
-                <img class="amass-photo-preview__img" id="amass-photo-preview-img" alt="" hidden>
-                <span class="amass-photo-preview__empty" id="amass-photo-preview-empty">
-                  <span class="amass-photo-preview__plus" aria-hidden="true">+</span>
-                  <span class="amass-photo-preview__caption">Add Photo</span>
-                </span>
-              </label>
-              <input type="file" class="amass-photo-input" id="amass-photo-input" accept="image/*" hidden>
-              <div class="amass-photo-field__actions">
-                <button type="button" class="amass-photo-field__btn" id="amass-photo-upload-btn">Upload</button>
-                <button type="button" class="amass-photo-field__btn" id="amass-photo-delete-btn" disabled>Delete</button>
+              <div class="amass-photo-wrap">
+                <label class="amass-photo-preview" for="amass-photo-input" id="amass-photo-preview">
+                  <img class="amass-photo-preview__img" id="amass-photo-preview-img" alt="" hidden>
+                  <span class="amass-photo-preview__empty" id="amass-photo-preview-empty">
+                    <span class="amass-photo-preview__plus" aria-hidden="true">+</span>
+                    <span class="amass-photo-preview__caption">Add Photo</span>
+                  </span>
+                </label>
+                <button type="button" class="amass-photo-remove" id="amass-photo-remove-btn" aria-label="Remove photo" hidden>&times;</button>
               </div>
+              <input type="file" class="amass-photo-input" id="amass-photo-input" accept="image/*" hidden>
             </div>
 
             <label class="amass-flow__label" for="amass-website">Website</label>
@@ -931,6 +930,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=17"></script>
+  <script src="js/main.js?v=18"></script>
 </body>
 </html>
