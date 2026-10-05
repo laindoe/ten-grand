@@ -128,7 +128,6 @@
     // prev button itself needs to step one further back each time.
     let openedBy = null;
     let currentTrigger = null;
-    const { lock: lockScroll, unlock: unlockScroll } = createScrollLock();
 
     // One <p> per paragraph, split on blank lines, so the copy in
     // _data/route.yml can run to more than a sentence. textContent per
@@ -178,7 +177,6 @@
         prevEl.textContent = prevLabel ? prevLabel.textContent : '';
         prevEl.hidden = !prevPin;
       }
-      lockScroll();
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
@@ -190,7 +188,6 @@
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('modal-open');
-      unlockScroll();
       if (openedBy) openedBy.focus({ preventScroll: true });
       // Route pins use this to know when to light the next stretch of
       // road (see initRoute) — dispatched after the close so anything
