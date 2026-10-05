@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=96" />
+  <link rel="stylesheet" href="css/style.css?v=97" />
 </head>
 <body>
 
@@ -386,10 +386,10 @@
             <p class="route__cap route__cap--star">IMAGINATION</p>
             <button type="button" class="route__spark" aria-label="Send the idea down the route"><span class="route__spark-ring"></span></button>
             <p class="route__cap route__cap--globe">IMPACT</p>
-            <button type="button" class="route__pin route__pin--1 route__pin--right" data-stage="1" data-callout-side="right" aria-label="Development: map out the idea." data-modal-body="{{ site.data.route[0].body | strip }}" data-callout-headline="{{ site.data.route[0].headline }}"><span class="route__pin-text" id="route-label-1"><span class="route__pin-label">DEVELOPMENT</span><span class="route__pin-note">Map out the idea.</span></span></button>
-            <button type="button" class="route__pin route__pin--2 route__pin--left" data-stage="2" data-callout-side="left" aria-label="Production: bring it to life." data-modal-body="{{ site.data.route[1].body | strip }}" data-callout-headline="{{ site.data.route[1].headline }}"><span class="route__pin-text" id="route-label-2"><span class="route__pin-label">PRODUCTION</span><span class="route__pin-note">Bring it to life.</span></span></button>
-            <button type="button" class="route__pin route__pin--3 route__pin--right" data-stage="3" data-callout-side="right" aria-label="Packaging: get it ready to be seen." data-modal-body="{{ site.data.route[2].body | strip }}" data-callout-headline="{{ site.data.route[2].headline }}"><span class="route__pin-text" id="route-label-3"><span class="route__pin-label">PACKAGING</span><span class="route__pin-note">Get it ready to be seen.</span></span></button>
-            <button type="button" class="route__pin route__pin--4 route__pin--left" data-stage="4" data-callout-side="left" aria-label="Distribution: send it out to the world." data-modal-body="{{ site.data.route[3].body | strip }}" data-callout-headline="{{ site.data.route[3].headline }}"><span class="route__pin-text" id="route-label-4"><span class="route__pin-label">DISTRIBUTION</span><span class="route__pin-note">Send it out to the world.</span></span></button>
+            <button type="button" class="route__pin route__pin--1 route__pin--right" data-stage="1" data-callout-side="right" aria-label="Development: map out the idea." data-modal-body="{{ site.data.route[0].body | strip }}" data-callout-headline="{{ site.data.route[0].headline }}" data-callout-tag="{{ site.data.route[0].tag }}" data-callout-tag-color="{{ site.data.route[0].accent }}"><span class="route__pin-text" id="route-label-1"><span class="route__pin-label">DEVELOPMENT</span><span class="route__pin-note">Map out the idea.</span></span></button>
+            <button type="button" class="route__pin route__pin--2 route__pin--left" data-stage="2" data-callout-side="left" aria-label="Production: bring it to life." data-modal-body="{{ site.data.route[1].body | strip }}" data-callout-headline="{{ site.data.route[1].headline }}" data-callout-tag="{{ site.data.route[1].tag }}" data-callout-tag-color="{{ site.data.route[1].accent }}"><span class="route__pin-text" id="route-label-2"><span class="route__pin-label">PRODUCTION</span><span class="route__pin-note">Bring it to life.</span></span></button>
+            <button type="button" class="route__pin route__pin--3 route__pin--right" data-stage="3" data-callout-side="right" aria-label="Packaging: get it ready to be seen." data-modal-body="{{ site.data.route[2].body | strip }}" data-callout-headline="{{ site.data.route[2].headline }}" data-callout-tag="{{ site.data.route[2].tag }}" data-callout-tag-color="{{ site.data.route[2].accent }}"><span class="route__pin-text" id="route-label-3"><span class="route__pin-label">PACKAGING</span><span class="route__pin-note">Get it ready to be seen.</span></span></button>
+            <button type="button" class="route__pin route__pin--4 route__pin--left" data-stage="4" data-callout-side="left" aria-label="Distribution: send it out to the world." data-modal-body="{{ site.data.route[3].body | strip }}" data-callout-headline="{{ site.data.route[3].headline }}" data-callout-tag="{{ site.data.route[3].tag }}" data-callout-tag-color="{{ site.data.route[3].accent }}"><span class="route__pin-text" id="route-label-4"><span class="route__pin-label">DISTRIBUTION</span><span class="route__pin-note">Send it out to the world.</span></span></button>
 
             <div class="route__callout" id="route-callout" aria-hidden="true">
               <span class="route__callout-connector" aria-hidden="true">
@@ -399,7 +399,7 @@
                 <button type="button" class="route__callout-close" data-callout-close aria-label="Close">&times;</button>
                 <h3 class="route__callout-headline" id="route-callout-headline"></h3>
                 <div class="route__callout-body"></div>
-                <span class="route__callout-tag"><span class="route__callout-dot" aria-hidden="true"></span>Structure gives ideas a way forward</span>
+                <span class="route__callout-tag"><span class="route__callout-dot" aria-hidden="true"></span><span class="route__callout-tag-text" id="route-callout-tag-text"></span></span>
                 <div class="route__callout-footer">
                   <button type="button" class="route__callout-cta" data-callout-next></button>
                 </div>
@@ -768,7 +768,7 @@
       <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
       <h3 class="modal__title" id="engine-modal-title"></h3>
       <div class="modal__body"></div>
-      <span class="modal__tag"><span class="modal__dot" aria-hidden="true"></span>Structure gives ideas a way forward</span>
+      <span class="modal__tag"><span class="modal__dot" aria-hidden="true"></span><span class="modal__tag-text" id="engine-modal-tag-text"></span></span>
       <div class="modal__footer">
         <button type="button" class="modal__cta" data-modal-close></button>
       </div>
@@ -870,6 +870,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=4"></script>
+  <script src="js/main.js?v=5"></script>
 </body>
 </html>

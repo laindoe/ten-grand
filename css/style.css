@@ -3288,11 +3288,14 @@ a {
   margin-top: 12px;
 }
 
+/* --tag-accent is set inline per stage (see initModal in main.js, driven
+   by _data/route.yml's accent field) and inherits down to .modal__dot,
+   so the dot and text always match without a rule per color. */
 .modal__tag {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--color-vandalism);
+  color: var(--tag-accent, var(--color-vandalism));
   margin-bottom: 18px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -3318,7 +3321,7 @@ a {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-vandalism);
+  background: var(--tag-accent, var(--color-vandalism));
   flex-shrink: 0;
 }
 
@@ -3928,11 +3931,14 @@ body.modal-open {
     margin-top: 12px;
   }
 
+  /* --tag-accent is set inline per stage (see openCallout in main.js,
+     driven by _data/route.yml's accent field) and inherits down to
+     .route__callout-dot, so the dot and text always match. */
   .route__callout-tag {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: var(--color-vandalism);
+    color: var(--tag-accent, var(--color-vandalism));
     margin-bottom: 18px;
     font-size: 0.75rem;
     font-weight: 600;
@@ -3960,7 +3966,7 @@ body.modal-open {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--color-vandalism);
+    background: var(--tag-accent, var(--color-vandalism));
     flex-shrink: 0;
   }
 

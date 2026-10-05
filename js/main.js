@@ -49,6 +49,8 @@
     const titleEl = modal.querySelector('.modal__title');
     const bodyEl = modal.querySelector('.modal__body');
     const ctaEl = modal.querySelector('.modal__cta');
+    const tagEl = modal.querySelector('.modal__tag');
+    const tagTextEl = modal.querySelector('.modal__tag-text');
     let lastFocused = null;
 
     // One <p> per paragraph, split on blank lines, so the copy in
@@ -72,6 +74,12 @@
       // presentations (centred overlay here, side card there).
       titleEl.textContent = trigger.dataset.calloutHeadline || '';
       setBody(trigger.dataset.modalBody || '');
+      if (tagTextEl) tagTextEl.textContent = trigger.dataset.calloutTag || '';
+      if (tagEl) {
+        const accent = trigger.dataset.calloutTagColor || '';
+        if (accent) tagEl.style.setProperty('--tag-accent', accent);
+        else tagEl.style.removeProperty('--tag-accent');
+      }
       if (ctaEl) {
         // Names the next sign, same as the desktop callout's CTA -- just
         // as a preview here, since tapping it only closes the modal
@@ -749,6 +757,8 @@
     const calloutHeadline = callout && callout.querySelector('.route__callout-headline');
     const calloutBody = callout && callout.querySelector('.route__callout-body');
     const calloutCta = callout && callout.querySelector('.route__callout-cta');
+    const calloutTag = callout && callout.querySelector('.route__callout-tag');
+    const calloutTagText = callout && callout.querySelector('.route__callout-tag-text');
     let calloutTrigger = null;
 
     function setCalloutBody(text) {
@@ -787,6 +797,12 @@
       calloutTrigger = pin;
       calloutHeadline.textContent = pin.dataset.calloutHeadline || '';
       setCalloutBody(pin.dataset.modalBody || '');
+      if (calloutTagText) calloutTagText.textContent = pin.dataset.calloutTag || '';
+      if (calloutTag) {
+        const accent = pin.dataset.calloutTagColor || '';
+        if (accent) calloutTag.style.setProperty('--tag-accent', accent);
+        else calloutTag.style.removeProperty('--tag-accent');
+      }
       // Names the sign this CTA actually leads to (clicking it opens that
       // one next -- see the CTA click handler below), rather than the
       // themed phrase the mobile modal's own CTA still shows, since

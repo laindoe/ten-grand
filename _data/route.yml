@@ -3,6 +3,9 @@
 # paragraph). headline/cta feed the desktop callout card instead -- a
 # thematic headline tied to that stage's sign, and a short call-to-action
 # closing line. Both read the same body copy.
+# tag is the short line shown above the modal/callout's divider, with its
+# dot colored to match. accent is that color (a hex value); leave it blank
+# to fall back to the site's default --color-vandalism red.
 - title: DEVELOPMENT
   headline: RED LIGHT, GREEN LIGHT
   body: |
@@ -11,15 +14,18 @@
     right guidance, resources, or collaborators, good ideas may never see a
     green light.
   cta: PAUSE & REFINE
+  tag: Structure gives ideas a way forward
+  accent:
 - title: PRODUCTION
-  headline: PLANS DOUBLE BACK
+  headline: HURDLE AFTER HURDLE
   body: |
-    Placeholder copy for the production stage. The point where the idea stops
-    being a plan and starts being a thing, with all the cost and coordination
-    that turn involves.
-
-    Replace this with the real write-up.
+    Bringing an idea to life requires more than a good plan. Production
+    depends on the right people, funding, equipment, spaces, and resources
+    being available at the same time. Skipping one hurdle can result in
+    projects falling flat.
   cta: ADJUST & REBUILD
+  tag: Shared resources makes it easier to create
+  accent: "#e5dc16"
 - title: PACKAGING
   headline: WORK HITS A WALL
   body: |
@@ -28,6 +34,8 @@
 
     Replace this with the real write-up.
   cta: PUSH THROUGH
+  tag: Structure gives ideas a way forward
+  accent:
 - title: DISTRIBUTION
   headline: THE PATH NARROWS
   body: |
@@ -36,3 +44,5 @@
 
     Replace this with the real write-up.
   cta: FIND THE OPENING
+  tag: Structure gives ideas a way forward
+  accent:
