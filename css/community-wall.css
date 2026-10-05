@@ -441,10 +441,6 @@ main {
   position: relative;
   border: 1px solid var(--color-card-border);
   padding: 18px 18px 40px;
-  /* Pink-to-purple wash instead of the old orange accent, matching
-     the bridge artwork's mountain gradient (_includes/bridge-svg.html's
-     #br-pink-gradient: #fb2f7b -> #a91fa6). */
-  background: linear-gradient(to right, rgba(251, 47, 123, 0.1), transparent 55%);
 }
 
 /* Left accent bar as a pseudo-element instead of border-left, since a
