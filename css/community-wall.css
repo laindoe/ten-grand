@@ -863,6 +863,133 @@ main {
   color: var(--color-text-muted);
 }
 
+/* ---------- Network CTA ---------- */
+
+.cw-network {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.cw-network__card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid var(--color-card-border);
+  padding: 24px 20px;
+}
+
+/* Narrower than the reference's icon column on purpose -- leaves the
+   heading/subtitle more width to breathe. */
+.cw-network__visual {
+  flex-shrink: 0;
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* A plain grid of short bars standing in for the reference image's
+   eyelid/lash segments -- a structural placeholder, not a literal eye
+   outline. Tapered lengths (shorter at the outer edges) echo the
+   curved lash line without drawing one. */
+.cw-network__lashes {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.cw-network__lashes span {
+  height: 7px;
+  border: 1px solid var(--color-card-border);
+}
+
+.cw-network__lashes span:nth-child(1),
+.cw-network__lashes span:nth-child(5) { height: 3px; align-self: center; }
+.cw-network__lashes span:nth-child(2),
+.cw-network__lashes span:nth-child(4) { height: 5px; align-self: center; }
+
+.cw-network__orb {
+  width: 44px;
+  height: 44px;
+}
+
+.cw-network__orb-core,
+.cw-network__orb-glow {
+  fill: currentColor;
+}
+
+.cw-network__orb {
+  color: var(--cw-color-create);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cw-network__orb {
+    animation: cwNetworkOrbCycle 8s linear infinite;
+  }
+}
+
+@keyframes cwNetworkOrbCycle {
+  0% { color: var(--cw-color-build); }
+  25% { color: var(--cw-color-create); }
+  50% { color: var(--cw-color-fund); }
+  75% { color: var(--cw-color-support); }
+  100% { color: var(--cw-color-build); }
+}
+
+.cw-network__content {
+  min-width: 0;
+}
+
+.cw-network__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
+.cw-network__subtitle {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.cw-network__join {
+  display: block;
+  width: 100%;
+  background: var(--color-text);
+  color: var(--color-bg);
+  border: none;
+  border-radius: 2px;
+  padding: 12px 18px;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+  margin-bottom: 14px;
+}
+
+.cw-network__join:hover,
+.cw-network__join:focus-visible {
+  opacity: 0.85;
+}
+
+.cw-network__login {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  pointer-events: none;
+}
+
 /* ============================================================
    Desktop / tablet
    ============================================================ */

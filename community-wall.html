@@ -13,7 +13,7 @@ permalink: /community-wall/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=4" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=5" />
 </head>
 <body>
 
@@ -405,6 +405,39 @@ permalink: /community-wall/
             <h3 class="cw-resource-card__title">I SUPPORT</h3>
             <p class="cw-resource-card__body">Talent. Community. Amplification.</p>
             <span class="cw-resource-card__cta">Coming soon</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NETWORK CTA ============ -->
+    <section class="cw-network">
+      <div class="cw-inner">
+        <div class="cw-network__card">
+          <div class="cw-network__visual" aria-hidden="true">
+            <span class="cw-network__lashes cw-network__lashes--top">
+              <span></span><span></span><span></span><span></span><span></span>
+            </span>
+            <svg class="cw-network__orb" viewBox="0 0 64 64">
+              <defs>
+                <filter id="cw-network-orb-glow" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+                  <feGaussianBlur stdDeviation="6"/>
+                </filter>
+              </defs>
+              <circle class="cw-network__orb-glow" cx="32" cy="32" r="22" opacity="0.5" filter="url(#cw-network-orb-glow)"/>
+              <circle class="cw-network__orb-core" cx="32" cy="32" r="22"/>
+              <circle class="cw-network__orb-ring" cx="32" cy="32" r="22" fill="none" style="stroke:var(--color-card-border)" stroke-width="2"/>
+            </svg>
+            <span class="cw-network__lashes cw-network__lashes--bottom">
+              <span></span><span></span><span></span><span></span><span></span>
+            </span>
+          </div>
+
+          <div class="cw-network__content">
+            <h2 class="cw-network__title">READY TO SEE<br>BEYOND THE WALL?</h2>
+            <p class="cw-network__subtitle">The Ten Grand Network is where members connect, collaborate, and build together.</p>
+            <button type="button" class="cw-network__join" data-join-trigger>JOIN THE NETWORK &rarr;</button>
+            <a class="cw-network__login" href="#" aria-disabled="true" tabindex="-1">ALREADY A MEMBER? LOG&nbsp;IN&nbsp;&rarr;</a>
           </div>
         </div>
       </div>

@@ -39,8 +39,8 @@
 
   function initJoinModal() {
     var modal = document.getElementById("cw-join-modal");
-    var trigger = document.querySelector("[data-join-trigger]");
-    if (!modal || !trigger) return;
+    var triggers = document.querySelectorAll("[data-join-trigger]");
+    if (!modal || !triggers.length) return;
 
     var lastFocused = null;
     var scrollLock = null;
@@ -89,9 +89,9 @@
       else root.style.removeProperty("scroll-behavior");
     }
 
-    function openModal() {
+    function openModal(event) {
       if (modal.classList.contains("is-open")) return;
-      lastFocused = trigger;
+      lastFocused = event.currentTarget;
       lockScroll();
       modal.classList.add("is-open");
       modal.setAttribute("aria-hidden", "false");
@@ -107,7 +107,9 @@
       if (lastFocused) lastFocused.focus({ preventScroll: true });
     }
 
-    trigger.addEventListener("click", openModal);
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener("click", openModal);
+    });
     modal.querySelectorAll("[data-modal-close]").forEach(function (el) {
       el.addEventListener("click", closeModal);
     });
