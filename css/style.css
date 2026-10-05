@@ -3393,15 +3393,15 @@ a {
   margin: 0;
 }
 
-/* Sits directly above its step's .amass-flow__cta as a single bottom-
-   pinned group -- the group itself carries the margin-top:auto that
-   .amass-flow__cta used to carry alone, so the pair still lands at the
-   bottom of the step exactly like the lone CTA on step 1 always has. */
+/* Sits directly below its step's own content with a fixed gap, not
+   pinned to the bottom of an artificially tall box -- the modal sizes
+   itself to its content now (see .amass-flow__step below), so there's
+   no leftover space to push this group down into. */
 .amass-flow__actions {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: auto;
+  margin-top: 32px;
 }
 
 .amass-flow__actions .amass-flow__cta {
@@ -3436,7 +3436,6 @@ a {
 }
 
 .amass-flow__step {
-  min-height: min(430px, calc(100dvh - 190px));
   display: flex;
   flex-direction: column;
   animation: amassStepIn 0.28s var(--ease-out) both;
@@ -3806,10 +3805,6 @@ select.amass-flow__field {
   #amass-modal .amass-flow__panel {
     max-height: calc(100dvh - 28px);
     padding: 44px 20px 20px;
-  }
-
-  .amass-flow__step {
-    min-height: min(420px, calc(100dvh - 175px));
   }
 }
 
