@@ -1293,18 +1293,25 @@
   // only thing that can trigger it (a field's effective size can still
   // read as "small" under iOS's own text-size adjustment, or the page
   // simply wasn't at 1x zoom when the field was tapped), and no
-  // font-size value can rule that out everywhere. This instead disables
-  // further zooming for exactly as long as a text field is focused --
-  // not permanently, and not by touching the page's own zoom level, so
-  // pinch-zoom accessibility is intact the instant focus leaves the
-  // field -- which is a direct, deterministic fix regardless of why the
-  // font-size alone didn't cover it.
+  // font-size value can rule that out everywhere. This locks the zoom
+  // level while a text field is focused, same as before -- but WebKit
+  // treats maximum-scale as a LIVE constraint: setting it snaps any
+  // zoom already in effect back down to that scale immediately, not
+  // just caps future zooming. That's the part a plain focus/blur toggle
+  // missed -- reverting the meta tag the instant a field blurs removes
+  // the constraint before that snap-back has actually happened, leaving
+  // the page zoomed in with nothing left to un-zoom it. Holding the
+  // constraint for a beat after blur lets the snap-back land first, and
+  // only then is it lifted, so pinch-zoom still works normally
+  // everywhere else on the site the moment typing is done.
   function initZoomLock() {
     const viewport = document.querySelector('meta[name="viewport"]');
     if (!viewport) return;
     const original = viewport.getAttribute('content') || '';
     const locked = `${original}, maximum-scale=1`;
+    const RESTORE_DELAY_MS = 400;
     let lockCount = 0;
+    let restoreTimer = null;
 
     function isTextField(el) {
       if (!el) return false;
@@ -1317,13 +1324,18 @@
     document.addEventListener('focusin', (event) => {
       if (!isTextField(event.target)) return;
       lockCount += 1;
+      clearTimeout(restoreTimer);
       viewport.setAttribute('content', locked);
     });
 
     document.addEventListener('focusout', (event) => {
       if (!isTextField(event.target)) return;
       lockCount = Math.max(0, lockCount - 1);
-      if (lockCount === 0) viewport.setAttribute('content', original);
+      if (lockCount !== 0) return;
+      clearTimeout(restoreTimer);
+      restoreTimer = setTimeout(() => {
+        viewport.setAttribute('content', original);
+      }, RESTORE_DELAY_MS);
     });
   }
 
