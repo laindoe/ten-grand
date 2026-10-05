@@ -2117,6 +2117,9 @@ a {
   line-height: 1.6;
   max-width: var(--measure-body);
   margin: 0 auto;
+  /* Same fix as .billboard__title: balance so a paragraph that wraps
+     splits its lines evenly instead of orphaning a lone last word. */
+  text-wrap: balance;
 }
 
 .engine__text + .engine__text {
