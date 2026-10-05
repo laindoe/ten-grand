@@ -223,14 +223,17 @@ a {
   flex-direction: column;
   min-width: 240px;
   max-width: calc(100vw - 32px);
-  /* No border-top: the nav bar's own border-bottom already draws this
-     seam. Stacking a second 1px border here via a negative margin to
-     visually merge them is subject to sub-pixel rounding on high-
-     density screens and can leave a hairline gap -- top:100% alone is
-     an exact percentage of the containing block, so it's flush with
-     no rounding involved. */
+  /* top:100% alone (no margin adjustment) lands this panel's border
+     box exactly where the nav's own border-bottom is drawn, with no
+     rounding involved -- it's an exact percentage, not a fudged pixel
+     offset. The panel stacks above the nav (z-index) and would paint
+     over that line if it had no border of its own, so it draws its
+     own border-top here as the visible divider; the earlier version
+     of this rule additionally nudged position with a -1px margin on
+     top of that already-exact placement, which is what introduced the
+     sub-pixel gap on high-density screens -- removing that nudge (not
+     the border) was the actual fix. */
   border: 1px solid var(--color-card-border);
-  border-top: none;
   background: var(--color-bg);
   padding: 6px 0;
 }
