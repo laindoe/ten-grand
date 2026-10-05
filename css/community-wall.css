@@ -436,9 +436,24 @@ main {
 .cw-broadcast-card {
   position: relative;
   border: 1px solid var(--color-card-border);
-  border-left: 3px solid var(--color-accent);
   padding: 18px 18px 40px;
-  background: linear-gradient(to right, rgba(217, 79, 48, 0.1), transparent 55%);
+  /* Pink-to-purple wash instead of the old orange accent, matching
+     the bridge artwork's mountain gradient (_includes/bridge-svg.html's
+     #br-pink-gradient: #fb2f7b -> #a91fa6). */
+  background: linear-gradient(to right, rgba(251, 47, 123, 0.1), transparent 55%);
+}
+
+/* Left accent bar as a pseudo-element instead of border-left, since a
+   plain CSS border can't take a gradient -- same two colors as
+   #br-pink-gradient. */
+.cw-broadcast-card::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: -1px;
+  width: 3px;
+  background: linear-gradient(to bottom, #fb2f7b, #a91fa6);
 }
 
 .cw-broadcast-card__meta {
