@@ -276,21 +276,14 @@ main {
   white-space: nowrap;
 }
 
-/* Two full-bleed rows of two stats each. Each row is its own full-width
-   block, so a border-bottom on the first row and a border-right on each
-   row's first .cw-stat both run edge to edge and line up between rows,
-   reading as one continuous divider cross rather than four separate
-   inset lines. */
+/* One flex row of all four stats, wrapping to two 2-up rows on mobile
+   (see the nth-child borders below for that 2x2 divider cross) and
+   forced onto a single straight line on desktop (min-width:760px
+   override further down disables the wrap and swaps the borders for
+   one continuous row of dividers). */
 .cw-stats__row {
   display: flex;
-}
-
-/* :first-of-type would match by tag (div), not class -- .cw-stats__total
-   is also a div and sits first, so it would claim that slot instead of
-   either row. The adjacent-sibling selector targets the actual first
-   .cw-stats__row unambiguously. */
-.cw-stats__total + .cw-stats__row {
-  border-bottom: 1px solid var(--color-card-border);
+  flex-wrap: wrap;
 }
 
 .cw-stat {
@@ -298,8 +291,15 @@ main {
   min-width: 0;
 }
 
-.cw-stat:first-child {
+/* Mobile 2x2: right border down the middle, bottom border under the
+   first visual row (items 1-2) -- together they read as one
+   continuous divider cross across the full-bleed block. */
+.cw-stat:nth-child(odd) {
   border-right: 1px solid var(--color-card-border);
+}
+
+.cw-stat:nth-child(-n+2) {
+  border-bottom: 1px solid var(--color-card-border);
 }
 
 .cw-stat__inner {
@@ -1028,6 +1028,29 @@ main {
    ============================================================ */
 
 @media (min-width: 760px) {
+  /* One straight line of four, not the mobile 2x2 wrap -- swap the
+     divider borders from the cross pattern to a single row of right
+     borders between each stat (none after the last). */
+  .cw-stats__row {
+    flex-wrap: nowrap;
+  }
+
+  .cw-stat {
+    flex: 1 1 0;
+  }
+
+  .cw-stat:nth-child(odd) {
+    border-right: none;
+  }
+
+  .cw-stat:nth-child(-n+2) {
+    border-bottom: none;
+  }
+
+  .cw-stat:not(:last-child) {
+    border-right: 1px solid var(--color-card-border);
+  }
+
   .cw-broadcast-grid {
     grid-template-columns: repeat(3, 1fr);
   }
