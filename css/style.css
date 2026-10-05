@@ -69,6 +69,29 @@ img {
   display: block;
 }
 
+/* Mobile browsers apply :focus after a tap (not just keyboard nav),
+   and most icon buttons on this site never defined their own focus
+   treatment -- so they fell back to the browser's native outline,
+   which then visibly "stuck" on the tapped icon. Some of these icons
+   (the AMASS share button, for one) also get refocused by script when
+   a modal they opened closes, as a screen-reader/keyboard
+   accessibility courtesy -- and that programmatic refocus alone is
+   enough for :focus-visible to match and show an outline again, with
+   no tap or keypress involved. Suppressing the outline for every
+   plain button by default removes that entirely; a button that wants
+   one back still can, same as .route__pin or .amass-flow__cta already
+   do elsewhere, via its own more specific :focus-visible rule.
+   -webkit-tap-highlight-color covers the separate tap-flash overlay
+   WebKit/Chrome draw on touch, same reasoning. */
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus {
+  outline: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;
