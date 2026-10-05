@@ -3535,6 +3535,14 @@ a {
   line-height: 1.45;
 }
 
+.amass-flow__helper-tag {
+  color: #be2026;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .amass-flow__label {
   display: block;
   margin: 0 0 7px;
