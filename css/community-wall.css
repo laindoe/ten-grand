@@ -105,14 +105,24 @@ main {
   padding-bottom: 48px;
 }
 
+/* Grid (not flex) so the three pieces -- heading, globe, subtitle --
+   can be reordered per breakpoint via grid-template-areas instead of
+   DOM order: desktop keeps heading+subtitle stacked in a left column
+   beside the globe, mobile stacks all three in heading / globe /
+   subtitle order (see the max-width:759px override below). */
 .cw-hero__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "heading globe"
+    "subtitle globe";
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  column-gap: 24px;
+  row-gap: 0;
 }
 
-.cw-hero__text {
+.cw-hero__heading {
+  grid-area: heading;
   min-width: 0;
 }
 
@@ -124,6 +134,7 @@ main {
 }
 
 .cw-hero__subtitle {
+  grid-area: subtitle;
   font-size: 1rem;
   color: var(--color-text-muted);
   max-width: 40ch;
@@ -131,6 +142,7 @@ main {
 }
 
 .cw-hero__globe {
+  grid-area: globe;
   flex-shrink: 0;
   width: clamp(120px, 22vw, 260px);
   opacity: 0.85;
@@ -1048,11 +1060,12 @@ main {
 
 @media (max-width: 759px) {
   .cw-hero__inner {
-    gap: 16px;
-  }
-
-  .cw-hero__text {
-    flex: 1 1 50%;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "heading"
+      "globe"
+      "subtitle";
+    row-gap: 16px;
   }
 
   .cw-hero__title {
@@ -1064,9 +1077,9 @@ main {
   }
 
   .cw-hero__globe {
-    flex: 0 0 50%;
+    justify-self: center;
     width: 50%;
-    max-width: none;
+    max-width: 220px;
     opacity: 0.85;
   }
 }
