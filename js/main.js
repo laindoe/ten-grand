@@ -283,6 +283,13 @@
     const platformInput = form.elements.social_platform;
     const handleInput = form.elements.social_handle;
     const socialError = document.getElementById('amass-social-error');
+    const photoInput = document.getElementById('amass-photo-input');
+    const photoPreviewImg = document.getElementById('amass-photo-preview-img');
+    const photoPreviewEmpty = document.getElementById('amass-photo-preview-empty');
+    const photoUploadBtn = document.getElementById('amass-photo-upload-btn');
+    const photoDeleteBtn = document.getElementById('amass-photo-delete-btn');
+    const removalToggle = document.getElementById('amass-removal-toggle');
+    const removalPanel = document.getElementById('amass-removal-panel');
     const errorEl = document.getElementById('amass-form-error');
     const submitButton = form.querySelector('[type="submit"]');
     const reviewEl = document.getElementById('amass-review');
@@ -333,7 +340,7 @@
       1: 'AMASS Comm(unity) Wall',
       2: 'WHAT SHOULD WE CALL YOU?',
       3: 'HOW DO YOU SHOW UP?',
-      6: 'WHERE CAN PEOPLE FIND YOU?',
+      6: 'MAKE YOURSELF VISIBLE',
       7: 'READY TO ADD YOUR VOICE?',
       8: 'YOUR VOICE HAS BEEN ADDED.',
     };
@@ -341,6 +348,28 @@
     let isSubmitting = false;
     let flowVersion = 0;
     let lastFocusRole = null;
+    let photoObjectUrl = null;
+
+    function clearPhoto() {
+      photoInput.value = '';
+      if (photoObjectUrl) {
+        URL.revokeObjectURL(photoObjectUrl);
+        photoObjectUrl = null;
+      }
+      photoPreviewImg.src = '';
+      photoPreviewImg.hidden = true;
+      photoPreviewEmpty.hidden = false;
+      photoDeleteBtn.disabled = true;
+    }
+
+    function setPhoto(file) {
+      if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl);
+      photoObjectUrl = URL.createObjectURL(file);
+      photoPreviewImg.src = photoObjectUrl;
+      photoPreviewImg.hidden = false;
+      photoPreviewEmpty.hidden = true;
+      photoDeleteBtn.disabled = false;
+    }
 
     function selectedRole() {
       const selected = roleInputs.find((input) => input.checked);
@@ -487,6 +516,9 @@
       modal.querySelectorAll('[data-counter-for]').forEach((counter) => {
         counter.textContent = '0';
       });
+      clearPhoto();
+      removalPanel.hidden = true;
+      removalToggle.setAttribute('aria-expanded', 'false');
       showStep(1);
     }
 
@@ -540,6 +572,19 @@
       input.addEventListener('input', () => {
         counter.textContent = String(input.value.length);
       });
+    });
+
+    photoUploadBtn.addEventListener('click', () => photoInput.click());
+    photoDeleteBtn.addEventListener('click', clearPhoto);
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files && photoInput.files[0];
+      if (file) setPhoto(file);
+    });
+
+    removalToggle.addEventListener('click', () => {
+      const isExpanded = removalToggle.getAttribute('aria-expanded') === 'true';
+      removalToggle.setAttribute('aria-expanded', String(!isExpanded));
+      removalPanel.hidden = isExpanded;
     });
 
     modal.addEventListener('modal:close', resetFlow);

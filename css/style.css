@@ -3787,6 +3787,151 @@ select.amass-flow__field {
   text-align: center;
 }
 
+.amass-photo-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.amass-photo-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 108px;
+  height: 108px;
+  border: 1px solid rgba(243, 243, 244, 0.35);
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.18s ease;
+}
+
+.amass-photo-preview:hover,
+.amass-photo-preview:focus-within {
+  border-color: var(--color-text);
+}
+
+.amass-photo-preview__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The site-wide `img { display: block; }` reset is an author rule, so
+   it beats the UA stylesheet's [hidden] rule on specificity-within-origin
+   regardless of selector weight -- this restores it for just this image. */
+.amass-photo-preview__img[hidden] {
+  display: none;
+}
+
+.amass-photo-preview__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+}
+
+.amass-photo-preview__empty[hidden] {
+  display: none;
+}
+
+.amass-photo-preview__plus {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.amass-photo-preview__caption {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.amass-photo-field__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.amass-photo-field__btn {
+  border: 1px solid rgba(243, 243, 244, 0.35);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--color-text);
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+}
+
+.amass-photo-field__btn:hover,
+.amass-photo-field__btn:focus-visible {
+  border-color: var(--color-text);
+  background: rgba(243, 243, 244, 0.08);
+}
+
+.amass-photo-field__btn:disabled {
+  color: var(--color-text-muted);
+  border-color: rgba(243, 243, 244, 0.18);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.amass-photo-field__btn:disabled:hover {
+  background: transparent;
+}
+
+.amass-disclosure {
+  margin-top: 24px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(243, 243, 244, 0.18);
+  border-bottom: 1px solid rgba(243, 243, 244, 0.18);
+}
+
+.amass-disclosure__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  padding: 0;
+  font: inherit;
+  font-size: 0.74rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.amass-disclosure__chevron {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.18s ease;
+}
+
+.amass-disclosure__toggle[aria-expanded='true'] .amass-disclosure__chevron {
+  transform: rotate(180deg);
+}
+
+.amass-disclosure__panel {
+  margin-top: 10px;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
 .amass-flow__review {
   display: grid;
   gap: 13px;

@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=113" />
+  <link rel="stylesheet" href="css/style.css?v=114" />
 </head>
 <body>
 
@@ -859,7 +859,24 @@
           </section>
 
           <section class="amass-flow__step" data-amass-step="6" hidden>
-            <p class="amass-flow__helper">Add a social platform and your handle so others in the Comm(unity) can connect.</p>
+            <p class="amass-flow__helper"><span class="amass-flow__helper-tag">Optional</span> Choose how you'd like to appear on the Community Wall.</p>
+
+            <label class="amass-flow__label" for="amass-photo-input">Photo</label>
+            <div class="amass-photo-field">
+              <label class="amass-photo-preview" for="amass-photo-input" id="amass-photo-preview">
+                <img class="amass-photo-preview__img" id="amass-photo-preview-img" alt="" hidden>
+                <span class="amass-photo-preview__empty" id="amass-photo-preview-empty">
+                  <span class="amass-photo-preview__plus" aria-hidden="true">+</span>
+                  <span class="amass-photo-preview__caption">Add Photo</span>
+                </span>
+              </label>
+              <input type="file" class="amass-photo-input" id="amass-photo-input" accept="image/*" hidden>
+              <div class="amass-photo-field__actions">
+                <button type="button" class="amass-photo-field__btn" id="amass-photo-upload-btn">Upload</button>
+                <button type="button" class="amass-photo-field__btn" id="amass-photo-delete-btn" disabled>Delete</button>
+              </div>
+            </div>
+
             <label class="amass-flow__label" for="amass-social-platform">Social Platform</label>
             <select class="amass-flow__field" id="amass-social-platform" name="social_platform">
               <option value="">Select a platform</option>
@@ -872,6 +889,20 @@
             <label class="amass-flow__label" for="amass-social-handle">Social Handle</label>
             <input class="amass-flow__field" id="amass-social-handle" name="social_handle" type="text" placeholder="@yourhandle" autocomplete="off">
             <p class="amass-flow__error" id="amass-social-error" role="alert" hidden>Please add both a platform and handle, or leave both blank.</p>
+
+            <label class="amass-flow__label" for="amass-website">Website</label>
+            <input class="amass-flow__field" id="amass-website" name="website" type="url" placeholder="https://yourwebsite.com" autocomplete="off">
+
+            <div class="amass-disclosure">
+              <button type="button" class="amass-disclosure__toggle" id="amass-removal-toggle" aria-expanded="false" aria-controls="amass-removal-panel">
+                <span>What if I CHANGE my MIND?</span>
+                <svg class="amass-disclosure__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
+              </button>
+              <div class="amass-disclosure__panel" id="amass-removal-panel" hidden>
+                <p>You can request to have your entry removed from the Community Wall at any time. Just email info@tengrand.co with the name or alias you submitted under, and we'll take care of the rest.</p>
+              </div>
+            </div>
+
             <div class="amass-flow__actions">
               <button type="button" class="amass-flow__back" data-amass-back>Back</button>
               <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
@@ -900,6 +931,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=16"></script>
+  <script src="js/main.js?v=17"></script>
 </body>
 </html>
