@@ -199,6 +199,69 @@ a {
   }
 }
 
+.nav__dropdown {
+  position: relative;
+  flex: 1;
+  display: flex;
+}
+
+.nav__dropdown-trigger {
+  gap: 4px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.nav__dropdown-chevron {
+  width: 9px;
+  height: 9px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.18s ease;
+}
+
+.nav__dropdown-trigger[aria-expanded='true'] .nav__dropdown-chevron {
+  transform: rotate(180deg);
+}
+
+.nav__dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  min-width: 240px;
+  max-width: calc(100vw - 32px);
+  margin-top: -1px;
+  border: 1px solid var(--color-card-border);
+  background: var(--color-bg);
+  padding: 6px 0;
+}
+
+.nav__dropdown-menu[hidden] {
+  display: none;
+}
+
+.nav__dropdown-link {
+  padding: 13px 18px;
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  color: var(--color-text);
+  transition: background-color 180ms ease;
+}
+
+.nav__dropdown-link:hover,
+.nav__dropdown-link:focus-visible {
+  background: rgba(243, 243, 244, 0.08);
+}
+
 /* ---------- Layout / section shell ---------- */
 
 .section {
@@ -2489,6 +2552,10 @@ a {
    padding-bottom instead (see .amass__timeline-item:last-of-type). */
 .amass__timeline-block {
   padding-bottom: 0;
+  /* Not a .section itself (it's a sub-block inside #amass), so the nav
+     dropdown's direct link here needs its own clearance from the
+     sticky nav on anchor-jump, same reasoning as .section's own rule. */
+  scroll-margin-top: 64px;
 }
 
 .amass__text {

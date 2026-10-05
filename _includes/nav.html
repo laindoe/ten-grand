@@ -6,7 +6,20 @@
         </span>
       </a>
       <span class="nav__divider" aria-hidden="true"></span>
-      <a class="nav__item" href="{{ '/' | relative_url }}#philosophy">PHILOSOPHY</a>
+      <div class="nav__dropdown">
+        <button type="button" class="nav__item nav__dropdown-trigger" id="nav-philosophy-trigger" aria-expanded="false" aria-controls="nav-philosophy-menu">
+          <span>PHILOSOPHY</span>
+          <svg class="nav__dropdown-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
+        </button>
+        <div class="nav__dropdown-menu" id="nav-philosophy-menu" hidden>
+          <a class="nav__dropdown-link" href="{{ '/' | relative_url }}#destination">DIFFERENT ROADS, SAME DESTINATION</a>
+          <a class="nav__dropdown-link" href="{{ '/' | relative_url }}#distance">THERE&rsquo;S DISTANCE BETWEEN US</a>
+          <a class="nav__dropdown-link" href="{{ '/' | relative_url }}#imagination">FROM IMAGINATION TO IMPACT</a>
+          <a class="nav__dropdown-link" href="{{ '/' | relative_url }}#middle-path">THE MIDDLE PATH</a>
+          <a class="nav__dropdown-link" href="{{ '/' | relative_url }}#amass">AMASS COMM(UNITY)</a>
+          <a class="nav__dropdown-link" href="{{ '/' | relative_url }}#history">A HISTORY OF CONNECTION</a>
+        </div>
+      </div>
       <span class="nav__divider" aria-hidden="true"></span>
       <a class="nav__item" href="{{ '/transmissions/' | relative_url }}">TRANSMISSIONS</a>
       <span class="nav__divider" aria-hidden="true"></span>
@@ -15,3 +28,4 @@
       <a class="nav__item nav__item--inverse" href="https://indd.adobe.com/view/8f3d3ba0-a58f-458b-bb9a-1ed40fc46061" target="_blank" rel="noopener">THE GRAND SCHEME</a>
     </div>
   </header>
+  <script defer src="{{ '/js/nav.js' | relative_url }}"></script>
