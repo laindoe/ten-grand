@@ -1084,8 +1084,12 @@ main {
     text-align: center;
   }
 
+  /* A clear step up from .cw-section-header__title's flat 1.6rem (used
+     by BROADCASTS, MEMBER RESOURCES, etc.) so this reads as the page
+     title, not just another section header -- the previous clamp
+     landed within a hair of 1.6rem at common phone widths. */
   .cw-hero__title {
-    font-size: clamp(1.3rem, 6.5vw, 1.8rem);
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
     text-align: center;
   }
 
