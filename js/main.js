@@ -1243,6 +1243,47 @@
     });
   }
 
+  // iOS Safari auto-zooms the viewport on focus for any text field under
+  // 16px, and the site's form fields are already sized above that
+  // threshold (see the touch-only font-size rules on .amass-flow__field
+  // and .archive-search/.archive-select) -- but that heuristic isn't the
+  // only thing that can trigger it (a field's effective size can still
+  // read as "small" under iOS's own text-size adjustment, or the page
+  // simply wasn't at 1x zoom when the field was tapped), and no
+  // font-size value can rule that out everywhere. This instead disables
+  // further zooming for exactly as long as a text field is focused --
+  // not permanently, and not by touching the page's own zoom level, so
+  // pinch-zoom accessibility is intact the instant focus leaves the
+  // field -- which is a direct, deterministic fix regardless of why the
+  // font-size alone didn't cover it.
+  function initZoomLock() {
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) return;
+    const original = viewport.getAttribute('content') || '';
+    const locked = `${original}, maximum-scale=1`;
+    let lockCount = 0;
+
+    function isTextField(el) {
+      if (!el) return false;
+      if (el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') return true;
+      if (el.tagName !== 'INPUT') return false;
+      const type = (el.getAttribute('type') || 'text').toLowerCase();
+      return !['radio', 'checkbox', 'button', 'submit', 'reset', 'range', 'file', 'color'].includes(type);
+    }
+
+    document.addEventListener('focusin', (event) => {
+      if (!isTextField(event.target)) return;
+      lockCount += 1;
+      viewport.setAttribute('content', locked);
+    });
+
+    document.addEventListener('focusout', (event) => {
+      if (!isTextField(event.target)) return;
+      lockCount = Math.max(0, lockCount - 1);
+      if (lockCount === 0) viewport.setAttribute('content', original);
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initReveal();
     const routeModal = initModal();
@@ -1252,5 +1293,6 @@
     initTimelineBubbles();
     initBillboards();
     initHighwayCars();
+    initZoomLock();
   });
 })();
