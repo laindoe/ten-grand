@@ -18,6 +18,17 @@
     '(prefers-reduced-motion: reduce)'
   ).matches;
 
+  // position:fixed removes <body> from the document's normal flow, which
+  // collapses the page's own scrollable height for as long as any modal
+  // holds the lock below -- and anything still listening for 'scroll' or
+  // 'resize' during that window (see initRoute's scroll-driven sequence)
+  // can misread that collapse as the page having scrolled away, and reset
+  // state that has nothing to do with the modal. This shared counter lets
+  // that kind of listener ignore scroll/resize noise for exactly as long
+  // as the page is actually locked, regardless of what triggers it on a
+  // given browser.
+  let activeScrollLocks = 0;
+
   // Shared by every modal on the page: position:fixed + scroll offset
   // compensation + scrollbar-width padding compensation, so the page
   // behind an open modal can't scroll on mobile (including iOS, where
@@ -29,6 +40,7 @@
 
     function lock() {
       if (scrollLock) return;
+      activeScrollLocks += 1;
       const body = document.body;
       const properties = ['position', 'top', 'left', 'width', 'overflow', 'padding-right'];
       scrollLock = {
@@ -56,6 +68,10 @@
         if (value) document.body.style.setProperty(property, value, priority);
         else document.body.style.removeProperty(property);
       });
+      // The page is back in normal flow now, so drop the count BEFORE the
+      // scrollTo below -- that call's own 'scroll' event is the real,
+      // legitimate one that scroll-driven listeners should still see.
+      activeScrollLocks = Math.max(0, activeScrollLocks - 1);
       // Restore instantly even when the page uses smooth scrolling.
       const root = document.documentElement;
       const behavior = root.style.getPropertyValue('scroll-behavior');
@@ -1110,7 +1126,12 @@
     }
 
     function schedule() {
-      if (ticking) return;
+      // A modal's scroll lock (see createScrollLock above) can itself
+      // generate scroll/resize noise while it's engaged -- none of that
+      // reflects the reader actually moving, so it shouldn't be allowed
+      // to reset or replay this section's progress while it's hidden
+      // behind the modal.
+      if (ticking || activeScrollLocks > 0) return;
       ticking = true;
       requestAnimationFrame(check);
     }
