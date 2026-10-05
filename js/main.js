@@ -403,7 +403,7 @@
       const role = selectedRole();
       const config = roleConfig[role];
       if (!config) return;
-      focusHelper.textContent = `Select up to 3. This helps people know what you ${config.verb} at a glance.`;
+      focusHelper.textContent = 'Select up to 3.';
       focusGrid.setAttribute('aria-label', config.whatTitle);
       if (role === lastFocusRole) return;
       lastFocusRole = role;
