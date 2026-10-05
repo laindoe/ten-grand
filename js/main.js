@@ -340,7 +340,7 @@
       2: 'WHAT SHOULD WE CALL YOU?',
       3: 'HOW DO YOU SHOW UP?',
       6: 'MAKE YOURSELF VISIBLE',
-      7: 'READY TO ADD YOUR VOICE?',
+      7: 'READY TO LEAVE YOUR MARK?',
       8: 'YOUR VOICE HAS BEEN ADDED.',
     };
     let currentStep = 1;
