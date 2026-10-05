@@ -3789,9 +3789,8 @@ select.amass-flow__field {
 
 .amass-photo-field {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 18px;
 }
 
@@ -3852,10 +3851,12 @@ select.amass-flow__field {
 
 .amass-photo-field__actions {
   display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
 .amass-photo-field__btn {
+  width: 100px;
   border: 1px solid rgba(243, 243, 244, 0.35);
   border-radius: 2px;
   background: transparent;
@@ -3889,9 +3890,6 @@ select.amass-flow__field {
 
 .amass-disclosure {
   margin-top: 24px;
-  padding: 14px 0;
-  border-top: 1px solid rgba(243, 243, 244, 0.18);
-  border-bottom: 1px solid rgba(243, 243, 244, 0.18);
 }
 
 .amass-disclosure__toggle {
