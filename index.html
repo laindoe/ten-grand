@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=108" />
+  <link rel="stylesheet" href="css/style.css?v=109" />
 </head>
 <body>
 
@@ -802,21 +802,33 @@
 
           <section class="amass-flow__step" data-amass-step="3" hidden>
             <div class="amass-role-grid" role="radiogroup" aria-label="How do you show up?">
-              <label class="amass-role-card">
+              <label class="amass-role-card amass-role-card--create">
                 <input type="radio" name="role" value="create" required>
-                <span class="amass-role-card__content"><strong>I Create</strong><span>Artists and creatives making the work.</span></span>
+                <span class="amass-role-card__content">
+                  <svg class="amass-role-card__icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="19" cy="24" r="13"/><circle cx="29" cy="24" r="13"/></svg>
+                  <span class="amass-role-card__text"><strong>I Create</strong><span>Artists and creatives making the work.</span></span>
+                </span>
               </label>
-              <label class="amass-role-card">
+              <label class="amass-role-card amass-role-card--build">
                 <input type="radio" name="role" value="build">
-                <span class="amass-role-card__content"><strong>I Build</strong><span>People creating the infrastructure that helps the work move.</span></span>
+                <span class="amass-role-card__content">
+                  <svg class="amass-role-card__icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="7" width="22" height="22"/><rect x="19" y="19" width="22" height="22"/></svg>
+                  <span class="amass-role-card__text"><strong>I Build</strong><span>People creating the infrastructure that helps the work move.</span></span>
+                </span>
               </label>
-              <label class="amass-role-card">
+              <label class="amass-role-card amass-role-card--fund">
                 <input type="radio" name="role" value="fund">
-                <span class="amass-role-card__content"><strong>I Fund</strong><span>People and organizations putting financial resources behind ideas.</span></span>
+                <span class="amass-role-card__content">
+                  <svg class="amass-role-card__icon" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="15" rx="15" ry="6"/><path d="M9,15 v9 a15,6 0 0 0 30,0 v-9" /><path d="M9,24 v9 a15,6 0 0 0 30,0 v-9" /></svg>
+                  <span class="amass-role-card__text"><strong>I Fund</strong><span>People and organizations putting financial resources behind ideas.</span></span>
+                </span>
               </label>
-              <label class="amass-role-card">
+              <label class="amass-role-card amass-role-card--support">
                 <input type="radio" name="role" value="support">
-                <span class="amass-role-card__content"><strong>I Support</strong><span>Audiences and community members helping culture grow.</span></span>
+                <span class="amass-role-card__content">
+                  <svg class="amass-role-card__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24,4 L28,20 L44,24 L28,28 L24,44 L20,28 L4,24 L20,20 Z"/></svg>
+                  <span class="amass-role-card__text"><strong>I Support</strong><span>Audiences and community members helping culture grow.</span></span>
+                </span>
               </label>
             </div>
             <div class="amass-flow__actions">
