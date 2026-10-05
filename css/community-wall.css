@@ -138,8 +138,17 @@ main {
   grid-area: subtitle;
   font-size: 1rem;
   color: var(--color-text-muted);
-  max-width: 40ch;
   line-height: 1.5;
+}
+
+/* Only forced onto one line from 1024px up -- below that, the text
+   column isn't wide enough next to the globe for nowrap content
+   without squeezing the globe out of view (confirmed via testing at
+   760-900px), so it keeps its normal 2-line wrap there instead. */
+@media (min-width: 1024px) {
+  .cw-hero__subtitle {
+    white-space: nowrap;
+  }
 }
 
 .cw-hero__globe {
