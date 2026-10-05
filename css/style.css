@@ -3618,6 +3618,8 @@ a {
 }
 
 .amass-flow__helper-tag {
+  display: block;
+  margin-bottom: 4px;
   color: #be2026;
   font-size: 0.68rem;
   font-weight: 700;
