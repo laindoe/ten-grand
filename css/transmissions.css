@@ -198,21 +198,26 @@ main {
   display: grid;
   grid-template-columns: auto auto 1fr;
   grid-template-areas:
-    "divider-left icon text"
-    "divider-left icon cta";
+    "icon divider-mobile text"
+    "icon divider-mobile cta";
   column-gap: 14px;
   row-gap: 10px;
   align-items: start;
 }
 
-/* Mobile only -- a second divider ahead of the icon, same full-height
-   treatment as .archive-community__divider gets on desktop. Hidden
-   again once the desktop grid (no divider-left area) takes over. */
-.archive-community__divider-left {
+/* Mobile only -- a divider between the icon and the text/CTA column,
+   bleeding through .archive-community's 20px top/bottom padding (same
+   technique as .archive-community__divider on desktop) so it actually
+   reaches that section's own border lines top and bottom instead of
+   stopping short at the row's natural content height. Hidden again
+   once the desktop grid (no divider-mobile area) takes over. */
+.archive-community__divider-mobile {
   display: block;
-  grid-area: divider-left;
+  grid-area: divider-mobile;
   align-self: stretch;
   width: 1px;
+  margin-top: -20px;
+  margin-bottom: -21px;
   background: var(--color-card-border);
 }
 
@@ -558,7 +563,7 @@ main {
 
   /* Mobile-only divider and right-aligned text -- not part of this
      layout, so both revert back here. */
-  .archive-community__divider-left {
+  .archive-community__divider-mobile {
     display: none;
   }
 
