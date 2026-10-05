@@ -131,6 +131,7 @@ main {
   font-weight: 700;
   line-height: 1;
   margin-bottom: 18px;
+  text-transform: uppercase;
 }
 
 .cw-hero__subtitle {
@@ -1077,7 +1078,6 @@ main {
   .cw-hero__title {
     font-size: clamp(1.3rem, 6.5vw, 1.8rem);
     text-align: center;
-    text-transform: uppercase;
   }
 
   /* Same red solid-color-plus-pulse cue treatment as .amass__cue's
