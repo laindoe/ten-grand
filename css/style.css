@@ -3430,6 +3430,22 @@ a {
   line-height: 1.65;
 }
 
+.amass-flow__intro + .amass-flow__intro {
+  margin-top: 14px;
+}
+
+/* Reads as a campaign label set inside the sentence -- small, uppercase,
+   red, with a soft glow (text-shadow off its own currentColor) rather
+   than the plain accent-color treatment used elsewhere on this page. */
+.amass-flow__campaign-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-vandalism);
+  text-shadow: 0 0 6px currentColor, 0 0 14px currentColor;
+}
+
 .amass-flow__helper {
   max-width: 36ch;
   margin: 0 auto 18px;

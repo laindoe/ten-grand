@@ -331,7 +331,7 @@
       },
     };
     const titles = {
-      1: 'ADD YOUR VOICE',
+      1: 'Leave your mark on the AMASS Comm(unity) wall',
       2: 'WHAT SHOULD WE CALL YOU?',
       3: 'HOW DO YOU SHOW UP?',
       6: 'WHERE CAN PEOPLE FIND YOU?',
