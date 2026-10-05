@@ -3442,17 +3442,37 @@ a {
   animation: amassStepIn 0.28s var(--ease-out) both;
 }
 
-/* Step 1's content (icon + intro copy) is short and fixed-height, unlike
-   every other step's form content, so centering it as one block -- with
-   its own fixed gap before the CTA, instead of the shared margin-top:auto
-   that pins every other step's button to the very bottom -- gives it even
-   space above and below instead of one big gap floating in the middle. */
+/* Step 1's CTA is pulled out of flow below (absolute, pinned to this
+   step's own bottom edge, which -- with position:relative here -- is
+   the actual containing block Chromium uses for an absolutely
+   positioned flex item, regardless of the step itself staying
+   position:static otherwise) so it stays flush at the bottom exactly
+   like every other step's button, regardless of how short the intro
+   content above it is. padding-bottom reserves the room the button
+   now needs (its own height plus the gap above it) since it no longer
+   claims that space itself. The shared 430px min-height above was
+   sized to fit a button too, so it's overridden here with a smaller,
+   step-specific one -- just a little taller than the icon+copy's own
+   natural height -- so centering them leaves a modest, even gap
+   instead of the icon drifting far down a much taller box. */
 .amass-flow__step[data-amass-step='1'] {
+  position: relative;
+  min-height: 280px;
   justify-content: center;
+  padding-bottom: 80px;
 }
 
+/* bottom:-1px, not 0: the step's own padding-bottom above already
+   reserves the room, and this just offsets the step's own 1px border
+   (shared with the panel) so the button sits flush with the panel's
+   true inner edge, not 1px short of it. */
 .amass-flow__step[data-amass-step='1'] .amass-flow__cta {
-  margin-top: 32px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  width: auto;
+  margin-top: 0;
 }
 
 .amass-flow__step[hidden] {
