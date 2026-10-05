@@ -1028,26 +1028,48 @@ main {
    ============================================================ */
 
 @media (min-width: 760px) {
-  /* Total Members joins the same straight line as the four stats --
-     .cw-stats becomes the flex row and .cw-stats__row (its own flex
-     container on mobile) is un-boxed via display:contents so its four
-     .cw-stat children become direct flex items alongside
-     .cw-stats__total. Total gets a wider share (flex-grow 2) than
-     each individual stat (flex-grow 1). */
+  /* Total Members joins the same straight line as the four stats, and
+     JOIN moves to the very end of that line (after Supporters) rather
+     than sitting at the right edge of the Total column. .cw-stats
+     becomes the flex row; .cw-stats__row, .cw-stats__total and
+     .cw-stats__total-inner (all flex containers on mobile only) are
+     un-boxed via display:contents so .cw-stats__total-text, the four
+     .cw-stat items, and .cw-stats__join all become direct flex
+     siblings. order:10 on .cw-stats__join is what actually pushes it
+     past the four stats regardless of its earlier DOM position --
+     everything else keeps the default order (0), so it still reads
+     Total / Builders / Creators / Investors / Supporters by source
+     order. Total's text gets the wider share (flex-grow 2) that
+     .cw-stats__total itself carried before being un-boxed. */
   .cw-stats {
     display: flex;
     align-items: stretch;
   }
 
   .cw-stats__total {
+    display: contents;
+  }
+
+  .cw-stats__total-inner {
+    display: contents;
+  }
+
+  .cw-stats__total-text {
     flex: 2 1 0;
     min-width: 0;
-    border-bottom: none;
+    padding: 20px var(--section-padding-x);
     border-right: 1px solid var(--color-card-border);
   }
 
   .cw-stats__row {
     display: contents;
+  }
+
+  .cw-stats__join {
+    order: 10;
+    align-self: center;
+    padding: 20px var(--section-padding-x);
+    border-left: 1px solid var(--color-card-border);
   }
 
   /* One straight line of four, not the mobile 2x2 wrap -- swap the
