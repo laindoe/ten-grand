@@ -247,6 +247,26 @@ main {
   white-space: nowrap;
 }
 
+/* Cycles through the same four role colors used elsewhere on the site
+   (Create/Build/Fund/Support, the AMASS modal's own campaign label
+   before it switched to a plain pulse) -- a light glow only, not the
+   heavier double-layer blur that label used to have, so the color
+   change itself stays legible instead of getting lost in haze. */
+@media (prefers-reduced-motion: no-preference) {
+  .archive-community__cta {
+    text-shadow: 0 0 4px currentColor;
+    animation: archiveCommunityCtaGlow 8s linear infinite;
+  }
+}
+
+@keyframes archiveCommunityCtaGlow {
+  0% { color: #be2026; }
+  25% { color: #e5dc16; }
+  50% { color: #007938; }
+  75% { color: #00b0e0; }
+  100% { color: #be2026; }
+}
+
 /* ---------- Featured transmission ---------- */
 
 .archive-featured {
@@ -530,15 +550,27 @@ main {
     font-size: 0.85rem;
   }
 
+  /* align-self:stretch alone would only fill the grid row's own
+     content height; the negative margins bleed through
+     .archive-community's 20px top/bottom padding so the line actually
+     reaches that section's own border lines instead of stopping short
+     at the row's natural (shorter) height -- the extra 1px on the
+     bottom additionally crosses the section's own border-bottom
+     itself (border-box width, included in its measured height),
+     which the top side doesn't have to account for since the line
+     above comes from .archive-filters's border-bottom instead. */
   .archive-community__divider {
     display: block;
     grid-area: divider;
+    align-self: stretch;
     width: 1px;
-    height: 32px;
+    margin-top: -20px;
+    margin-bottom: -21px;
     background: var(--color-card-border);
   }
 
   .archive-community__cta {
+    align-self: center;
     font-size: 0.8rem;
     letter-spacing: 0.03em;
   }
