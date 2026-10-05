@@ -1091,6 +1091,7 @@ main {
   .cw-hero__title {
     font-size: clamp(1.8rem, 8vw, 2.4rem);
     text-align: center;
+    margin-bottom: 4px;
   }
 
   /* Same red solid-color-plus-pulse cue treatment as .amass__cue's
