@@ -103,7 +103,15 @@
     const prevEl = modal.querySelector('.modal__cta-prev');
     const tagEl = modal.querySelector('.modal__tag');
     const tagTextEl = modal.querySelector('.modal__tag-text');
-    let lastFocused = null;
+    // openedBy is the pin this modal session was opened for -- it stays
+    // put while the reader browses backward inside the overlay (see
+    // prevEl below), so closing the modal still correctly judges whether
+    // the FRONTIER stage (not whatever stage is currently on screen) is
+    // what's being closed, and so advances the road only then. currentTrigger
+    // tracks whatever's actually on screen right now, which is what the
+    // prev button itself needs to step one further back each time.
+    let openedBy = null;
+    let currentTrigger = null;
     const { lock: lockScroll, unlock: unlockScroll } = createScrollLock();
 
     // One <p> per paragraph, split on blank lines, so the copy in
@@ -121,7 +129,8 @@
     }
 
     function openModal(trigger) {
-      lastFocused = trigger;
+      currentTrigger = trigger;
+      if (!modal.classList.contains('is-open')) openedBy = trigger;
       // Same headline/CTA as the desktop callout (see .route__callout in
       // style.css) -- one look for a sign's content, just two different
       // presentations (centred overlay here, side card there).
@@ -161,12 +170,12 @@
     }
 
     function closeModal() {
-      const closed = lastFocused;
+      const closed = openedBy;
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('modal-open');
       unlockScroll();
-      if (lastFocused) lastFocused.focus({ preventScroll: true });
+      if (openedBy) openedBy.focus({ preventScroll: true });
       // Route pins use this to know when to light the next stretch of
       // road (see initRoute) — dispatched after the close so anything
       // listening sees the modal already gone.
@@ -191,7 +200,7 @@
     // backward, it just re-populates the same overlay.
     if (prevEl) {
       prevEl.addEventListener('click', () => {
-        const prevStage = Number(lastFocused && lastFocused.dataset.stage) - 1;
+        const prevStage = Number(currentTrigger && currentTrigger.dataset.stage) - 1;
         const prevPin = document.querySelector(`.route__pin[data-stage="${prevStage}"]`);
         if (prevPin) openModal(prevPin);
       });
@@ -800,6 +809,13 @@
     const calloutPrev = callout && callout.querySelector('.route__callout-cta-prev');
     const calloutTag = callout && callout.querySelector('.route__callout-tag');
     const calloutTagText = callout && callout.querySelector('.route__callout-tag-text');
+    // Same split as the mobile modal's openedBy/currentTrigger (see
+    // initModal): calloutOpenedBy stays on the frontier stage while the
+    // reader browses backward via calloutPrev, so closing the callout
+    // still judges "is this the frontier" correctly and advances the
+    // road only then; calloutTrigger tracks whatever's on screen right
+    // now, which is what calloutPrev itself steps back from each click.
+    let calloutOpenedBy = null;
     let calloutTrigger = null;
 
     function setCalloutBody(text) {
@@ -836,6 +852,7 @@
     function openCallout(pin) {
       if (!callout) return;
       calloutTrigger = pin;
+      if (!callout.classList.contains('is-open')) calloutOpenedBy = pin;
       calloutHeadline.textContent = pin.dataset.calloutHeadline || '';
       setCalloutBody(pin.dataset.modalBody || '');
       if (calloutTagText) calloutTagText.textContent = pin.dataset.calloutTag || '';
@@ -932,15 +949,16 @@
 
     function closeCallout(advanceIfCurrent) {
       if (!callout || !callout.classList.contains('is-open')) return;
-      const wasCurrent = advanceIfCurrent && calloutTrigger && Number(calloutTrigger.dataset.stage) === currentStage;
+      const wasCurrent = advanceIfCurrent && calloutOpenedBy && Number(calloutOpenedBy.dataset.stage) === currentStage;
       callout.classList.remove('is-open');
       callout.setAttribute('aria-hidden', 'true');
       route.classList.remove('route--callout-open');
       route.querySelectorAll('.route__pin').forEach((el) => {
         el.classList.remove('is-callout-active');
       });
-      if (calloutTrigger) calloutTrigger.focus();
+      if (calloutOpenedBy) calloutOpenedBy.focus();
       calloutTrigger = null;
+      calloutOpenedBy = null;
       if (wasCurrent) advance();
     }
 
@@ -968,7 +986,7 @@
           // Only chains into the next callout when this sign is the actual
           // frontier -- reopening a past sign's callout and hitting this
           // just closes it, same as the X, since there's nothing to advance.
-          if (calloutTrigger && Number(calloutTrigger.dataset.stage) === currentStage) {
+          if (calloutOpenedBy && Number(calloutOpenedBy.dataset.stage) === currentStage) {
             pendingAutoOpenStage = currentStage + 1;
           }
           closeCallout(true);
