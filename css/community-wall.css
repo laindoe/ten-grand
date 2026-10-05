@@ -689,9 +689,14 @@ main {
   position: absolute;
   inset: 4px;
   border-radius: 50%;
-  border: 1px solid var(--color-accent);
+  border: 1px solid var(--cw-badge-accent, var(--color-accent));
   opacity: 0.6;
 }
+
+.cw-voice-card__badge--create  { --cw-badge-accent: var(--cw-color-create); }
+.cw-voice-card__badge--build   { --cw-badge-accent: var(--cw-color-build); }
+.cw-voice-card__badge--fund    { --cw-badge-accent: var(--cw-color-fund); }
+.cw-voice-card__badge--support { --cw-badge-accent: var(--cw-color-support); }
 
 .cw-voice-card__badge-number {
   position: relative;
