@@ -274,7 +274,7 @@ main {
    change itself stays legible instead of getting lost in haze. */
 @media (prefers-reduced-motion: no-preference) {
   .archive-community__cta {
-    text-shadow: 0 0 4px currentColor;
+    text-shadow: 0 0 2px currentColor;
     animation: archiveCommunityCtaGlow 8s linear infinite;
   }
 }
