@@ -1028,13 +1028,31 @@ main {
    ============================================================ */
 
 @media (min-width: 760px) {
+  /* Total Members joins the same straight line as the four stats --
+     .cw-stats becomes the flex row and .cw-stats__row (its own flex
+     container on mobile) is un-boxed via display:contents so its four
+     .cw-stat children become direct flex items alongside
+     .cw-stats__total. Total gets a wider share (flex-grow 2) than
+     each individual stat (flex-grow 1). */
+  .cw-stats {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .cw-stats__total {
+    flex: 2 1 0;
+    min-width: 0;
+    border-bottom: none;
+    border-right: 1px solid var(--color-card-border);
+  }
+
+  .cw-stats__row {
+    display: contents;
+  }
+
   /* One straight line of four, not the mobile 2x2 wrap -- swap the
      divider borders from the cross pattern to a single row of right
      borders between each stat (none after the last). */
-  .cw-stats__row {
-    flex-wrap: nowrap;
-  }
-
   .cw-stat {
     flex: 1 1 0;
   }
