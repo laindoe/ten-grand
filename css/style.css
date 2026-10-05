@@ -206,27 +206,12 @@ a {
 }
 
 .nav__dropdown-trigger {
-  gap: 4px;
+  appearance: none;
   border: none;
+  border-radius: 0;
   background: transparent;
-  font: inherit;
+  font-family: inherit;
   cursor: pointer;
-}
-
-.nav__dropdown-chevron {
-  width: 9px;
-  height: 9px;
-  flex: none;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform 0.18s ease;
-}
-
-.nav__dropdown-trigger[aria-expanded='true'] .nav__dropdown-chevron {
-  transform: rotate(180deg);
 }
 
 .nav__dropdown-menu {
