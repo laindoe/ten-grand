@@ -536,9 +536,12 @@ main {
   white-space: nowrap;
 }
 
+/* space-between, not a plain gap -- pushes View All to the row's far
+   right edge, the same edge the counter badge above it aligns to. */
 .cw-campaign__actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 20px;
   margin-bottom: 24px;
   flex-wrap: wrap;
