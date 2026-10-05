@@ -228,14 +228,16 @@ main {
    how tall its grid area (spanning both the text and cta rows) was.
    object-fit:contain keeps the icon's own proportions undistorted
    inside that now-taller box, growing to fill it rather than
-   stretching. */
+   stretching -- centered (not top-aligned) so the leftover space from
+   contain's aspect-ratio fit splits evenly above and below the glyph,
+   matching the box's own even top/bottom gap to the section edges. */
 .archive-community__icon {
   grid-area: icon;
   align-self: stretch;
   width: 64px;
   height: 100%;
   object-fit: contain;
-  object-position: top;
+  object-position: center;
 }
 
 .archive-community__text {
