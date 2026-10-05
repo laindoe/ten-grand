@@ -4299,6 +4299,28 @@ body.modal-open {
     transform: translate(-50%, -50%);
   }
 
+  /* Distribution (stage 4) opens its card above the label instead of
+     below -- see the opensUpward branch in openCallout, main.js -- so
+     the connector has to run the opposite way too: trunk below the
+     card instead of above it, dropping down into the label instead of
+     the card. Every rule here is the same one above with top/bottom
+     swapped, nothing else changes -- the horizontal bend/dot math is
+     unaffected by which way the trunk runs vertically. */
+  .route__callout--up .route__callout-connector {
+    bottom: auto;
+    top: 100%;
+  }
+
+  .route__callout--up .route__callout-connector-bend {
+    top: auto;
+    bottom: 0;
+  }
+
+  .route__callout--up .route__callout-connector::after {
+    top: auto;
+    bottom: 0;
+  }
+
   .route__callout-card {
     position: relative;
     background: var(--color-bg);

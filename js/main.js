@@ -947,7 +947,26 @@
       const side = pin.dataset.calloutSide || 'right';
       const align = side === 'left' ? 'right' : 'left';
       callout.dataset.align = align;
-      const top = labelRect.bottom - stageRect.top + 22;
+      // Distribution (stage 4) sits near the very bottom of .route's own
+      // box -- the tall scrollytelling container this callout is
+      // positioned relative to, not the viewport -- so opening downward
+      // the usual way runs the card past the end of that box and into
+      // whatever section follows. Opening it upward instead, card above
+      // the label, is the only one of the four stages that needs this:
+      // the others all have room below them. .route__callout--up flips
+      // the connector's own CSS (see .route__callout-connector and
+      // siblings) to match -- trunk and dot below the card, running down
+      // into the label, instead of above it running down into the card.
+      const opensUpward = pin.dataset.stage === '4';
+      callout.classList.toggle('route__callout--up', opensUpward);
+      let top;
+      let cardBottom;
+      if (opensUpward) {
+        cardBottom = labelRect.top - stageRect.top - 22;
+        top = cardBottom - callout.offsetHeight;
+      } else {
+        top = labelRect.bottom - stageRect.top + 22;
+      }
       const cardAttachX = align === 'left' ? labelRect.left : labelRect.right;
       const left = align === 'left'
         ? cardAttachX - stageRect.left
@@ -987,8 +1006,11 @@
       // Runs from the title's own vertical middle, not its bottom edge --
       // so the connector's total height has to stretch past the rest of
       // the title and the note line beneath it ("Map out the idea.") to
-      // still reach the card's own top unchanged.
-      const connectorHeight = top - (titleMidY - stageRect.top);
+      // still reach the card's own top (or, opening upward, its bottom)
+      // unchanged.
+      const connectorHeight = opensUpward
+        ? (titleMidY - stageRect.top) - cardBottom
+        : top - (titleMidY - stageRect.top);
       callout.style.setProperty('--connector-height', `${connectorHeight}px`);
       callout.style.setProperty('--connector-dot-x', `${dotX}px`);
       callout.style.setProperty('--connector-bend-left', `${bendLeftLocal}px`);
