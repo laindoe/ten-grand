@@ -443,9 +443,8 @@ main {
   padding: 18px 18px 40px;
 }
 
-/* Left accent bar as a pseudo-element instead of border-left, since a
-   plain CSS border can't take a gradient -- same two colors as
-   #br-pink-gradient. */
+/* Left accent bar as a pseudo-element instead of border-left, purely
+   so it can sit flush over the card's own 1px border. */
 .cw-broadcast-card::before {
   content: "";
   position: absolute;
@@ -453,7 +452,7 @@ main {
   bottom: -1px;
   left: -1px;
   width: 3px;
-  background: linear-gradient(to bottom, var(--cw-color-accent), #a91fa6);
+  background: var(--cw-color-accent);
 }
 
 .cw-broadcast-card__meta {
