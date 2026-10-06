@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=131" />
+  <link rel="stylesheet" href="css/style.css?v=132" />
 </head>
 <body>
 
@@ -995,9 +995,32 @@
         </form>
 
         <section class="amass-flow__step amass-flow__success" data-amass-step="8" hidden>
-          <p class="amass-flow__success-welcome">Welcome to the Comm(unity).</p>
+          <div class="amass-flow__success-orb" aria-hidden="true">
+            <svg class="amass-flow__success-orb-art" viewBox="0 0 64 64">
+              <defs>
+                <radialGradient id="amass-success-orb-grad" cx="35%" cy="32%" r="75%">
+                  <stop offset="0%" stop-color="#ff8a3d"/>
+                  <stop offset="35%" stop-color="#e5484d"/>
+                  <stop offset="65%" stop-color="#8bc34a"/>
+                  <stop offset="100%" stop-color="#2dd4bf"/>
+                </radialGradient>
+                <filter id="amass-success-orb-blur" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+                  <feGaussianBlur stdDeviation="6"/>
+                </filter>
+              </defs>
+              <circle cx="32" cy="32" r="24" fill="url(#amass-success-orb-grad)" opacity="0.55" filter="url(#amass-success-orb-blur)"/>
+              <circle cx="32" cy="32" r="24" fill="url(#amass-success-orb-grad)"/>
+            </svg>
+            <svg class="amass-flow__success-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 9v6h4l5 4V5L7 9H3z"/>
+              <path d="M15.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M18.5 5.5a9 9 0 0 1 0 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="amass-flow__campaign-label amass-flow__success-status">Pending Approval</p>
+          <p class="amass-flow__helper">Thank you for sharing your voice. If approved, it will appear on the Community Wall.</p>
+          <p class="amass-flow__success-fine-print">Check out more ways to AMASS Comm(unity) from the Transmissions page.</p>
           <p class="amass-flow__voice-count" id="amass-voice-count" hidden></p>
-          <p class="amass-flow__helper">Thank you for contributing your voice. Together we build a stronger, more connected community.</p>
           <button type="button" class="amass-flow__cta" data-modal-close>Done</button>
         </section>
       </div>
@@ -1006,6 +1029,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=25"></script>
+  <script src="js/main.js?v=26"></script>
 </body>
 </html>

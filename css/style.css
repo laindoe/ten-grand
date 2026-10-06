@@ -4256,9 +4256,39 @@ select.amass-flow__field {
   text-align: center;
 }
 
-.amass-flow__success-welcome {
-  font-size: 1.25rem;
-  line-height: 1.35;
+.amass-flow__success-orb {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin: 8px auto 20px;
+}
+
+.amass-flow__success-orb-art {
+  width: 100%;
+  height: 100%;
+}
+
+.amass-flow__success-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translate(-50%, -50%);
+  fill: var(--color-text);
+  stroke: var(--color-text);
+}
+
+.amass-flow__success-status {
+  display: block;
+  margin: 0 0 16px;
+}
+
+.amass-flow__success-fine-print {
+  margin-top: 16px;
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  line-height: 1.45;
 }
 
 .amass-flow__voice-count {
@@ -4267,7 +4297,7 @@ select.amass-flow__field {
 }
 
 .amass-flow__success .amass-flow__helper {
-  margin-bottom: 28px;
+  margin-bottom: 0;
 }
 
 .amass-flow__success .amass-flow__cta::after {
