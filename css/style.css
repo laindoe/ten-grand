@@ -3398,10 +3398,15 @@ a {
    callout's .route__callout-footer): negative margin equal to
    .modal__panel's own horizontal padding, so the rule reaches the
    panel's border instead of stopping at its padded content width. */
+/* padding-top matches .modal__panel's own 32px bottom padding (the
+   footer's own bottom padding is 0, so that panel padding is the only
+   thing below the text) -- equal gaps above and below center the text
+   vertically in the footer instead of it sitting close to the divider
+   line above it. */
 .modal__footer {
   display: flex;
   margin-inline: -28px;
-  padding: 14px 28px 0;
+  padding: 32px 28px 0;
   border-top: 1px solid var(--color-card-border);
   font-size: 0.75rem;
   font-weight: 600;
@@ -3436,18 +3441,45 @@ a {
   color: var(--color-text);
 }
 
-/* Pinned right regardless of whether the prev link is present, so stage
-   1's lone button stays exactly where it always was. */
-.modal__cta {
+/* Vertical divider between the two buttons, bled through the footer's
+   own 32px top padding and (since the footer's own bottom padding is
+   0) the panel's 32px bottom padding, so it reaches the border-top
+   line above and the panel's own bottom edge below -- same negative-
+   margin bleed technique as the full-bleed dividers elsewhere in this
+   file. margin:auto left/right centers it in the free space between
+   the two buttons, same trick as .modal__cta's old margin-left:auto,
+   which this replaces. */
+.modal__divider {
+  display: block;
+  width: 1px;
+  /* -33px (not -32px) on both sides accounts for the 1px borders just
+     beyond each edge -- the footer's own border-top above, and the
+     panel's own outer border below. */
+  margin: -33px auto;
+  background: var(--color-card-border);
+  flex-shrink: 0;
+}
+
+/* Stage 1 has no prev button, so the divider (which exists only to
+   separate the two) and this fallback margin (which does the divider's
+   old job of pushing the lone CTA to the right) both only apply when
+   .modal__cta-prev is actually hidden. */
+.modal__cta-prev[hidden] + .modal__divider {
+  display: none;
+}
+
+.modal__cta-prev[hidden] ~ .modal__cta {
   margin-left: auto;
 }
 
 .modal__cta::after {
-  content: ' \2192';
+  content: '\2192';
+  margin-left: 6px;
 }
 
 .modal__cta-prev::before {
-  content: '\2190 ';
+  content: '\2190';
+  margin-right: 6px;
 }
 
 /* AMASS Add Your Voice flow. Everything is scoped to the existing AMASS
