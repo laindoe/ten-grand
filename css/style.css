@@ -4302,9 +4302,21 @@ select.amass-flow__field {
   line-height: 1.45;
 }
 
+/* Same filled pink badge as the Community Wall's own campaign counter
+   (.cw-campaign__counter, #fb2f7b there) -- hardcoded here since this
+   page's stylesheet doesn't share tokens with community-wall.css. */
 .amass-flow__voice-count {
+  display: inline-block;
+  align-self: center;
   margin: 18px 0;
-  font-size: 0.95rem;
+  background: #fb2f7b;
+  color: var(--color-text);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  white-space: nowrap;
 }
 
 .amass-flow__success .amass-flow__helper {
