@@ -319,6 +319,7 @@
     const writeDisclosure = document.getElementById('amass-write-disclosure');
     const recordWrap = document.getElementById('amass-record');
     const recordDisclaimer = document.getElementById('amass-record-disclaimer');
+    const successOrb = document.getElementById('amass-success-orb');
     const roleConfig = {
       create: {
         label: 'I CREATE',
@@ -440,19 +441,20 @@
       return 'webm';
     }
 
-    // Sets the orb's two gradient stops + its glow fill to the
-    // selected role's accent pair (same --tag-accent-style inline
-    // custom property technique as .modal__tag) -- falls back to the
-    // CSS defaults (var(--color-accent)/var(--color-vandalism)) via
-    // removeProperty if no role is selected yet.
-    function setRecordOrbColor() {
+    // Sets an orb's two gradient stops + its glow fill to the selected
+    // role's accent pair (same --tag-accent-style inline custom property
+    // technique as .modal__tag) -- falls back to the CSS defaults
+    // (var(--color-accent)/var(--color-vandalism)) via removeProperty if
+    // no role is selected yet. Shared by the record button's orb and the
+    // success screen's orb.
+    function setOrbColor(el) {
       const config = roleConfig[selectedRole()];
       if (config) {
-        recordButton.style.setProperty('--role-accent', config.accent);
-        recordButton.style.setProperty('--role-accent-blend', config.accentBlend);
+        el.style.setProperty('--role-accent', config.accent);
+        el.style.setProperty('--role-accent-blend', config.accentBlend);
       } else {
-        recordButton.style.removeProperty('--role-accent');
-        recordButton.style.removeProperty('--role-accent-blend');
+        el.style.removeProperty('--role-accent');
+        el.style.removeProperty('--role-accent-blend');
       }
     }
 
@@ -691,9 +693,10 @@
       if (step === 4) ensureFocusGrid();
       if (step === 5) {
         updateWhyPlaceholder();
-        setRecordOrbColor();
+        setOrbColor(recordButton);
       }
       if (step === 7) buildReview();
+      if (step === 8) setOrbColor(successOrb);
       setNextState();
     }
 

@@ -4268,15 +4268,26 @@ select.amass-flow__field {
   height: 100%;
 }
 
+.amass-flow__success-orb-stop-a {
+  stop-color: var(--role-accent, var(--color-accent));
+}
+
+.amass-flow__success-orb-stop-b {
+  stop-color: var(--role-accent-blend, var(--color-vandalism));
+}
+
+.amass-flow__success-orb-glow {
+  fill: var(--role-accent, var(--color-accent));
+  opacity: 0.55;
+}
+
 .amass-flow__success-icon {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 36px;
-  height: 36px;
+  width: 46px;
+  height: auto;
   transform: translate(-50%, -50%);
-  fill: var(--color-text);
-  stroke: var(--color-text);
 }
 
 .amass-flow__success-status {

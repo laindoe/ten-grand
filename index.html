@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=132" />
+  <link rel="stylesheet" href="css/style.css?v=133" />
 </head>
 <body>
 
@@ -995,27 +995,21 @@
         </form>
 
         <section class="amass-flow__step amass-flow__success" data-amass-step="8" hidden>
-          <div class="amass-flow__success-orb" aria-hidden="true">
+          <div class="amass-flow__success-orb" id="amass-success-orb" aria-hidden="true">
             <svg class="amass-flow__success-orb-art" viewBox="0 0 64 64">
               <defs>
-                <radialGradient id="amass-success-orb-grad" cx="35%" cy="32%" r="75%">
-                  <stop offset="0%" stop-color="#ff8a3d"/>
-                  <stop offset="35%" stop-color="#e5484d"/>
-                  <stop offset="65%" stop-color="#8bc34a"/>
-                  <stop offset="100%" stop-color="#2dd4bf"/>
-                </radialGradient>
+                <linearGradient id="amass-success-orb-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop class="amass-flow__success-orb-stop-a" offset="0"/>
+                  <stop class="amass-flow__success-orb-stop-b" offset="1"/>
+                </linearGradient>
                 <filter id="amass-success-orb-blur" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
                   <feGaussianBlur stdDeviation="6"/>
                 </filter>
               </defs>
-              <circle cx="32" cy="32" r="24" fill="url(#amass-success-orb-grad)" opacity="0.55" filter="url(#amass-success-orb-blur)"/>
+              <circle class="amass-flow__success-orb-glow" cx="32" cy="32" r="24" filter="url(#amass-success-orb-blur)"/>
               <circle cx="32" cy="32" r="24" fill="url(#amass-success-orb-grad)"/>
             </svg>
-            <svg class="amass-flow__success-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 9v6h4l5 4V5L7 9H3z"/>
-              <path d="M15.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M18.5 5.5a9 9 0 0 1 0 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <img class="amass-flow__success-icon" src="assets/images/icon-amass.svg" alt="" width="58" height="51">
           </div>
           <p class="amass-flow__campaign-label amass-flow__success-status">Pending Approval</p>
           <p class="amass-flow__helper">Thank you for sharing your voice. If approved, it will appear on the Community Wall.</p>
@@ -1029,6 +1023,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=26"></script>
+  <script src="js/main.js?v=27"></script>
 </body>
 </html>
