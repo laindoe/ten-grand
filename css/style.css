@@ -3652,10 +3652,6 @@ a {
   text-transform: uppercase;
 }
 
-.amass-flow__label--center {
-  text-align: center;
-}
-
 .amass-flow__field {
   width: 100%;
   border: 1px solid rgba(243, 243, 244, 0.72);
