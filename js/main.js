@@ -282,6 +282,8 @@
     const whyInput = form.elements.why_detail;
     const websiteTitleInput = form.elements.website_title;
     const websiteInput = form.elements.website;
+    const websiteError = document.getElementById('amass-website-error');
+    const responseTitleInput = form.elements.response_title;
     const platformInput = form.elements.social_platform;
     const handleInput = form.elements.social_handle;
     const socialError = document.getElementById('amass-social-error');
@@ -306,6 +308,11 @@
     const recordStopIcon = recordButton.querySelector('.amass-record__icon--stop');
     const recordPreview = document.getElementById('amass-record-preview');
     const recordAudio = document.getElementById('amass-record-audio');
+    const recordPlayBtn = document.getElementById('amass-record-play');
+    const recordPlayLabel = document.getElementById('amass-record-play-label');
+    const recordPlayIcon = recordPlayBtn.querySelector('.amass-record__saved-icon--play');
+    const recordPauseIcon = recordPlayBtn.querySelector('.amass-record__saved-icon--pause');
+    const recordDeleteBtn = document.getElementById('amass-record-delete');
     const recordRerecordBtn = document.getElementById('amass-record-rerecord');
     const writeToggle = document.getElementById('amass-write-toggle');
     const writePanel = document.getElementById('amass-write-panel');
@@ -407,6 +414,15 @@
     let recordingStartedAt = 0;
     let recordedSeconds = 0;
 
+    // Chromium doesn't reflect the .hidden IDL property to the actual
+    // `hidden` content attribute on <svg> elements, so toggling icons
+    // via plain `svgEl.hidden = true` silently fails (the element never
+    // gets display: none). Setting the attribute directly works around it.
+    function setSvgHidden(svgEl, isHidden) {
+      if (isHidden) svgEl.setAttribute('hidden', '');
+      else svgEl.removeAttribute('hidden');
+    }
+
     function formatClock(totalSeconds) {
       const minutes = Math.floor(totalSeconds / 60);
       const seconds = Math.floor(totalSeconds % 60);
@@ -448,6 +464,12 @@
       writePanel.hidden = true;
     }
 
+    function setPlayIcon(isPlaying) {
+      setSvgHidden(recordPlayIcon, isPlaying);
+      setSvgHidden(recordPauseIcon, !isPlaying);
+      recordPlayLabel.textContent = isPlaying ? 'Pause' : 'Play';
+    }
+
     function resetRecording() {
       if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
       clearTimeout(recordingTimer);
@@ -455,6 +477,8 @@
       audioChunks = [];
       audioBlob = null;
       recordedSeconds = 0;
+      recordAudio.pause();
+      setPlayIcon(false);
       if (audioObjectUrl) {
         URL.revokeObjectURL(audioObjectUrl);
         audioObjectUrl = null;
@@ -463,8 +487,8 @@
       recordPreview.hidden = true;
       recordButton.hidden = false;
       recordButton.classList.remove('is-recording');
-      recordMicIcon.hidden = false;
-      recordStopIcon.hidden = true;
+      setSvgHidden(recordMicIcon, false);
+      setSvgHidden(recordStopIcon, true);
       recordLabel.textContent = 'Record Your Voice';
       recordHint.textContent = micSupported
         ? `Up to ${MAX_RECORDING_SECONDS} seconds.`
@@ -504,8 +528,8 @@
         mediaRecorder.start();
         recordingStartedAt = Date.now();
         recordButton.classList.add('is-recording');
-        recordMicIcon.hidden = true;
-        recordStopIcon.hidden = false;
+        setSvgHidden(recordMicIcon, true);
+        setSvgHidden(recordStopIcon, false);
         recordLabel.textContent = 'Recording…';
         const tick = () => {
           const elapsed = Math.min(MAX_RECORDING_SECONDS, (Date.now() - recordingStartedAt) / 1000);
@@ -532,12 +556,16 @@
       return Boolean(platformInput.value) === Boolean(handleInput.value.trim());
     }
 
+    function websiteIsValid() {
+      return Boolean(websiteTitleInput.value.trim()) === Boolean(websiteInput.value.trim());
+    }
+
     function setNextState() {
       const next = modal.querySelector(`[data-amass-step="${currentStep}"] [data-amass-next]`);
       if (!next) return;
       if (currentStep === 2) next.disabled = !nameInput.value.trim();
       if (currentStep === 3) next.disabled = !selectedRole();
-      if (currentStep === 6) next.disabled = !socialIsValid();
+      if (currentStep === 6) next.disabled = !socialIsValid() || !websiteIsValid();
     }
 
     function updateWhyPlaceholder() {
@@ -625,6 +653,7 @@
         .map((value) => (value === 'Other' && otherValue ? `Other (${otherValue})` : value))
         .join(', ');
       addReviewItem(`What you ${config.verb}`, focusDisplay);
+      addReviewItem('Title', responseTitleInput.value.trim());
       addReviewItem(`Why you ${config.verb}`, audioBlob ? `🎤 Recorded (${formatClock(recordedSeconds)})` : whyInput.value.trim());
       if (websiteInput.value.trim()) {
         const titleValue = websiteTitleInput.value.trim();
@@ -654,6 +683,11 @@
       titleEl.textContent = titleForStep(step);
       errorEl.hidden = true;
       socialError.hidden = true;
+      websiteError.hidden = true;
+      if (step !== 5) {
+        recordAudio.pause();
+        setPlayIcon(false);
+      }
       if (step === 4) ensureFocusGrid();
       if (step === 5) {
         updateWhyPlaceholder();
@@ -670,6 +704,7 @@
       submitButton.disabled = isSubmitting;
       errorEl.hidden = true;
       socialError.hidden = true;
+      websiteError.hidden = true;
       countEl.hidden = true;
       countEl.textContent = '';
       modal.querySelectorAll('[data-counter-for]').forEach((counter) => {
@@ -700,6 +735,10 @@
       button.addEventListener('click', () => {
         if (currentStep === 2 && !nameInput.value.trim()) return;
         if (currentStep === 3 && !selectedRole()) return;
+        if (currentStep === 6 && !websiteIsValid()) {
+          websiteError.hidden = false;
+          return;
+        }
         if (currentStep === 6 && !socialIsValid()) {
           socialError.hidden = false;
           return;
@@ -723,6 +762,13 @@
       });
       input.addEventListener('change', () => {
         socialError.hidden = true;
+        setNextState();
+      });
+    });
+
+    [websiteTitleInput, websiteInput].forEach((input) => {
+      input.addEventListener('input', () => {
+        websiteError.hidden = true;
         setNextState();
       });
     });
@@ -757,7 +803,19 @@
       else startRecording();
     });
 
-    recordRerecordBtn.addEventListener('click', resetRecording);
+    recordPlayBtn.addEventListener('click', () => {
+      if (recordAudio.paused) recordAudio.play();
+      else recordAudio.pause();
+    });
+    recordAudio.addEventListener('play', () => setPlayIcon(true));
+    recordAudio.addEventListener('pause', () => setPlayIcon(false));
+    recordAudio.addEventListener('ended', () => setPlayIcon(false));
+
+    recordDeleteBtn.addEventListener('click', resetRecording);
+    recordRerecordBtn.addEventListener('click', () => {
+      resetRecording();
+      startRecording();
+    });
 
     // Enforces "audio or written, not both" the other direction --
     // typing a written response discards any already-recorded audio.
@@ -771,21 +829,27 @@
       event.preventDefault();
       if (currentStep !== 7 || isSubmitting) return;
 
+      const hasAudio = Boolean(audioBlob);
+      const hasWritten = Boolean(whyInput.value.trim());
+
       const payload = {
         name: nameInput.value.trim(),
         role: selectedRole(),
         focus_areas: selectedFocusButtons().map((button) => button.dataset.value),
         focus_other: focusOtherInput.hidden ? null : focusOtherInput.value.trim() || null,
-        why_detail: whyInput.value.trim() || null,
+        response_type: hasAudio ? 'audio' : hasWritten ? 'written' : null,
+        response_title: responseTitleInput.value.trim() || null,
+        why_detail: hasAudio ? null : whyInput.value.trim() || null,
         audio_path: null,
-        audio_duration: audioBlob ? recordedSeconds : null,
+        audio_duration: hasAudio ? recordedSeconds : null,
+        photo_path: null,
         website_title: websiteTitleInput.value.trim() || null,
         website: websiteInput.value.trim() || null,
         social_platform: platformInput.value || null,
         social_handle: handleInput.value.trim() || null,
       };
 
-      if (!payload.name || !roleConfig[payload.role] || !socialIsValid()) return;
+      if (!payload.name || !roleConfig[payload.role] || !socialIsValid() || !websiteIsValid()) return;
 
       errorEl.hidden = true;
       isSubmitting = true;
@@ -795,7 +859,7 @@
       try {
         if (!window.tenGrandSupabase) throw new Error('Supabase client unavailable');
 
-        if (audioBlob) {
+        if (hasAudio) {
           const extension = audioFileExtension(audioBlob.type);
           const fileName = `${crypto.randomUUID()}.${extension}`;
           const { data: uploadData, error: uploadError } = await window.tenGrandSupabase.storage
@@ -806,6 +870,20 @@
             throw uploadError;
           }
           payload.audio_path = uploadData.path;
+        }
+
+        const photoFile = photoInput.files && photoInput.files[0];
+        if (photoFile) {
+          const extension = (photoFile.name.split('.').pop() || 'jpg').toLowerCase();
+          const fileName = `${crypto.randomUUID()}.${extension}`;
+          const { data: photoUploadData, error: photoUploadError } = await window.tenGrandSupabase.storage
+            .from('voices-heard-photos')
+            .upload(fileName, photoFile, { contentType: photoFile.type || 'application/octet-stream' });
+          if (photoUploadError) {
+            console.error('Ten Grand voice photo upload failed', photoUploadError);
+            throw photoUploadError;
+          }
+          payload.photo_path = photoUploadData.path;
         }
 
         const { data, error, status, statusText } = await window.tenGrandSupabase

@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=130" />
+  <link rel="stylesheet" href="css/style.css?v=131" />
 </head>
 <body>
 
@@ -881,8 +881,29 @@
               <p class="amass-record__hint" id="amass-record-hint">Up to 30 seconds.</p>
 
               <div class="amass-record__preview" id="amass-record-preview" hidden>
-                <audio class="amass-record__audio" id="amass-record-audio" controls></audio>
-                <button type="button" class="amass-record__rerecord" id="amass-record-rerecord">Record Again</button>
+                <audio class="amass-record__audio" id="amass-record-audio"></audio>
+                <div class="amass-record__saved-controls">
+                  <button type="button" class="amass-record__saved-btn amass-record__saved-btn--play" id="amass-record-play" aria-label="Play recording">
+                    <svg class="amass-record__saved-icon amass-record__saved-icon--play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5 L19 12 L7 19 Z"/></svg>
+                    <svg class="amass-record__saved-icon amass-record__saved-icon--pause" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                    <span id="amass-record-play-label">Play</span>
+                  </button>
+                  <button type="button" class="amass-record__saved-btn amass-record__saved-btn--delete" id="amass-record-delete" aria-label="Delete recording">
+                    <svg class="amass-record__saved-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 7h14"/>
+                      <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                      <path d="M7 7l1 13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1l1-13"/>
+                    </svg>
+                    <span>Delete</span>
+                  </button>
+                  <button type="button" class="amass-record__saved-btn amass-record__saved-btn--rerecord" id="amass-record-rerecord" aria-label="Record again">
+                    <svg class="amass-record__saved-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 12a8 8 0 1 1 2.5 5.8"/>
+                      <path d="M4 17v-5h5"/>
+                    </svg>
+                    <span>Re-record</span>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -891,16 +912,18 @@
                 <span>OR WRITE IT INSTEAD</span>
                 <svg class="amass-disclosure__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
               </button>
+              <p class="amass-record__disclaimer" id="amass-record-disclaimer">
+                <svg class="amass-record__info-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="7.25" x2="8" y2="11.5" stroke-width="1.4" stroke-linecap="round"/><circle class="amass-record__info-dot" cx="8" cy="4.75" r="0.9"/></svg>
+                You cannot record audio and write in the same entry.
+              </p>
               <div class="amass-disclosure__panel" id="amass-write-panel" hidden>
                 <textarea class="amass-flow__field amass-flow__textarea" id="amass-why-detail" name="why_detail" maxlength="400"></textarea>
                 <p class="amass-flow__counter"><span data-counter-for="amass-why-detail">0</span>/400</p>
               </div>
             </div>
 
-            <p class="amass-record__disclaimer" id="amass-record-disclaimer">
-              <svg class="amass-record__info-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="7.25" x2="8" y2="11.5" stroke-width="1.4" stroke-linecap="round"/><circle class="amass-record__info-dot" cx="8" cy="4.75" r="0.9"/></svg>
-              You can record audio or write a response, but not both.
-            </p>
+            <label class="amass-flow__label amass-flow__label--title" for="amass-response-title">Title — Optional</label>
+            <input class="amass-flow__field" id="amass-response-title" name="response_title" type="text" placeholder="Give your response a title" maxlength="80" autocomplete="off">
 
             <div class="amass-flow__actions">
               <button type="button" class="amass-flow__back" data-amass-back>Back</button>
@@ -930,6 +953,7 @@
 
             <label class="amass-flow__label" for="amass-website">Website</label>
             <input class="amass-flow__field" id="amass-website" name="website" type="url" placeholder="https://yourwebsite.com" autocomplete="off">
+            <p class="amass-flow__error" id="amass-website-error" role="alert" hidden>Please add both a website title and a website, or leave both blank.</p>
 
             <label class="amass-flow__label" for="amass-social-platform">Social Platform</label>
             <select class="amass-flow__field" id="amass-social-platform" name="social_platform">
@@ -982,6 +1006,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=23"></script>
+  <script src="js/main.js?v=24"></script>
 </body>
 </html>

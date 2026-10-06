@@ -52,6 +52,15 @@ ul {
   list-style: none;
 }
 
+/* Chromium's UA stylesheet for [hidden] (display: none) doesn't reach
+   svg elements the way it does everything else -- a hidden <svg> still
+   computes to display: inline (or block, once blockified by its own
+   position: absolute) and keeps rendering. Every icon-toggle pattern on
+   the site that puts [hidden] directly on an <svg> needs this to work. */
+svg[hidden] {
+  display: none;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -3843,37 +3852,58 @@ select.amass-flow__field {
 }
 
 .amass-record__audio {
-  width: 100%;
-  max-width: 320px;
+  display: none;
 }
 
-.amass-record__rerecord {
+.amass-record__saved-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+.amass-record__saved-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
   background: none;
   border: none;
   padding: 0;
   font: inherit;
-  font-size: 0.74rem;
+  font-size: 0.66rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  text-decoration: underline;
   cursor: pointer;
 }
 
-.amass-record__rerecord:hover,
-.amass-record__rerecord:focus-visible {
+.amass-record__saved-btn:hover,
+.amass-record__saved-btn:focus-visible {
   color: var(--color-text);
+}
+
+.amass-record__saved-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.amass-record__saved-icon--play,
+.amass-record__saved-icon--pause {
+  fill: currentColor;
 }
 
 .amass-record__disclaimer {
   display: flex;
   align-items: flex-start;
+  justify-content: flex-end;
   gap: 6px;
-  margin-top: 16px;
+  margin-top: 8px;
   color: var(--color-text-muted);
   font-size: 0.7rem;
   line-height: 1.4;
+  text-align: right;
 }
 
 .amass-record__info-icon {
@@ -4003,8 +4033,13 @@ select.amass-flow__field {
 }
 
 .amass-flow__step[data-amass-step='2'] .amass-flow__field,
-.amass-flow__step[data-amass-step='6'] .amass-flow__field + .amass-flow__label {
+.amass-flow__step[data-amass-step='6'] .amass-flow__field + .amass-flow__label,
+.amass-flow__step[data-amass-step='6'] .amass-flow__error + .amass-flow__label {
   margin-top: 18px;
+}
+
+.amass-flow__label--title {
+  margin-top: 24px;
 }
 
 /* Step 4's focus-area picker -- same bordered-button language as
