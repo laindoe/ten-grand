@@ -280,6 +280,8 @@
     const nameInput = form.elements.name;
     const roleInputs = Array.from(form.elements.role);
     const whyInput = form.elements.why_detail;
+    const websiteTitleInput = form.elements.website_title;
+    const websiteInput = form.elements.website;
     const platformInput = form.elements.social_platform;
     const handleInput = form.elements.social_handle;
     const socialError = document.getElementById('amass-social-error');
@@ -473,6 +475,10 @@
         .join(', ');
       addReviewItem(`What you ${config.verb}`, focusDisplay);
       addReviewItem(`Why you ${config.verb}`, whyInput.value.trim());
+      if (websiteInput.value.trim()) {
+        const titleValue = websiteTitleInput.value.trim();
+        addReviewItem('Website', titleValue ? `${titleValue} · ${websiteInput.value.trim()}` : websiteInput.value.trim());
+      }
       if (platformInput.value && handleInput.value.trim()) {
         const label = platformInput.options[platformInput.selectedIndex].textContent;
         addReviewItem('Find me', `${label} · ${handleInput.value.trim()}`);
@@ -597,6 +603,8 @@
         focus_areas: selectedFocusButtons().map((button) => button.dataset.value),
         focus_other: focusOtherInput.hidden ? null : focusOtherInput.value.trim() || null,
         why_detail: whyInput.value.trim() || null,
+        website_title: websiteTitleInput.value.trim() || null,
+        website: websiteInput.value.trim() || null,
         social_platform: platformInput.value || null,
         social_handle: handleInput.value.trim() || null,
       };
