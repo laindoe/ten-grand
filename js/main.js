@@ -1583,59 +1583,6 @@
     });
   }
 
-  // iOS Safari auto-zooms the viewport on focus for any text field under
-  // 16px, and the site's form fields are already sized above that
-  // threshold (see the touch-only font-size rules on .amass-flow__field
-  // and .archive-search/.archive-select) -- but that heuristic isn't the
-  // only thing that can trigger it (a field's effective size can still
-  // read as "small" under iOS's own text-size adjustment, or the page
-  // simply wasn't at 1x zoom when the field was tapped), and no
-  // font-size value can rule that out everywhere. This locks the zoom
-  // level while a text field is focused, same as before -- but WebKit
-  // treats maximum-scale as a LIVE constraint: setting it snaps any
-  // zoom already in effect back down to that scale immediately, not
-  // just caps future zooming. That's the part a plain focus/blur toggle
-  // missed -- reverting the meta tag the instant a field blurs removes
-  // the constraint before that snap-back has actually happened, leaving
-  // the page zoomed in with nothing left to un-zoom it. Holding the
-  // constraint for a beat after blur lets the snap-back land first, and
-  // only then is it lifted, so pinch-zoom still works normally
-  // everywhere else on the site the moment typing is done.
-  function initZoomLock() {
-    const viewport = document.querySelector('meta[name="viewport"]');
-    if (!viewport) return;
-    const original = viewport.getAttribute('content') || '';
-    const locked = `${original}, maximum-scale=1`;
-    const RESTORE_DELAY_MS = 400;
-    let lockCount = 0;
-    let restoreTimer = null;
-
-    function isTextField(el) {
-      if (!el) return false;
-      if (el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') return true;
-      if (el.tagName !== 'INPUT') return false;
-      const type = (el.getAttribute('type') || 'text').toLowerCase();
-      return !['radio', 'checkbox', 'button', 'submit', 'reset', 'range', 'file', 'color'].includes(type);
-    }
-
-    document.addEventListener('focusin', (event) => {
-      if (!isTextField(event.target)) return;
-      lockCount += 1;
-      clearTimeout(restoreTimer);
-      viewport.setAttribute('content', locked);
-    });
-
-    document.addEventListener('focusout', (event) => {
-      if (!isTextField(event.target)) return;
-      lockCount = Math.max(0, lockCount - 1);
-      if (lockCount !== 0) return;
-      clearTimeout(restoreTimer);
-      restoreTimer = setTimeout(() => {
-        viewport.setAttribute('content', original);
-      }, RESTORE_DELAY_MS);
-    });
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
     initReveal();
     const routeModal = initModal();
@@ -1645,6 +1592,5 @@
     initTimelineBubbles();
     initBillboards();
     initHighwayCars();
-    initZoomLock();
   });
 })();
