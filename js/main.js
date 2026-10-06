@@ -299,6 +299,19 @@
     const focusGrid = document.getElementById('amass-focus-grid');
     const focusCounter = document.getElementById('amass-focus-counter');
     const focusOtherInput = document.getElementById('amass-focus-other');
+    const recordButton = document.getElementById('amass-record-button');
+    const recordLabel = document.getElementById('amass-record-label');
+    const recordHint = document.getElementById('amass-record-hint');
+    const recordMicIcon = recordButton.querySelector('.amass-record__icon--mic');
+    const recordStopIcon = recordButton.querySelector('.amass-record__icon--stop');
+    const recordPreview = document.getElementById('amass-record-preview');
+    const recordAudio = document.getElementById('amass-record-audio');
+    const recordRerecordBtn = document.getElementById('amass-record-rerecord');
+    const writeToggle = document.getElementById('amass-write-toggle');
+    const writePanel = document.getElementById('amass-write-panel');
+    const writeDisclosure = document.getElementById('amass-write-disclosure');
+    const recordWrap = document.getElementById('amass-record');
+    const recordDisclaimer = document.getElementById('amass-record-disclaimer');
     const roleConfig = {
       create: {
         label: 'I CREATE',
@@ -307,6 +320,7 @@
         whyTitle: 'WHY DO YOU CREATE?',
         whyPlaceholder: 'Tell us why you create...',
         accent: '#e5dc16',
+        accentBlend: '#b5e619',
         focusOptions: ['Music', 'Film', 'Animation', 'Design', 'Writing', 'Photography', 'Fashion', 'Visual Art', 'Games', 'Live Experiences', 'Other'],
       },
       build: {
@@ -316,6 +330,7 @@
         whyTitle: 'WHY DO YOU BUILD?',
         whyPlaceholder: 'Tell us why you build...',
         accent: '#be2026',
+        accentBlend: '#e85f1c',
         focusOptions: ['Studios', 'Venues', 'Platforms', 'Technology', 'Agencies', 'Distribution', 'Manufacturing', 'Education', 'Communities', 'Creative Services', 'Other'],
       },
       fund: {
@@ -325,6 +340,7 @@
         whyTitle: 'WHY DO YOU FUND?',
         whyPlaceholder: 'Tell us why you fund...',
         accent: '#007938',
+        accentBlend: '#00c49a',
         focusOptions: ['Artists', 'Music', 'Film', 'Media', 'Startups', 'Products', 'Events', 'Creative Spaces', 'Community Projects', 'Education', 'Other'],
       },
       support: {
@@ -334,6 +350,7 @@
         whyTitle: 'WHY DO YOU SUPPORT?',
         whyPlaceholder: 'Tell us why you support...',
         accent: '#00b0e0',
+        accentBlend: '#1fe0c7',
         focusOptions: ['Music', 'Film', 'Art', 'Fashion', 'Games', 'Independent Creators', 'Local Culture', 'Live Events', 'Creative Businesses', 'Community Projects', 'Other'],
       },
     };
@@ -375,6 +392,140 @@
     function selectedRole() {
       const selected = roleInputs.find((input) => input.checked);
       return selected ? selected.value : '';
+    }
+
+    // --- Voice recording (step 5) ---
+    const MAX_RECORDING_SECONDS = 30;
+    const micSupported = Boolean(
+      navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder
+    );
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let audioBlob = null;
+    let audioObjectUrl = null;
+    let recordingTimer = null;
+    let recordingStartedAt = 0;
+    let recordedSeconds = 0;
+
+    function formatClock(totalSeconds) {
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = Math.floor(totalSeconds % 60);
+      return `${minutes}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    // MediaRecorder's default mimeType varies by browser (webm/opus in
+    // Chrome/Firefox, mp4/aac in Safari) -- this just picks a sane file
+    // extension to match whatever it actually recorded.
+    function audioFileExtension(mimeType) {
+      if (!mimeType) return 'webm';
+      if (mimeType.includes('mp4')) return 'm4a';
+      if (mimeType.includes('ogg')) return 'ogg';
+      if (mimeType.includes('wav')) return 'wav';
+      return 'webm';
+    }
+
+    // Sets the orb's two gradient stops + its glow fill to the
+    // selected role's accent pair (same --tag-accent-style inline
+    // custom property technique as .modal__tag) -- falls back to the
+    // CSS defaults (var(--color-accent)/var(--color-vandalism)) via
+    // removeProperty if no role is selected yet.
+    function setRecordOrbColor() {
+      const config = roleConfig[selectedRole()];
+      if (config) {
+        recordButton.style.setProperty('--role-accent', config.accent);
+        recordButton.style.setProperty('--role-accent-blend', config.accentBlend);
+      } else {
+        recordButton.style.removeProperty('--role-accent');
+        recordButton.style.removeProperty('--role-accent-blend');
+      }
+    }
+
+    function clearWrittenResponse() {
+      whyInput.value = '';
+      const counter = modal.querySelector('[data-counter-for="amass-why-detail"]');
+      if (counter) counter.textContent = '0';
+      writeToggle.setAttribute('aria-expanded', 'false');
+      writePanel.hidden = true;
+    }
+
+    function resetRecording() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+      clearTimeout(recordingTimer);
+      mediaRecorder = null;
+      audioChunks = [];
+      audioBlob = null;
+      recordedSeconds = 0;
+      if (audioObjectUrl) {
+        URL.revokeObjectURL(audioObjectUrl);
+        audioObjectUrl = null;
+      }
+      recordAudio.removeAttribute('src');
+      recordPreview.hidden = true;
+      recordButton.hidden = false;
+      recordButton.classList.remove('is-recording');
+      recordMicIcon.hidden = false;
+      recordStopIcon.hidden = true;
+      recordLabel.textContent = 'Record Your Voice';
+      recordHint.textContent = micSupported
+        ? `Up to ${MAX_RECORDING_SECONDS} seconds.`
+        : 'Recording isn’t supported in this browser.';
+      recordButton.disabled = !micSupported;
+    }
+
+    function handleRecordingStopped() {
+      clearTimeout(recordingTimer);
+      recordedSeconds = Math.min(MAX_RECORDING_SECONDS, Math.round((Date.now() - recordingStartedAt) / 1000));
+      audioBlob = new Blob(audioChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || 'audio/webm' });
+      audioObjectUrl = URL.createObjectURL(audioBlob);
+      recordAudio.src = audioObjectUrl;
+      recordButton.hidden = true;
+      recordButton.classList.remove('is-recording');
+      recordPreview.hidden = false;
+      recordLabel.textContent = 'Recording Saved';
+      recordHint.textContent = formatClock(recordedSeconds);
+      // Enforces "audio or written, not both" -- recording a voice
+      // response clears whatever was typed in the other field.
+      clearWrittenResponse();
+    }
+
+    async function startRecording() {
+      if (!micSupported || audioBlob) return;
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.addEventListener('dataavailable', (event) => {
+          if (event.data && event.data.size > 0) audioChunks.push(event.data);
+        });
+        mediaRecorder.addEventListener('stop', () => {
+          stream.getTracks().forEach((track) => track.stop());
+          handleRecordingStopped();
+        });
+        mediaRecorder.start();
+        recordingStartedAt = Date.now();
+        recordButton.classList.add('is-recording');
+        recordMicIcon.hidden = true;
+        recordStopIcon.hidden = false;
+        recordLabel.textContent = 'Recording…';
+        const tick = () => {
+          const elapsed = Math.min(MAX_RECORDING_SECONDS, (Date.now() - recordingStartedAt) / 1000);
+          recordHint.textContent = `${formatClock(elapsed)} / 0:${MAX_RECORDING_SECONDS}`;
+          if (elapsed >= MAX_RECORDING_SECONDS) {
+            stopRecording();
+          } else {
+            recordingTimer = setTimeout(tick, 200);
+          }
+        };
+        tick();
+      } catch (error) {
+        console.error('Ten Grand voice recording failed to start', error);
+        recordHint.textContent = 'Microphone access was denied.';
+      }
+    }
+
+    function stopRecording() {
+      clearTimeout(recordingTimer);
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
     }
 
     function socialIsValid() {
@@ -474,7 +625,7 @@
         .map((value) => (value === 'Other' && otherValue ? `Other (${otherValue})` : value))
         .join(', ');
       addReviewItem(`What you ${config.verb}`, focusDisplay);
-      addReviewItem(`Why you ${config.verb}`, whyInput.value.trim());
+      addReviewItem(`Why you ${config.verb}`, audioBlob ? `🎤 Recorded (${formatClock(recordedSeconds)})` : whyInput.value.trim());
       if (websiteInput.value.trim()) {
         const titleValue = websiteTitleInput.value.trim();
         addReviewItem('Website', titleValue ? `${titleValue} · ${websiteInput.value.trim()}` : websiteInput.value.trim());
@@ -504,7 +655,10 @@
       errorEl.hidden = true;
       socialError.hidden = true;
       if (step === 4) ensureFocusGrid();
-      if (step === 5) updateWhyPlaceholder();
+      if (step === 5) {
+        updateWhyPlaceholder();
+        setRecordOrbColor();
+      }
       if (step === 7) buildReview();
       setNextState();
     }
@@ -522,6 +676,7 @@
         counter.textContent = '0';
       });
       clearPhoto();
+      resetRecording();
       removalPanel.hidden = true;
       removalToggle.setAttribute('aria-expanded', 'false');
       showStep(1);
@@ -591,6 +746,25 @@
       removalPanel.hidden = isExpanded;
     });
 
+    writeToggle.addEventListener('click', () => {
+      const isExpanded = writeToggle.getAttribute('aria-expanded') === 'true';
+      writeToggle.setAttribute('aria-expanded', String(!isExpanded));
+      writePanel.hidden = isExpanded;
+    });
+
+    recordButton.addEventListener('click', () => {
+      if (recordButton.classList.contains('is-recording')) stopRecording();
+      else startRecording();
+    });
+
+    recordRerecordBtn.addEventListener('click', resetRecording);
+
+    // Enforces "audio or written, not both" the other direction --
+    // typing a written response discards any already-recorded audio.
+    whyInput.addEventListener('input', () => {
+      if (audioBlob) resetRecording();
+    });
+
     modal.addEventListener('modal:close', resetFlow);
 
     form.addEventListener('submit', async (event) => {
@@ -603,6 +777,8 @@
         focus_areas: selectedFocusButtons().map((button) => button.dataset.value),
         focus_other: focusOtherInput.hidden ? null : focusOtherInput.value.trim() || null,
         why_detail: whyInput.value.trim() || null,
+        audio_path: null,
+        audio_duration: audioBlob ? recordedSeconds : null,
         website_title: websiteTitleInput.value.trim() || null,
         website: websiteInput.value.trim() || null,
         social_platform: platformInput.value || null,
@@ -618,6 +794,19 @@
 
       try {
         if (!window.tenGrandSupabase) throw new Error('Supabase client unavailable');
+
+        if (audioBlob) {
+          const extension = audioFileExtension(audioBlob.type);
+          const fileName = `${crypto.randomUUID()}.${extension}`;
+          const { data: uploadData, error: uploadError } = await window.tenGrandSupabase.storage
+            .from('voices-heard-audio')
+            .upload(fileName, audioBlob, { contentType: audioBlob.type || 'application/octet-stream' });
+          if (uploadError) {
+            console.error('Ten Grand voice audio upload failed', uploadError);
+            throw uploadError;
+          }
+          payload.audio_path = uploadData.path;
+        }
 
         const { data, error, status, statusText } = await window.tenGrandSupabase
           .from('voices_heard')

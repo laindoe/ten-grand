@@ -3722,6 +3722,175 @@ select.amass-flow__field {
   text-align: right;
 }
 
+/* ---------- Voice recording (step 5) ---------- */
+
+.amass-record {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.amass-record__button {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.amass-record__button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.amass-record__orb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* --role-accent/--role-accent-blend are set inline per role (see
+   setRecordOrbColor in main.js, driven by roleConfig) -- same pattern
+   as .modal__tag's --tag-accent. Falls back to the site's default
+   accent pair if no role is set yet. */
+.amass-record__orb-stop-a {
+  stop-color: var(--role-accent, var(--color-accent));
+}
+
+.amass-record__orb-stop-b {
+  stop-color: var(--role-accent-blend, var(--color-vandalism));
+}
+
+.amass-record__orb-glow {
+  fill: var(--role-accent, var(--color-accent));
+  opacity: 0.55;
+}
+
+.amass-record__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+  fill: none;
+  stroke: var(--color-bg);
+  stroke-width: 0;
+}
+
+.amass-record__icon--mic {
+  fill: var(--color-bg);
+}
+
+.amass-record__icon--stop {
+  fill: var(--color-bg);
+}
+
+/* Glow breathes continuously to invite a tap, then pulses faster once
+   actually recording -- same ease-in-out dwell-at-peak shape as the
+   bridge sun's glow (bridgeSunGlowPulse), not a blink. */
+@media (prefers-reduced-motion: no-preference) {
+  .amass-record__orb-glow {
+    animation: amassRecordGlowPulse 3.2s ease-in-out infinite;
+  }
+
+  .amass-record__button.is-recording .amass-record__orb-glow {
+    animation-duration: 1.1s;
+  }
+}
+
+@keyframes amassRecordGlowPulse {
+  0%, 100% { opacity: 0.4; }
+  42%, 58% { opacity: 0.75; }
+}
+
+.amass-record__button.is-recording .amass-record__orb-core {
+  animation: none;
+}
+
+.amass-record__label {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.amass-record__hint {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.amass-record__preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.amass-record__preview[hidden] {
+  display: none;
+}
+
+.amass-record__audio {
+  width: 100%;
+  max-width: 320px;
+}
+
+.amass-record__rerecord {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.amass-record__rerecord:hover,
+.amass-record__rerecord:focus-visible {
+  color: var(--color-text);
+}
+
+.amass-record__disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 16px;
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.amass-record__info-icon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+
+.amass-record__info-dot {
+  fill: currentColor;
+  stroke: none;
+}
+
 .amass-flow__cta {
   width: 100%;
   margin-top: auto;

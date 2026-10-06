@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=129" />
+  <link rel="stylesheet" href="css/style.css?v=130" />
 </head>
 <body>
 
@@ -851,8 +851,56 @@
 
           <section class="amass-flow__step" data-amass-step="5" hidden>
             <p class="amass-flow__helper"><span class="amass-flow__helper-tag">Optional</span> Get to the heart of why you do what you do.</p>
-            <textarea class="amass-flow__field amass-flow__textarea" id="amass-why-detail" name="why_detail" maxlength="200"></textarea>
-            <p class="amass-flow__counter"><span data-counter-for="amass-why-detail">0</span>/200</p>
+
+            <div class="amass-record" id="amass-record">
+              <button type="button" class="amass-record__button" id="amass-record-button" aria-label="Record your voice, up to 30 seconds">
+                <svg class="amass-record__orb" viewBox="0 0 64 64" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="amass-record-orb-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop class="amass-record__orb-stop-a" offset="0"/>
+                      <stop class="amass-record__orb-stop-b" offset="1"/>
+                    </linearGradient>
+                    <filter id="amass-record-orb-blur" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+                      <feGaussianBlur stdDeviation="6"/>
+                    </filter>
+                  </defs>
+                  <circle class="amass-record__orb-glow" cx="32" cy="32" r="24" filter="url(#amass-record-orb-blur)"/>
+                  <circle class="amass-record__orb-core" cx="32" cy="32" r="24" fill="url(#amass-record-orb-grad)"/>
+                </svg>
+                <svg class="amass-record__icon amass-record__icon--mic" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="9" y="2" width="6" height="12" rx="3"/>
+                  <path d="M5 11a7 7 0 0 0 14 0" fill="none" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="12" y1="18" x2="12" y2="21" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <svg class="amass-record__icon amass-record__icon--stop" viewBox="0 0 24 24" aria-hidden="true" hidden>
+                  <rect x="7" y="7" width="10" height="10" rx="2"/>
+                </svg>
+              </button>
+              <p class="amass-record__label" id="amass-record-label">Record Your Voice</p>
+              <p class="amass-record__hint" id="amass-record-hint">Up to 30 seconds.</p>
+
+              <div class="amass-record__preview" id="amass-record-preview" hidden>
+                <audio class="amass-record__audio" id="amass-record-audio" controls></audio>
+                <button type="button" class="amass-record__rerecord" id="amass-record-rerecord">Record Again</button>
+              </div>
+            </div>
+
+            <div class="amass-disclosure" id="amass-write-disclosure">
+              <button type="button" class="amass-disclosure__toggle" id="amass-write-toggle" aria-expanded="false" aria-controls="amass-write-panel">
+                <span>OR WRITE IT INSTEAD</span>
+                <svg class="amass-disclosure__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
+              </button>
+              <div class="amass-disclosure__panel" id="amass-write-panel" hidden>
+                <textarea class="amass-flow__field amass-flow__textarea" id="amass-why-detail" name="why_detail" maxlength="200"></textarea>
+                <p class="amass-flow__counter"><span data-counter-for="amass-why-detail">0</span>/200</p>
+              </div>
+            </div>
+
+            <p class="amass-record__disclaimer" id="amass-record-disclaimer">
+              <svg class="amass-record__info-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="7.25" x2="8" y2="11.5" stroke-width="1.4" stroke-linecap="round"/><circle class="amass-record__info-dot" cx="8" cy="4.75" r="0.9"/></svg>
+              You can record audio or write a response, but not both.
+            </p>
+
             <div class="amass-flow__actions">
               <button type="button" class="amass-flow__back" data-amass-back>Back</button>
               <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
@@ -933,6 +981,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=22"></script>
+  <script src="js/main.js?v=23"></script>
 </body>
 </html>
