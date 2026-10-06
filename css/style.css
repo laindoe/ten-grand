@@ -3897,13 +3897,13 @@ select.amass-flow__field {
 .amass-record__disclaimer {
   display: flex;
   align-items: flex-start;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 6px;
   margin-top: 8px;
   color: var(--color-text-muted);
   font-size: 0.7rem;
   line-height: 1.4;
-  text-align: right;
+  text-align: left;
 }
 
 .amass-record__info-icon {
