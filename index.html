@@ -10,7 +10,8 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=138" />
+  <link rel="stylesheet" href="css/style.css?v=139" />
+  <link rel="stylesheet" href="css/cropper.min.css" />
 </head>
 <body>
 
@@ -1003,11 +1004,23 @@
           <button type="button" class="amass-flow__cta" data-modal-close>Done</button>
         </section>
       </div>
+
+      <div class="amass-crop-overlay" id="amass-crop-overlay" hidden>
+        <p class="amass-crop-overlay__title">Crop Your Photo</p>
+        <div class="amass-crop-overlay__stage">
+          <img class="amass-crop-overlay__image" id="amass-crop-image" alt="">
+        </div>
+        <div class="amass-flow__actions">
+          <button type="button" class="amass-flow__back" id="amass-crop-cancel">Cancel</button>
+          <button type="button" class="amass-flow__cta" id="amass-crop-confirm">Use Photo</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=29"></script>
+  <script src="assets/js/cropper.min.js"></script>
+  <script src="js/main.js?v=30"></script>
 </body>
 </html>

@@ -4251,6 +4251,111 @@ select.amass-flow__field {
   overflow-wrap: anywhere;
 }
 
+.amass-flow__review-photo {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border: 1px solid var(--color-card-border);
+}
+
+.amass-flow__review-audio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.amass-flow__review-audio-el {
+  display: none;
+}
+
+.amass-flow__review-play {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.amass-flow__review-play:hover,
+.amass-flow__review-play:focus-visible {
+  color: var(--color-vandalism);
+}
+
+.amass-flow__review-play-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.amass-flow__review-audio-duration {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+}
+
+/* Covers the whole modal panel (same stacking context as .modal__panel,
+   which is position:relative) so the crop step reads as a distinct
+   full-screen stage rather than another form field inside step 6. */
+.amass-crop-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 36px 28px 32px;
+  background: var(--color-bg);
+}
+
+.amass-crop-overlay[hidden] {
+  display: none;
+}
+
+.amass-crop-overlay__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.amass-crop-overlay__stage {
+  width: 100%;
+  max-width: 280px;
+  height: 280px;
+  overflow: hidden;
+}
+
+.amass-crop-overlay__image {
+  display: block;
+  max-width: 100%;
+}
+
+/* Cropper.js's own CSS ships a default Facebook-blue crop box --
+   restyled here to the site's white/red palette instead. */
+.amass-crop-overlay .cropper-view-box {
+  outline-color: var(--color-text);
+}
+
+.amass-crop-overlay .cropper-line {
+  background-color: var(--color-vandalism);
+}
+
+.amass-crop-overlay .cropper-point {
+  background-color: var(--color-vandalism);
+  opacity: 1;
+  width: 8px;
+  height: 8px;
+}
+
 .amass-flow__success {
   justify-content: center;
   text-align: center;

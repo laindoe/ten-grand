@@ -291,6 +291,10 @@
     const photoPreviewImg = document.getElementById('amass-photo-preview-img');
     const photoPreviewEmpty = document.getElementById('amass-photo-preview-empty');
     const photoRemoveBtn = document.getElementById('amass-photo-remove-btn');
+    const cropOverlay = document.getElementById('amass-crop-overlay');
+    const cropImage = document.getElementById('amass-crop-image');
+    const cropCancelBtn = document.getElementById('amass-crop-cancel');
+    const cropConfirmBtn = document.getElementById('amass-crop-confirm');
     const removalToggle = document.getElementById('amass-removal-toggle');
     const removalPanel = document.getElementById('amass-removal-panel');
     const errorEl = document.getElementById('amass-form-error');
@@ -374,9 +378,13 @@
     let flowVersion = 0;
     let lastFocusRole = null;
     let photoObjectUrl = null;
+    let photoBlob = null;
+    let reviewAudioEl = null;
+    let cropper = null;
 
     function clearPhoto() {
       photoInput.value = '';
+      photoBlob = null;
       if (photoObjectUrl) {
         URL.revokeObjectURL(photoObjectUrl);
         photoObjectUrl = null;
@@ -387,13 +395,52 @@
       photoRemoveBtn.hidden = true;
     }
 
-    function setPhoto(file) {
+    // blob is the already-square-cropped image coming out of the crop
+    // overlay -- this is the single source of truth for both the
+    // preview and the eventual upload, so nothing re-reads photoInput's
+    // raw (uncropped) file after this point.
+    function setPhoto(blob) {
       if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl);
-      photoObjectUrl = URL.createObjectURL(file);
+      photoBlob = blob;
+      photoObjectUrl = URL.createObjectURL(blob);
       photoPreviewImg.src = photoObjectUrl;
       photoPreviewImg.hidden = false;
       photoPreviewEmpty.hidden = true;
       photoRemoveBtn.hidden = false;
+    }
+
+    function closeCropOverlay() {
+      cropOverlay.hidden = true;
+      if (cropper) {
+        cropper.destroy();
+        cropper = null;
+      }
+      if (cropImage.src) {
+        URL.revokeObjectURL(cropImage.src);
+        cropImage.src = '';
+      }
+    }
+
+    function openCropOverlay(file) {
+      cropImage.src = URL.createObjectURL(file);
+      cropOverlay.hidden = false;
+      // .modal__panel scrolls internally (overflow-y:auto) and is this
+      // overlay's positioned ancestor, so inset:0 places the overlay at
+      // the panel's scrolled-to-top content position, not the current
+      // viewport -- without resetting scroll first, the overlay can
+      // render above the visible area if the user had scrolled down
+      // through an earlier step.
+      modal.querySelector('.modal__panel').scrollTop = 0;
+      cropper = new Cropper(cropImage, {
+        aspectRatio: 1,
+        viewMode: 1,
+        dragMode: 'move',
+        autoCropArea: 1,
+        background: false,
+        guides: false,
+        center: false,
+        highlight: false,
+      });
     }
 
     function selectedRole() {
@@ -643,9 +690,78 @@
       reviewEl.appendChild(item);
     }
 
+    function addReviewPhoto() {
+      const item = document.createElement('div');
+      item.className = 'amass-flow__review-item amass-flow__review-item--photo';
+      const term = document.createElement('strong');
+      term.textContent = 'Photo';
+      const img = document.createElement('img');
+      img.className = 'amass-flow__review-photo';
+      img.src = photoObjectUrl;
+      img.alt = '';
+      item.append(term, img);
+      reviewEl.appendChild(item);
+    }
+
+    // Own play/pause button + <audio>, independent from step 5's
+    // recording preview so each can be played without disturbing the
+    // other. reviewAudioEl is tracked so showStep can pause it when the
+    // user navigates away from this step.
+    function addReviewAudio(label) {
+      const item = document.createElement('div');
+      item.className = 'amass-flow__review-item';
+      const term = document.createElement('strong');
+      term.textContent = label;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'amass-flow__review-audio';
+
+      const audio = document.createElement('audio');
+      audio.className = 'amass-flow__review-audio-el';
+      audio.src = audioObjectUrl;
+
+      const playBtn = document.createElement('button');
+      playBtn.type = 'button';
+      playBtn.className = 'amass-flow__review-play';
+      playBtn.setAttribute('aria-label', 'Play recording');
+      playBtn.innerHTML =
+        '<svg class="amass-flow__review-play-icon amass-flow__review-play-icon--play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5 L19 12 L7 19 Z"/></svg>' +
+        '<svg class="amass-flow__review-play-icon amass-flow__review-play-icon--pause" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>' +
+        '<span>Play</span>';
+
+      const playIcon = playBtn.querySelector('.amass-flow__review-play-icon--play');
+      const pauseIcon = playBtn.querySelector('.amass-flow__review-play-icon--pause');
+      const playLabel = playBtn.querySelector('span');
+
+      function setIcon(isPlaying) {
+        setSvgHidden(playIcon, isPlaying);
+        setSvgHidden(pauseIcon, !isPlaying);
+        playLabel.textContent = isPlaying ? 'Pause' : 'Play';
+      }
+
+      playBtn.addEventListener('click', () => {
+        if (audio.paused) audio.play();
+        else audio.pause();
+      });
+      audio.addEventListener('play', () => setIcon(true));
+      audio.addEventListener('pause', () => setIcon(false));
+      audio.addEventListener('ended', () => setIcon(false));
+
+      const duration = document.createElement('span');
+      duration.className = 'amass-flow__review-audio-duration';
+      duration.textContent = formatClock(recordedSeconds);
+
+      wrap.append(audio, playBtn, duration);
+      item.append(term, wrap);
+      reviewEl.appendChild(item);
+      reviewAudioEl = audio;
+    }
+
     function buildReview() {
       const config = roleConfig[selectedRole()];
       reviewEl.replaceChildren();
+      reviewAudioEl = null;
+      if (photoObjectUrl) addReviewPhoto();
       addReviewItem('Name', nameInput.value.trim());
       addReviewItem('Role', config.label);
       const otherValue = focusOtherInput.hidden ? '' : focusOtherInput.value.trim();
@@ -655,7 +771,11 @@
         .join(', ');
       addReviewItem(`What you ${config.verb}`, focusDisplay);
       addReviewItem('Title', responseTitleInput.value.trim());
-      addReviewItem(`Why you ${config.verb}`, audioBlob ? `🎤 Recorded (${formatClock(recordedSeconds)})` : whyInput.value.trim());
+      if (audioBlob) {
+        addReviewAudio(`Why you ${config.verb}`);
+      } else {
+        addReviewItem(`Why you ${config.verb}`, whyInput.value.trim());
+      }
       if (websiteInput.value.trim()) {
         const titleValue = websiteTitleInput.value.trim();
         addReviewItem('Website', titleValue ? `${titleValue} · ${websiteInput.value.trim()}` : websiteInput.value.trim());
@@ -689,6 +809,7 @@
         recordAudio.pause();
         setPlayIcon(false);
       }
+      if (step !== 7 && reviewAudioEl) reviewAudioEl.pause();
       if (step === 4) ensureFocusGrid();
       if (step === 5) {
         updateWhyPlaceholder();
@@ -712,6 +833,7 @@
         counter.textContent = '0';
       });
       clearPhoto();
+      closeCropOverlay();
       resetRecording();
       removalPanel.hidden = true;
       removalToggle.setAttribute('aria-expanded', 'false');
@@ -784,7 +906,20 @@
     photoRemoveBtn.addEventListener('click', clearPhoto);
     photoInput.addEventListener('change', () => {
       const file = photoInput.files && photoInput.files[0];
-      if (file) setPhoto(file);
+      if (file) openCropOverlay(file);
+    });
+
+    cropCancelBtn.addEventListener('click', () => {
+      photoInput.value = '';
+      closeCropOverlay();
+    });
+
+    cropConfirmBtn.addEventListener('click', () => {
+      if (!cropper) return;
+      cropper.getCroppedCanvas({ width: 600, height: 600 }).toBlob((blob) => {
+        if (blob) setPhoto(blob);
+        closeCropOverlay();
+      }, 'image/jpeg', 0.9);
     });
 
     removalToggle.addEventListener('click', () => {
@@ -873,13 +1008,11 @@
           payload.audio_path = uploadData.path;
         }
 
-        const photoFile = photoInput.files && photoInput.files[0];
-        if (photoFile) {
-          const extension = (photoFile.name.split('.').pop() || 'jpg').toLowerCase();
-          const fileName = `${crypto.randomUUID()}.${extension}`;
+        if (photoBlob) {
+          const fileName = `${crypto.randomUUID()}.jpg`;
           const { data: photoUploadData, error: photoUploadError } = await window.tenGrandSupabase.storage
             .from('voices-heard-photos')
-            .upload(fileName, photoFile, { contentType: photoFile.type || 'application/octet-stream' });
+            .upload(fileName, photoBlob, { contentType: 'image/jpeg' });
           if (photoUploadError) {
             console.error('Ten Grand voice photo upload failed', photoUploadError);
             throw photoUploadError;
