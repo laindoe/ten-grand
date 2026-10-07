@@ -3899,7 +3899,7 @@ select.amass-flow__field {
 
 @media (prefers-reduced-motion: no-preference) {
   .amass-record__saved-btn--play.is-playing {
-    animation: amassPlayPulse 3s ease-in-out infinite alternate;
+    animation: amassPlayPulse 6s ease-in-out infinite alternate;
   }
 }
 
@@ -4327,7 +4327,7 @@ select.amass-flow__field {
 
 @media (prefers-reduced-motion: no-preference) {
   .amass-flow__review-play.is-playing {
-    animation: amassPlayPulse 3s ease-in-out infinite alternate;
+    animation: amassPlayPulse 6s ease-in-out infinite alternate;
   }
 }
 
