@@ -394,10 +394,26 @@ main {
   50% { opacity: 0.35; }
 }
 
+/* The viewport's overflow:hidden clips any descendant trying to
+   render outside ITS OWN box -- so to let a divider reach
+   .cw-ticker's top/bottom border, the viewport's own box has to reach
+   there first. Negative margins pull it up through .cw-ticker's 12px
+   padding (13px on the bottom, to also cross its 1px border-bottom)
+   to the section's actual edges; matching padding added back keeps
+   the scrolling text itself exactly where it was. Each item then sits
+   exactly 12px below the viewport's (new) top edge and 13px above its
+   bottom edge -- the same two numbers -- so its own divider (an
+   absolutely positioned pseudo-element, not a plain border, so it can
+   extend past the item's own short line-height) uses them again to
+   land precisely on the now-coincident viewport/section edges. */
 .cw-ticker__viewport {
   overflow: hidden;
   flex: 1;
   min-width: 0;
+  margin-top: -12px;
+  margin-bottom: -13px;
+  padding-top: 12px;
+  padding-bottom: 13px;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
   mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
 }
@@ -424,12 +440,22 @@ main {
 }
 
 .cw-ticker__item {
+  position: relative;
   font-size: 0.78rem;
   color: var(--color-text-muted);
   white-space: nowrap;
   padding-right: 20px;
   margin-right: 20px;
-  border-right: 1px solid var(--color-card-border);
+}
+
+.cw-ticker__item::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  bottom: -13px;
+  right: 0;
+  width: 1px;
+  background: var(--color-card-border);
 }
 
 /* ---------- Broadcasts ---------- */
