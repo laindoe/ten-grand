@@ -1077,7 +1077,12 @@ main {
   margin-bottom: 24px;
 }
 
-.cw-join__body p {
+.cw-join__subtitle {
+  color: var(--color-text);
+}
+
+.cw-join__fineprint {
+  font-size: 0.78rem;
   color: var(--color-text-muted);
 }
 
