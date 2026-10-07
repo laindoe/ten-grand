@@ -1126,16 +1126,6 @@ main {
   pointer-events: none;
 }
 
-/* Same technique as .amass-flow__cta::after -- its own font-size and
-   margin-left rather than a literal arrow character inline in the
-   text, so the arrow sits larger and more deliberately spaced than
-   the plain inline arrows used elsewhere on this page. */
-.cw-join__cta::after {
-  content: '  \2192';
-  margin-left: 8px;
-  font-size: 1rem;
-}
-
 /* ============================================================
    Desktop / tablet
    ============================================================ */
