@@ -181,13 +181,14 @@ main {
    every other archive section): the line above comes from
    .archive-filters's own border-bottom just before it.
    A grid, not a flex row, because the two breakpoints place the same
-   three items (icon-group, text, cta) completely differently rather
-   than just resizing them: on mobile the icon-group is a left column
-   spanning the label+subtitle+CTA stack beside it (grid-template-areas
-   repeating "icon-group" across both rows is what makes it span); on
-   desktop everything sits in a single row with the divider back in
-   play. Grid areas place items by name regardless of source order, so
-   no DOM reshuffling is needed between the two. */
+   four items (icon, divider, text, cta) completely differently rather
+   than just resizing them: on mobile the icon and its divider are a
+   left column spanning the label+subtitle+CTA stack beside them
+   (grid-template-areas repeating "icon"/"divider-mobile" across both
+   rows is what makes them span); on desktop everything sits in a
+   single row with a different divider back in play. Grid areas place
+   items by name regardless of source order, so no DOM reshuffling is
+   needed between the two. */
 .archive-community {
   border-bottom: 1px solid var(--color-card-border);
   padding-top: 20px;
@@ -196,46 +197,38 @@ main {
 
 .archive-community__inner {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto auto 1fr;
   grid-template-areas:
-    "icon-group text"
-    "icon-group cta";
+    "icon divider-mobile text"
+    "icon divider-mobile cta";
   column-gap: 14px;
   row-gap: 10px;
-  align-items: start;
-}
-
-/* icon-group spans both rows (label+subtitle, then cta), which can be
-   taller than the icon itself -- align-self:center (not stretch) keeps
-   the group sized to its own content instead of stretching to fill
-   that row, so the divider line hugs the icon exactly instead of
-   bleeding past it. The icon gets a fixed width + its own aspect-ratio
-   (not height:100%) so its size is deterministic, not dependent on how
-   tall the text column happens to be. */
-.archive-community__icon-group {
-  grid-area: icon-group;
-  align-self: center;
-  display: flex;
-  align-items: stretch;
-  /* Match the gap on the icon's right (to the divider) to the page's
-     own left gutter (.archive-inner's padding) -- the 14px column-gap
-     to the text column alone left it narrower than the left side. */
-  gap: calc(var(--section-padding-x) - 14px);
+  align-items: center;
 }
 
 .archive-community__icon {
+  grid-area: icon;
   display: block;
-  width: 64px;
+  width: 110px;
   height: auto;
   aspect-ratio: 1179 / 772;
+  /* Match the gap on the icon's right (to the divider) to the page's
+     own left gutter (.archive-inner's padding) -- the 14px column-gap
+     alone left it narrower than the left side. */
+  margin-right: calc(var(--section-padding-x) - 14px);
 }
 
-/* No longer bleeds through .archive-community's padding to the
-   section's own border -- align-items:stretch on the flex group above
-   is what sizes it now, to exactly the icon's own height. */
+/* Bleeds through .archive-community's 20px top/bottom padding (same
+   technique as .archive-community__divider on desktop) so it actually
+   reaches that section's own border lines top and bottom, regardless
+   of the icon's own height. */
 .archive-community__divider-mobile {
   display: block;
+  grid-area: divider-mobile;
+  align-self: stretch;
   width: 1px;
+  margin-top: -20px;
+  margin-bottom: -21px;
   background: var(--color-card-border);
 }
 
@@ -546,7 +539,7 @@ main {
      right, then the CTA. */
   .archive-community__inner {
     grid-template-columns: auto auto auto 1fr auto;
-    grid-template-areas: "icon-group text divider . cta";
+    grid-template-areas: "icon text divider . cta";
     align-items: center;
     column-gap: 16px;
     row-gap: 0;
@@ -562,6 +555,7 @@ main {
     width: auto;
     height: 35px;
     aspect-ratio: 1179 / 772;
+    margin-right: 0;
   }
 
   .archive-community__text {
