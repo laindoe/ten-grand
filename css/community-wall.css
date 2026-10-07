@@ -974,14 +974,14 @@ main {
 }
 
 .cw-network__title {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: 700;
   line-height: 1.25;
   margin-bottom: 10px;
 }
 
 .cw-network__subtitle {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--color-text-muted);
   line-height: 1.5;
 }
