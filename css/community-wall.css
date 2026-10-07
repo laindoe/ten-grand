@@ -1092,16 +1092,6 @@ main {
   color: var(--color-text-muted);
 }
 
-/* Bleeds through .modal__panel's 28px left/right padding AND its 1px
-   border to reach the panel's actual edges, same negative-margin
-   technique used for dividers elsewhere on this site. */
-.cw-join__divider {
-  display: block;
-  height: 1px;
-  margin: 20px -29px;
-  background: var(--color-card-border);
-}
-
 /* .cw-join__body p (one class + one type selector) outranks a single
    class selector on specificity alone regardless of source order, so
    these are scoped as .cw-join__body .cw-join__doors to actually win.
