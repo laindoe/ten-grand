@@ -360,7 +360,7 @@
         whatTitle: 'WHAT DO YOU SUPPORT?',
         whyTitle: 'WHY DO YOU SUPPORT?',
         whyPlaceholder: 'Tell us why you support...',
-        accent: '#00b0e0',
+        accent: '#0fc7d3',
         accentBlend: '#1fe0c7',
         focusOptions: ['Music', 'Film', 'Art', 'Fashion', 'Games', 'Independent Creators', 'Local Culture', 'Live Events', 'Creative Businesses', 'Community Projects', 'Other'],
       },
