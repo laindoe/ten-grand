@@ -1053,6 +1053,99 @@ main {
   pointer-events: none;
 }
 
+/* ---------- Join modal ---------- */
+/* Shared by both JOIN triggers on this page (the stats-row button and
+   "Join the Network"). Site fonts throughout -- no serif, matching
+   the rest of the page rather than a logo graphic. */
+
+#cw-join-modal .modal__panel {
+  text-align: center;
+}
+
+.cw-join__lockup {
+  margin: 0 0 20px;
+}
+
+.cw-join__lockup-name {
+  display: block;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.cw-join__lockup-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.cw-join__body {
+  margin-bottom: 24px;
+}
+
+.cw-join__body p {
+  color: var(--color-text-muted);
+}
+
+/* Bleeds through .modal__panel's 28px left/right padding AND its 1px
+   border to reach the panel's actual edges, same negative-margin
+   technique used for dividers elsewhere on this site. */
+.cw-join__divider {
+  display: block;
+  height: 1px;
+  margin: 20px -29px;
+  background: var(--color-card-border);
+}
+
+/* .cw-join__body p (one class + one type selector) outranks a single
+   class selector on specificity alone regardless of source order, so
+   these are scoped as .cw-join__body .cw-join__doors to actually win.
+   Reuses --amass-pulse/amassHue (defined once in style.css, driving
+   the Philosophy page's timeline toggles) rather than a new
+   treatment -- the site's one existing gradient-color pulse effect.
+   Falls back to a flat pink (matching this page's other "Doors Open
+   2027" label) under reduced motion. */
+.cw-join__body .cw-join__doors {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cw-color-accent);
+  margin-bottom: 16px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cw-join__body .cw-join__doors {
+    --amass-pulse: #be2026;
+    color: var(--amass-pulse);
+    animation: amassHue 8s linear infinite;
+  }
+}
+
+.cw-join__cta {
+  display: block;
+  width: 100%;
+  background: var(--color-text);
+  color: var(--color-bg);
+  border: none;
+  border-radius: 2px;
+  padding: 12px 18px;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  cursor: default;
+  pointer-events: none;
+}
+
 /* ============================================================
    Desktop / tablet
    ============================================================ */
