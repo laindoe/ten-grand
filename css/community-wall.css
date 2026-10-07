@@ -1055,8 +1055,7 @@ main {
 
 /* ---------- Join modal ---------- */
 /* Shared by both JOIN triggers on this page (the stats-row button and
-   "Join the Network"). Site fonts throughout -- no serif, matching
-   the rest of the page rather than a logo graphic. */
+   "Join the Network"). */
 
 #cw-join-modal .modal__panel {
   text-align: center;
@@ -1066,22 +1065,12 @@ main {
   margin: 0 0 20px;
 }
 
-.cw-join__lockup-name {
+.cw-join__logo {
   display: block;
-  font-size: 1.7rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.cw-join__lockup-sub {
-  display: block;
-  margin-top: 4px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  margin: 0 auto;
 }
 
 .cw-join__body {
