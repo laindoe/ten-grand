@@ -752,17 +752,25 @@
         playLabel.textContent = isPlaying ? 'Pause' : 'Play';
       }
 
+      const duration = document.createElement('span');
+      duration.className = 'amass-flow__review-audio-duration';
+      duration.textContent = formatClock(recordedSeconds);
+
       playBtn.addEventListener('click', () => {
         if (audio.paused) audio.play();
         else audio.pause();
       });
       audio.addEventListener('play', () => setIcon(true));
       audio.addEventListener('pause', () => setIcon(false));
-      audio.addEventListener('ended', () => setIcon(false));
-
-      const duration = document.createElement('span');
-      duration.className = 'amass-flow__review-audio-duration';
-      duration.textContent = formatClock(recordedSeconds);
+      audio.addEventListener('ended', () => {
+        setIcon(false);
+        duration.textContent = formatClock(recordedSeconds);
+      });
+      // Same live counting treatment as the step 5 recording preview.
+      audio.addEventListener('timeupdate', () => {
+        if (audio.paused) return;
+        duration.textContent = `${formatClock(audio.currentTime)} / ${formatClock(recordedSeconds)}`;
+      });
 
       wrap.append(audio, playBtn, duration);
       item.append(term, wrap);
@@ -958,7 +966,18 @@
     });
     recordAudio.addEventListener('play', () => setPlayIcon(true));
     recordAudio.addEventListener('pause', () => setPlayIcon(false));
-    recordAudio.addEventListener('ended', () => setPlayIcon(false));
+    recordAudio.addEventListener('ended', () => {
+      setPlayIcon(false);
+      recordHint.textContent = formatClock(recordedSeconds);
+    });
+    // Counts up while playing (0:00 / 0:30, 0:01 / 0:30, ...) so it's
+    // obvious something is actually playing -- freezes wherever it was
+    // on pause (timeupdate just stops firing) and resets to the plain
+    // total above on ended.
+    recordAudio.addEventListener('timeupdate', () => {
+      if (recordAudio.paused) return;
+      recordHint.textContent = `${formatClock(recordAudio.currentTime)} / ${formatClock(recordedSeconds)}`;
+    });
 
     recordDeleteBtn.addEventListener('click', resetRecording);
     recordRerecordBtn.addEventListener('click', () => {
