@@ -253,6 +253,14 @@ main {
   gap: 6px;
 }
 
+.cw-stats__doors-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--cw-color-accent);
+}
+
 .cw-stats__total-number {
   font-size: clamp(1.8rem, 8vw, 2.4rem);
   font-weight: 700;
