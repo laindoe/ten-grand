@@ -350,8 +350,8 @@
         whatTitle: 'WHAT DO YOU FUND?',
         whyTitle: 'WHY DO YOU FUND?',
         whyPlaceholder: 'Tell us why you fund...',
-        accent: '#5a983e',
-        accentBlend: '#83b26e',
+        accent: '#4fb620',
+        accentBlend: '#77d34e',
         focusOptions: ['Artists', 'Music', 'Film', 'Media', 'Startups', 'Products', 'Events', 'Creative Spaces', 'Community Projects', 'Education', 'Other'],
       },
       support: {
