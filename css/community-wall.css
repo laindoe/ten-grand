@@ -253,12 +253,22 @@ main {
   gap: 6px;
 }
 
+/* Same small-caps solid-color-plus-pulse treatment as the join
+   modal's "Doors Open 2027" (and the Voices Heard modal's campaign
+   label before it) -- solid --color-vandalism red with
+   dilemma-cue-pulse. */
 .cw-stats__doors-label {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--cw-color-accent);
+  color: var(--color-vandalism);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cw-stats__doors-label {
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
+  }
 }
 
 .cw-stats__total-number {
