@@ -214,19 +214,22 @@ main {
   align-items: center;
 }
 
-/* Equal padding on every side (verified 14px top/bottom/left/right) is
-   entirely self-contained here -- it doesn't depend on the divider,
-   the row height, or the text column, so it can't be thrown off by
-   any of those. align-self:center centers the frame within its
-   spanned rows; if that row is taller than the frame, the extra space
-   splits evenly above/below instead of pooling on one side. */
+/* Flush with the page margin on the left (same edge as the search box
+   and section title above), so no padding there. The 14px that would
+   have gone on the left is matched on top/right/bottom instead -- a
+   square frame missing only its left side. Self-contained here -- it
+   doesn't depend on the divider, the row height, or the text column,
+   so it can't be thrown off by any of those. align-self:center centers
+   the frame within its spanned rows; if that row is taller than the
+   frame, the extra space splits evenly above/below instead of pooling
+   on one side. */
 .archive-community__icon-frame {
   grid-area: icon-frame;
   align-self: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px;
+  padding: 14px 14px 14px 0;
 }
 
 .archive-community__icon {
