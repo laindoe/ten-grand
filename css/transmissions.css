@@ -234,8 +234,9 @@ main {
 .archive-community__icon {
   grid-area: icon;
   align-self: stretch;
-  width: 64px;
+  width: auto;
   height: 100%;
+  aspect-ratio: 1179 / 772;
   object-fit: contain;
   object-position: center;
   /* Match the gap on the icon's right (to the divider) to the page's
@@ -577,8 +578,9 @@ main {
 
   .archive-community__icon {
     align-self: center;
-    width: 40px;
+    width: auto;
     height: 35px;
+    aspect-ratio: 1179 / 772;
     margin-right: 0;
   }
 
