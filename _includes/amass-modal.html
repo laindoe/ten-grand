@@ -1,0 +1,238 @@
+  <!-- Share-your-voice modal for the AMASS Comm(unity) megaphone -->
+  <div class="modal" id="amass-modal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__panel amass-flow__panel" role="dialog" aria-modal="true" aria-labelledby="amass-modal-title">
+      <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
+      <h3 class="modal__title" id="amass-modal-title">AMASS Comm(unity) Wall</h3>
+      <div class="modal__body">
+        <form id="amass-voice-form" novalidate>
+          <section class="amass-flow__step" data-amass-step="1">
+            <img class="amass-flow__intro-icon" src="{{ '/assets/images/icon-voices-heard.svg' | relative_url }}?v=2" alt="" width="150" height="98" aria-hidden="true">
+            <p class="amass-flow__intro">Culture should be shaped by the people who participate.</p>
+            <p class="amass-flow__intro"><span class="amass-flow__campaign-label">VOICES HEARD</span> is an invitation to share what you contribute, why it matters, and who you hope to reach.</p>
+            <button type="button" class="amass-flow__cta" data-amass-next>Leave Your Mark</button>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="2" hidden>
+            <input class="amass-flow__field" id="amass-name" name="name" type="text" placeholder="Your name or alias" autocomplete="name" aria-label="Name / Alias" required>
+            <div class="amass-flow__actions">
+              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
+              <button type="button" class="amass-flow__cta" data-amass-next disabled>Next</button>
+            </div>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="3" hidden>
+            <div class="amass-role-grid" role="radiogroup" aria-label="How do you show up?">
+              <label class="amass-role-card amass-role-card--create">
+                <input type="radio" name="role" value="create" required>
+                <span class="amass-role-card__content">
+                  <svg class="amass-role-card__icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="19" cy="24" r="13"/><circle cx="29" cy="24" r="13"/></svg>
+                  <span class="amass-role-card__text"><strong>I Create</strong><span>Artists and creatives making the work.</span></span>
+                </span>
+              </label>
+              <label class="amass-role-card amass-role-card--build">
+                <input type="radio" name="role" value="build">
+                <span class="amass-role-card__content">
+                  <svg class="amass-role-card__icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="7" width="22" height="22"/><rect x="19" y="19" width="22" height="22"/></svg>
+                  <span class="amass-role-card__text"><strong>I Build</strong><span>People creating the infrastructure that helps the work move.</span></span>
+                </span>
+              </label>
+              <label class="amass-role-card amass-role-card--fund">
+                <input type="radio" name="role" value="fund">
+                <span class="amass-role-card__content">
+                  <svg class="amass-role-card__icon" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="15" rx="15" ry="6"/><path d="M9,15 v9 a15,6 0 0 0 30,0 v-9" /><path d="M9,24 v9 a15,6 0 0 0 30,0 v-9" /></svg>
+                  <span class="amass-role-card__text"><strong>I Fund</strong><span>People and organizations putting financial resources behind ideas.</span></span>
+                </span>
+              </label>
+              <label class="amass-role-card amass-role-card--support">
+                <input type="radio" name="role" value="support">
+                <span class="amass-role-card__content">
+                  <svg class="amass-role-card__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24,4 L28,20 L44,24 L28,28 L24,44 L20,28 L4,24 L20,20 Z"/></svg>
+                  <span class="amass-role-card__text"><strong>I Support</strong><span>Audiences and community members helping culture grow.</span></span>
+                </span>
+              </label>
+            </div>
+            <div class="amass-flow__actions">
+              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
+              <button type="button" class="amass-flow__cta" data-amass-next disabled>Next</button>
+            </div>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="4" hidden>
+            <p class="amass-flow__helper" id="amass-focus-helper">Select up to 3.</p>
+            <div class="amass-focus-grid" id="amass-focus-grid" role="group" aria-label="What do you create?"></div>
+            <p class="amass-flow__counter amass-focus-counter" id="amass-focus-counter">0 / 3 selected</p>
+            <input class="amass-flow__field amass-focus-other" id="amass-focus-other" type="text" placeholder="Tell us more" maxlength="24" hidden>
+            <div class="amass-flow__actions">
+              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
+              <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
+            </div>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="5" hidden>
+            <p class="amass-flow__helper"><span class="amass-flow__helper-tag">Optional</span> Get to the heart of why you do what you do.</p>
+
+            <div class="amass-record" id="amass-record">
+              <button type="button" class="amass-record__button" id="amass-record-button" aria-label="Record your voice, up to 30 seconds">
+                <svg class="amass-record__orb" viewBox="0 0 64 64" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="amass-record-orb-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop class="amass-record__orb-stop-a" offset="0"/>
+                      <stop class="amass-record__orb-stop-b" offset="1"/>
+                    </linearGradient>
+                    <filter id="amass-record-orb-blur" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+                      <feGaussianBlur stdDeviation="6"/>
+                    </filter>
+                  </defs>
+                  <circle class="amass-record__orb-glow" cx="32" cy="32" r="24" filter="url(#amass-record-orb-blur)"/>
+                  <circle class="amass-record__orb-core" cx="32" cy="32" r="24" fill="url(#amass-record-orb-grad)"/>
+                </svg>
+                <svg class="amass-record__icon amass-record__icon--mic" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="9" y="2" width="6" height="12" rx="3"/>
+                  <path d="M5.5 10a6.5 6.5 0 0 0 13 0" fill="none" stroke-width="2.4" stroke-linecap="round"/>
+                  <rect x="11" y="17" width="2" height="3.3" rx="1"/>
+                  <rect x="7.5" y="20.3" width="9" height="2" rx="1"/>
+                </svg>
+                <svg class="amass-record__icon amass-record__icon--stop" viewBox="0 0 24 24" aria-hidden="true" hidden>
+                  <rect x="7" y="7" width="10" height="10" rx="2"/>
+                </svg>
+              </button>
+              <p class="amass-record__label" id="amass-record-label">Record Your Voice</p>
+              <p class="amass-record__hint" id="amass-record-hint">Up to 30 seconds.</p>
+
+              <div class="amass-record__preview" id="amass-record-preview" hidden>
+                <audio class="amass-record__audio" id="amass-record-audio"></audio>
+                <div class="amass-record__saved-controls">
+                  <button type="button" class="amass-record__saved-btn amass-record__saved-btn--play" id="amass-record-play" aria-label="Play recording">
+                    <svg class="amass-record__saved-icon amass-record__saved-icon--play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5 L19 12 L7 19 Z"/></svg>
+                    <svg class="amass-record__saved-icon amass-record__saved-icon--pause" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                    <span id="amass-record-play-label">Play</span>
+                  </button>
+                  <button type="button" class="amass-record__saved-btn amass-record__saved-btn--delete" id="amass-record-delete" aria-label="Delete recording">
+                    <svg class="amass-record__saved-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 7h14"/>
+                      <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                      <path d="M7 7l1 13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1l1-13"/>
+                    </svg>
+                    <span>Delete</span>
+                  </button>
+                  <button type="button" class="amass-record__saved-btn amass-record__saved-btn--rerecord" id="amass-record-rerecord" aria-label="Record again">
+                    <svg class="amass-record__saved-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 12a8 8 0 1 1 2.5 5.8"/>
+                      <path d="M4 17v-5h5"/>
+                    </svg>
+                    <span>Re-record</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="amass-disclosure" id="amass-write-disclosure">
+              <button type="button" class="amass-disclosure__toggle" id="amass-write-toggle" aria-expanded="false" aria-controls="amass-write-panel">
+                <span>OR WRITE IT INSTEAD</span>
+                <svg class="amass-disclosure__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
+              </button>
+              <p class="amass-record__disclaimer" id="amass-record-disclaimer">
+                <svg class="amass-record__info-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="7.25" x2="8" y2="11.5" stroke-width="1.4" stroke-linecap="round"/><circle class="amass-record__info-dot" cx="8" cy="4.75" r="0.9"/></svg>
+                You cannot record audio and write in the same entry.
+              </p>
+              <div class="amass-disclosure__panel" id="amass-write-panel" hidden>
+                <textarea class="amass-flow__field amass-flow__textarea" id="amass-why-detail" name="why_detail" maxlength="400"></textarea>
+                <p class="amass-flow__counter"><span data-counter-for="amass-why-detail">0</span>/400</p>
+              </div>
+            </div>
+
+            <label class="amass-flow__label amass-flow__label--title" for="amass-response-title">Title — Optional</label>
+            <input class="amass-flow__field" id="amass-response-title" name="response_title" type="text" placeholder="Give your response a title" maxlength="80" autocomplete="off">
+
+            <div class="amass-flow__actions">
+              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
+              <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
+            </div>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="6" hidden>
+            <p class="amass-flow__helper"><span class="amass-flow__helper-tag">Optional</span> Choose how you'd like to appear on the Community Wall.</p>
+
+            <div class="amass-photo-field">
+              <div class="amass-photo-wrap">
+                <label class="amass-photo-preview" for="amass-photo-input" id="amass-photo-preview">
+                  <img class="amass-photo-preview__img" id="amass-photo-preview-img" alt="" hidden>
+                  <span class="amass-photo-preview__empty" id="amass-photo-preview-empty">
+                    <span class="amass-photo-preview__plus" aria-hidden="true">+</span>
+                    <span class="amass-photo-preview__caption">Add Photo</span>
+                  </span>
+                </label>
+                <button type="button" class="amass-photo-remove" id="amass-photo-remove-btn" aria-label="Remove photo" hidden>&times;</button>
+              </div>
+              <input type="file" class="amass-photo-input" id="amass-photo-input" accept="image/*" hidden>
+            </div>
+
+            <label class="amass-flow__label" for="amass-website-title">Website Title</label>
+            <input class="amass-flow__field" id="amass-website-title" name="website_title" type="text" placeholder="My Portfolio" autocomplete="off">
+
+            <label class="amass-flow__label" for="amass-website">Website</label>
+            <input class="amass-flow__field" id="amass-website" name="website" type="url" placeholder="https://yourwebsite.com" autocomplete="off">
+            <p class="amass-flow__error" id="amass-website-error" role="alert" hidden>Please add both a website title and a website, or leave both blank.</p>
+
+            <label class="amass-flow__label" for="amass-social-platform">Social Platform</label>
+            <select class="amass-flow__field" id="amass-social-platform" name="social_platform">
+              <option value="">Select a platform</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Facebook">Facebook</option>
+              <option value="X">X</option>
+              <option value="Threads">Threads</option>
+              <option value="TikTok">TikTok</option>
+            </select>
+            <label class="amass-flow__label" for="amass-social-handle">Social Handle</label>
+            <input class="amass-flow__field" id="amass-social-handle" name="social_handle" type="text" placeholder="@yourhandle" autocomplete="off">
+            <p class="amass-flow__error" id="amass-social-error" role="alert" hidden>Please add both a platform and handle, or leave both blank.</p>
+
+            <div class="amass-disclosure">
+              <button type="button" class="amass-disclosure__toggle" id="amass-removal-toggle" aria-expanded="false" aria-controls="amass-removal-panel">
+                <span>WHAT IF I CHANGE MY MIND?</span>
+                <svg class="amass-disclosure__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
+              </button>
+              <div class="amass-disclosure__panel" id="amass-removal-panel" hidden>
+                <p>You can request to have your entry removed from the Community Wall at any time. Just email info@tengrand.co with the name or alias you submitted under, and we'll take care of the rest.</p>
+              </div>
+            </div>
+
+            <div class="amass-flow__actions">
+              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
+              <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
+            </div>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="7" hidden>
+            <div class="amass-flow__review" id="amass-review"></div>
+            <p class="amass-flow__error" id="amass-form-error" role="alert" hidden>Something went wrong. Please try again.</p>
+            <div class="amass-flow__actions">
+              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
+              <button type="submit" class="amass-flow__cta">Add My Voice</button>
+            </div>
+          </section>
+        </form>
+
+        <section class="amass-flow__step amass-flow__success" data-amass-step="8" hidden>
+          <img class="amass-flow__success-icon" src="{{ '/assets/images/icon-voices-heard.svg' | relative_url }}?v=2" alt="" width="150" height="98" aria-hidden="true">
+          <p class="amass-flow__campaign-label amass-flow__success-status">Pending Approval</p>
+          <p class="amass-flow__helper">Thank you for sharing your voice. If approved, it will appear on the Community Wall.</p>
+          <p class="amass-flow__success-fine-print">Check out more ways to AMASS Comm(unity) from the Transmissions page.</p>
+          <p class="amass-flow__voice-count" id="amass-voice-count" hidden></p>
+          <button type="button" class="amass-flow__cta" data-modal-close>Done</button>
+        </section>
+      </div>
+
+      <div class="amass-crop-overlay" id="amass-crop-overlay" hidden>
+        <p class="amass-crop-overlay__title">Crop Your Photo</p>
+        <div class="amass-crop-overlay__stage">
+          <img class="amass-crop-overlay__image" id="amass-crop-image" alt="">
+        </div>
+        <div class="amass-flow__actions">
+          <button type="button" class="amass-flow__back" id="amass-crop-cancel">Cancel</button>
+          <button type="button" class="amass-flow__cta" id="amass-crop-confirm">Use Photo</button>
+        </div>
+      </div>
+    </div>
+  </div>
