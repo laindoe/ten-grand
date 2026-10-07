@@ -1068,7 +1068,7 @@ main {
 .cw-join__logo {
   display: block;
   width: 100%;
-  max-width: 220px;
+  max-width: 150px;
   height: auto;
   margin: 0 auto;
 }
@@ -1083,26 +1083,22 @@ main {
 
 /* .cw-join__body p (one class + one type selector) outranks a single
    class selector on specificity alone regardless of source order, so
-   these are scoped as .cw-join__body .cw-join__doors to actually win.
-   Reuses --amass-pulse/amassHue (defined once in style.css, driving
-   the Philosophy page's timeline toggles) rather than a new
-   treatment -- the site's one existing gradient-color pulse effect.
-   Falls back to a flat pink (matching this page's other "Doors Open
-   2027" label) under reduced motion. */
+   this is scoped as .cw-join__body .cw-join__doors to actually win.
+   Same small-caps solid-color-plus-pulse treatment as the Voices
+   Heard modal's own campaign label (.amass-flow__campaign-label),
+   reusing dilemma-cue-pulse by name rather than a new effect. */
 .cw-join__body .cw-join__doors {
-  font-size: 1.15rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--cw-color-accent);
+  color: var(--color-vandalism);
   margin-bottom: 16px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .cw-join__body .cw-join__doors {
-    --amass-pulse: #be2026;
-    color: var(--amass-pulse);
-    animation: amassHue 8s linear infinite;
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
   }
 }
 
