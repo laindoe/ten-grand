@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=135" />
+  <link rel="stylesheet" href="css/style.css?v=136" />
 </head>
 <body>
 
@@ -530,7 +530,7 @@
         <h2 class="amass__headline">AMASS COMM(UNITY)</h2>
         <p class="amass__subhead">Using mass communication to amplify individual voices and cultivate shared experience.</p>
         <button type="button" class="amass__icon-button" data-modal-open="amass-modal">
-          <img class="amass__icon" src="assets/images/icon-amass.svg" alt="" width="58" height="51" />
+          <img class="amass__icon" src="assets/images/icon-voices-heard.svg" alt="" width="58" height="38" />
           <span class="amass__cue">TAP TO SHARE</span>
         </button>
       </div>
@@ -787,7 +787,7 @@
       <div class="modal__body">
         <form id="amass-voice-form" novalidate>
           <section class="amass-flow__step" data-amass-step="1">
-            <img class="amass-flow__intro-icon" src="assets/images/icon-amass.svg" alt="" width="58" height="51" aria-hidden="true">
+            <img class="amass-flow__intro-icon" src="assets/images/icon-voices-heard.svg" alt="" width="58" height="38" aria-hidden="true">
             <p class="amass-flow__intro">Culture should be shaped by the people who participate.</p>
             <p class="amass-flow__intro"><span class="amass-flow__campaign-label">VOICES HEARD</span> is an invitation to share what you contribute, why it matters, and who you hope to reach.</p>
             <button type="button" class="amass-flow__cta" data-amass-next>Leave Your Mark</button>
@@ -995,22 +995,7 @@
         </form>
 
         <section class="amass-flow__step amass-flow__success" data-amass-step="8" hidden>
-          <div class="amass-flow__success-orb" id="amass-success-orb" aria-hidden="true">
-            <svg class="amass-flow__success-orb-art" viewBox="0 0 64 64">
-              <defs>
-                <linearGradient id="amass-success-orb-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop class="amass-flow__success-orb-stop-a" offset="0"/>
-                  <stop class="amass-flow__success-orb-stop-b" offset="1"/>
-                </linearGradient>
-                <filter id="amass-success-orb-blur" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
-                  <feGaussianBlur stdDeviation="6"/>
-                </filter>
-              </defs>
-              <circle class="amass-flow__success-orb-glow" cx="32" cy="32" r="24" filter="url(#amass-success-orb-blur)"/>
-              <circle cx="32" cy="32" r="24" fill="url(#amass-success-orb-grad)"/>
-            </svg>
-            <img class="amass-flow__success-icon" src="assets/images/icon-amass.svg" alt="" width="58" height="51">
-          </div>
+          <img class="amass-flow__success-icon" src="assets/images/icon-voices-heard.svg" alt="" width="150" height="98" aria-hidden="true">
           <p class="amass-flow__campaign-label amass-flow__success-status">Pending Approval</p>
           <p class="amass-flow__helper">Thank you for sharing your voice. If approved, it will appear on the Community Wall.</p>
           <p class="amass-flow__success-fine-print">Check out more ways to AMASS Comm(unity) from the Transmissions page.</p>
@@ -1023,6 +1008,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
-  <script src="js/main.js?v=27"></script>
+  <script src="js/main.js?v=28"></script>
 </body>
 </html>

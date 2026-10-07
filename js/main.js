@@ -319,7 +319,6 @@
     const writeDisclosure = document.getElementById('amass-write-disclosure');
     const recordWrap = document.getElementById('amass-record');
     const recordDisclaimer = document.getElementById('amass-record-disclaimer');
-    const successOrb = document.getElementById('amass-success-orb');
     const roleConfig = {
       create: {
         label: 'I CREATE',
@@ -696,7 +695,6 @@
         setOrbColor(recordButton);
       }
       if (step === 7) buildReview();
-      if (step === 8) setOrbColor(successOrb);
       setNextState();
     }
 

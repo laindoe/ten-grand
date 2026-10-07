@@ -4256,38 +4256,11 @@ select.amass-flow__field {
   text-align: center;
 }
 
-.amass-flow__success-orb {
-  position: relative;
-  width: 130px;
-  height: 130px;
-  margin: 8px auto 20px;
-}
-
-.amass-flow__success-orb-art {
-  width: 100%;
-  height: 100%;
-}
-
-.amass-flow__success-orb-stop-a {
-  stop-color: var(--role-accent, var(--color-accent));
-}
-
-.amass-flow__success-orb-stop-b {
-  stop-color: var(--role-accent-blend, var(--color-vandalism));
-}
-
-.amass-flow__success-orb-glow {
-  fill: var(--role-accent, var(--color-accent));
-  opacity: 0.55;
-}
-
 .amass-flow__success-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 46px;
+  display: block;
+  width: 150px;
   height: auto;
-  transform: translate(-50%, -50%);
+  margin: 8px auto 20px;
 }
 
 .amass-flow__success-status {
@@ -4882,7 +4855,7 @@ body.modal-open {
   display: block;
   flex-shrink: 0;
   width: 58px;
-  height: 51px;
+  height: auto;
   margin: 0 auto 18px;
 }
 @media (max-width: 480px) {
