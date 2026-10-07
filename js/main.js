@@ -561,7 +561,17 @@
     }
 
     async function startRecording() {
-      if (!micSupported || audioBlob) return;
+      // recordButton.disabled below closes the gap while the mic
+      // permission prompt is pending -- without it, a second tap during
+      // that wait (no visual feedback yet, since is-recording isn't
+      // set until the promise resolves) re-enters this function and
+      // starts a second concurrent MediaRecorder/stream that races the
+      // first one over the shared mediaRecorder/recordingTimer
+      // variables, leaving the record button unable to cleanly stop
+      // either one.
+      if (!micSupported || audioBlob || recordButton.disabled || recordButton.classList.contains('is-recording')) return;
+      recordButton.disabled = true;
+      recordLabel.textContent = 'Starting…';
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         audioChunks = [];
@@ -575,6 +585,7 @@
         });
         mediaRecorder.start();
         recordingStartedAt = Date.now();
+        recordButton.disabled = false;
         recordButton.classList.add('is-recording');
         setSvgHidden(recordMicIcon, true);
         setSvgHidden(recordStopIcon, false);
@@ -591,6 +602,8 @@
         tick();
       } catch (error) {
         console.error('Ten Grand voice recording failed to start', error);
+        recordButton.disabled = false;
+        recordLabel.textContent = 'Record Your Voice';
         recordHint.textContent = 'Microphone access was denied.';
       }
     }
