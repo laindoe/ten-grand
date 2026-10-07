@@ -3884,6 +3884,35 @@ select.amass-flow__field {
   color: var(--color-text);
 }
 
+/* White at rest (matches the review screen's play button); while
+   actually playing, cycles the same blue/green/yellow/orange/red/
+   pink/purple wave as the animated Voices Heard speaker icon --
+   color is animated directly (rather than a gradient fill) since the
+   icon and its label both derive from currentColor. */
+.amass-record__saved-btn--play {
+  color: var(--color-text);
+}
+
+.amass-record__saved-btn--play.is-playing {
+  color: var(--color-vandalism);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .amass-record__saved-btn--play.is-playing {
+    animation: amassPlayPulse 3s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes amassPlayPulse {
+  0% { color: #4eaddc; }
+  16.66% { color: #568538; }
+  33.33% { color: #e9d547; }
+  50% { color: #bc6a30; }
+  66.66% { color: #c03148; }
+  83.33% { color: #e0437e; }
+  100% { color: #a02e9e; }
+}
+
 .amass-record__saved-icon {
   width: 22px;
   height: 22px;
@@ -4288,6 +4317,18 @@ select.amass-flow__field {
 .amass-flow__review-play:hover,
 .amass-flow__review-play:focus-visible {
   color: var(--color-vandalism);
+}
+
+/* Same pulsing wave as the step 5 play button -- see
+   .amass-record__saved-btn--play.is-playing. */
+.amass-flow__review-play.is-playing {
+  color: var(--color-vandalism);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .amass-flow__review-play.is-playing {
+    animation: amassPlayPulse 3s ease-in-out infinite alternate;
+  }
 }
 
 .amass-flow__review-play-icon {

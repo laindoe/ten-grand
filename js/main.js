@@ -516,6 +516,7 @@
       setSvgHidden(recordPlayIcon, isPlaying);
       setSvgHidden(recordPauseIcon, !isPlaying);
       recordPlayLabel.textContent = isPlaying ? 'Pause' : 'Play';
+      recordPlayBtn.classList.toggle('is-playing', isPlaying);
     }
 
     function resetRecording() {
@@ -750,6 +751,7 @@
         setSvgHidden(playIcon, isPlaying);
         setSvgHidden(pauseIcon, !isPlaying);
         playLabel.textContent = isPlaying ? 'Pause' : 'Play';
+        playBtn.classList.toggle('is-playing', isPlaying);
       }
 
       const duration = document.createElement('span');
