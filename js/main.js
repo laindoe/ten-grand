@@ -341,7 +341,7 @@
         whyTitle: 'WHY DO YOU BUILD?',
         whyPlaceholder: 'Tell us why you build...',
         accent: '#be2026',
-        accentBlend: '#e85f1c',
+        accentBlend: '#e42320',
         focusOptions: ['Studios', 'Venues', 'Platforms', 'Technology', 'Agencies', 'Distribution', 'Manufacturing', 'Education', 'Communities', 'Creative Services', 'Other'],
       },
       fund: {
