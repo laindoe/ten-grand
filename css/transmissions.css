@@ -269,36 +269,26 @@ main {
   display: none;
 }
 
+/* Same red, pulsing, small-caps treatment as the AMASS modal's own
+   "Voices Heard" campaign label (.amass-flow__campaign-label in
+   style.css) -- reuses dilemma-cue-pulse by name, defined once there
+   and already loaded on this page via style.css. */
 .archive-community__cta {
   grid-area: cta;
   align-self: start;
   justify-self: end;
   font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.03em;
-  color: var(--color-text);
+  letter-spacing: 0.06em;
+  color: var(--color-vandalism);
   text-decoration: none;
   white-space: nowrap;
 }
 
-/* Cycles through the same four role colors used elsewhere on the site
-   (Create/Build/Fund/Support, the AMASS modal's own campaign label
-   before it switched to a plain pulse) -- a light glow only, not the
-   heavier double-layer blur that label used to have, so the color
-   change itself stays legible instead of getting lost in haze. */
 @media (prefers-reduced-motion: no-preference) {
   .archive-community__cta {
-    text-shadow: 0 0 2px currentColor;
-    animation: archiveCommunityCtaGlow 8s linear infinite;
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
   }
-}
-
-@keyframes archiveCommunityCtaGlow {
-  0% { color: #be2026; }
-  25% { color: #e5dc16; }
-  50% { color: #007938; }
-  75% { color: #00b0e0; }
-  100% { color: #be2026; }
 }
 
 /* ---------- Featured transmission ---------- */
@@ -619,6 +609,5 @@ main {
     align-self: center;
     justify-self: start;
     font-size: 0.8rem;
-    letter-spacing: 0.03em;
   }
 }
