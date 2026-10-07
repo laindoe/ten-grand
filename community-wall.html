@@ -13,7 +13,7 @@ permalink: /community-wall/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=24" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=25" />
 </head>
 <body>
 
@@ -30,9 +30,7 @@ permalink: /community-wall/
           <p class="section-eyebrow">LEAVE YOUR MARK</p>
           <h1 class="cw-hero__title">AMASS Comm(unity) Wall</h1>
         </div>
-        <div class="cw-hero__globe" aria-hidden="true">
-          {% include community-wall-globe.html %}
-        </div>
+        <img class="cw-hero__icon" src="{{ '/assets/images/icon-voices-heard.svg' | relative_url }}" alt="" width="150" height="98" aria-hidden="true">
         <p class="cw-hero__subtitle">A living record of the people building, creating, funding, and supporting the future of culture.</p>
       </div>
     </section>
@@ -396,22 +394,7 @@ permalink: /community-wall/
       <div class="cw-inner">
         <div class="cw-network__card">
           <div class="cw-network__visual" aria-hidden="true">
-            <span class="cw-network__lashes cw-network__lashes--top">
-              <span></span><span></span><span></span><span></span><span></span>
-            </span>
-            <svg class="cw-network__orb" viewBox="0 0 64 64">
-              <defs>
-                <filter id="cw-network-orb-glow" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
-                  <feGaussianBlur stdDeviation="6"/>
-                </filter>
-              </defs>
-              <circle class="cw-network__orb-glow" cx="32" cy="32" r="22" opacity="0.5" filter="url(#cw-network-orb-glow)"/>
-              <circle class="cw-network__orb-core" cx="32" cy="32" r="22"/>
-              <circle class="cw-network__orb-ring" cx="32" cy="32" r="22" fill="none" style="stroke:var(--color-card-border)" stroke-width="2"/>
-            </svg>
-            <span class="cw-network__lashes cw-network__lashes--bottom">
-              <span></span><span></span><span></span><span></span><span></span>
-            </span>
+            {% include community-wall-globe.html %}
           </div>
 
           <div class="cw-network__content">

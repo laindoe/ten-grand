@@ -109,17 +109,17 @@ main {
   padding-bottom: 48px;
 }
 
-/* Grid (not flex) so the three pieces -- heading, globe, subtitle --
+/* Grid (not flex) so the three pieces -- heading, icon, subtitle --
    can be reordered per breakpoint via grid-template-areas instead of
    DOM order: desktop keeps heading+subtitle stacked in a left column
-   beside the globe, mobile stacks all three in heading / globe /
+   beside the icon, mobile stacks all three in heading / icon /
    subtitle order (see the max-width:759px override below). */
 .cw-hero__inner {
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-areas:
-    "heading globe"
-    "subtitle globe";
+    "heading icon"
+    "subtitle icon";
   align-items: center;
   column-gap: 24px;
   row-gap: 0;
@@ -155,11 +155,12 @@ main {
   }
 }
 
-.cw-hero__globe {
-  grid-area: globe;
+.cw-hero__icon {
+  grid-area: icon;
   flex-shrink: 0;
-  width: clamp(120px, 22vw, 260px);
-  opacity: 0.85;
+  display: block;
+  width: 150px;
+  height: auto;
 }
 
 .cw-globe {
@@ -955,64 +956,9 @@ main {
   gap: 18px;
 }
 
-/* Narrower than the reference's icon column on purpose -- leaves the
-   heading/subtitle more width to breathe. */
 .cw-network__visual {
   flex-shrink: 0;
-  width: 72px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-/* A plain grid of short bars standing in for the reference image's
-   eyelid/lash segments -- a structural placeholder, not a literal eye
-   outline. Tapered lengths (shorter at the outer edges) echo the
-   curved lash line without drawing one. */
-.cw-network__lashes {
-  display: grid;
-  grid-auto-flow: column;
-  gap: 4px;
-  width: 100%;
-}
-
-.cw-network__lashes span {
-  height: 7px;
-  border: 1px solid var(--color-card-border);
-}
-
-.cw-network__lashes span:nth-child(1),
-.cw-network__lashes span:nth-child(5) { height: 3px; align-self: center; }
-.cw-network__lashes span:nth-child(2),
-.cw-network__lashes span:nth-child(4) { height: 5px; align-self: center; }
-
-.cw-network__orb {
-  width: 44px;
-  height: 44px;
-}
-
-.cw-network__orb-core,
-.cw-network__orb-glow {
-  fill: currentColor;
-}
-
-.cw-network__orb {
-  color: var(--cw-color-create);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .cw-network__orb {
-    animation: cwNetworkOrbCycle 8s linear infinite;
-  }
-}
-
-@keyframes cwNetworkOrbCycle {
-  0% { color: var(--cw-color-build); }
-  25% { color: var(--cw-color-create); }
-  50% { color: var(--cw-color-fund); }
-  75% { color: var(--cw-color-support); }
-  100% { color: var(--cw-color-build); }
+  width: 140px;
 }
 
 .cw-network__content {
@@ -1153,7 +1099,7 @@ main {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  /* Four even columns: the orb takes one, the heading/subtitle take
+  /* Four even columns: the globe takes one, the heading/subtitle take
      two, and the actions (button + login link) take the last one,
      flush against the card's right edge -- same "push it to the far
      right" language as the AMASS promo bar's CTA on the Transmissions
@@ -1168,11 +1114,7 @@ main {
 
   .cw-network__visual {
     width: 100%;
-  }
-
-  .cw-network__orb {
-    width: 72px;
-    height: 72px;
+    max-width: 180px;
   }
 
   .cw-network__actions {
@@ -1182,12 +1124,12 @@ main {
 }
 
 @media (max-width: 759px) {
-  /* Single centered column: globe on top, then the eyebrow+title
+  /* Single centered column: icon on top, then the eyebrow+title
      heading, then the subtitle. */
   .cw-hero__inner {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "globe"
+      "icon"
       "heading"
       "subtitle";
     row-gap: 16px;
@@ -1231,10 +1173,7 @@ main {
     margin: 0 auto;
   }
 
-  .cw-hero__globe {
+  .cw-hero__icon {
     justify-self: center;
-    width: 50%;
-    max-width: 220px;
-    opacity: 0.85;
   }
 }
