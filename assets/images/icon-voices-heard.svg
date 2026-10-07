@@ -9,205 +9,205 @@
        Rest look = yellow (inner) -> green -> blue (outer), straight from the orb reference. */
     @keyframes wave {
       0% { fill: #4eaddc; }
-      0.5% { fill: #4cadda; }
-      1% { fill: #49aed8; }
-      1.5% { fill: #45aed3; }
-      2% { fill: #40adce; }
-      2.5% { fill: #3aacc7; }
-      3% { fill: #33aac0; }
-      3.5% { fill: #2ca7b6; }
-      4% { fill: #23a3ac; }
-      4.5% { fill: #1a9ea1; }
-      5% { fill: #119995; }
-      5.5% { fill: #099489; }
-      6% { fill: #058e7c; }
-      6.5% { fill: #088870; }
-      7% { fill: #108363; }
-      7.5% { fill: #197e58; }
-      8% { fill: #227a4e; }
-      8.5% { fill: #2c7845; }
-      9% { fill: #36783f; }
-      9.5% { fill: #407b3a; }
-      10% { fill: #4c8038; }
-      10.5% { fill: #598738; }
-      11% { fill: #689039; }
-      11.5% { fill: #779b3b; }
-      12% { fill: #88a63e; }
-      12.5% { fill: #98b242; }
-      13% { fill: #a9bd46; }
-      13.5% { fill: #b9c749; }
-      14% { fill: #c9cf4b; }
-      14.5% { fill: #d6d54c; }
-      15% { fill: #e1d74a; }
-      15.5% { fill: #e8d548; }
-      16% { fill: #ecd145; }
-      16.5% { fill: #eeca42; }
-      17% { fill: #edc240; }
-      17.5% { fill: #eab93e; }
-      18% { fill: #e5ae3d; }
-      18.5% { fill: #dfa43b; }
-      19% { fill: #d89a3a; }
-      19.5% { fill: #d19039; }
-      20% { fill: #cb8737; }
-      20.5% { fill: #c67f36; }
-      21% { fill: #c27835; }
-      21.5% { fill: #bf7233; }
-      22% { fill: #bc6b30; }
-      22.5% { fill: #ba642d; }
-      23% { fill: #b75d2b; }
-      23.5% { fill: #b55628; }
-      24% { fill: #b34f26; }
-      24.5% { fill: #b14925; }
-      25% { fill: #b04325; }
-      25.5% { fill: #af3d26; }
-      26% { fill: #ae3828; }
-      26.5% { fill: #ae342b; }
-      27% { fill: #af312f; }
-      27.5% { fill: #b12f33; }
-      28% { fill: #b42e38; }
-      28.5% { fill: #b82f3d; }
-      29% { fill: #bc3043; }
-      29.5% { fill: #c1324a; }
-      30% { fill: #c63450; }
-      30.5% { fill: #cb3756; }
-      31% { fill: #d03a5d; }
-      31.5% { fill: #d53c63; }
-      32% { fill: #d93e69; }
-      32.5% { fill: #dc406f; }
-      33% { fill: #de4274; }
-      33.5% { fill: #e04379; }
-      34% { fill: #e0437d; }
-      34.5% { fill: #df4381; }
-      35% { fill: #de4183; }
-      35.5% { fill: #dc4085; }
-      36% { fill: #d93d86; }
-      36.5% { fill: #d63b87; }
-      37% { fill: #d33887; }
-      37.5% { fill: #d03587; }
-      38% { fill: #cc3287; }
-      38.5% { fill: #c92f87; }
-      39% { fill: #c52d87; }
-      39.5% { fill: #c22b87; }
-      40% { fill: #be2988; }
-      40.5% { fill: #bb2788; }
-      41% { fill: #b82689; }
-      41.5% { fill: #b5258a; }
-      42% { fill: #b3248b; }
-      42.5% { fill: #b0248d; }
-      43% { fill: #ae248e; }
-      43.5% { fill: #ac2590; }
-      44% { fill: #aa2591; }
-      44.5% { fill: #a82693; }
-      45% { fill: #a72794; }
-      45.5% { fill: #a52896; }
-      46% { fill: #a42997; }
-      46.5% { fill: #a32a99; }
-      47% { fill: #a22b9a; }
-      47.5% { fill: #a22c9b; }
-      48% { fill: #a12d9c; }
-      48.5% { fill: #a12d9d; }
-      49% { fill: #a02e9e; }
-      49.5% { fill: #a02e9e; }
+      0.5% { fill: #4daddb; }
+      1% { fill: #4baeda; }
+      1.5% { fill: #49aed7; }
+      2% { fill: #46aed5; }
+      2.5% { fill: #43aed1; }
+      3% { fill: #40adce; }
+      3.5% { fill: #3cacc9; }
+      4% { fill: #37abc4; }
+      4.5% { fill: #32aabe; }
+      5% { fill: #2da7b8; }
+      5.5% { fill: #27a5b1; }
+      6% { fill: #21a2aa; }
+      6.5% { fill: #1b9fa2; }
+      7% { fill: #159c9a; }
+      7.5% { fill: #0f9892; }
+      8% { fill: #099489; }
+      8.5% { fill: #069081; }
+      9% { fill: #068c78; }
+      9.5% { fill: #09886f; }
+      10% { fill: #0e8467; }
+      10.5% { fill: #14805f; }
+      11% { fill: #1a7d57; }
+      11.5% { fill: #217b50; }
+      12% { fill: #277949; }
+      12.5% { fill: #2e7844; }
+      13% { fill: #35783f; }
+      13.5% { fill: #3c793c; }
+      14% { fill: #447c39; }
+      14.5% { fill: #4d8038; }
+      15% { fill: #568538; }
+      15.5% { fill: #608b38; }
+      16% { fill: #6b9239; }
+      16.5% { fill: #769a3b; }
+      17% { fill: #82a23d; }
+      17.5% { fill: #8eab40; }
+      18% { fill: #9bb343; }
+      18.5% { fill: #a7bc45; }
+      19% { fill: #b3c348; }
+      19.5% { fill: #bfca4a; }
+      20% { fill: #cad04b; }
+      20.5% { fill: #d4d44c; }
+      21% { fill: #ddd74b; }
+      21.5% { fill: #e4d749; }
+      22% { fill: #e9d547; }
+      22.5% { fill: #ecd245; }
+      23% { fill: #eecd43; }
+      23.5% { fill: #eec741; }
+      24% { fill: #ecc040; }
+      24.5% { fill: #e9b83e; }
+      25% { fill: #e6b03d; }
+      25.5% { fill: #e1a83c; }
+      26% { fill: #dc9f3b; }
+      26.5% { fill: #d6973a; }
+      27% { fill: #d08f39; }
+      27.5% { fill: #cb8837; }
+      28% { fill: #c78136; }
+      28.5% { fill: #c37b35; }
+      29% { fill: #c17534; }
+      29.5% { fill: #be7032; }
+      30% { fill: #bc6a30; }
+      30.5% { fill: #b9642d; }
+      31% { fill: #b75d2b; }
+      31.5% { fill: #b55729; }
+      32% { fill: #b35127; }
+      32.5% { fill: #b24b26; }
+      33% { fill: #b04525; }
+      33.5% { fill: #af3f26; }
+      34% { fill: #af3a27; }
+      34.5% { fill: #ae3629; }
+      35% { fill: #af322d; }
+      35.5% { fill: #b03031; }
+      36% { fill: #b22e35; }
+      36.5% { fill: #b62e3b; }
+      37% { fill: #ba2f41; }
+      37.5% { fill: #c03148; }
+      38% { fill: #c5344e; }
+      38.5% { fill: #cb3756; }
+      39% { fill: #d13a5d; }
+      39.5% { fill: #d63d64; }
+      40% { fill: #da3f6b; }
+      40.5% { fill: #de4172; }
+      41% { fill: #e04378; }
+      41.5% { fill: #e0437e; }
+      42% { fill: #df4282; }
+      42.5% { fill: #dc4085; }
+      43% { fill: #d83c86; }
+      43.5% { fill: #d43887; }
+      44% { fill: #ce3487; }
+      44.5% { fill: #c93087; }
+      45% { fill: #c32b87; }
+      45.5% { fill: #bd2888; }
+      46% { fill: #b82689; }
+      46.5% { fill: #b2248b; }
+      47% { fill: #ae248e; }
+      47.5% { fill: #aa2691; }
+      48% { fill: #a62895; }
+      48.5% { fill: #a42a98; }
+      49% { fill: #a22c9b; }
+      49.5% { fill: #a02d9d; }
       50% { fill: #a02e9e; }
-      50.5% { fill: #a02e9e; }
-      51% { fill: #a02e9e; }
-      51.5% { fill: #a12d9d; }
-      52% { fill: #a12d9c; }
-      52.5% { fill: #a22c9b; }
-      53% { fill: #a22b9a; }
-      53.5% { fill: #a32a99; }
-      54% { fill: #a42997; }
-      54.5% { fill: #a52896; }
-      55% { fill: #a72794; }
-      55.5% { fill: #a82693; }
-      56% { fill: #aa2591; }
-      56.5% { fill: #ac2590; }
-      57% { fill: #ae248e; }
-      57.5% { fill: #b0248d; }
-      58% { fill: #b3248b; }
-      58.5% { fill: #b5258a; }
-      59% { fill: #b82689; }
-      59.5% { fill: #bb2788; }
-      60% { fill: #be2988; }
-      60.5% { fill: #c22b87; }
-      61% { fill: #c52d87; }
-      61.5% { fill: #c92f87; }
-      62% { fill: #cc3287; }
-      62.5% { fill: #d03587; }
-      63% { fill: #d33887; }
-      63.5% { fill: #d63b87; }
-      64% { fill: #d93d86; }
-      64.5% { fill: #dc4085; }
-      65% { fill: #de4183; }
-      65.5% { fill: #df4381; }
-      66% { fill: #e0437d; }
-      66.5% { fill: #e04379; }
-      67% { fill: #de4274; }
-      67.5% { fill: #dc406f; }
-      68% { fill: #d93e69; }
-      68.5% { fill: #d53c63; }
-      69% { fill: #d03a5d; }
-      69.5% { fill: #cb3756; }
-      70% { fill: #c63450; }
-      70.5% { fill: #c1324a; }
-      71% { fill: #bc3043; }
-      71.5% { fill: #b82f3d; }
-      72% { fill: #b42e38; }
-      72.5% { fill: #b12f33; }
-      73% { fill: #af312f; }
-      73.5% { fill: #ae342b; }
-      74% { fill: #ae3828; }
-      74.5% { fill: #af3d26; }
-      75% { fill: #b04325; }
-      75.5% { fill: #b14925; }
-      76% { fill: #b34f26; }
-      76.5% { fill: #b55628; }
-      77% { fill: #b75d2b; }
-      77.5% { fill: #ba642d; }
-      78% { fill: #bc6b30; }
-      78.5% { fill: #bf7233; }
-      79% { fill: #c27835; }
-      79.5% { fill: #c67f36; }
-      80% { fill: #cb8737; }
-      80.5% { fill: #d19039; }
-      81% { fill: #d89a3a; }
-      81.5% { fill: #dfa43b; }
-      82% { fill: #e5ae3d; }
-      82.5% { fill: #eab93e; }
-      83% { fill: #edc240; }
-      83.5% { fill: #eeca42; }
-      84% { fill: #ecd145; }
-      84.5% { fill: #e8d548; }
-      85% { fill: #e1d74a; }
-      85.5% { fill: #d6d54c; }
-      86% { fill: #c9cf4b; }
-      86.5% { fill: #b9c749; }
-      87% { fill: #a9bd46; }
-      87.5% { fill: #98b242; }
-      88% { fill: #88a63e; }
-      88.5% { fill: #779b3b; }
-      89% { fill: #689039; }
-      89.5% { fill: #598738; }
-      90% { fill: #4c8038; }
-      90.5% { fill: #407b3a; }
-      91% { fill: #36783f; }
-      91.5% { fill: #2c7845; }
-      92% { fill: #227a4e; }
-      92.5% { fill: #197e58; }
-      93% { fill: #108363; }
-      93.5% { fill: #088870; }
-      94% { fill: #058e7c; }
-      94.5% { fill: #099489; }
-      95% { fill: #119995; }
-      95.5% { fill: #1a9ea1; }
-      96% { fill: #23a3ac; }
-      96.5% { fill: #2ca7b6; }
-      97% { fill: #33aac0; }
-      97.5% { fill: #3aacc7; }
-      98% { fill: #40adce; }
-      98.5% { fill: #45aed3; }
-      99% { fill: #49aed8; }
-      99.5% { fill: #4cadda; }
+      50.5% { fill: #a02d9d; }
+      51% { fill: #a22c9b; }
+      51.5% { fill: #a42a98; }
+      52% { fill: #a62895; }
+      52.5% { fill: #aa2691; }
+      53% { fill: #ae248e; }
+      53.5% { fill: #b2248b; }
+      54% { fill: #b82689; }
+      54.5% { fill: #bd2888; }
+      55% { fill: #c32b87; }
+      55.5% { fill: #c93087; }
+      56% { fill: #ce3487; }
+      56.5% { fill: #d43887; }
+      57% { fill: #d83c86; }
+      57.5% { fill: #dc4085; }
+      58% { fill: #df4282; }
+      58.5% { fill: #e0437e; }
+      59% { fill: #e04378; }
+      59.5% { fill: #de4172; }
+      60% { fill: #da3f6b; }
+      60.5% { fill: #d63d64; }
+      61% { fill: #d13a5d; }
+      61.5% { fill: #cb3756; }
+      62% { fill: #c5344e; }
+      62.5% { fill: #c03148; }
+      63% { fill: #ba2f41; }
+      63.5% { fill: #b62e3b; }
+      64% { fill: #b22e35; }
+      64.5% { fill: #b03031; }
+      65% { fill: #af322d; }
+      65.5% { fill: #ae3629; }
+      66% { fill: #af3a27; }
+      66.5% { fill: #af3f26; }
+      67% { fill: #b04525; }
+      67.5% { fill: #b24b26; }
+      68% { fill: #b35127; }
+      68.5% { fill: #b55729; }
+      69% { fill: #b75d2b; }
+      69.5% { fill: #b9642d; }
+      70% { fill: #bc6a30; }
+      70.5% { fill: #be7032; }
+      71% { fill: #c17534; }
+      71.5% { fill: #c37b35; }
+      72% { fill: #c78136; }
+      72.5% { fill: #cb8837; }
+      73% { fill: #d08f39; }
+      73.5% { fill: #d6973a; }
+      74% { fill: #dc9f3b; }
+      74.5% { fill: #e1a83c; }
+      75% { fill: #e6b03d; }
+      75.5% { fill: #e9b83e; }
+      76% { fill: #ecc040; }
+      76.5% { fill: #eec741; }
+      77% { fill: #eecd43; }
+      77.5% { fill: #ecd245; }
+      78% { fill: #e9d547; }
+      78.5% { fill: #e4d749; }
+      79% { fill: #ddd74b; }
+      79.5% { fill: #d4d44c; }
+      80% { fill: #cad04b; }
+      80.5% { fill: #bfca4a; }
+      81% { fill: #b3c348; }
+      81.5% { fill: #a7bc45; }
+      82% { fill: #9bb343; }
+      82.5% { fill: #8eab40; }
+      83% { fill: #82a23d; }
+      83.5% { fill: #769a3b; }
+      84% { fill: #6b9239; }
+      84.5% { fill: #608b38; }
+      85% { fill: #568538; }
+      85.5% { fill: #4d8038; }
+      86% { fill: #447c39; }
+      86.5% { fill: #3c793c; }
+      87% { fill: #35783f; }
+      87.5% { fill: #2e7844; }
+      88% { fill: #277949; }
+      88.5% { fill: #217b50; }
+      89% { fill: #1a7d57; }
+      89.5% { fill: #14805f; }
+      90% { fill: #0e8467; }
+      90.5% { fill: #09886f; }
+      91% { fill: #068c78; }
+      91.5% { fill: #069081; }
+      92% { fill: #099489; }
+      92.5% { fill: #0f9892; }
+      93% { fill: #159c9a; }
+      93.5% { fill: #1b9fa2; }
+      94% { fill: #21a2aa; }
+      94.5% { fill: #27a5b1; }
+      95% { fill: #2da7b8; }
+      95.5% { fill: #32aabe; }
+      96% { fill: #37abc4; }
+      96.5% { fill: #3cacc9; }
+      97% { fill: #40adce; }
+      97.5% { fill: #43aed1; }
+      98% { fill: #46aed5; }
+      98.5% { fill: #49aed7; }
+      99% { fill: #4baeda; }
+      99.5% { fill: #4daddb; }
       100% { fill: #4eaddc; }
     }
 
@@ -242,77 +242,77 @@
   <path class="w" fill="#4eaddc" style="animation-delay:calc(var(--cycle)*-0.0000)" d="M650 326.00 A111.00 111.00 0 0 1 650 548.00 Z"/>
   <path class="w" fill="#4eaddc" style="animation-delay:calc(var(--cycle)*-0.0000)" d="M650 327.50 A109.50 109.50 0 0 1 650 546.50 Z"/>
   <path class="w" fill="#4eaddc" style="animation-delay:calc(var(--cycle)*-0.0000)" d="M650 329.00 A108.00 108.00 0 0 1 650 545.00 Z"/>
-  <path class="w" fill="#4eaddc" style="animation-delay:calc(var(--cycle)*-0.0004)" d="M650 330.50 A106.50 106.50 0 0 1 650 543.50 Z"/>
-  <path class="w" fill="#4caeda" style="animation-delay:calc(var(--cycle)*-0.0063)" d="M650 332.00 A105.00 105.00 0 0 1 650 542.00 Z"/>
-  <path class="w" fill="#46aed4" style="animation-delay:calc(var(--cycle)*-0.0144)" d="M650 333.50 A103.50 103.50 0 0 1 650 540.50 Z"/>
-  <path class="w" fill="#3cadca" style="animation-delay:calc(var(--cycle)*-0.0233)" d="M650 335.00 A102.00 102.00 0 0 1 650 539.00 Z"/>
-  <path class="w" fill="#30a9bc" style="animation-delay:calc(var(--cycle)*-0.0322)" d="M650 336.50 A100.50 100.50 0 0 1 650 537.50 Z"/>
-  <path class="w" fill="#22a2ab" style="animation-delay:calc(var(--cycle)*-0.0406)" d="M650 338.00 A99.00 99.00 0 0 1 650 536.00 Z"/>
-  <path class="w" fill="#159b9a" style="animation-delay:calc(var(--cycle)*-0.0481)" d="M650 339.50 A97.50 97.50 0 0 1 650 534.50 Z"/>
-  <path class="w" fill="#0a958b" style="animation-delay:calc(var(--cycle)*-0.0541)" d="M650 341.00 A96.00 96.00 0 0 1 650 533.00 Z"/>
-  <path class="w" fill="#069080" style="animation-delay:calc(var(--cycle)*-0.0583)" d="M650 342.50 A94.50 94.50 0 0 1 650 531.50 Z"/>
-  <path class="w" fill="#058e7c" style="animation-delay:calc(var(--cycle)*-0.0601)" d="M650 344.00 A93.00 93.00 0 0 1 650 530.00 Z"/>
-  <path class="w" fill="#068b77" style="animation-delay:calc(var(--cycle)*-0.0622)" d="M650 345.50 A91.50 91.50 0 0 1 650 528.50 Z"/>
-  <path class="w" fill="#088971" style="animation-delay:calc(var(--cycle)*-0.0645)" d="M650 347.00 A90.00 90.00 0 0 1 650 527.00 Z"/>
-  <path class="w" fill="#0b866b" style="animation-delay:calc(var(--cycle)*-0.0669)" d="M650 348.50 A88.50 88.50 0 0 1 650 525.50 Z"/>
-  <path class="w" fill="#0f8365" style="animation-delay:calc(var(--cycle)*-0.0692)" d="M650 350.00 A87.00 87.00 0 0 1 650 524.00 Z"/>
-  <path class="w" fill="#138160" style="animation-delay:calc(var(--cycle)*-0.0715)" d="M650 351.50 A85.50 85.50 0 0 1 650 522.50 Z"/>
-  <path class="w" fill="#177f5b" style="animation-delay:calc(var(--cycle)*-0.0737)" d="M650 353.00 A84.00 84.00 0 0 1 650 521.00 Z"/>
-  <path class="w" fill="#1b7d56" style="animation-delay:calc(var(--cycle)*-0.0760)" d="M650 354.50 A82.50 82.50 0 0 1 650 519.50 Z"/>
-  <path class="w" fill="#1f7b52" style="animation-delay:calc(var(--cycle)*-0.0782)" d="M650 356.00 A81.00 81.00 0 0 1 650 518.00 Z"/>
-  <path class="w" fill="#237a4d" style="animation-delay:calc(var(--cycle)*-0.0804)" d="M650 357.50 A79.50 79.50 0 0 1 650 516.50 Z"/>
-  <path class="w" fill="#277949" style="animation-delay:calc(var(--cycle)*-0.0826)" d="M650 359.00 A78.00 78.00 0 0 1 650 515.00 Z"/>
-  <path class="w" fill="#2b7846" style="animation-delay:calc(var(--cycle)*-0.0847)" d="M650 360.50 A76.50 76.50 0 0 1 650 513.50 Z"/>
-  <path class="w" fill="#2f7843" style="animation-delay:calc(var(--cycle)*-0.0869)" d="M650 362.00 A75.00 75.00 0 0 1 650 512.00 Z"/>
-  <path class="w" fill="#347840" style="animation-delay:calc(var(--cycle)*-0.0890)" d="M650 363.50 A73.50 73.50 0 0 1 650 510.50 Z"/>
-  <path class="w" fill="#38783e" style="animation-delay:calc(var(--cycle)*-0.0911)" d="M650 365.00 A72.00 72.00 0 0 1 650 509.00 Z"/>
-  <path class="w" fill="#3c793c" style="animation-delay:calc(var(--cycle)*-0.0932)" d="M650 366.50 A70.50 70.50 0 0 1 650 507.50 Z"/>
-  <path class="w" fill="#417b3a" style="animation-delay:calc(var(--cycle)*-0.0953)" d="M650 368.00 A69.00 69.00 0 0 1 650 506.00 Z"/>
-  <path class="w" fill="#467d39" style="animation-delay:calc(var(--cycle)*-0.0973)" d="M650 369.50 A67.50 67.50 0 0 1 650 504.50 Z"/>
-  <path class="w" fill="#4b7f38" style="animation-delay:calc(var(--cycle)*-0.0994)" d="M650 371.00 A66.00 66.00 0 0 1 650 503.00 Z"/>
-  <path class="w" fill="#508238" style="animation-delay:calc(var(--cycle)*-0.1014)" d="M650 372.50 A64.50 64.50 0 0 1 650 501.50 Z"/>
-  <path class="w" fill="#558438" style="animation-delay:calc(var(--cycle)*-0.1035)" d="M650 374.00 A63.00 63.00 0 0 1 650 500.00 Z"/>
-  <path class="w" fill="#5b8838" style="animation-delay:calc(var(--cycle)*-0.1055)" d="M650 375.50 A61.50 61.50 0 0 1 650 498.50 Z"/>
-  <path class="w" fill="#608b38" style="animation-delay:calc(var(--cycle)*-0.1075)" d="M650 377.00 A60.00 60.00 0 0 1 650 497.00 Z"/>
-  <path class="w" fill="#668f39" style="animation-delay:calc(var(--cycle)*-0.1095)" d="M650 378.50 A58.50 58.50 0 0 1 650 495.50 Z"/>
-  <path class="w" fill="#6c9339" style="animation-delay:calc(var(--cycle)*-0.1115)" d="M650 380.00 A57.00 57.00 0 0 1 650 494.00 Z"/>
-  <path class="w" fill="#72973a" style="animation-delay:calc(var(--cycle)*-0.1135)" d="M650 381.50 A55.50 55.50 0 0 1 650 492.50 Z"/>
-  <path class="w" fill="#799c3b" style="animation-delay:calc(var(--cycle)*-0.1154)" d="M650 383.00 A54.00 54.00 0 0 1 650 491.00 Z"/>
-  <path class="w" fill="#7fa03d" style="animation-delay:calc(var(--cycle)*-0.1174)" d="M650 384.50 A52.50 52.50 0 0 1 650 489.50 Z"/>
-  <path class="w" fill="#85a53e" style="animation-delay:calc(var(--cycle)*-0.1194)" d="M650 386.00 A51.00 51.00 0 0 1 650 488.00 Z"/>
-  <path class="w" fill="#8ca93f" style="animation-delay:calc(var(--cycle)*-0.1213)" d="M650 387.50 A49.50 49.50 0 0 1 650 486.50 Z"/>
-  <path class="w" fill="#92ae41" style="animation-delay:calc(var(--cycle)*-0.1233)" d="M650 389.00 A48.00 48.00 0 0 1 650 485.00 Z"/>
-  <path class="w" fill="#99b242" style="animation-delay:calc(var(--cycle)*-0.1252)" d="M650 390.50 A46.50 46.50 0 0 1 650 483.50 Z"/>
-  <path class="w" fill="#9fb744" style="animation-delay:calc(var(--cycle)*-0.1271)" d="M650 392.00 A45.00 45.00 0 0 1 650 482.00 Z"/>
-  <path class="w" fill="#a6bb45" style="animation-delay:calc(var(--cycle)*-0.1290)" d="M650 393.50 A43.50 43.50 0 0 1 650 480.50 Z"/>
-  <path class="w" fill="#acbf46" style="animation-delay:calc(var(--cycle)*-0.1310)" d="M650 395.00 A42.00 42.00 0 0 1 650 479.00 Z"/>
-  <path class="w" fill="#b3c348" style="animation-delay:calc(var(--cycle)*-0.1329)" d="M650 396.50 A40.50 40.50 0 0 1 650 477.50 Z"/>
-  <path class="w" fill="#b9c749" style="animation-delay:calc(var(--cycle)*-0.1348)" d="M650 398.00 A39.00 39.00 0 0 1 650 476.00 Z"/>
-  <path class="w" fill="#bfca4a" style="animation-delay:calc(var(--cycle)*-0.1367)" d="M650 399.50 A37.50 37.50 0 0 1 650 474.50 Z"/>
-  <path class="w" fill="#c5cd4b" style="animation-delay:calc(var(--cycle)*-0.1386)" d="M650 401.00 A36.00 36.00 0 0 1 650 473.00 Z"/>
-  <path class="w" fill="#cad04b" style="animation-delay:calc(var(--cycle)*-0.1405)" d="M650 402.50 A34.50 34.50 0 0 1 650 471.50 Z"/>
-  <path class="w" fill="#cfd24c" style="animation-delay:calc(var(--cycle)*-0.1424)" d="M650 404.00 A33.00 33.00 0 0 1 650 470.00 Z"/>
-  <path class="w" fill="#d4d44c" style="animation-delay:calc(var(--cycle)*-0.1442)" d="M650 405.50 A31.50 31.50 0 0 1 650 468.50 Z"/>
-  <path class="w" fill="#d9d64c" style="animation-delay:calc(var(--cycle)*-0.1461)" d="M650 407.00 A30.00 30.00 0 0 1 650 467.00 Z"/>
-  <path class="w" fill="#ddd74b" style="animation-delay:calc(var(--cycle)*-0.1480)" d="M650 408.50 A28.50 28.50 0 0 1 650 465.50 Z"/>
-  <path class="w" fill="#e0d74a" style="animation-delay:calc(var(--cycle)*-0.1499)" d="M650 410.00 A27.00 27.00 0 0 1 650 464.00 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 411.50 A25.50 25.50 0 0 1 650 462.50 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 413.00 A24.00 24.00 0 0 1 650 461.00 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 414.50 A22.50 22.50 0 0 1 650 459.50 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 416.00 A21.00 21.00 0 0 1 650 458.00 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 417.50 A19.50 19.50 0 0 1 650 456.50 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 419.00 A18.00 18.00 0 0 1 650 455.00 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 420.50 A16.50 16.50 0 0 1 650 453.50 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 422.00 A15.00 15.00 0 0 1 650 452.00 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 423.50 A13.50 13.50 0 0 1 650 450.50 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 425.00 A12.00 12.00 0 0 1 650 449.00 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 426.50 A10.50 10.50 0 0 1 650 447.50 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 428.00 A9.00 9.00 0 0 1 650 446.00 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 429.50 A7.50 7.50 0 0 1 650 444.50 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 431.00 A6.00 6.00 0 0 1 650 443.00 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 432.50 A4.50 4.50 0 0 1 650 441.50 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 434.00 A3.00 3.00 0 0 1 650 440.00 Z"/>
-  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.1508)" d="M650 435.50 A1.50 1.50 0 0 1 650 438.50 Z"/>
+  <path class="w" fill="#4eaddc" style="animation-delay:calc(var(--cycle)*-0.0006)" d="M650 330.50 A106.50 106.50 0 0 1 650 543.50 Z"/>
+  <path class="w" fill="#4caeda" style="animation-delay:calc(var(--cycle)*-0.0093)" d="M650 332.00 A105.00 105.00 0 0 1 650 542.00 Z"/>
+  <path class="w" fill="#46aed4" style="animation-delay:calc(var(--cycle)*-0.0212)" d="M650 333.50 A103.50 103.50 0 0 1 650 540.50 Z"/>
+  <path class="w" fill="#3cadca" style="animation-delay:calc(var(--cycle)*-0.0342)" d="M650 335.00 A102.00 102.00 0 0 1 650 539.00 Z"/>
+  <path class="w" fill="#30a9bc" style="animation-delay:calc(var(--cycle)*-0.0473)" d="M650 336.50 A100.50 100.50 0 0 1 650 537.50 Z"/>
+  <path class="w" fill="#22a2ab" style="animation-delay:calc(var(--cycle)*-0.0595)" d="M650 338.00 A99.00 99.00 0 0 1 650 536.00 Z"/>
+  <path class="w" fill="#159b9a" style="animation-delay:calc(var(--cycle)*-0.0703)" d="M650 339.50 A97.50 97.50 0 0 1 650 534.50 Z"/>
+  <path class="w" fill="#0a958b" style="animation-delay:calc(var(--cycle)*-0.0791)" d="M650 341.00 A96.00 96.00 0 0 1 650 533.00 Z"/>
+  <path class="w" fill="#069080" style="animation-delay:calc(var(--cycle)*-0.0851)" d="M650 342.50 A94.50 94.50 0 0 1 650 531.50 Z"/>
+  <path class="w" fill="#058e7c" style="animation-delay:calc(var(--cycle)*-0.0878)" d="M650 344.00 A93.00 93.00 0 0 1 650 530.00 Z"/>
+  <path class="w" fill="#068b77" style="animation-delay:calc(var(--cycle)*-0.0907)" d="M650 345.50 A91.50 91.50 0 0 1 650 528.50 Z"/>
+  <path class="w" fill="#088971" style="animation-delay:calc(var(--cycle)*-0.0942)" d="M650 347.00 A90.00 90.00 0 0 1 650 527.00 Z"/>
+  <path class="w" fill="#0b866b" style="animation-delay:calc(var(--cycle)*-0.0975)" d="M650 348.50 A88.50 88.50 0 0 1 650 525.50 Z"/>
+  <path class="w" fill="#0f8365" style="animation-delay:calc(var(--cycle)*-0.1009)" d="M650 350.00 A87.00 87.00 0 0 1 650 524.00 Z"/>
+  <path class="w" fill="#138160" style="animation-delay:calc(var(--cycle)*-0.1041)" d="M650 351.50 A85.50 85.50 0 0 1 650 522.50 Z"/>
+  <path class="w" fill="#177f5b" style="animation-delay:calc(var(--cycle)*-0.1074)" d="M650 353.00 A84.00 84.00 0 0 1 650 521.00 Z"/>
+  <path class="w" fill="#1b7d56" style="animation-delay:calc(var(--cycle)*-0.1106)" d="M650 354.50 A82.50 82.50 0 0 1 650 519.50 Z"/>
+  <path class="w" fill="#1f7b52" style="animation-delay:calc(var(--cycle)*-0.1137)" d="M650 356.00 A81.00 81.00 0 0 1 650 518.00 Z"/>
+  <path class="w" fill="#237a4d" style="animation-delay:calc(var(--cycle)*-0.1169)" d="M650 357.50 A79.50 79.50 0 0 1 650 516.50 Z"/>
+  <path class="w" fill="#277949" style="animation-delay:calc(var(--cycle)*-0.1200)" d="M650 359.00 A78.00 78.00 0 0 1 650 515.00 Z"/>
+  <path class="w" fill="#2b7846" style="animation-delay:calc(var(--cycle)*-0.1230)" d="M650 360.50 A76.50 76.50 0 0 1 650 513.50 Z"/>
+  <path class="w" fill="#2f7843" style="animation-delay:calc(var(--cycle)*-0.1261)" d="M650 362.00 A75.00 75.00 0 0 1 650 512.00 Z"/>
+  <path class="w" fill="#347840" style="animation-delay:calc(var(--cycle)*-0.1291)" d="M650 363.50 A73.50 73.50 0 0 1 650 510.50 Z"/>
+  <path class="w" fill="#38783e" style="animation-delay:calc(var(--cycle)*-0.1321)" d="M650 365.00 A72.00 72.00 0 0 1 650 509.00 Z"/>
+  <path class="w" fill="#3c793c" style="animation-delay:calc(var(--cycle)*-0.1350)" d="M650 366.50 A70.50 70.50 0 0 1 650 507.50 Z"/>
+  <path class="w" fill="#417b3a" style="animation-delay:calc(var(--cycle)*-0.1379)" d="M650 368.00 A69.00 69.00 0 0 1 650 506.00 Z"/>
+  <path class="w" fill="#467d39" style="animation-delay:calc(var(--cycle)*-0.1408)" d="M650 369.50 A67.50 67.50 0 0 1 650 504.50 Z"/>
+  <path class="w" fill="#4b7f38" style="animation-delay:calc(var(--cycle)*-0.1437)" d="M650 371.00 A66.00 66.00 0 0 1 650 503.00 Z"/>
+  <path class="w" fill="#508238" style="animation-delay:calc(var(--cycle)*-0.1466)" d="M650 372.50 A64.50 64.50 0 0 1 650 501.50 Z"/>
+  <path class="w" fill="#558438" style="animation-delay:calc(var(--cycle)*-0.1494)" d="M650 374.00 A63.00 63.00 0 0 1 650 500.00 Z"/>
+  <path class="w" fill="#5b8838" style="animation-delay:calc(var(--cycle)*-0.1522)" d="M650 375.50 A61.50 61.50 0 0 1 650 498.50 Z"/>
+  <path class="w" fill="#608b38" style="animation-delay:calc(var(--cycle)*-0.1550)" d="M650 377.00 A60.00 60.00 0 0 1 650 497.00 Z"/>
+  <path class="w" fill="#668f39" style="animation-delay:calc(var(--cycle)*-0.1578)" d="M650 378.50 A58.50 58.50 0 0 1 650 495.50 Z"/>
+  <path class="w" fill="#6c9339" style="animation-delay:calc(var(--cycle)*-0.1606)" d="M650 380.00 A57.00 57.00 0 0 1 650 494.00 Z"/>
+  <path class="w" fill="#72973a" style="animation-delay:calc(var(--cycle)*-0.1633)" d="M650 381.50 A55.50 55.50 0 0 1 650 492.50 Z"/>
+  <path class="w" fill="#799c3b" style="animation-delay:calc(var(--cycle)*-0.1660)" d="M650 383.00 A54.00 54.00 0 0 1 650 491.00 Z"/>
+  <path class="w" fill="#7fa03d" style="animation-delay:calc(var(--cycle)*-0.1687)" d="M650 384.50 A52.50 52.50 0 0 1 650 489.50 Z"/>
+  <path class="w" fill="#85a53e" style="animation-delay:calc(var(--cycle)*-0.1714)" d="M650 386.00 A51.00 51.00 0 0 1 650 488.00 Z"/>
+  <path class="w" fill="#8ca93f" style="animation-delay:calc(var(--cycle)*-0.1741)" d="M650 387.50 A49.50 49.50 0 0 1 650 486.50 Z"/>
+  <path class="w" fill="#92ae41" style="animation-delay:calc(var(--cycle)*-0.1767)" d="M650 389.00 A48.00 48.00 0 0 1 650 485.00 Z"/>
+  <path class="w" fill="#99b242" style="animation-delay:calc(var(--cycle)*-0.1794)" d="M650 390.50 A46.50 46.50 0 0 1 650 483.50 Z"/>
+  <path class="w" fill="#9fb744" style="animation-delay:calc(var(--cycle)*-0.1820)" d="M650 392.00 A45.00 45.00 0 0 1 650 482.00 Z"/>
+  <path class="w" fill="#a6bb45" style="animation-delay:calc(var(--cycle)*-0.1846)" d="M650 393.50 A43.50 43.50 0 0 1 650 480.50 Z"/>
+  <path class="w" fill="#acbf46" style="animation-delay:calc(var(--cycle)*-0.1872)" d="M650 395.00 A42.00 42.00 0 0 1 650 479.00 Z"/>
+  <path class="w" fill="#b3c348" style="animation-delay:calc(var(--cycle)*-0.1898)" d="M650 396.50 A40.50 40.50 0 0 1 650 477.50 Z"/>
+  <path class="w" fill="#b9c749" style="animation-delay:calc(var(--cycle)*-0.1923)" d="M650 398.00 A39.00 39.00 0 0 1 650 476.00 Z"/>
+  <path class="w" fill="#bfca4a" style="animation-delay:calc(var(--cycle)*-0.1949)" d="M650 399.50 A37.50 37.50 0 0 1 650 474.50 Z"/>
+  <path class="w" fill="#c5cd4b" style="animation-delay:calc(var(--cycle)*-0.1974)" d="M650 401.00 A36.00 36.00 0 0 1 650 473.00 Z"/>
+  <path class="w" fill="#cad04b" style="animation-delay:calc(var(--cycle)*-0.1999)" d="M650 402.50 A34.50 34.50 0 0 1 650 471.50 Z"/>
+  <path class="w" fill="#cfd24c" style="animation-delay:calc(var(--cycle)*-0.2025)" d="M650 404.00 A33.00 33.00 0 0 1 650 470.00 Z"/>
+  <path class="w" fill="#d4d44c" style="animation-delay:calc(var(--cycle)*-0.2050)" d="M650 405.50 A31.50 31.50 0 0 1 650 468.50 Z"/>
+  <path class="w" fill="#d9d64c" style="animation-delay:calc(var(--cycle)*-0.2074)" d="M650 407.00 A30.00 30.00 0 0 1 650 467.00 Z"/>
+  <path class="w" fill="#ddd74b" style="animation-delay:calc(var(--cycle)*-0.2099)" d="M650 408.50 A28.50 28.50 0 0 1 650 465.50 Z"/>
+  <path class="w" fill="#e0d74a" style="animation-delay:calc(var(--cycle)*-0.2124)" d="M650 410.00 A27.00 27.00 0 0 1 650 464.00 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 411.50 A25.50 25.50 0 0 1 650 462.50 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 413.00 A24.00 24.00 0 0 1 650 461.00 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 414.50 A22.50 22.50 0 0 1 650 459.50 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 416.00 A21.00 21.00 0 0 1 650 458.00 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 417.50 A19.50 19.50 0 0 1 650 456.50 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 419.00 A18.00 18.00 0 0 1 650 455.00 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 420.50 A16.50 16.50 0 0 1 650 453.50 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 422.00 A15.00 15.00 0 0 1 650 452.00 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 423.50 A13.50 13.50 0 0 1 650 450.50 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 425.00 A12.00 12.00 0 0 1 650 449.00 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 426.50 A10.50 10.50 0 0 1 650 447.50 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 428.00 A9.00 9.00 0 0 1 650 446.00 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 429.50 A7.50 7.50 0 0 1 650 444.50 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 431.00 A6.00 6.00 0 0 1 650 443.00 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 432.50 A4.50 4.50 0 0 1 650 441.50 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 434.00 A3.00 3.00 0 0 1 650 440.00 Z"/>
+  <path class="w" fill="#e2d74a" style="animation-delay:calc(var(--cycle)*-0.2136)" d="M650 435.50 A1.50 1.50 0 0 1 650 438.50 Z"/>
 
   <!-- Speaker -->
   <rect class="line" x="358" y="351" width="108" height="172"/>
