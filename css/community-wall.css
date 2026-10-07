@@ -159,7 +159,7 @@ main {
   grid-area: icon;
   flex-shrink: 0;
   display: block;
-  width: 150px;
+  width: clamp(120px, 22vw, 260px);
   height: auto;
 }
 
@@ -1175,5 +1175,7 @@ main {
 
   .cw-hero__icon {
     justify-self: center;
+    width: 50%;
+    max-width: 220px;
   }
 }

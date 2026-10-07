@@ -367,7 +367,7 @@
       3: 'HOW DO YOU SHOW UP?',
       6: 'MAKE YOURSELF VISIBLE',
       7: 'READY TO LEAVE YOUR MARK?',
-      8: 'WE HEAR YOU.',
+      8: 'WE HEAR YOU',
     };
     let currentStep = 1;
     let isSubmitting = false;
