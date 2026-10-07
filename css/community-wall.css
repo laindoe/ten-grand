@@ -1178,18 +1178,44 @@ main {
     display: contents;
   }
 
+  /* align-self left at the inherited stretch (not center) so the box
+     spans the row's content height, same as .cw-stat -- flex stretch
+     only fills the parent's content box, not its border, so a flex
+     child's bottom still lands 1px short of .cw-stats's own
+     border-bottom; margin-bottom:-1px bleeds through that border so
+     border-left reaches the actual outer edge. display:flex centers
+     "Join ->" within the taller box instead of leaving it pinned to
+     the top. */
   .cw-stats__join {
     order: 10;
-    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 20px var(--section-padding-x);
+    margin-bottom: -1px;
     border-left: 1px solid var(--color-card-border);
   }
 
   /* One straight line of four, not the mobile 2x2 wrap -- swap the
      divider borders from the cross pattern to a single row of right
-     borders between each stat (none after the last). */
+     borders between each stat (none after the last). display:flex +
+     centering so the number/label sit centered within each box
+     instead of pinned to the top-left; margin-bottom:-1px for the
+     same border-bleed reason as .cw-stats__join above. */
   .cw-stat {
     flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: -1px;
+  }
+
+  .cw-stat__inner {
+    text-align: center;
+  }
+
+  .cw-stat__label {
+    justify-content: center;
   }
 
   .cw-stat:nth-child(odd) {
