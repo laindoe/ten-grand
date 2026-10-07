@@ -4045,7 +4045,7 @@ select.amass-flow__field {
   transition: stroke 0.18s ease, fill 0.18s ease, fill-opacity 0.18s ease;
 }
 
-.amass-role-card--create { --role-accent: #b5e619; }
+.amass-role-card--create { --role-accent: #dbe916; }
 .amass-role-card--build { --role-accent: #be2026; }
 .amass-role-card--fund { --role-accent: #4fb620; }
 .amass-role-card--support { --role-accent: #0fc7d3; }
