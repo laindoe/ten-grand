@@ -209,13 +209,9 @@ main {
 .archive-community__icon {
   grid-area: icon;
   display: block;
-  width: 110px;
-  height: auto;
-  aspect-ratio: 1179 / 772;
-  /* Match the gap on the icon's right (to the divider) to the page's
-     own left gutter (.archive-inner's padding) -- the 14px column-gap
-     alone left it narrower than the left side. */
-  margin-right: calc(var(--section-padding-x) - 14px);
+  width: 153px;
+  max-width: none;
+  height: 100px;
 }
 
 /* Bleeds through .archive-community's 20px top/bottom padding (same
@@ -267,7 +263,6 @@ main {
   letter-spacing: 0.06em;
   color: var(--color-vandalism);
   text-decoration: none;
-  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -593,5 +588,6 @@ main {
     align-self: center;
     justify-self: start;
     font-size: 0.8rem;
+    white-space: nowrap;
   }
 }
