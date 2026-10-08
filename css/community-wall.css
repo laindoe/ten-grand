@@ -792,16 +792,31 @@ main {
 }
 
 .cw-voice-card__audio {
-  display: flex;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
   align-items: center;
-  gap: 10px;
+  column-gap: 10px;
+  row-gap: 6px;
+  min-width: 0;
 }
 
-/* Reuses .amass-flow__review-play (style.css) -- the same icon+label
-   play/pause button as the submission modal's review step, including
-   its icon and label, with a role-colored pulse while playing. */
+/* Keep the shared playback icons with a larger tap target on voice cards. */
 .cw-voice-card__audio .amass-flow__review-play {
-  flex-shrink: 0;
+  grid-column: 1;
+  grid-row: 1;
+  width: 44px;
+  height: 44px;
+  justify-content: center;
+}
+
+.cw-voice-card__audio .amass-flow__review-play-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.cw-voice-card__audio .amass-flow__review-play:focus-visible {
+  outline: 2px solid var(--cw-audio-color);
+  outline-offset: 2px;
 }
 
 .cw-voice-card__audio--create { --cw-audio-color: var(--cw-color-create); }
@@ -829,19 +844,20 @@ main {
 /* Fit every peak into the available width so the visible playhead
    represents the entire recording, including on narrow cards. */
 .cw-voice-card__audio-wave {
-  flex: 1 1 0%;
+  grid-column: 2;
+  grid-row: 1;
   min-width: 0;
   display: flex;
   align-items: center;
   gap: 0;
-  height: 20px;
+  height: 48px;
   overflow: hidden;
 }
 
 .cw-voice-card__audio-bar {
   flex: 1 1 0%;
   min-width: 0;
-  transform: scaleX(0.67);
+  transform: scaleX(0.9);
   border-radius: 1px;
 }
 
@@ -865,7 +881,9 @@ main {
 }
 
 .cw-voice-card__audio-time {
-  flex-shrink: 0;
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
   font-size: 0.68rem;
   color: var(--color-text-muted);
   white-space: nowrap;
