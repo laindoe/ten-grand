@@ -5035,14 +5035,83 @@ body.modal-open {
     max-height: calc(var(--amass-viewport-height, 100dvh) - 28px);
   }
 }
+.amass-flow__content { display: contents; }
+.amass-flow__progress { display: none; }
 @media (max-width: 900px), (pointer: coarse) {
-  #amass-modal.has-keyboard {
-    /* Center short steps at rest; keep a stable top edge with a keyboard. */
-    align-items: flex-start;
+  #amass-modal {
+    padding: 0;
+    background: #101314;
+    align-items: stretch;
   }
+  #amass-modal .modal__backdrop { background: #101314; }
   #amass-modal .amass-flow__panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    min-height: 0;
+    border: 0;
+    padding: max(16px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+    overflow: hidden;
     transform: none;
     transition: none;
+  }
+  #amass-modal .amass-flow__progress {
+    display: block;
+    flex-shrink: 0;
+    min-height: 40px;
+    margin: 0 48px 12px 0;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 40px;
+  }
+  #amass-modal .modal__close {
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+  }
+  #amass-modal .modal__title {
+    flex-shrink: 0;
+    max-width: 100%;
+    margin-bottom: 24px;
+    font-size: clamp(1.75rem, 7vw, 2.4rem);
+  }
+  #amass-modal .modal__body,
+  #amass-modal #amass-voice-form,
+  #amass-modal .amass-flow__step {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+  }
+  #amass-modal #amass-voice-form[hidden] { display: none; }
+  #amass-modal .amass-flow__step {
+    padding-bottom: 0;
+    animation: none;
+  }
+  #amass-modal .amass-flow__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 2px 2px 16px;
+  }
+  #amass-modal .amass-flow__actions {
+    flex-shrink: 0;
+    flex-direction: row;
+    margin-top: 0;
+    padding-top: 16px;
+    background: #101314;
+  }
+  #amass-modal .amass-flow__actions > button { flex: 1; }
+  #amass-modal .amass-flow__step > .amass-flow__cta {
+    position: static;
+    flex-shrink: 0;
+    width: 100%;
+    margin-top: 16px;
   }
   #amass-modal input.amass-flow__field,
   #amass-modal select.amass-flow__field,
