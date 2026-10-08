@@ -5089,16 +5089,19 @@ body.modal-open {
   #amass-modal .amass-flow__step {
     padding-bottom: 0;
     animation: none;
+    justify-content: flex-start;
   }
   #amass-modal .amass-flow__content {
     display: flex;
-    flex: 1;
+    flex: 0 1 auto;
     flex-direction: column;
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 2px 2px 16px;
+    scrollbar-gutter: stable;
+    padding: 2px 14px 16px 2px;
   }
+  #amass-modal .amass-flow__content > * { flex-shrink: 0; }
   #amass-modal .amass-flow__actions {
     flex-shrink: 0;
     flex-direction: row;
