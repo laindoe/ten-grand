@@ -139,6 +139,21 @@ a {
   border-bottom: 1px solid var(--color-card-border);
 }
 
+/* Cover the strip above the sticky navigation during mobile viewport
+   transitions. The mask moves with the header and cannot intercept taps. */
+@media (max-width: 900px), (pointer: coarse) {
+  .nav::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: -1px;
+    right: -1px;
+    height: max(64px, env(safe-area-inset-top, 0px));
+    background: var(--color-bg);
+    pointer-events: none;
+  }
+}
+
 .nav__inner {
   display: flex;
   align-items: stretch;
