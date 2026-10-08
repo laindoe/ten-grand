@@ -445,7 +445,7 @@ main {
 .cw-broadcast-card {
   position: relative;
   border: 1px solid var(--color-card-border);
-  padding: 18px 18px 40px;
+  padding: 18px;
 }
 
 /* Left accent bar as a pseudo-element instead of border-left, purely
@@ -501,12 +501,66 @@ main {
   line-height: 1.5;
 }
 
-.cw-broadcast-card__cta {
+/* Inserted by js/community-wall.js only for a card that has a
+   .cw-broadcast-card__extra block -- plain text link, not a button,
+   since these cards read as posts now rather than link-outs. */
+.cw-broadcast-card__read-more {
+  display: inline-block;
+  margin-top: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--cw-color-accent);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---------- Broadcast "Read more" modal ---------- */
+/* Reproduces the original post (same classes as .cw-broadcast-card's
+   own meta/title/body, plus a matching left accent bar) above a
+   divider, then the card's .cw-broadcast-card__extra content below --
+   so the modal always shows the broadcast exactly as posted, with the
+   extra detail appended rather than replacing it. */
+
+#cw-broadcast-modal .modal__panel {
+  max-width: 420px;
+  padding-top: 48px;
+}
+
+.cw-broadcast-modal__original {
+  position: relative;
+  padding-left: 14px;
+  margin-bottom: 20px;
+}
+
+.cw-broadcast-modal__original::before {
+  content: "";
   position: absolute;
-  bottom: 14px;
-  right: 18px;
-  font-size: 1rem;
-  color: var(--color-text);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: var(--cw-color-accent);
+}
+
+.cw-broadcast-modal__original .cw-broadcast-card__title {
+  margin-bottom: 6px;
+}
+
+.cw-broadcast-modal__extra-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding-top: 16px;
+  border-top: 1px solid var(--color-card-border);
+  margin-bottom: 10px;
 }
 
 /* ---------- Campaigns (parent section) ---------- */

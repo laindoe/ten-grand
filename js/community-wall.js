@@ -121,6 +121,118 @@
     });
   }
 
+  // Broadcast cards are plain hardcoded HTML -- a card opts into a
+  // "Read more" button just by having a .cw-broadcast-card__extra
+  // block (hidden by default) somewhere inside it; this wires up a
+  // button for every card that has one and skips the rest, so nothing
+  // needs to be touched by hand beyond adding that block.
+  function initBroadcastModal() {
+    var modal = document.getElementById("cw-broadcast-modal");
+    if (!modal) return;
+
+    var categoryEl = modal.querySelector("[data-broadcast-modal-category]");
+    var timeEl = modal.querySelector("[data-broadcast-modal-time]");
+    var titleEl = modal.querySelector("[data-broadcast-modal-title]");
+    var bodyEl = modal.querySelector("[data-broadcast-modal-body]");
+    var extraEl = modal.querySelector("[data-broadcast-modal-extra]");
+
+    var lastFocused = null;
+    var scrollLock = null;
+
+    // Same body-lock technique as initJoinModal() above.
+    function lockScroll() {
+      if (scrollLock) return;
+      var body = document.body;
+      var properties = ["position", "top", "left", "width", "overflow", "padding-right"];
+      scrollLock = {
+        x: window.scrollX,
+        y: window.scrollY,
+        styles: properties.map(function (property) {
+          return [property, body.style.getPropertyValue(property), body.style.getPropertyPriority(property)];
+        }),
+      };
+      var scrollbar = window.innerWidth - document.documentElement.clientWidth;
+      var padding = parseFloat(getComputedStyle(body).paddingRight) || 0;
+      body.style.setProperty("position", "fixed");
+      body.style.setProperty("top", "-" + scrollLock.y + "px");
+      body.style.setProperty("left", "-" + scrollLock.x + "px");
+      body.style.setProperty("width", "100%");
+      body.style.setProperty("overflow", "hidden");
+      if (scrollbar > 0) body.style.setProperty("padding-right", padding + scrollbar + "px");
+    }
+
+    function unlockScroll() {
+      if (!scrollLock) return;
+      var saved = scrollLock;
+      scrollLock = null;
+      saved.styles.forEach(function (entry) {
+        var property = entry[0], value = entry[1], priority = entry[2];
+        if (value) document.body.style.setProperty(property, value, priority);
+        else document.body.style.removeProperty(property);
+      });
+      var root = document.documentElement;
+      var behavior = root.style.getPropertyValue("scroll-behavior");
+      var priority = root.style.getPropertyPriority("scroll-behavior");
+      root.style.setProperty("scroll-behavior", "auto", "important");
+      window.scrollTo(saved.x, saved.y);
+      if (behavior) root.style.setProperty("scroll-behavior", behavior, priority);
+      else root.style.removeProperty("scroll-behavior");
+    }
+
+    // Reproduces the triggering card's own meta/title/body verbatim
+    // (innerHTML, not textContent, so the time badge's pulse dot comes
+    // along with it) above the card's extra block -- these are
+    // hand-authored by the site owner, never user-submitted, so this
+    // is the same trust boundary as the rest of this static content.
+    function openModal(card, trigger) {
+      if (modal.classList.contains("is-open")) return;
+      lastFocused = trigger;
+      var category = card.querySelector(".cw-broadcast-card__category");
+      var time = card.querySelector(".cw-broadcast-card__time");
+      var title = card.querySelector(".cw-broadcast-card__title");
+      var body = card.querySelector(".cw-broadcast-card__body");
+      var extra = card.querySelector(".cw-broadcast-card__extra");
+      categoryEl.innerHTML = category ? category.innerHTML : "";
+      timeEl.innerHTML = time ? time.innerHTML : "";
+      titleEl.innerHTML = title ? title.innerHTML : "";
+      bodyEl.innerHTML = body ? body.innerHTML : "";
+      extraEl.innerHTML = extra ? extra.innerHTML : "";
+      lockScroll();
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      modal.querySelector(".modal__close").focus({ preventScroll: true });
+    }
+
+    function closeModal() {
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      unlockScroll();
+      if (lastFocused) lastFocused.focus({ preventScroll: true });
+    }
+
+    document.querySelectorAll(".cw-broadcast-card").forEach(function (card) {
+      var extra = card.querySelector(".cw-broadcast-card__extra");
+      if (!extra || !extra.textContent.trim()) return;
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "cw-broadcast-card__read-more";
+      button.textContent = "Read more";
+      button.addEventListener("click", function (event) {
+        openModal(card, event.currentTarget);
+      });
+      card.appendChild(button);
+    });
+
+    modal.querySelectorAll("[data-modal-close]").forEach(function (el) {
+      el.addEventListener("click", closeModal);
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && modal.classList.contains("is-open")) closeModal();
+    });
+  }
+
   // Chromium doesn't reflect the .hidden IDL property to the actual
   // `hidden` content attribute on <svg> elements (same quirk worked
   // around in js/amass-modal.js), so toggling icons via plain
@@ -533,6 +645,7 @@
 
   loadStats();
   initJoinModal();
+  initBroadcastModal();
   initVoiceCardAudio();
   fixVoiceCardLayout();
   loadVoiceCards();
