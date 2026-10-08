@@ -19,6 +19,7 @@
     const viewport = window.visualViewport;
     let viewportFrame = null;
     let previousViewportHeight = null;
+    let restingViewportHeight = 0;
     let revealOnFocus = false;
 
     function revealFocusedField() {
@@ -62,6 +63,11 @@
       const expanding = previousViewportHeight !== null && viewport.height > previousViewportHeight + 1;
       const shrinking = previousViewportHeight !== null && viewport.height < previousViewportHeight - 1;
       previousViewportHeight = viewport.height;
+      restingViewportHeight = Math.max(restingViewportHeight, viewport.height);
+      const fieldFocused = modal.contains(document.activeElement) &&
+        document.activeElement.matches('.amass-flow__field');
+      modal.classList.toggle('is-keyboard-active', fieldFocused ||
+        restingViewportHeight - viewport.height > 150);
       modal.style.setProperty('--amass-viewport-height', `${viewport.height}px`);
       modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
       // Reveal on focus or when the keyboard reduces available space.
@@ -82,6 +88,7 @@
 
     function handleFieldBlur() {
       revealOnFocus = false;
+      queueViewportSync();
     }
 
     function trackViewport() {
@@ -102,7 +109,9 @@
       if (viewportFrame !== null) cancelAnimationFrame(viewportFrame);
       viewportFrame = null;
       previousViewportHeight = null;
+      restingViewportHeight = 0;
       revealOnFocus = false;
+      modal.classList.remove('is-keyboard-active');
       modal.style.removeProperty('--amass-viewport-height');
       modal.style.removeProperty('--amass-viewport-top');
     }

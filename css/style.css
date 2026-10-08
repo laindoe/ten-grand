@@ -5133,13 +5133,19 @@ body.modal-open {
   #amass-modal #amass-voice-form[hidden] { display: none; }
   #amass-modal .amass-flow__screen {
     display: flex;
-    flex: 1;
     flex-direction: column;
     min-height: 0;
-    /* Keep the heading anchored when the keyboard changes available height. */
-    justify-content: flex-start;
+    /* Auto margins center the whole screen when it fits and collapse
+       when space is tight, keeping overflowing content reachable. */
+    margin-block: auto;
+    flex: 0 1 auto;
   }
   #amass-modal .modal__body { flex: 0 1 auto; }
+  #amass-modal.is-keyboard-active .amass-flow__screen {
+    /* Anchor before the keyboard starts resizing the visual viewport. */
+    margin-block: 0;
+    flex: 1;
+  }
   #amass-modal .amass-flow__step {
     padding-bottom: 0;
     animation: none;
