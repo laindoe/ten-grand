@@ -5109,7 +5109,8 @@ body.modal-open {
     flex: 1;
     flex-direction: column;
     min-height: 0;
-    justify-content: center;
+    /* Keep the heading anchored when the keyboard changes available height. */
+    justify-content: flex-start;
   }
   #amass-modal .modal__body { flex: 0 1 auto; }
   #amass-modal .amass-flow__step {

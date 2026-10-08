@@ -18,6 +18,8 @@
     let scrollLock = null;
     const viewport = window.visualViewport;
     let viewportFrame = null;
+    let previousViewportHeight = null;
+    let revealOnFocus = false;
 
     function revealFocusedField() {
       if (!modal.classList.contains('is-open')) return;
@@ -57,15 +59,29 @@
       if (!viewport || !modal.classList.contains('is-open')) return;
       // Leave intentional pinch zoom under the browser's control.
       if (Math.abs(viewport.scale - 1) > 0.01) return;
+      const expanding = previousViewportHeight !== null && viewport.height > previousViewportHeight + 1;
+      const shrinking = previousViewportHeight !== null && viewport.height < previousViewportHeight - 1;
+      previousViewportHeight = viewport.height;
       modal.style.setProperty('--amass-viewport-height', `${viewport.height}px`);
       modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
-      // Resize and reveal in the same frame, so keyboard animation does
-      // not finish with a separate delayed jump to the focused field.
-      revealFocusedField();
+      // Reveal on focus or when the keyboard reduces available space.
+      // Keyboard dismissal expands the form; preserve its scroll position
+      // even if Safari still reports the input as the active element.
+      if (!expanding && (shrinking || revealOnFocus)) revealFocusedField();
+      revealOnFocus = false;
     }
 
     function queueViewportSync() {
       if (viewportFrame === null) viewportFrame = requestAnimationFrame(syncViewport);
+    }
+
+    function handleFieldFocus(event) {
+      revealOnFocus = event.target.matches('.amass-flow__field');
+      queueViewportSync();
+    }
+
+    function handleFieldBlur() {
+      revealOnFocus = false;
     }
 
     function trackViewport() {
@@ -73,16 +89,20 @@
       syncViewport();
       viewport.addEventListener('resize', queueViewportSync);
       viewport.addEventListener('scroll', queueViewportSync);
-      modal.addEventListener('focusin', queueViewportSync);
+      modal.addEventListener('focusin', handleFieldFocus);
+      modal.addEventListener('focusout', handleFieldBlur);
     }
 
     function stopTrackingViewport() {
       if (!viewport) return;
       viewport.removeEventListener('resize', queueViewportSync);
       viewport.removeEventListener('scroll', queueViewportSync);
-      modal.removeEventListener('focusin', queueViewportSync);
+      modal.removeEventListener('focusin', handleFieldFocus);
+      modal.removeEventListener('focusout', handleFieldBlur);
       if (viewportFrame !== null) cancelAnimationFrame(viewportFrame);
       viewportFrame = null;
+      previousViewportHeight = null;
+      revealOnFocus = false;
       modal.style.removeProperty('--amass-viewport-height');
       modal.style.removeProperty('--amass-viewport-top');
     }
