@@ -13,19 +13,20 @@ permalink: /voices-heard/
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=149" />
   <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=67" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=4" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=5" />
 </head>
 <body>
   <div class="site-frame">
     {% include nav.html %}
     <main class="broadcasts">
+      <div class="broadcasts__sticky">
+        <div class="broadcasts__sticky-inner">
       <nav class="broadcasts__breadcrumb" aria-label="Breadcrumb">
         <span class="broadcasts__slash" aria-hidden="true">/</span>
         <a href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL</a>
         <span class="broadcasts__slash" aria-hidden="true">/</span>
         <a href="{{ '/community-wall/' | relative_url }}#campaigns">CAMPAIGNS</a>
       </nav>
-      <section aria-labelledby="voices-title">
         <header class="broadcasts__header">
           <h1 id="voices-title">VOICES HEARD</h1>
           <p>Share what you contribute, why it matters, and who you hope to reach.</p>
@@ -37,6 +38,9 @@ permalink: /voices-heard/
           </div>
           <button class="broadcasts__filter" type="button" aria-label="Filter voices (coming soon)" disabled>FILTER <span aria-hidden="true">⌄</span></button>
         </div>
+        </div>
+      </div>
+      <section class="broadcasts__results" aria-labelledby="voices-title">
         <div class="cw-voice-grid" id="voice-list" data-voice-archive aria-busy="true"></div>
         <p class="broadcasts__empty" id="voice-message" role="status">Loading voices…</p>
         <button type="button" class="broadcasts__load" id="voice-load-more" aria-controls="voice-list" hidden>LOAD MORE <span aria-hidden="true">↓</span></button>
@@ -48,5 +52,6 @@ permalink: /voices-heard/
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="{{ '/assets/js/supabase.js' | relative_url }}"></script>
   <script src="{{ '/js/community-wall.js' | relative_url }}?v=8"></script>
+  <script src="{{ '/js/archive-header.js' | relative_url }}?v=1"></script>
 </body>
 </html>
