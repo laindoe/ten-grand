@@ -5036,6 +5036,7 @@ body.modal-open {
   }
 }
 .amass-flow__content { display: contents; }
+.amass-flow__screen { display: contents; }
 .amass-flow__progress { display: none; }
 @media (max-width: 900px), (pointer: coarse) {
   #amass-modal {
@@ -5086,19 +5087,30 @@ body.modal-open {
     min-height: 0;
   }
   #amass-modal #amass-voice-form[hidden] { display: none; }
-  #amass-modal .amass-flow__step {
-    padding-bottom: 0;
-    animation: none;
-  }
-  #amass-modal .amass-flow__content {
+  #amass-modal .amass-flow__screen {
     display: flex;
     flex: 1;
     flex-direction: column;
     min-height: 0;
+    justify-content: center;
+  }
+  #amass-modal .modal__body { flex: 0 1 auto; }
+  #amass-modal .amass-flow__step {
+    padding-bottom: 0;
+    animation: none;
+    justify-content: flex-start;
+  }
+  #amass-modal .amass-flow__content {
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column;
+    min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 2px 2px 16px;
+    scrollbar-gutter: stable;
+    padding: 2px 14px 16px 2px;
   }
+  #amass-modal .amass-flow__content > * { flex-shrink: 0; }
   #amass-modal .amass-flow__actions {
     flex-shrink: 0;
     flex-direction: row;

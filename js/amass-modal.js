@@ -18,6 +18,29 @@
     let scrollLock = null;
     const viewport = window.visualViewport;
     let viewportFrame = null;
+    let fieldRevealTimer = null;
+
+    function revealFocusedField() {
+      fieldRevealTimer = null;
+      if (!modal.classList.contains('is-open')) return;
+      const field = document.activeElement;
+      if (!field || !modal.contains(field) || !field.matches('.amass-flow__field')) return;
+      const content = field.closest('.amass-flow__content');
+      if (!content || getComputedStyle(content).overflowY !== 'auto') return;
+      const bounds = content.getBoundingClientRect();
+      const rect = field.getBoundingClientRect();
+      const top = bounds.top + 8;
+      const bottom = bounds.bottom - 8;
+      if (rect.bottom > bottom) content.scrollTop += rect.bottom - bottom;
+      else if (rect.top < top) content.scrollTop -= top - rect.top;
+    }
+
+    function queueFieldReveal() {
+      clearTimeout(fieldRevealTimer);
+      // Wait until keyboard/viewport resizing settles, then scroll only
+      // the field's content area, leaving the full-screen panel in place.
+      fieldRevealTimer = setTimeout(revealFocusedField, 250);
+    }
 
     // iOS keyboards shrink/pan the visual viewport without necessarily
     // changing dvh. Keep the overlay inside the area the user can see.
@@ -29,12 +52,11 @@
       modal.style.setProperty('--amass-viewport-height', `${viewport.height}px`);
       modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
 
-      // Safari already scrolls the focused field into view. Adjusting
-      // panel.scrollTop here races its keyboard animation and can jump.
     }
 
-    function queueViewportSync() {
+    function queueViewportSync(event) {
       if (viewportFrame === null) viewportFrame = requestAnimationFrame(syncViewport);
+      if (event && event.type === 'resize') queueFieldReveal();
     }
 
     function trackViewport() {
@@ -42,12 +64,16 @@
       syncViewport();
       viewport.addEventListener('resize', queueViewportSync);
       viewport.addEventListener('scroll', queueViewportSync);
+      modal.addEventListener('focusin', queueFieldReveal);
     }
 
     function stopTrackingViewport() {
       if (!viewport) return;
       viewport.removeEventListener('resize', queueViewportSync);
       viewport.removeEventListener('scroll', queueViewportSync);
+      modal.removeEventListener('focusin', queueFieldReveal);
+      clearTimeout(fieldRevealTimer);
+      fieldRevealTimer = null;
       if (viewportFrame !== null) cancelAnimationFrame(viewportFrame);
       viewportFrame = null;
       modal.style.removeProperty('--amass-viewport-height');
