@@ -147,26 +147,62 @@
     });
   }
 
-  // .cw-voice-card__avatar (CSS: grid + align-self:stretch +
-  // aspect-ratio) does correctly size itself to match the name/links
-  // column's real height, including when a 2-line name wraps -- but
-  // .cw-voice-card__top, the grid row containing it, doesn't grow to
-  // contain that stretched child: measured, the row's own box stays
-  // only as tall as its non-stretched children (badge column), so a
-  // taller avatar/identity overflows past the row's reported bottom
-  // edge. .cw-voice-card__body's margin-top is measured from that
-  // (too-small) edge, so it lands inside the overflow instead of
-  // below it. This corrects the gap directly: however far the
-  // content actually overflows past the row's box, add that onto the
-  // intended 24px gap.
-  function fixVoiceCardSpacing() {
+  // The avatar is a fixed 64px in CSS (see .cw-voice-card__orb /
+  // .cw-voice-card__photo) -- this is what actually makes it flush
+  // with the top of the name and the bottom of the last link in the
+  // common case. Letting CSS alone size the avatar from the row's own
+  // (stretched, aspect-ratio'd) height is a genuinely circular layout
+  // (the avatar's size depends on the row height, which depends on
+  // the identity column's width, which depends on how much space the
+  // avatar itself takes) -- confirmed breaking multiple ways across
+  // flex and grid.
+  //
+  // Doing the resize here in JS instead doesn't fully escape that
+  // circularity either: identity.offsetHeight is measured while the
+  // avatar still has its default 64px width, so it reflects how much
+  // identity wraps at THAT width -- but growing the avatar afterward
+  // narrows identity's real available width, which can make a long
+  // unbroken handle/website (which overflow-wrap:anywhere wraps
+  // character-by-character once its column gets narrow enough) wrap
+  // onto far more lines than the measurement assumed, in turn
+  // demanding a far taller avatar than what was just set. Confirmed
+  // with a deliberately pathological long handle/website: an
+  // unclamped measurement spiraled to a 336px avatar squeezing
+  // identity down to ~33px wide, wrapping one character per line into
+  // a 3700px+ tall column. Capping growth keeps the avatar flush for
+  // real name/link combinations (which top out well under this) while
+  // guaranteeing identity always keeps most of the row's width, so
+  // pathological content wraps as normal short lines instead of
+  // spiraling.
+  //
+  // Also corrects the gap to .cw-voice-card__body: however far the
+  // content still overflows the row's own reported box after the
+  // resize above (a flex row's own height doesn't always match its
+  // tallest child in every browser -- see the waveform-bar fix for
+  // the general class of bug), add that onto the intended 24px gap.
+  var AVATAR_MAX_SIZE = 120;
+  function fixVoiceCardLayout() {
     var desiredGap = 24;
     document.querySelectorAll(".cw-voice-card").forEach(function (card) {
       var top = card.querySelector(".cw-voice-card__top");
       var body = card.querySelector(".cw-voice-card__body");
-      if (!top || !body) return;
+      var avatar = card.querySelector(".cw-voice-card__avatar");
+      var identity = card.querySelector(".cw-voice-card__identity");
+      var badgeCol = card.querySelector(".cw-voice-card__badge-col");
+      if (!top || !body || !avatar || !identity) return;
+
+      avatar.style.removeProperty("width");
+      avatar.style.removeProperty("height");
       body.style.removeProperty("margin-top");
-      var edges = [top, top.querySelector(".cw-voice-card__avatar"), top.querySelector(".cw-voice-card__identity"), top.querySelector(".cw-voice-card__badge-col")]
+
+      var size = Math.max(identity.offsetHeight, badgeCol ? badgeCol.offsetHeight : 0);
+      size = Math.min(size, AVATAR_MAX_SIZE);
+      if (size > 0) {
+        avatar.style.width = size + "px";
+        avatar.style.height = size + "px";
+      }
+
+      var edges = [top, avatar, identity, badgeCol]
         .filter(Boolean)
         .map(function (el) {
           return el.getBoundingClientRect().bottom;
@@ -486,7 +522,7 @@
       // examples) -- re-running it here would double-bind their
       // buttons and fight the real one.
       grid.replaceChildren.apply(grid, cards);
-      fixVoiceCardSpacing();
+      fixVoiceCardLayout();
     } catch (error) {
       console.error("Ten Grand voice cards failed to load", error);
     }
@@ -495,10 +531,10 @@
   loadStats();
   initJoinModal();
   initVoiceCardAudio();
-  fixVoiceCardSpacing();
+  fixVoiceCardLayout();
   loadVoiceCards();
-  window.addEventListener("resize", fixVoiceCardSpacing);
+  window.addEventListener("resize", fixVoiceCardLayout);
   // Catches any late reflow from web fonts swapping in after this
   // script runs, which can change whether a name wraps.
-  window.addEventListener("load", fixVoiceCardSpacing);
+  window.addEventListener("load", fixVoiceCardLayout);
 })();

@@ -654,37 +654,45 @@ main {
   gap: 16px;
 }
 
+/* Real submitted text (name, handle, website) can be one long
+   unbroken string with no spaces to wrap at -- without somewhere
+   allowed to break, that forces its own element wider, which forces
+   the grid column wider, which forces the card (and the whole page)
+   wider. overflow-wrap:anywhere is inherited, so this is a blanket
+   safety net for every text node in the card, not just the ones
+   below with a more specific fix for their own sizing too. */
 .cw-voice-card {
   border: 1px solid var(--color-card-border);
   padding: 20px;
+  overflow-wrap: anywhere;
 }
 
-/* Grid, not flex: a flex item with both width and height auto never
-   gets its width (main axis) back-derived from align-self:stretch's
-   resolved height via aspect-ratio -- flex computes the hypothetical
-   main size from content before cross-size stretch ever runs. Grid's
-   track sizing runs the extra pass that lets an aspect-ratio item's
-   auto column track width follow its stretched row height instead. */
+/* Flex, not grid: a grid "1fr" column is still sized considering its
+   content's intrinsic size even inside minmax(0, 1fr) (the 1fr max
+   is treated close to auto/max-content for that part of the
+   algorithm) -- combined with overflow-wrap:anywhere's deliberately
+   tiny min-content on a long unbroken handle/URL, that measured as
+   the identity column collapsing to 0 width in one real case, which
+   then wraps that text one character per line and makes the row
+   (and the fixVoiceCardLayout() square below) absurdly tall instead.
+   flex-basis:0% on .cw-voice-card__identity below doesn't have this
+   problem -- it grows from zero rather than being measured from
+   content at all, the same fix already used for the waveform bars
+   (see .cw-voice-card__audio-wave). The avatar no longer needs grid's
+   special aspect-ratio/stretch handling either, now that its size is
+   just a plain flex-shrink:0 box set by JS, not CSS stretch. */
 .cw-voice-card__top {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: start;
+  display: flex;
+  align-items: flex-start;
   gap: 12px;
 }
 
-/* .cw-voice-card__avatar is the orb svg / photo img itself (not a
-   wrapping element) -- align-self:stretch gives it a definite height
-   matching the row's own height (flush with the top of the name and
-   the bottom of the last link), and width:auto + aspect-ratio derives
-   its width from that height, keeping it square as the row grows or
-   shrinks. */
 .cw-voice-card__orb,
 .cw-voice-card__photo {
   display: block;
-  align-self: stretch;
-  width: auto;
-  height: auto;
-  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
 }
 
 .cw-voice-card__photo {
@@ -700,7 +708,7 @@ main {
 .cw-voice-card__photo--support { --voice-glow: var(--cw-color-support); }
 
 .cw-voice-card__identity {
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-width: 0;
 }
 
@@ -715,18 +723,22 @@ main {
   flex-direction: column;
   gap: 2px;
   margin-top: 6px;
+  min-width: 0;
 }
 
 /* Icon + text as one tap target, with vertical padding added purely
    for tap height (not visual spacing -- .cw-voice-card__links' own
    gap handles that) since the text alone was too small/thin to tap
-   reliably. width:fit-content keeps the hit area close to the visible
-   icon+text instead of stretching to the full card width. */
+   reliably. max-width:100% (not width:fit-content -- fit-content's
+   clamp against "available space" isn't reliable in an auto-sized
+   grid column, the same class of bug the waveform bars hit) keeps a
+   real submitted handle/URL from forcing the card wider than its
+   column when it's one long word with nothing to break at. */
 .cw-voice-card__link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  width: fit-content;
+  max-width: 100%;
   padding: 5px 0;
   font-size: 0.95rem;
   color: var(--color-text-muted);
@@ -744,6 +756,16 @@ main {
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
+}
+
+/* js/community-wall.js wraps a real link's text in this span (the
+   static example cards use a bare text node instead) so it can be
+   set via textContent without wiping out the icon next to it -- it
+   needs its own min-width:0 to actually shrink/break within the
+   inline-flex link rather than just inheriting the icon's
+   flex-shrink:0 neighbor's refusal to shrink. */
+.cw-voice-card__link-text {
+  min-width: 0;
 }
 
 .cw-voice-card__link-icon-dot {
