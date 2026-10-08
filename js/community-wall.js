@@ -133,19 +133,20 @@
 
   // These are static sample cards (no real audio file behind them),
   // so "play" just demonstrates the interaction: toggling the button
-  // between its play and pause icon/label.
+  // between its play and pause icons.
   function initVoiceCardAudio() {
     var buttons = document.querySelectorAll(".cw-voice-card__audio-play");
     buttons.forEach(function (button) {
       var playIcon = button.querySelector(".amass-flow__review-play-icon--play");
       var pauseIcon = button.querySelector(".amass-flow__review-play-icon--pause");
       var label = button.querySelector("span");
+      if (label) label.remove();
       button.addEventListener("click", function () {
         var isPlaying = !button.classList.contains("is-playing");
         button.classList.toggle("is-playing", isPlaying);
         setSvgHidden(playIcon, isPlaying);
         setSvgHidden(pauseIcon, !isPlaying);
-        label.textContent = isPlaying ? "Pause" : "Play";
+        button.setAttribute("aria-label", isPlaying ? "Pause audio response" : "Play audio response");
       });
     });
   }
@@ -371,12 +372,9 @@
     button.setAttribute("aria-label", "Play audio response");
     button.innerHTML =
       '<svg class="amass-flow__review-play-icon amass-flow__review-play-icon--play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5 L19 12 L7 19 Z"/></svg>' +
-      '<svg class="amass-flow__review-play-icon amass-flow__review-play-icon--pause" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>' +
-      "<span>Play</span>";
+      '<svg class="amass-flow__review-play-icon amass-flow__review-play-icon--pause" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
     var playIcon = button.querySelector(".amass-flow__review-play-icon--play");
     var pauseIcon = button.querySelector(".amass-flow__review-play-icon--pause");
-    var label = button.querySelector("span");
-
     var wave = document.createElement("span");
     wave.className = "cw-voice-card__audio-wave cw-voice-card__audio-wave--real";
     wave.setAttribute("aria-hidden", "true");
@@ -390,7 +388,7 @@
     function setIcon(isPlaying) {
       setSvgHidden(playIcon, isPlaying);
       setSvgHidden(pauseIcon, !isPlaying);
-      label.textContent = isPlaying ? "Pause" : "Play";
+      button.setAttribute("aria-label", isPlaying ? "Pause audio response" : "Play audio response");
       button.classList.toggle("is-playing", isPlaying);
     }
 
