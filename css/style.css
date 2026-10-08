@@ -4402,6 +4402,7 @@ select.amass-flow__field {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 18px;
   padding: 36px 28px 32px;
   background: var(--color-bg);

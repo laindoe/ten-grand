@@ -11,7 +11,8 @@ permalink: /voices-heard/
   <meta name="description" content="Meet the creators, builders, investors, and supporters sharing their voices with Ten Grand." />
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=157" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=158" />
+  <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=77" />
   <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=5" />
 </head>
@@ -30,6 +31,7 @@ permalink: /voices-heard/
         <header class="broadcasts__header">
           <h1 id="voices-title">VOICES HEARD</h1>
           <p>Share what you contribute, why it matters, and who you hope to reach.</p>
+          <button type="button" class="cw-campaign__add-voice" data-modal-open="amass-modal">ADD YOUR VOICE &rarr;</button>
         </header>
         <div class="broadcasts__controls" role="group" aria-label="Voice search and filters (coming soon)">
           <div class="broadcasts__search">
@@ -48,9 +50,14 @@ permalink: /voices-heard/
       </section>
     </main>
   </div>
+
+  {% include amass-modal.html %}
+
   {% include site-footer.html %}
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="{{ '/assets/js/supabase.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>
+  <script src="{{ '/js/amass-modal.js' | relative_url }}?v=12"></script>
   <script src="{{ '/js/community-wall.js' | relative_url }}?v=11"></script>
   <script src="{{ '/js/archive-header.js' | relative_url }}?v=2"></script>
 </body>
