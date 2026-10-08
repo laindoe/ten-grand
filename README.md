@@ -122,3 +122,13 @@ tagged with a visible "SAMPLE" badge) — replace or remove them once real
 transmissions are ready. `index.html` itself now has empty Jekyll front
 matter (`---\n---`) so it can use the shared nav/footer includes; its
 markup and behavior are otherwise unchanged.
+
+## Title entry rule
+
+All visitor-facing title fields use automatic word capitalization through
+`js/title-case.js`, loaded by the shared navigation. Name title fields `title`
+or with an `_title` suffix, or add `data-title-case` to opt in explicitly.
+Use `autocapitalize="words"` in their markup for mobile keyboard support.
+The script updates the actual value during typing, paste, composition completion,
+and submission, preserving the caret and existing acronyms. URLs, handles,
+names, search fields, and response body text are unaffected.
