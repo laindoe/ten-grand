@@ -660,32 +660,32 @@ main {
   --cw-voice-card-pad: 20px;
 }
 
+/* Grid, not flex: a flex item with both width and height auto never
+   gets its width (main axis) back-derived from align-self:stretch's
+   resolved height via aspect-ratio -- flex computes the hypothetical
+   main size from content before cross-size stretch ever runs. Grid's
+   track sizing runs the extra pass that lets an aspect-ratio item's
+   auto column track width follow its stretched row height instead. */
 .cw-voice-card__top {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
   gap: 12px;
 }
 
-/* Grows to match the row's own height (name + links + badge stack)
-   instead of a fixed small size -- align-self:stretch overrides the
-   row's flex-start for this one item, and aspect-ratio keeps it a
-   square as that height changes. max-width caps it for short rows
-   (e.g. no-website cards) so it can't balloon past a sensible size. */
-.cw-voice-card__avatar {
-  flex-shrink: 0;
+/* .cw-voice-card__avatar is the orb svg / photo img itself (not a
+   wrapping element) -- align-self:stretch gives it a definite height
+   matching the row's own height (flush with the top of the name and
+   the bottom of the last link), and width:auto + aspect-ratio derives
+   its width from that height, keeping it square as the row grows or
+   shrinks. */
+.cw-voice-card__orb,
+.cw-voice-card__photo {
   display: block;
   align-self: stretch;
   width: auto;
   height: auto;
   aspect-ratio: 1 / 1;
-  max-width: 96px;
-  max-height: 96px;
-}
-
-.cw-voice-card__orb,
-.cw-voice-card__photo {
-  width: 100%;
-  height: 100%;
 }
 
 .cw-voice-card__photo {
