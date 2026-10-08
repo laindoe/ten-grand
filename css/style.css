@@ -5053,7 +5053,7 @@ body.modal-open {
     max-height: none;
     min-height: 0;
     border: 0;
-    padding: max(16px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+    padding: calc(32px + env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
     overflow: hidden;
     transform: none;
     transition: none;
@@ -5068,7 +5068,7 @@ body.modal-open {
     line-height: 40px;
   }
   #amass-modal .modal__close {
-    top: max(16px, env(safe-area-inset-top));
+    top: calc(32px + env(safe-area-inset-top));
     right: max(16px, env(safe-area-inset-right));
   }
   #amass-modal .modal__title {
