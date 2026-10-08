@@ -18,10 +18,8 @@
     let scrollLock = null;
     const viewport = window.visualViewport;
     let viewportFrame = null;
-    let fieldRevealTimer = null;
 
     function revealFocusedField() {
-      fieldRevealTimer = null;
       if (!modal.classList.contains('is-open')) return;
       const field = document.activeElement;
       if (!field || !modal.contains(field) || !field.matches('.amass-flow__field')) return;
@@ -31,15 +29,12 @@
       const rect = field.getBoundingClientRect();
       const top = bounds.top + 8;
       const bottom = bounds.bottom - 8;
-      if (rect.bottom > bottom) content.scrollTop += rect.bottom - bottom;
+      if (rect.height > bottom - top) {
+        // A tall textarea cannot fit completely. Keep its top stable
+        // rather than alternating between revealing its top and bottom.
+        if (Math.abs(rect.top - top) > 1) content.scrollTop += rect.top - top;
+      } else if (rect.bottom > bottom) content.scrollTop += rect.bottom - bottom;
       else if (rect.top < top) content.scrollTop -= top - rect.top;
-    }
-
-    function queueFieldReveal() {
-      clearTimeout(fieldRevealTimer);
-      // Wait until keyboard/viewport resizing settles, then scroll only
-      // the field's content area, leaving the full-screen panel in place.
-      fieldRevealTimer = setTimeout(revealFocusedField, 250);
     }
 
     // iOS keyboards shrink/pan the visual viewport without necessarily
@@ -51,12 +46,13 @@
       if (Math.abs(viewport.scale - 1) > 0.01) return;
       modal.style.setProperty('--amass-viewport-height', `${viewport.height}px`);
       modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
-
+      // Resize and reveal in the same frame, so keyboard animation does
+      // not finish with a separate delayed jump to the focused field.
+      revealFocusedField();
     }
 
-    function queueViewportSync(event) {
+    function queueViewportSync() {
       if (viewportFrame === null) viewportFrame = requestAnimationFrame(syncViewport);
-      if (event && event.type === 'resize') queueFieldReveal();
     }
 
     function trackViewport() {
@@ -64,16 +60,14 @@
       syncViewport();
       viewport.addEventListener('resize', queueViewportSync);
       viewport.addEventListener('scroll', queueViewportSync);
-      modal.addEventListener('focusin', queueFieldReveal);
+      modal.addEventListener('focusin', queueViewportSync);
     }
 
     function stopTrackingViewport() {
       if (!viewport) return;
       viewport.removeEventListener('resize', queueViewportSync);
       viewport.removeEventListener('scroll', queueViewportSync);
-      modal.removeEventListener('focusin', queueFieldReveal);
-      clearTimeout(fieldRevealTimer);
-      fieldRevealTimer = null;
+      modal.removeEventListener('focusin', queueViewportSync);
       if (viewportFrame !== null) cancelAnimationFrame(viewportFrame);
       viewportFrame = null;
       modal.style.removeProperty('--amass-viewport-height');
