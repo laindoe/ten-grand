@@ -27,10 +27,10 @@
         [approvedCount(null)].concat(roles.map(approvedCount))
       );
       var total = counts[0];
-      if (total !== null) {
-        setStat("total", total);
-        setStat("voices-total", total);
-      }
+      // "total" (Total Members) is intentionally disconnected from Voices
+      // Heard data -- it stays at its static 0 until wired to a real
+      // member-count source.
+      if (total !== null) setStat("voices-total", total);
       roles.forEach(function (role, i) {
         var count = counts[i + 1];
         if (count !== null) setStat(role, count);
