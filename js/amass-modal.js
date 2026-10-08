@@ -18,6 +18,8 @@
     let scrollLock = null;
     const viewport = window.visualViewport;
     let viewportFrame = null;
+    let restingViewportHeight = 0;
+    let restingViewportWidth = 0;
 
     // iOS keyboards shrink/pan the visual viewport without necessarily
     // changing dvh. Keep the overlay inside the area the user can see.
@@ -26,6 +28,14 @@
       if (!viewport || !modal.classList.contains('is-open')) return;
       // Leave intentional pinch zoom under the browser's control.
       if (Math.abs(viewport.scale - 1) > 0.01) return;
+      // Browser toolbars also resize the viewport, but by much less than
+      // a keyboard. Reset the baseline when rotating the device.
+      if (Math.abs(viewport.width - restingViewportWidth) > 1) {
+        restingViewportWidth = viewport.width;
+        restingViewportHeight = document.documentElement.clientHeight;
+      }
+      restingViewportHeight = Math.max(restingViewportHeight, viewport.height);
+      modal.classList.toggle('has-keyboard', restingViewportHeight - viewport.height > 150);
       modal.style.setProperty('--amass-viewport-height', `${viewport.height}px`);
       modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
 
@@ -39,12 +49,15 @@
 
     function trackViewport() {
       if (!viewport) return;
+      restingViewportWidth = viewport.width;
+      restingViewportHeight = Math.max(viewport.height, document.documentElement.clientHeight);
       syncViewport();
       viewport.addEventListener('resize', queueViewportSync);
       viewport.addEventListener('scroll', queueViewportSync);
     }
 
     function stopTrackingViewport() {
+      modal.classList.remove('has-keyboard');
       if (!viewport) return;
       viewport.removeEventListener('resize', queueViewportSync);
       viewport.removeEventListener('scroll', queueViewportSync);
