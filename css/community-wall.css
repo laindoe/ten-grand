@@ -395,8 +395,33 @@ main {
 
 @media (prefers-reduced-motion: no-preference) {
   .cw-ticker__marquee {
-    animation: cwTickerScroll 22s linear infinite;
+    animation: cwTickerScroll var(--ticker-duration, 120s) linear infinite;
   }
+}
+
+.cw-ticker__viewport:hover .cw-ticker__marquee,
+.cw-ticker__viewport:focus-within .cw-ticker__marquee,
+.cw-ticker__viewport:active .cw-ticker__marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cw-ticker__viewport { overflow-x: auto; }
+  .cw-ticker__group[aria-hidden="true"] { display: none; }
+}
+
+.cw-ticker__item[href]:hover,
+.cw-ticker__item[href]:focus-visible {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.cw-voice-card:focus {
+  outline: none;
+}
+
+.cw-voice-card {
+  scroll-margin-top: calc(var(--archive-nav-height, 64px) + var(--archive-header-height, 0px) + 16px);
 }
 
 @keyframes cwTickerScroll {

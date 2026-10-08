@@ -20,31 +20,41 @@
 
   function render(unavailable) {
     var items = broadcasts.map(function (row) {
-      return { id: "broadcast:" + row.id, date: timestamp(row.created_at), text: "Broadcast: " + row.title };
+      return { id: "broadcast:" + row.id, date: timestamp(row.created_at), text: "Broadcast: " + row.title, url: row.url };
     });
     sources.forEach(function (source) {
       items = items.concat(campaignItems[source.id] || []);
     });
     items.sort(function (a, b) { return b.date - a.date || a.id.localeCompare(b.id); });
     items = items.slice(0, 20);
-    var labels = items.map(function (item) { return item.text; });
-    if (!labels.length) labels = [unavailable ? "Community updates are temporarily unavailable" : "Waiting for community updates"];
-    var nextSignature = JSON.stringify(labels);
+    if (!items.length) items = [{ text: unavailable ? "Community updates are temporarily unavailable" : "Waiting for community updates" }];
+    var nextSignature = JSON.stringify(items);
     if (signature === nextSignature) return;
     signature = nextSignature;
     var group = document.createElement("span");
     group.className = "cw-ticker__group";
-    labels.forEach(function (label) {
-      var item = document.createElement("span");
+    items.forEach(function (entry) {
+      var item = document.createElement(entry.url ? "a" : "span");
+      if (entry.url) item.href = entry.url;
       item.className = "cw-ticker__item";
       // Names and titles are always plain text, never HTML.
-      item.textContent = label;
+      item.textContent = entry.text;
       group.appendChild(item);
     });
     var duplicate = group.cloneNode(true);
     duplicate.setAttribute("aria-hidden", "true");
+    duplicate.querySelectorAll("a").forEach(function (link) { link.tabIndex = -1; });
     ticker.replaceChildren(group, duplicate);
+    updateSpeed();
   }
+
+  // Keep reading speed constant as the number and length of updates changes.
+  function updateSpeed() {
+    var group = ticker.querySelector(".cw-ticker__group");
+    if (group) ticker.style.setProperty("--ticker-duration", Math.max(20, group.getBoundingClientRect().width / 24) + "s");
+  }
+  window.addEventListener("resize", updateSpeed);
+  if (document.fonts) document.fonts.ready.then(updateSpeed);
 
   function subscribe() {
     if (!client || stopped) return;
@@ -71,6 +81,7 @@
       return {
         id: source.id + ":" + row.id,
         date: timestamp(row[source.date_field]),
+        url: source.url ? source.url + "#voice-" + encodeURIComponent(row.id) : null,
         text: source.message.replace(/\{name\}/g, function () { return name; })
       };
     });

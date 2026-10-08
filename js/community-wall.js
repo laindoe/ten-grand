@@ -427,6 +427,8 @@
 
     var article = document.createElement("article");
     article.className = "cw-voice-card";
+    article.id = "voice-" + row.id;
+    article.tabIndex = -1;
 
     var top = document.createElement("div");
     top.className = "cw-voice-card__top";
@@ -496,6 +498,21 @@
     return article;
   }
 
+  var linkedVoice = window.location.hash.indexOf("#voice-") === 0 ? window.location.hash.slice(1) : null;
+  function revealLinkedVoice() {
+    if (!linkedVoice) return;
+    var card = document.getElementById(linkedVoice);
+    if (!card) return;
+    card.scrollIntoView({ block: "start" });
+    card.focus({ preventScroll: true });
+    linkedVoice = null;
+  }
+  window.addEventListener("hashchange", function () {
+    linkedVoice = window.location.hash.indexOf("#voice-") === 0 ? window.location.hash.slice(1) : null;
+    revealLinkedVoice();
+    if (linkedVoice) loadVoiceCards();
+  });
+
   var voiceOffset = 0;
   var voiceLoading = false;
   async function loadVoiceCards() {
@@ -540,6 +557,10 @@
         grid.replaceChildren.apply(grid, cards);
       }
       fixVoiceCardLayout();
+      revealLinkedVoice();
+      if (linkedVoice && archive && button && !button.hidden) {
+        window.setTimeout(loadVoiceCards, 0);
+      }
     } catch (error) {
       if (message) {
         message.hidden = false;

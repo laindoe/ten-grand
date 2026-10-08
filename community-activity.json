@@ -2,7 +2,20 @@
 layout: null
 ---
 {
-  "campaigns": {{ site.data.community_ticker.campaigns | jsonify }},
+  "campaigns": [
+    {% for campaign in site.data.community_ticker.campaigns %}
+      {
+        "id": {{ campaign.id | jsonify }},
+        "url": {{ campaign.url | relative_url | jsonify }},
+        "table": {{ campaign.table | jsonify }},
+        "name_field": {{ campaign.name_field | jsonify }},
+        "date_field": {{ campaign.date_field | jsonify }},
+        "status_field": {{ campaign.status_field | jsonify }},
+        "public_status": {{ campaign.public_status | jsonify }},
+        "message": {{ campaign.message | jsonify }}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ],
   "broadcasts": [
     {% assign broadcasts = site.broadcasts | sort: 'date' | reverse %}
     {% assign separator = '' %}
@@ -11,6 +24,8 @@ layout: null
         {{ separator }}{
           "id": {{ broadcast.relative_path | jsonify }},
           "title": {{ broadcast.title | jsonify }},
+          {% assign broadcast_anchor = broadcast.relative_path | slugify | prepend: "#broadcast-" %}
+          "url": {{ "/broadcasts/" | relative_url | append: broadcast_anchor | jsonify }},
           "created_at": {{ broadcast.date | date_to_xmlschema | jsonify }}
         }
         {% assign separator = ',' %}
