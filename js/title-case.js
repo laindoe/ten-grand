@@ -12,7 +12,13 @@
 
   function normalize(field) {
     const value = field.value;
-    const formatted = format(value);
+    // Every title has a limit. Explicit markup can choose a smaller one.
+    if (field.maxLength < 0) field.maxLength = field.name === 'website_title' ? 40 : 80;
+    let formatted = format(value).slice(0, field.maxLength);
+    // Avoid cutting an emoji in half at the boundary.
+    if (/[\uD800-\uDBFF]$/.test(formatted)) formatted = formatted.slice(0, -1);
+    const counter = document.getElementById(field.id + '-count');
+    if (counter) counter.textContent = String(formatted.length);
     field.setAttribute('autocapitalize', 'words');
     if (formatted === value) return;
     const start = field.selectionStart;

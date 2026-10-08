@@ -132,3 +132,6 @@ Use `autocapitalize="words"` in their markup for mobile keyboard support.
 The script updates the actual value during typing, paste, composition completion,
 and submission, preserving the caret and existing acronyms. URLs, handles,
 names, search fields, and response body text are unaffected.
+
+Title fields are limited to 80 characters by default; website titles use 40.
+Set an explicit `maxlength` when a title field needs a different limit.
