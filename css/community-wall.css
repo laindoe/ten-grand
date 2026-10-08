@@ -847,14 +847,19 @@ main {
   flex-shrink: 0;
 }
 
+/* More bars than any card is wide enough to show at this pitch --
+   overflow:hidden clips the excess, so the bars always pack edge to
+   edge regardless of how much space a given card's row leaves for
+   the wave, instead of justify-content stretching a fixed bar count
+   out into visible gaps. */
 .cw-voice-card__audio-wave {
   flex: 1 1 auto;
   min-width: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2px;
+  gap: 1px;
   height: 20px;
+  overflow: hidden;
 }
 
 .cw-voice-card__audio-bar {
