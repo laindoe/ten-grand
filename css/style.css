@@ -5011,6 +5011,13 @@ body.modal-open {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
+#amass-modal .modal__backdrop {
+  /* Cover the layout viewport too, including Safari's panning during
+     keyboard transitions, independently of the shortened dialog area. */
+  position: fixed;
+  inset: -100vh 0;
+  background: rgba(0, 0, 0, 0.94);
+}
 #amass-modal .amass-flow__intro-icon {
   display: block;
   flex-shrink: 0;
@@ -5029,6 +5036,14 @@ body.modal-open {
   }
 }
 @media (max-width: 900px), (pointer: coarse) {
+  #amass-modal {
+    /* A fixed top edge avoids recentering on every keyboard resize. */
+    align-items: flex-start;
+  }
+  #amass-modal .amass-flow__panel {
+    transform: none;
+    transition: none;
+  }
   #amass-modal input.amass-flow__field,
   #amass-modal select.amass-flow__field,
   #amass-modal textarea.amass-flow__field {

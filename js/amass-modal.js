@@ -17,7 +17,6 @@
     let lastFocused = null;
     let scrollLock = null;
     const viewport = window.visualViewport;
-    const panel = modal.querySelector('.amass-flow__panel');
     let viewportFrame = null;
 
     // iOS keyboards shrink/pan the visual viewport without necessarily
@@ -30,14 +29,8 @@
       modal.style.setProperty('--amass-viewport-height', `${viewport.height}px`);
       modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
 
-      const field = document.activeElement;
-      if (!panel.contains(field) || !field.matches('input, textarea, select')) return;
-      const bounds = panel.getBoundingClientRect();
-      const fieldBounds = field.getBoundingClientRect();
-      const top = bounds.top + 12;
-      const bottom = bounds.bottom - 12;
-      if (fieldBounds.bottom > bottom) panel.scrollTop += fieldBounds.bottom - bottom;
-      else if (fieldBounds.top < top) panel.scrollTop -= top - fieldBounds.top;
+      // Safari already scrolls the focused field into view. Adjusting
+      // panel.scrollTop here races its keyboard animation and can jump.
     }
 
     function queueViewportSync() {
@@ -49,14 +42,12 @@
       syncViewport();
       viewport.addEventListener('resize', queueViewportSync);
       viewport.addEventListener('scroll', queueViewportSync);
-      modal.addEventListener('focusin', queueViewportSync);
     }
 
     function stopTrackingViewport() {
       if (!viewport) return;
       viewport.removeEventListener('resize', queueViewportSync);
       viewport.removeEventListener('scroll', queueViewportSync);
-      modal.removeEventListener('focusin', queueViewportSync);
       if (viewportFrame !== null) cancelAnimationFrame(viewportFrame);
       viewportFrame = null;
       modal.style.removeProperty('--amass-viewport-height');
@@ -707,6 +698,17 @@
       }
       if (step === 7) buildReview();
       setNextState();
+      // Each step is a new page of the form. Move focus off the previous
+      // field (and dismiss its keyboard) before resetting dialog scroll.
+      if (modal.classList.contains('is-open')) {
+        titleEl.setAttribute('tabindex', '-1');
+        titleEl.focus({ preventScroll: true });
+      }
+      const dialogPanel = modal.querySelector('.amass-flow__panel');
+      dialogPanel.scrollTop = 0;
+      requestAnimationFrame(() => {
+        if (currentStep === step) dialogPanel.scrollTop = 0;
+      });
     }
 
     function resetFlow() {
