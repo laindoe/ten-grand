@@ -22,19 +22,13 @@
   async function loadStats() {
     if (!window.tenGrandSupabase) return;
     try {
-      var roles = ["create", "build", "fund", "support"];
-      var counts = await Promise.all(
-        [approvedCount(null)].concat(roles.map(approvedCount))
-      );
-      var total = counts[0];
-      // "total" (Total Members) is intentionally disconnected from Voices
-      // Heard data -- it stays at its static 0 until wired to a real
-      // member-count source.
+      // "total" (Total Members) and the four role-breakdown stats
+      // (create/build/fund/support) are intentionally disconnected
+      // from Voices Heard data -- they stay at their static 0 values
+      // until wired to a real member-count source. Only the Voices
+      // Heard badge itself still reflects real approved submissions.
+      var total = await approvedCount(null);
       if (total !== null) setStat("voices-total", total);
-      roles.forEach(function (role, i) {
-        var count = counts[i + 1];
-        if (count !== null) setStat(role, count);
-      });
     } catch (error) {
       console.error("Ten Grand Community Wall stats failed", error);
     }
