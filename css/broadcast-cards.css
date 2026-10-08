@@ -67,7 +67,8 @@
 .cw-broadcast-card__read-more { margin-top: 18px; }
 .cw-broadcast-card__read-more:hover,
 .broadcast-modal__close:hover { border-color: #fb2f7b; }
-.cw-broadcast-card:focus-visible,
+.cw-broadcast-card:focus { outline: none; }
+
 .cw-broadcast-card__read-more:focus-visible,
 .broadcast-modal button:focus-visible,
 .broadcast-modal a:focus-visible { outline: 2px solid #fb2f7b; outline-offset: 4px; }

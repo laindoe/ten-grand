@@ -416,9 +416,8 @@ main {
   text-decoration: underline;
 }
 
-.cw-voice-card:target {
-  outline: 1px solid var(--color-text);
-  outline-offset: 4px;
+.cw-voice-card:focus {
+  outline: none;
 }
 
 .cw-voice-card {
