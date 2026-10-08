@@ -149,11 +149,11 @@ a {
 .nav__logo-box {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex-shrink: 0;
   box-sizing: border-box;
   width: 48px;
-  padding: 10px 0 10px 8px;
+  padding: 10px 0;
   color: var(--color-text);
 }
 
