@@ -503,7 +503,7 @@
     if (!linkedVoice) return;
     var card = document.getElementById(linkedVoice);
     if (!card) return;
-    card.scrollIntoView({ block: "center" });
+    card.scrollIntoView({ block: "start" });
     card.focus({ preventScroll: true });
     linkedVoice = null;
   }

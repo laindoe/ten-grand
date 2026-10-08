@@ -419,7 +419,10 @@ main {
 .cw-voice-card:target {
   outline: 1px solid var(--color-text);
   outline-offset: 4px;
-  scroll-margin-top: 120px;
+}
+
+.cw-voice-card {
+  scroll-margin-top: calc(var(--archive-nav-height, 64px) + var(--archive-header-height, 0px) + 16px);
 }
 
 @keyframes cwTickerScroll {
