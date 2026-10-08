@@ -291,7 +291,8 @@ a {
   z-index: 101;
   display: flex;
   flex-direction: column;
-  min-width: 240px;
+  width: var(--nav-menu-width, 240px);
+  min-width: 0;
   max-width: calc(100vw - 32px);
   /* top:100% alone (no margin adjustment) lands this panel's border
      box exactly where the nav's own border-bottom is drawn, with no
