@@ -521,21 +521,38 @@ main {
   margin-bottom: 24px;
 }
 
-/* A direct child of the full-width .cw-campaigns section (not nested
-   inside the padded, max-width .cw-inner), so it reaches the section's
-   own edges the same way its border-top/border-bottom already do --
-   same thin-line language as every other section divider on the site. */
-.cw-campaigns__divider {
-  display: block;
-  width: 100%;
-  height: 1px;
-  background: var(--color-card-border);
-}
-
 /* ---------- Voices Heard (one campaign within Campaigns) ---------- */
 
 .cw-campaign {
   padding-top: 32px;
+}
+
+/* The one light (not dark) surface on this page -- everything inside
+   it flips from the page's light-on-dark palette to dark-on-light,
+   except the pink counter badge, which reads fine on either. */
+.cw-campaign__intro {
+  background: var(--color-text);
+  padding: 24px 20px;
+  margin-bottom: 16px;
+}
+
+.cw-campaign__intro .cw-campaign__title,
+.cw-campaign__intro .cw-campaign__view-all {
+  color: var(--color-bg);
+}
+
+.cw-campaign__intro .cw-campaign__subtitle,
+.cw-campaign__intro .cw-campaign__view-all[aria-disabled="true"] {
+  color: rgba(20, 20, 20, 0.65);
+}
+
+.cw-campaign__intro .cw-campaign__add-voice {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.cw-campaign__intro .cw-campaign__actions {
+  margin-bottom: 0;
 }
 
 .cw-campaign__header {
@@ -827,30 +844,13 @@ main {
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid var(--color-card-border);
-  border-radius: 6px;
-  padding: 10px 12px;
 }
 
-.cw-voice-card__audio-play {
+/* Reuses .amass-flow__review-play (style.css) -- the same icon+label
+   play/pause button as the submission modal's review step, including
+   its white-idle / rainbow-pulse-while-playing treatment. */
+.cw-voice-card__audio .amass-flow__review-play {
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  border: 1px solid var(--color-card-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cw-voice-card__audio-play::before {
-  content: "";
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 5px 0 5px 8px;
-  border-color: transparent transparent transparent var(--color-text);
-  margin-left: 1px;
 }
 
 .cw-voice-card__audio-wave {
@@ -858,16 +858,21 @@ main {
   min-width: 0;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 2px;
   height: 20px;
 }
 
 .cw-voice-card__audio-bar {
-  flex: 1 1 auto;
+  flex: 0 0 2px;
   width: 2px;
   border-radius: 1px;
-  background: var(--color-text-muted);
 }
+
+.cw-voice-card__audio--create .cw-voice-card__audio-bar { background: var(--cw-color-create); }
+.cw-voice-card__audio--build .cw-voice-card__audio-bar { background: var(--cw-color-build); }
+.cw-voice-card__audio--fund .cw-voice-card__audio-bar { background: var(--cw-color-fund); }
+.cw-voice-card__audio--support .cw-voice-card__audio-bar { background: var(--cw-color-support); }
 
 .cw-voice-card__audio-bar:nth-child(3n)   { height: 100%; }
 .cw-voice-card__audio-bar:nth-child(3n+1) { height: 50%; }
@@ -878,13 +883,6 @@ main {
   font-size: 0.68rem;
   color: var(--color-text-muted);
   white-space: nowrap;
-}
-
-.cw-voice-card__audio-menu {
-  flex-shrink: 0;
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  line-height: 1;
 }
 
 /* ---------- Member Resources ---------- */

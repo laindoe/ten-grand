@@ -118,6 +118,36 @@
     });
   }
 
+  // Chromium doesn't reflect the .hidden IDL property to the actual
+  // `hidden` content attribute on <svg> elements (same quirk worked
+  // around in js/amass-modal.js), so toggling icons via plain
+  // `svgEl.hidden = true` silently fails. Setting the attribute
+  // directly works around it.
+  function setSvgHidden(svgEl, isHidden) {
+    if (isHidden) svgEl.setAttribute("hidden", "");
+    else svgEl.removeAttribute("hidden");
+  }
+
+  // These are static sample cards (no real audio file behind them),
+  // so "play" just demonstrates the interaction: toggling the button
+  // between its play and pause icon/label.
+  function initVoiceCardAudio() {
+    var buttons = document.querySelectorAll(".cw-voice-card__audio-play");
+    buttons.forEach(function (button) {
+      var playIcon = button.querySelector(".amass-flow__review-play-icon--play");
+      var pauseIcon = button.querySelector(".amass-flow__review-play-icon--pause");
+      var label = button.querySelector("span");
+      button.addEventListener("click", function () {
+        var isPlaying = !button.classList.contains("is-playing");
+        button.classList.toggle("is-playing", isPlaying);
+        setSvgHidden(playIcon, isPlaying);
+        setSvgHidden(pauseIcon, !isPlaying);
+        label.textContent = isPlaying ? "Pause" : "Play";
+      });
+    });
+  }
+
   loadStats();
   initJoinModal();
+  initVoiceCardAudio();
 })();
