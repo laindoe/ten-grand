@@ -761,8 +761,8 @@ main {
 
 .cw-voice-card__badge {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -791,13 +791,13 @@ main {
 
 .cw-voice-card__badge-number {
   position: relative;
-  font-size: 0.58rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
 .cw-voice-card__role-label {
-  font-size: 0.56rem;
+  font-size: 0.66rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
