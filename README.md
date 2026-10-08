@@ -57,6 +57,22 @@ Once this is merged to `main`:
 GitHub Pages builds this repo with Jekyll automatically (no `.nojekyll`,
 no custom Actions workflow needed) — see the Transmissions section below.
 
+## Broadcasts (Pages CMS)
+
+The Community Wall's View All Broadcasts link opens `/broadcasts/`. Broadcasts
+are stored as individual Markdown files in `_broadcasts/` and can be added,
+edited, or removed through the **Broadcasts** collection in Pages CMS.
+Each entry has a title, date, category, description, and optional destination
+link. Site paths such as `/transmissions/` receive the site's base URL;
+full external URLs can also be used. Without a destination, the card is an
+announcement rather than a clickable link.
+
+The archive lists entries newest first, shows ten initially, and appends up
+to ten more with each Load More click. The button disappears when all entries
+are visible. Without JavaScript, all entries remain available. Search and
+Filter are disabled placeholders for a future phase. The initial ten entries
+come from the supplied design references; their destination links are blank.
+
 ## Transmissions (Jekyll-powered archive)
 
 `/transmissions/` is a Jekyll blog/archive, not a static page:

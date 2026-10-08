@@ -1,0 +1,66 @@
+---
+title: Broadcast
+permalink: /broadcasts/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Broadcast — Ten Grand</title>
+  <meta name="description" content="Official broadcasts from Ten Grand. Updates, opportunities, and news from the house." />
+  <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=149" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=1" />
+</head>
+<body>
+  <div class="site-frame">
+    {% include nav.html %}
+    <main class="broadcasts">
+      <nav class="broadcasts__breadcrumb" aria-label="Breadcrumb">
+        <span class="broadcasts__slash" aria-hidden="true">/</span>
+        <span aria-current="page">BROADCAST</span>
+      </nav>
+      <section aria-labelledby="house-title">
+        <header class="broadcasts__header">
+          <h1 id="house-title">FROM THE HOUSE</h1>
+          <p>Official broadcasts from Ten Grand.</p>
+        </header>
+        <div class="broadcasts__controls" role="group" aria-label="Broadcast search and filters (coming soon)">
+          <div class="broadcasts__search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg>
+            <input type="search" placeholder="Search broadcasts…" aria-label="Search broadcasts (coming soon)" disabled />
+          </div>
+          <button class="broadcasts__filter" type="button" aria-label="Filter broadcasts (coming soon)" disabled>FILTER <span aria-hidden="true">⌄</span></button>
+        </div>
+        {% assign broadcasts = site.broadcasts | sort: 'date' | reverse %}
+        <div class="broadcasts__list" id="broadcast-list">
+          {% for broadcast in broadcasts %}
+          {% assign destination = broadcast.destination | default: '' | strip %}
+          {% if destination != '' %}
+          {% assign prefix = destination | slice: 0, 1 %}
+          <a class="broadcast-card" href="{% if prefix == '/' %}{{ destination | relative_url }}{% else %}{{ destination | escape }}{% endif %}">
+          {% else %}
+          <article class="broadcast-card">
+          {% endif %}
+            <div class="broadcast-card__meta">
+              <span class="broadcast-card__category">{{ broadcast.category | upcase | escape }}</span>
+              <time datetime="{{ broadcast.date | date: '%Y-%m-%d' }}">{{ broadcast.date | date: '%b %-d, %Y' | upcase }}</time>
+            </div>
+            <h2>{{ broadcast.title | escape }}</h2>
+            <p>{{ broadcast.description | escape }}</p>
+            <span class="broadcast-card__arrow" aria-hidden="true">&rarr;</span>
+          {% if destination != '' %}</a>{% else %}</article>{% endif %}
+          {% endfor %}
+        </div>
+        {% if broadcasts.size == 0 %}<p class="broadcasts__empty">Broadcasts from the house are coming soon.</p>{% endif %}
+        <button type="button" class="broadcasts__load" id="broadcast-load-more" aria-controls="broadcast-list" hidden>LOAD MORE <span aria-hidden="true">↓</span></button>
+        <p class="broadcasts__status" id="broadcast-status" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+  </div>
+  {% include site-footer.html %}
+  <script src="{{ '/js/broadcasts.js' | relative_url }}?v=1"></script>
+</body>
+</html>

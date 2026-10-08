@@ -5,6 +5,10 @@ url: "https://laindoe.github.io"
 
 markdown: kramdown
 
+collections:
+  broadcasts:
+    output: false
+
 # Clean URLs for every transmission: /transmissions/<slug>/
 permalink: /transmissions/:slug/
 

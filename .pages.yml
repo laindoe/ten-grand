@@ -1,4 +1,38 @@
 content:
+  - name: broadcasts
+    label: Broadcasts
+    type: collection
+    path: _broadcasts
+    format: yaml-frontmatter
+    filename: "{year}-{month}-{day}-{fields.title}.md"
+    view:
+      fields: [title, date, category]
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: category
+        label: Category
+        type: string
+        required: true
+      - name: description
+        label: Description
+        type: text
+        required: true
+      - name: destination
+        label: Destination link
+        description: "Optional. Use a full https:// URL or a site path such as /transmissions/. Leave blank for an announcement without a link."
+        type: string
+        required: false
   - name: transmissions
     label: Transmissions
     type: collection
