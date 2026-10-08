@@ -25,14 +25,38 @@ content:
         type: string
         required: true
       - name: description
-        label: Description
+        label: Broadcast text
+        description: "Short text shown on the card and at the top of Read More. Maximum 500 characters."
         type: text
         required: true
-      - name: destination
-        label: Destination link
-        description: "Optional. Use a full https:// URL or a site path such as /transmissions/. Leave blank for an announcement without a link."
-        type: string
+        options:
+          maxlength: 500
+      - name: body
+        label: Additional content
+        description: "Optional longer content shown below the original broadcast in the full-screen Read More modal."
+        type: rich-text
         required: false
+      - name: attachments
+        label: Attachments
+        description: "Optional files shown in Read More. Each attachment needs a label and a file."
+        type: object
+        list: true
+        required: false
+        fields:
+          - name: label
+            label: Attachment label
+            type: string
+            required: true
+          - name: file
+            label: File
+            type: file
+            required: true
+            options:
+              media: broadcast-files
+      - name: sample
+        label: Sample broadcast
+        type: boolean
+        default: false
   - name: transmissions
     label: Transmissions
     type: collection
@@ -92,5 +116,11 @@ content:
         type: rich-text
 
 media:
-  input: assets/images
-  output: /assets/images
+  - name: images
+    label: Images
+    input: assets/images
+    output: /assets/images
+  - name: broadcast-files
+    label: Broadcast attachments
+    input: assets/files/broadcasts
+    output: /assets/files/broadcasts

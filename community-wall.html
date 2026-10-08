@@ -14,7 +14,8 @@ permalink: /community-wall/
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=149" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=63" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=64" />
+  <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=1" />
 </head>
 <body>
 
@@ -112,33 +113,10 @@ permalink: /community-wall/
         </div>
 
         <div class="cw-broadcast-grid">
-          <article class="cw-broadcast-card">
-            <div class="cw-broadcast-card__meta">
-              <span class="cw-broadcast-card__category">OPEN CALL</span>
-              <span class="cw-broadcast-card__time"><span class="cw-broadcast-card__time-dot" aria-hidden="true"></span>NOW</span>
-            </div>
-            <h3 class="cw-broadcast-card__title">Who&rsquo;s new this week?</h3>
-            <p class="cw-broadcast-card__body">Introduce yourself. Tell us what you create, build, fund, or support.</p>
-            <span class="cw-broadcast-card__cta" aria-hidden="true">&rarr;</span>
-          </article>
-          <article class="cw-broadcast-card">
-            <div class="cw-broadcast-card__meta">
-              <span class="cw-broadcast-card__category">BETA TESTERS NEEDED</span>
-              <span class="cw-broadcast-card__time">2H AGO</span>
-            </div>
-            <h3 class="cw-broadcast-card__title">Early access: Grandure HQ</h3>
-            <p class="cw-broadcast-card__body">We&rsquo;re testing a new collaborative workspace. 10 members needed.</p>
-            <span class="cw-broadcast-card__cta" aria-hidden="true">&rarr;</span>
-          </article>
-          <article class="cw-broadcast-card">
-            <div class="cw-broadcast-card__meta">
-              <span class="cw-broadcast-card__category">COLLABORATION CALL</span>
-              <span class="cw-broadcast-card__time">5H AGO</span>
-            </div>
-            <h3 class="cw-broadcast-card__title">Seeking a motion designer + developer</h3>
-            <p class="cw-broadcast-card__body">Short-form series on modern builders. DM if you&rsquo;re in.</p>
-            <span class="cw-broadcast-card__cta" aria-hidden="true">&rarr;</span>
-          </article>
+          {% assign broadcasts = site.broadcasts | sort: 'date' | reverse %}
+          {% for broadcast in broadcasts limit:3 %}
+          {% include broadcast-card.html broadcast=broadcast heading='h3' %}
+          {% endfor %}
         </div>
       </div>
     </section>
@@ -254,6 +232,8 @@ permalink: /community-wall/
 
   </div>
 
+  {% include broadcast-modal.html %}
+
   {% include amass-modal.html %}
 
 {% include site-footer.html %}
@@ -263,5 +243,6 @@ permalink: /community-wall/
   <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=9"></script>
   <script src="{{ '/js/community-wall.js' | relative_url }}?v=5"></script>
+  <script src="{{ '/js/broadcasts.js' | relative_url }}?v=2"></script>
 </body>
 </html>

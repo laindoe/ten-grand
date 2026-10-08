@@ -33,8 +33,7 @@
   margin-bottom: 10px;
 }
 
-.broadcasts__header p,
-.broadcast-card p {
+.broadcasts__header p {
   color: var(--color-text-muted);
   line-height: 1.5;
 }
@@ -80,42 +79,10 @@
   opacity: 1;
 }
 .broadcasts__filter span { margin-left: 8px; }
-.broadcasts__list { display: grid; gap: 12px; }
-.broadcast-card {
-  display: block;
-  position: relative;
-  border: 1px solid var(--color-card-border);
-  padding: 20px 48px 20px 36px;
-  color: var(--color-text);
-  text-decoration: none;
-}
-.broadcast-card::before {
-  content: "";
-  position: absolute;
-  top: 18px;
-  bottom: 18px;
-  left: 14px;
-  width: 4px;
-  background: var(--broadcast-accent);
-}
-.broadcast-card__meta {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-  font-size: 0.8rem;
-}
-.broadcast-card__category { color: var(--broadcast-accent); font-weight: 700; }
-.broadcast-card time { color: var(--color-text-muted); white-space: nowrap; }
-.broadcast-card h2 { font-size: 1.15rem; line-height: 1.35; margin-bottom: 8px; }
-.broadcast-card p { font-size: 0.95rem; }
-.broadcast-card__arrow { position: absolute; right: 18px; bottom: 24px; font-size: 1.5rem; }
-a.broadcast-card:hover { border-color: var(--broadcast-accent); }
+.broadcasts__list { display: grid; gap: 16px; }
 .broadcasts__load { width: 100%; margin-top: 16px; cursor: pointer; padding: 20px; }
 .broadcasts__load span { margin-left: 10px; }
 .broadcasts__load:hover { border-color: var(--broadcast-accent); }
-.broadcast-card:focus-visible,
 .broadcasts__load:focus-visible { outline: 2px solid var(--broadcast-accent); outline-offset: 4px; }
 .broadcasts [hidden] { display: none !important; }
 .broadcasts__status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -125,11 +92,4 @@ a.broadcast-card:hover { border-color: var(--broadcast-accent); }
   .broadcasts__filter { padding: 12px; font-size: 0.75rem; }
   .broadcasts__search { gap: 8px; padding: 12px; }
   .broadcasts__search input { font-size: 0.8rem; }
-  .broadcast-card { padding: 18px 36px 18px 28px; }
-  .broadcast-card::before { left: 10px; }
-  .broadcast-card__meta { font-size: 0.68rem; gap: 8px; }
-  .broadcast-card__category { overflow-wrap: anywhere; }
-  .broadcast-card h2 { font-size: 1rem; }
-  .broadcast-card p { font-size: 0.85rem; }
-  .broadcast-card__arrow { right: 12px; }
 }
