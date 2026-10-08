@@ -1187,7 +1187,7 @@ main {
     order: 10;
     flex: 0.85 1 0;
     min-width: 120px;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-end;
     padding: 16px 0 16px 12px;
     border-left: 1px solid var(--color-card-border);
@@ -1198,12 +1198,7 @@ main {
     line-height: 1.5;
   }
 
-  /* One straight line of four, not the mobile 2x2 wrap -- swap the
-     divider borders from the cross pattern to a single row of right
-     borders between each stat (none after the last). display:flex +
-     centering so the number/label sit centered within each box
-     instead of pinned to the top-left; margin-bottom:-1px for the
-     same border-bleed reason as .cw-stats__join above. */
+  /* Keep the role columns on one row with matching bottom baselines. */
   .cw-stat {
     flex: 1 1 0;
     display: flex;
@@ -1214,8 +1209,14 @@ main {
   }
 
   .cw-stat__inner {
-    padding: 16px 8px;
-    text-align: center;
+    width: 100%;
+    padding: 16px 12px;
+    text-align: left;
+  }
+
+  .cw-stat__number {
+    /* Align with the label text after its 7px dot and 6px gap. */
+    padding-left: 13px;
   }
 
   .cw-stats__total-number,
@@ -1231,7 +1232,7 @@ main {
 
   .cw-stat__label {
     margin-top: 6px;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .cw-stat:nth-child(odd) {
