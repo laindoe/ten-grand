@@ -1209,7 +1209,7 @@ main {
   .cw-voice-card__badge-col {
     grid-column: 2;
     grid-row: 1;
-    justify-self: start;
+    justify-self: end;
   }
 
   .cw-voice-card__identity {
