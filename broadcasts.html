@@ -12,7 +12,7 @@ permalink: /broadcasts/
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=149" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=2" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=3" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=1" />
 </head>
 <body>
@@ -21,7 +21,9 @@ permalink: /broadcasts/
     <main class="broadcasts">
       <nav class="broadcasts__breadcrumb" aria-label="Breadcrumb">
         <span class="broadcasts__slash" aria-hidden="true">/</span>
-        <span aria-current="page">BROADCAST</span>
+        <a href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL</a>
+        <span class="broadcasts__slash" aria-hidden="true">/</span>
+        <span aria-current="page">BROADCASTS</span>
       </nav>
       <section aria-labelledby="house-title">
         <header class="broadcasts__header">

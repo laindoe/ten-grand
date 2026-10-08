@@ -7,11 +7,27 @@
 
 .broadcasts__breadcrumb {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   font-size: 0.85rem;
   font-weight: 700;
   margin-bottom: 16px;
+}
+
+.broadcasts__breadcrumb a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.broadcasts__breadcrumb a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.broadcasts__breadcrumb a:focus-visible {
+  outline: 2px solid var(--broadcast-accent);
+  outline-offset: 4px;
 }
 
 .broadcasts__slash {
