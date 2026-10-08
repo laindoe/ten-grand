@@ -5146,3 +5146,19 @@ body.modal-open {
     font-size: max(16px, 1rem);
   }
 }
+
+/* Keep the response counter and navigation in one scroll flow on phones.
+   The action row must follow the writing panel instead of covering it. */
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal .amass-flow__step[data-amass-step="5"] {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  #amass-modal .amass-flow__step[data-amass-step="5"] .amass-flow__content {
+    flex-shrink: 0;
+    overflow: visible;
+  }
+  #amass-modal #amass-why-detail {
+    min-height: min(150px, calc(var(--amass-viewport-height, 100dvh) * 0.3));
+  }
+}

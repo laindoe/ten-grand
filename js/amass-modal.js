@@ -23,13 +23,20 @@
       if (!modal.classList.contains('is-open')) return;
       const field = document.activeElement;
       if (!field || !modal.contains(field) || !field.matches('.amass-flow__field')) return;
-      const content = field.closest('.amass-flow__content');
+      let content = field.closest('.amass-flow__content');
+      if (content && getComputedStyle(content).overflowY !== 'auto') {
+        content = field.closest('.amass-flow__step');
+      }
       if (!content || getComputedStyle(content).overflowY !== 'auto') return;
       const bounds = content.getBoundingClientRect();
-      const rect = field.getBoundingClientRect();
+      // Include the character limit when revealing the written response.
+      const writing = field.id === 'amass-why-detail';
+      const rect = (writing ? field.parentElement : field).getBoundingClientRect();
       const top = bounds.top + 8;
       const bottom = bounds.bottom - 8;
-      if (rect.height > bottom - top) {
+      if (writing && rect.bottom > bottom) {
+        content.scrollTop += rect.bottom - bottom;
+      } else if (rect.height > bottom - top) {
         // A tall textarea cannot fit completely. Keep its top stable
         // rather than alternating between revealing its top and bottom.
         if (Math.abs(rect.top - top) > 1) content.scrollTop += rect.top - top;
