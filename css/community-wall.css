@@ -1189,7 +1189,8 @@ main {
     min-width: 120px;
     align-items: flex-start;
     justify-content: flex-end;
-    padding: 16px 0 16px 12px;
+    /* Match the role columns: 12px inset plus 7px dot and 6px gap. */
+    padding: 16px 0 16px 25px;
     border-left: 1px solid var(--color-card-border);
   }
 
