@@ -707,6 +707,7 @@ main {
 .cw-voice-card__name {
   font-weight: 700;
   font-size: 1.2rem;
+  text-transform: uppercase;
 }
 
 .cw-voice-card__links {
@@ -876,6 +877,19 @@ main {
 .cw-voice-card__audio-bar:nth-child(3n)   { height: 100%; }
 .cw-voice-card__audio-bar:nth-child(3n+1) { height: 50%; }
 .cw-voice-card__audio-bar:nth-child(3n+2) { height: 75%; }
+
+/* Real submissions (js/community-wall.js): bar heights come from the
+   stored audio_peaks data as inline styles, overriding the nth-child
+   pattern above. .is-played marks the bars behind the moving
+   playhead, synced to real playback -- the SoundCloud-style "filled
+   in as it plays" look, using the same role color at full opacity
+   against the dimmed rest of the wave. */
+.cw-voice-card__audio-wave--real .cw-voice-card__audio-bar {
+  opacity: 0.4;
+}
+.cw-voice-card__audio-wave--real .cw-voice-card__audio-bar.is-played {
+  opacity: 1;
+}
 
 .cw-voice-card__audio-time {
   flex-shrink: 0;

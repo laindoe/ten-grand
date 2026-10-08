@@ -128,6 +128,47 @@
     });
   }
 
+  // Matches the bar count js/community-wall.js draws a stored
+  // audio_peaks array into -- see .cw-voice-card__audio-bar.
+  const WAVEFORM_PEAK_COUNT = 100;
+
+  // Downsamples a recorded clip into a small array of peak amplitudes
+  // (0-1) for drawing a real waveform on the Community Wall later,
+  // instead of decoding the full audio file again just to display it.
+  // Returns null (never throws) if decoding isn't possible -- the
+  // caller treats that the same as "no waveform data yet".
+  async function extractAudioPeaks(blob, peakCount) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return null;
+    const audioCtx = new AudioContextClass();
+    try {
+      const arrayBuffer = await blob.arrayBuffer();
+      const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+      const channel = audioBuffer.getChannelData(0);
+      const samplesPerPeak = Math.max(1, Math.floor(channel.length / peakCount));
+      const peaks = [];
+      for (let i = 0; i < peakCount; i++) {
+        const start = i * samplesPerPeak;
+        const end = Math.min(channel.length, start + samplesPerPeak);
+        let max = 0;
+        for (let j = start; j < end; j++) {
+          const abs = Math.abs(channel[j]);
+          if (abs > max) max = abs;
+        }
+        // Lossy codecs (the recording is encoded/decoded through
+        // webm/opus) can decode back slightly past full scale --
+        // clamp so a bar's height never exceeds 100%.
+        peaks.push(Math.round(Math.min(1, max) * 1000) / 1000);
+      }
+      return peaks;
+    } catch (error) {
+      console.error('Ten Grand waveform peak extraction failed', error);
+      return null;
+    } finally {
+      audioCtx.close();
+    }
+  }
+
   function initAmassSubmission() {
     const modal = document.getElementById('amass-modal');
     const form = document.getElementById('amass-voice-form');
@@ -911,6 +952,7 @@
             throw uploadError;
           }
           payload.audio_path = uploadData.path;
+          payload.audio_peaks = await extractAudioPeaks(audioBlob, WAVEFORM_PEAK_COUNT);
         }
 
         if (photoBlob) {
@@ -925,9 +967,21 @@
           payload.photo_path = photoUploadData.path;
         }
 
-        const { data, error, status, statusText } = await window.tenGrandSupabase
+        let { data, error, status, statusText } = await window.tenGrandSupabase
           .from('voices_heard')
           .insert(payload);
+
+        // audio_peaks is a newer column added by a separate SQL
+        // migration -- if it hasn't been run yet, retry once without
+        // that field rather than losing the whole submission over a
+        // waveform that can't be drawn yet anyway.
+        if (error && 'audio_peaks' in payload && /audio_peaks/.test(error.message || '')) {
+          const { audio_peaks, ...payloadWithoutPeaks } = payload;
+          ({ data, error, status, statusText } = await window.tenGrandSupabase
+            .from('voices_heard')
+            .insert(payloadWithoutPeaks));
+        }
+
         if (error) console.error('Ten Grand Supabase insert response', { data, error, status, statusText });
 
         if (error) throw error;
