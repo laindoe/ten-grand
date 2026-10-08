@@ -172,6 +172,7 @@ a {
 }
 
 .nav__divider {
+  flex-shrink: 0;
   width: 1px;
   background: var(--color-card-border);
 }
@@ -197,6 +198,12 @@ a {
    scroll. Shrinking the floor further only in this narrow band fixes
    that without touching the clamp's behavior at any width it was
    already scaling past 0.5rem. */
+@media (max-width: 480px) {
+  .nav__item {
+    padding-inline: 6px;
+  }
+}
+
 @media (max-width: 340px) {
   .nav__logo-box {
     width: 48px;
