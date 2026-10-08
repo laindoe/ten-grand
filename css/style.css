@@ -5149,14 +5149,16 @@ body.modal-open {
   }
 }
 
-/* Keep the response counter and navigation in one scroll flow on phones.
+/* Keep response/title counters and navigation in one scroll flow on phones.
    The action row must follow the writing panel instead of covering it. */
 @media (max-width: 900px), (pointer: coarse) {
-  #amass-modal .amass-flow__step[data-amass-step="5"] {
+  #amass-modal .amass-flow__step[data-amass-step="5"],
+  #amass-modal .amass-flow__step[data-amass-step="6"] {
     overflow-y: auto;
     overscroll-behavior: contain;
   }
-  #amass-modal .amass-flow__step[data-amass-step="5"] .amass-flow__content {
+  #amass-modal .amass-flow__step[data-amass-step="5"] .amass-flow__content,
+  #amass-modal .amass-flow__step[data-amass-step="6"] .amass-flow__content {
     flex-shrink: 0;
     overflow: visible;
   }

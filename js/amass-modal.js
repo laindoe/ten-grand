@@ -29,12 +29,18 @@
       }
       if (!content || getComputedStyle(content).overflowY !== 'auto') return;
       const bounds = content.getBoundingClientRect();
-      // Include the character limit when revealing the written response.
-      const writing = field.id === 'amass-why-detail';
-      const rect = (writing ? field.parentElement : field).getBoundingClientRect();
+      // Reveal counted fields together with their limits, including titles.
+      const counter = modal.querySelector(`[data-counter-for="${field.id}"]`);
+      const fieldBounds = field.getBoundingClientRect();
+      const counterBounds = counter && counter.closest('.amass-flow__counter').getBoundingClientRect();
+      const rect = {
+        top: fieldBounds.top,
+        bottom: counterBounds ? Math.max(fieldBounds.bottom, counterBounds.bottom) : fieldBounds.bottom,
+      };
+      rect.height = rect.bottom - rect.top;
       const top = bounds.top + 8;
       const bottom = bounds.bottom - 8;
-      if (writing && rect.bottom > bottom) {
+      if (counter && rect.bottom > bottom) {
         content.scrollTop += rect.bottom - bottom;
       } else if (rect.height > bottom - top) {
         // A tall textarea cannot fit completely. Keep its top stable
