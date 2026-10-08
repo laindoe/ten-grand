@@ -27,7 +27,10 @@
         [approvedCount(null)].concat(roles.map(approvedCount))
       );
       var total = counts[0];
-      if (total !== null) setStat("total", total);
+      if (total !== null) {
+        setStat("total", total);
+        setStat("voices-total", total);
+      }
       roles.forEach(function (role, i) {
         var count = counts[i + 1];
         if (count !== null) setStat(role, count);
