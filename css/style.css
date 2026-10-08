@@ -3407,15 +3407,18 @@ a {
    callout's .route__callout-footer): negative margin equal to
    .modal__panel's own horizontal padding, so the rule reaches the
    panel's border instead of stopping at its padded content width. */
-/* padding-top matches .modal__panel's own 32px bottom padding (the
-   footer's own bottom padding is 0, so that panel padding is the only
-   thing below the text) -- equal gaps above and below center the text
-   vertically in the footer instead of it sitting close to the divider
-   line above it. */
+/* padding-top plus the margin-bottom below both come out to 16px --
+   the footer's own bottom padding is 0, so without the negative
+   margin, the gap below the text would be .modal__panel's full 32px
+   bottom padding instead of matching the 16px above it. Equal gaps
+   above and below keep the text centered in the footer, just in a
+   tighter band hugging the divider line instead of floating in the
+   middle of a much taller one. */
 .modal__footer {
   display: flex;
   margin-inline: -28px;
-  padding: 32px 28px 0;
+  margin-bottom: -16px;
+  padding: 16px 28px 0;
   border-top: 1px solid var(--color-card-border);
   font-size: 0.75rem;
   font-weight: 600;
@@ -3451,20 +3454,20 @@ a {
 }
 
 /* Vertical divider between the two buttons, bled through the footer's
-   own 32px top padding and (since the footer's own bottom padding is
-   0) the panel's 32px bottom padding, so it reaches the border-top
-   line above and the panel's own bottom edge below -- same negative-
-   margin bleed technique as the full-bleed dividers elsewhere in this
-   file. margin:auto left/right centers it in the free space between
-   the two buttons, same trick as .modal__cta's old margin-left:auto,
-   which this replaces. */
+   own 16px top padding and (via the footer's own -16px margin-bottom
+   above) the panel's bottom padding down to that same 16px, so it
+   reaches the border-top line above and the panel's own bottom edge
+   below -- same negative-margin bleed technique as the full-bleed
+   dividers elsewhere in this file. margin:auto left/right centers it
+   in the free space between the two buttons, same trick as
+   .modal__cta's old margin-left:auto, which this replaces. */
 .modal__divider {
   display: block;
   width: 1px;
-  /* -33px (not -32px) on both sides accounts for the 1px borders just
+  /* -17px (not -16px) on both sides accounts for the 1px borders just
      beyond each edge -- the footer's own border-top above, and the
      panel's own outer border below. */
-  margin: -33px auto;
+  margin: -17px auto;
   background: var(--color-card-border);
   flex-shrink: 0;
 }
