@@ -245,19 +245,20 @@
 
   // These are static sample cards (no real audio file behind them),
   // so "play" just demonstrates the interaction: toggling the button
-  // between its play and pause icon/label.
+  // between its play and pause icons.
   function initVoiceCardAudio() {
     var buttons = document.querySelectorAll(".cw-voice-card__audio-play");
     buttons.forEach(function (button) {
       var playIcon = button.querySelector(".amass-flow__review-play-icon--play");
       var pauseIcon = button.querySelector(".amass-flow__review-play-icon--pause");
       var label = button.querySelector("span");
+      if (label) label.remove();
       button.addEventListener("click", function () {
         var isPlaying = !button.classList.contains("is-playing");
         button.classList.toggle("is-playing", isPlaying);
         setSvgHidden(playIcon, isPlaying);
         setSvgHidden(pauseIcon, !isPlaying);
-        label.textContent = isPlaying ? "Pause" : "Play";
+        button.setAttribute("aria-label", isPlaying ? "Pause audio response" : "Play audio response");
       });
     });
   }
@@ -309,6 +310,9 @@
       avatar.style.removeProperty("width");
       avatar.style.removeProperty("height");
       body.style.removeProperty("margin-top");
+
+      // Mobile uses a fixed photo with identity below; let CSS size the rows.
+      if (window.matchMedia("(max-width: 759px)").matches) return;
 
       var size = Math.max(identity.offsetHeight, badgeCol ? badgeCol.offsetHeight : 0);
       size = Math.min(size, AVATAR_MAX_SIZE);
@@ -480,12 +484,9 @@
     button.setAttribute("aria-label", "Play audio response");
     button.innerHTML =
       '<svg class="amass-flow__review-play-icon amass-flow__review-play-icon--play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5 L19 12 L7 19 Z"/></svg>' +
-      '<svg class="amass-flow__review-play-icon amass-flow__review-play-icon--pause" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>' +
-      "<span>Play</span>";
+      '<svg class="amass-flow__review-play-icon amass-flow__review-play-icon--pause" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
     var playIcon = button.querySelector(".amass-flow__review-play-icon--play");
     var pauseIcon = button.querySelector(".amass-flow__review-play-icon--pause");
-    var label = button.querySelector("span");
-
     var wave = document.createElement("span");
     wave.className = "cw-voice-card__audio-wave cw-voice-card__audio-wave--real";
     wave.setAttribute("aria-hidden", "true");
@@ -499,7 +500,7 @@
     function setIcon(isPlaying) {
       setSvgHidden(playIcon, isPlaying);
       setSvgHidden(pauseIcon, !isPlaying);
-      label.textContent = isPlaying ? "Pause" : "Play";
+      button.setAttribute("aria-label", isPlaying ? "Pause audio response" : "Play audio response");
       button.classList.toggle("is-playing", isPlaying);
     }
 
@@ -607,43 +608,68 @@
     return article;
   }
 
-  // Replaces the four static example cards with real approved
-  // submissions. Left untouched (same as loadStats()) if the
-  // Supabase client isn't available, the query fails, or there are
-  // no approved submissions yet -- the page should never show an
-  // empty wall or break over this.
+  var voiceOffset = 0;
+  var voiceLoading = false;
   async function loadVoiceCards() {
-    if (!window.tenGrandSupabase) return;
+    var grid = document.querySelector(".cw-voice-grid");
+    if (!grid || voiceLoading) return;
+    var archive = grid.hasAttribute("data-voice-archive");
+    var button = document.getElementById("voice-load-more");
+    var message = document.getElementById("voice-message");
+    var status = document.getElementById("voice-status");
+    if (!window.tenGrandSupabase) {
+      if (message) message.textContent = "Voices could not be loaded. Please refresh to try again.";
+      grid.setAttribute("aria-busy", "false");
+      return;
+    }
+    voiceLoading = true;
+    grid.setAttribute("aria-busy", "true");
+    if (button) button.disabled = true;
     try {
-      var result = await window.tenGrandSupabase
+      var query = window.tenGrandSupabase
         .from("voices_heard")
-        .select("*")
+        .select("*", { count: "exact" })
         .eq("status", "approved")
         .order("created_at", { ascending: false })
-        .limit(24);
-      if (result.error || !result.data || !result.data.length) return;
-
-      var grid = document.querySelector(".cw-voice-grid");
-      if (!grid) return;
-
-      var cards = result.data
-        .map(function (row, i) { return buildVoiceCard(row, i + 1); })
-        .filter(Boolean);
-      if (!cards.length) return;
-
-      // Real cards wire their own play/pause listener in
-      // buildAudioBody() (driven by real <audio> events, not the
-      // class-toggle initVoiceCardAudio() uses for the static
-      // examples) -- re-running it here would double-bind their
-      // buttons and fight the real one.
-      grid.replaceChildren.apply(grid, cards);
+        .order("id", { ascending: false });
+      var result = await (archive ? query.range(voiceOffset, voiceOffset + 23) : query.limit(24));
+      if (result.error) throw result.error;
+      var rows = result.data || [];
+      var cards = rows.map(function (row, i) {
+        return buildVoiceCard(row, voiceOffset + i + 1);
+      }).filter(Boolean);
+      if (archive) {
+        cards.forEach(function (card) { grid.appendChild(card); });
+        voiceOffset += rows.length;
+        if (button) button.hidden = typeof result.count === "number"
+          ? voiceOffset >= result.count : rows.length < 24;
+        if (message) {
+          message.hidden = grid.children.length > 0;
+          message.textContent = "Voices are coming soon. Be the first to share yours.";
+        }
+        if (status) status.textContent = "Showing " + grid.children.length + " voices.";
+      } else if (cards.length) {
+        grid.replaceChildren.apply(grid, cards);
+      }
       fixVoiceCardLayout();
     } catch (error) {
+      if (message) {
+        message.hidden = false;
+        message.textContent = "Voices could not be loaded. Please try again.";
+      }
+      if (button) button.hidden = false;
       console.error("Ten Grand voice cards failed to load", error);
+    } finally {
+      voiceLoading = false;
+      grid.setAttribute("aria-busy", "false");
+      if (button) button.disabled = false;
     }
   }
 
-  loadStats();
+  var voiceLoadMore = document.getElementById("voice-load-more");
+  if (voiceLoadMore) voiceLoadMore.addEventListener("click", loadVoiceCards);
+
+  if (!document.querySelector("[data-voice-archive]")) loadStats();
   initJoinModal();
   initBroadcastModal();
   initVoiceCardAudio();

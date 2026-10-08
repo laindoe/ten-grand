@@ -438,129 +438,8 @@ main {
 
 .cw-broadcast-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
-}
-
-.cw-broadcast-card {
-  position: relative;
-  border: 1px solid var(--color-card-border);
-  padding: 18px;
-}
-
-/* Left accent bar as a pseudo-element instead of border-left, purely
-   so it can sit flush over the card's own 1px border. */
-.cw-broadcast-card::before {
-  content: "";
-  position: absolute;
-  top: -1px;
-  bottom: -1px;
-  left: -1px;
-  width: 3px;
-  background: var(--cw-color-accent);
-}
-
-.cw-broadcast-card__meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.cw-broadcast-card__category {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: var(--cw-color-accent);
-}
-
-.cw-broadcast-card__time {
-  font-size: 0.68rem;
-  color: var(--color-text-muted);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.cw-broadcast-card__time-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--color-vandalism);
-}
-
-.cw-broadcast-card__title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.cw-broadcast-card__body {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-  line-height: 1.5;
-}
-
-/* Inserted by js/community-wall.js only for a card that has a
-   .cw-broadcast-card__extra block -- plain text link, not a button,
-   since these cards read as posts now rather than link-outs. */
-.cw-broadcast-card__read-more {
-  display: inline-block;
-  margin-top: 10px;
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--cw-color-accent);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-/* ---------- Broadcast "Read more" modal ---------- */
-/* Reproduces the original post (same classes as .cw-broadcast-card's
-   own meta/title/body, plus a matching left accent bar) above a
-   divider, then the card's .cw-broadcast-card__extra content below --
-   so the modal always shows the broadcast exactly as posted, with the
-   extra detail appended rather than replacing it. */
-
-#cw-broadcast-modal .modal__panel {
-  max-width: 420px;
-  padding-top: 48px;
-}
-
-.cw-broadcast-modal__original {
-  position: relative;
-  padding-left: 14px;
-  margin-bottom: 20px;
-}
-
-.cw-broadcast-modal__original::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 3px;
-  background: var(--cw-color-accent);
-}
-
-.cw-broadcast-modal__original .cw-broadcast-card__title {
-  margin-bottom: 6px;
-}
-
-.cw-broadcast-modal__extra-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  padding-top: 16px;
-  border-top: 1px solid var(--color-card-border);
-  margin-bottom: 10px;
 }
 
 /* ---------- Campaigns (parent section) ---------- */
@@ -716,6 +595,7 @@ main {
    safety net for every text node in the card, not just the ones
    below with a more specific fix for their own sizing too. */
 .cw-voice-card {
+  min-width: 0;
   border: 1px solid var(--color-card-border);
   padding: 20px;
   overflow-wrap: anywhere;
@@ -919,43 +799,53 @@ main {
 
 /* Reuses .amass-flow__review-play (style.css) -- the same icon+label
    play/pause button as the submission modal's review step, including
-   its white-idle / rainbow-pulse-while-playing treatment. */
+   its icon and label, with a role-colored pulse while playing. */
 .cw-voice-card__audio .amass-flow__review-play {
   flex-shrink: 0;
 }
 
-/* More bars than any card is wide enough to show at this pitch --
-   overflow:hidden clips the excess, so the bars always pack edge to
-   edge regardless of how much space a given card's row leaves for
-   the wave, instead of justify-content stretching a fixed bar count
-   out into visible gaps. */
-/* flex-basis 0 (not auto) -- this item's width comes entirely from
-   flex-grow filling the row, never from its 100 fixed-width,
-   non-shrinking bars. Relying on shrink + overflow:hidden instead
-   (as this used to) depends on the browser treating overflow:hidden
-   as resetting the item's automatic minimum size to 0 per spec --
-   Safari/WebKit doesn't reliably do that, so the bars pushed this
-   element (and the whole page) wider instead of getting clipped. */
+.cw-voice-card__audio--create { --cw-audio-color: var(--cw-color-create); }
+.cw-voice-card__audio--build { --cw-audio-color: var(--cw-color-build); }
+.cw-voice-card__audio--fund { --cw-audio-color: var(--cw-color-fund); }
+.cw-voice-card__audio--support { --cw-audio-color: var(--cw-color-support); }
+
+.cw-voice-card__audio .amass-flow__review-play:hover,
+.cw-voice-card__audio .amass-flow__review-play:focus-visible,
+.cw-voice-card__audio .amass-flow__review-play.is-playing {
+  color: var(--cw-audio-color);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cw-voice-card__audio .amass-flow__review-play.is-playing {
+    animation: cw-role-play-pulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes cw-role-play-pulse {
+  0%, 100% { opacity: 0.7; text-shadow: none; }
+  50% { opacity: 1; text-shadow: 0 0 8px currentColor; }
+}
+
+/* Fit every peak into the available width so the visible playhead
+   represents the entire recording, including on narrow cards. */
 .cw-voice-card__audio-wave {
   flex: 1 1 0%;
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 1px;
+  gap: 0;
   height: 20px;
   overflow: hidden;
 }
 
 .cw-voice-card__audio-bar {
-  flex: 0 0 2px;
-  width: 2px;
+  flex: 1 1 0%;
+  min-width: 0;
+  transform: scaleX(0.67);
   border-radius: 1px;
 }
 
-.cw-voice-card__audio--create .cw-voice-card__audio-bar { background: var(--cw-color-create); }
-.cw-voice-card__audio--build .cw-voice-card__audio-bar { background: var(--cw-color-build); }
-.cw-voice-card__audio--fund .cw-voice-card__audio-bar { background: var(--cw-color-fund); }
-.cw-voice-card__audio--support .cw-voice-card__audio-bar { background: var(--cw-color-support); }
+.cw-voice-card__audio-bar { background: var(--cw-audio-color); }
 
 .cw-voice-card__audio-bar:nth-child(3n)   { height: 100%; }
 .cw-voice-card__audio-bar:nth-child(3n+1) { height: 50%; }
@@ -1292,7 +1182,7 @@ main {
   }
 
   .cw-voice-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .cw-resource-grid {
@@ -1324,6 +1214,28 @@ main {
 }
 
 @media (max-width: 759px) {
+  .cw-voice-card__top {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .cw-voice-card__avatar {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .cw-voice-card__badge-col {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .cw-voice-card__identity {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
   /* Single centered column: icon on top, then the eyebrow+title
      heading, then the subtitle. */
   .cw-hero__inner {

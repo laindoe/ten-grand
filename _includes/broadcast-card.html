@@ -1,0 +1,28 @@
+{% assign broadcast = include.broadcast %}
+{% assign additional_text = broadcast.content | strip %}
+{% assign attachments = broadcast.attachments | where_exp: 'attachment', 'attachment.file != nil' | where_exp: 'attachment', 'attachment.file != ""' %}
+<article class="cw-broadcast-card">
+  {% include broadcast-summary.html broadcast=broadcast heading=include.heading %}
+  {% if additional_text != '' or attachments.size > 0 %}
+  <button type="button" class="cw-broadcast-card__read-more" data-broadcast-open aria-haspopup="dialog" aria-controls="broadcast-modal" aria-label="Read more about {{ broadcast.title | escape }}">READ MORE</button>
+  <template class="broadcast-detail">
+    <header class="broadcast-modal__original cw-broadcast-card">
+      {% include broadcast-summary.html broadcast=broadcast heading='h2' %}
+    </header>
+    {% if additional_text != '' %}
+    <div class="broadcast-modal__body">{{ broadcast.content | markdownify }}</div>
+    {% endif %}
+    {% if attachments.size > 0 %}
+    <section class="broadcast-modal__attachments" aria-label="Attachments">
+      <h3>ATTACHMENTS</h3>
+      <ul>
+        {% for attachment in attachments %}
+        {% assign prefix = attachment.file | slice: 0, 1 %}
+        <li><a href="{% if prefix == '/' %}{{ attachment.file | relative_url }}{% else %}{{ attachment.file | escape }}{% endif %}" target="_blank" rel="noopener">{{ attachment.label | default: 'Open attachment' | escape }} <span class="broadcast-modal__file-note">(opens in a new tab)</span></a></li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+  </template>
+  {% endif %}
+</article>

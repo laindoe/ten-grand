@@ -14,7 +14,8 @@ permalink: /community-wall/
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=149" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=64" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=67" />
+  <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=1" />
 </head>
 <body>
 
@@ -108,49 +109,20 @@ permalink: /community-wall/
             <h2 class="cw-section-header__title"><span class="cw-section-header__slash" aria-hidden="true">/</span>BROADCASTS</h2>
             <p class="cw-section-header__subtitle">Real-time updates from across the community.</p>
           </div>
-          <a class="cw-section-header__link" href="#" aria-disabled="true" tabindex="-1">VIEW ALL BROADCASTS &rarr;</a>
+          <a class="cw-section-header__link" href="{{ '/broadcasts/' | relative_url }}">VIEW ALL BROADCASTS &rarr;</a>
         </div>
 
         <div class="cw-broadcast-grid">
-          <article class="cw-broadcast-card">
-            <div class="cw-broadcast-card__meta">
-              <span class="cw-broadcast-card__category">OPEN CALL</span>
-              <span class="cw-broadcast-card__time"><span class="cw-broadcast-card__time-dot" aria-hidden="true"></span>NOW</span>
-            </div>
-            <h3 class="cw-broadcast-card__title">Who&rsquo;s new this week?</h3>
-            <p class="cw-broadcast-card__body">Introduce yourself. Tell us what you create, build, fund, or support.</p>
-          </article>
-          <article class="cw-broadcast-card">
-            <div class="cw-broadcast-card__meta">
-              <span class="cw-broadcast-card__category">BETA TESTERS NEEDED</span>
-              <span class="cw-broadcast-card__time">2H AGO</span>
-            </div>
-            <h3 class="cw-broadcast-card__title">Early access: Grandure HQ</h3>
-            <p class="cw-broadcast-card__body">We&rsquo;re testing a new collaborative workspace. 10 members needed.</p>
-          </article>
-          <article class="cw-broadcast-card">
-            <div class="cw-broadcast-card__meta">
-              <span class="cw-broadcast-card__category">COLLABORATION CALL</span>
-              <span class="cw-broadcast-card__time">5H AGO</span>
-            </div>
-            <h3 class="cw-broadcast-card__title">Seeking a motion designer + developer</h3>
-            <p class="cw-broadcast-card__body">Short-form series on modern builders. DM if you&rsquo;re in.</p>
-            <!-- Optional: add a .cw-broadcast-card__extra block (hidden)
-                 to any card for longer details that don't belong in the
-                 main post -- a "Read more" button appears automatically
-                 and opens it in a modal above the original post. Omit
-                 this block entirely for a card that doesn't need it. -->
-            <div class="cw-broadcast-card__extra" hidden>
-              <p>6-episode series profiling builders in the network, shot over 3 weekends starting next month. Looking for one motion designer (After Effects) and one developer (interactive web pieces between episodes) to join as credited collaborators.</p>
-              <p>Paid, scope and rate discussed directly. Portfolio links welcome when you reach out.</p>
-            </div>
-          </article>
+          {% assign broadcasts = site.broadcasts | sort: 'date' | reverse %}
+          {% for broadcast in broadcasts limit:3 %}
+          {% include broadcast-card.html broadcast=broadcast heading='h3' %}
+          {% endfor %}
         </div>
       </div>
     </section>
 
     <!-- ============ CAMPAIGNS ============ -->
-    <section class="cw-campaigns">
+    <section class="cw-campaigns" id="campaigns">
       <div class="cw-inner">
         <div class="cw-campaigns__intro">
           <h2 class="cw-section-header__title"><span class="cw-section-header__slash" aria-hidden="true">/</span>CAMPAIGNS</h2>
@@ -170,7 +142,7 @@ permalink: /community-wall/
 
           <div class="cw-campaign__actions">
             <button type="button" class="cw-campaign__add-voice" data-modal-open="amass-modal">ADD YOUR VOICE &rarr;</button>
-            <a class="cw-campaign__view-all" href="#" aria-disabled="true" tabindex="-1">VIEW ALL &rarr;</a>
+            <a class="cw-campaign__view-all" href="{{ '/voices-heard/' | relative_url }}">VIEW ALL &rarr;</a>
           </div>
         </div>
 
@@ -258,27 +230,9 @@ permalink: /community-wall/
     </div>
   </div>
 
-  <!-- Shared "Read more" modal for any Broadcast card with a
-       .cw-broadcast-card__extra block -- js/community-wall.js fills
-       these in per-card when opened. -->
-  <div class="modal" id="cw-broadcast-modal" aria-hidden="true">
-    <div class="modal__backdrop" data-modal-close></div>
-    <div class="modal__panel cw-broadcast-modal__panel" role="dialog" aria-modal="true" aria-labelledby="cw-broadcast-modal-title">
-      <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
-      <div class="cw-broadcast-modal__original">
-        <div class="cw-broadcast-card__meta">
-          <span class="cw-broadcast-card__category" data-broadcast-modal-category></span>
-          <span class="cw-broadcast-card__time" data-broadcast-modal-time></span>
-        </div>
-        <h3 class="cw-broadcast-card__title" id="cw-broadcast-modal-title" data-broadcast-modal-title></h3>
-        <p class="cw-broadcast-card__body" data-broadcast-modal-body></p>
-      </div>
-      <p class="cw-broadcast-modal__extra-label">More Details</p>
-      <div class="modal__body cw-broadcast-modal__extra" data-broadcast-modal-extra></div>
-    </div>
   </div>
 
-  </div>
+  {% include broadcast-modal.html %}
 
   {% include amass-modal.html %}
 
@@ -288,6 +242,7 @@ permalink: /community-wall/
   <script src="{{ '/assets/js/supabase.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=9"></script>
-  <script src="{{ '/js/community-wall.js' | relative_url }}?v=6"></script>
+  <script src="{{ '/js/community-wall.js' | relative_url }}?v=8"></script>
+  <script src="{{ '/js/broadcasts.js' | relative_url }}?v=2"></script>
 </body>
 </html>

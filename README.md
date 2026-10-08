@@ -57,6 +57,32 @@ Once this is merged to `main`:
 GitHub Pages builds this repo with Jekyll automatically (no `.nojekyll`,
 no custom Actions workflow needed) — see the Transmissions section below.
 
+## Broadcasts (Pages CMS)
+
+The Community Wall's View All Broadcasts link opens `/broadcasts/`. Broadcasts
+are stored as individual Markdown files in `_broadcasts/` and can be added,
+edited, or removed through the **Broadcasts** collection in Pages CMS.
+Each entry has a title, date, category, and broadcast text (maximum 500
+characters). Optional **Additional content** uses the rich-text editor and is
+saved as the Markdown body. Optional **Attachments** contain a readable label
+and uploaded file, stored in `assets/files/broadcasts/`. Either additional
+content or attachments enables **Read More**, which opens a full-screen modal
+with the original broadcast above the expanded content and attachment links.
+The Close button or Escape returns to the originating card.
+
+Both pages share card markup and styles. The Community Wall shows the newest
+three collection entries. The archive lists entries newest first, shows ten
+initially, and appends up to ten more with each Load More click. The button
+disappears when all entries are visible. Without JavaScript, all entries
+remain available. Search and Filter remain disabled placeholders.
+
+The first ten entries come from the supplied design references. Ten older
+entries are marked **Sample** for previewing the second batch, including
+examples of longer text and an attachment. The newest broadcast also includes
+explicitly labeled preview details so the modal can be reviewed immediately.
+Remove the sample entries and replace preview details through Pages CMS before
+using the archive for official announcements.
+
 ## Transmissions (Jekyll-powered archive)
 
 `/transmissions/` is a Jekyll blog/archive, not a static page:
