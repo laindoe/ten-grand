@@ -16,6 +16,52 @@
 
     let lastFocused = null;
     let scrollLock = null;
+    const viewport = window.visualViewport;
+    const panel = modal.querySelector('.amass-flow__panel');
+    let viewportFrame = null;
+
+    // iOS keyboards shrink/pan the visual viewport without necessarily
+    // changing dvh. Keep the overlay inside the area the user can see.
+    function syncViewport() {
+      viewportFrame = null;
+      if (!viewport || !modal.classList.contains('is-open')) return;
+      // Leave intentional pinch zoom under the browser's control.
+      if (Math.abs(viewport.scale - 1) > 0.01) return;
+      modal.style.setProperty('--amass-viewport-height', `${viewport.height}px`);
+      modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
+
+      const field = document.activeElement;
+      if (!panel.contains(field) || !field.matches('input, textarea, select')) return;
+      const bounds = panel.getBoundingClientRect();
+      const fieldBounds = field.getBoundingClientRect();
+      const top = bounds.top + 12;
+      const bottom = bounds.bottom - 12;
+      if (fieldBounds.bottom > bottom) panel.scrollTop += fieldBounds.bottom - bottom;
+      else if (fieldBounds.top < top) panel.scrollTop -= top - fieldBounds.top;
+    }
+
+    function queueViewportSync() {
+      if (viewportFrame === null) viewportFrame = requestAnimationFrame(syncViewport);
+    }
+
+    function trackViewport() {
+      if (!viewport) return;
+      syncViewport();
+      viewport.addEventListener('resize', queueViewportSync);
+      viewport.addEventListener('scroll', queueViewportSync);
+      modal.addEventListener('focusin', queueViewportSync);
+    }
+
+    function stopTrackingViewport() {
+      if (!viewport) return;
+      viewport.removeEventListener('resize', queueViewportSync);
+      viewport.removeEventListener('scroll', queueViewportSync);
+      modal.removeEventListener('focusin', queueViewportSync);
+      if (viewportFrame !== null) cancelAnimationFrame(viewportFrame);
+      viewportFrame = null;
+      modal.style.removeProperty('--amass-viewport-height');
+      modal.style.removeProperty('--amass-viewport-top');
+    }
 
     // Same body-lock technique used elsewhere on the site: position:fixed
     // + scroll offset compensation + scrollbar-width padding compensation,
@@ -68,10 +114,12 @@
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
+      trackViewport();
       modal.querySelector('.modal__close').focus({ preventScroll: true });
     }
 
     function closeModal() {
+      stopTrackingViewport();
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('modal-open');
