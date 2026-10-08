@@ -13,7 +13,9 @@
   function normalize(field) {
     const value = field.value;
     // Every title has a limit. Explicit markup can choose a smaller one.
-    if (field.maxLength < 0) field.maxLength = field.name === 'website_title' ? 40 : 80;
+    // 30 matches the database column limit for both response_title and
+    // website_title (the only two fields currently using this rule).
+    if (field.maxLength < 0) field.maxLength = 30;
     let formatted = format(value).slice(0, field.maxLength);
     // Avoid cutting an emoji in half at the boundary.
     if (/[\uD800-\uDBFF]$/.test(formatted)) formatted = formatted.slice(0, -1);
