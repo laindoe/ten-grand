@@ -14,7 +14,7 @@ permalink: /community-wall/
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=151" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=73" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=74" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=2" />
 </head>
 <body>
@@ -42,11 +42,13 @@ permalink: /community-wall/
       <div class="cw-stats__total">
         <div class="cw-inner cw-stats__total-inner">
           <p class="cw-stats__total-text">
-            <span class="cw-stats__doors-label">Doors Open 2027</span>
             <span class="cw-stats__total-number" data-stat="total">12,482</span>
             <span class="cw-stats__total-label">Total Members</span>
           </p>
-          <button type="button" class="cw-stats__join" data-join-trigger>JOIN &rarr;</button>
+          <div class="cw-stats__join-group">
+            <span class="cw-stats__doors-label">Doors Open 2027</span>
+            <button type="button" class="cw-stats__join" data-join-trigger>JOIN &rarr;</button>
+          </div>
         </div>
       </div>
 
