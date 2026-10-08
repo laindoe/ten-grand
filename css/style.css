@@ -260,6 +260,15 @@ a {
   cursor: pointer;
 }
 
+/* Share spare space equally around the labels, so shorter labels do not
+   receive oversized cells. Keep the logo track and desktop grid intact. */
+@media (max-width: 899px) {
+  .nav__inner > .nav__item,
+  .nav__inner > .nav__dropdown {
+    flex: 1 1 auto;
+  }
+}
+
 .nav__dropdown-menu {
   position: absolute;
   top: 100%;
