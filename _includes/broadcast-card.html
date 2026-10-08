@@ -1,6 +1,6 @@
 {% assign broadcast = include.broadcast %}
 {% assign additional_text = broadcast.content | strip %}
-{% assign attachments = broadcast.attachments | where_exp: 'attachment', 'attachment.file != nil and attachment.file != ""' %}
+{% assign attachments = broadcast.attachments | where_exp: 'attachment', 'attachment.file != nil' | where_exp: 'attachment', 'attachment.file != ""' %}
 <article class="cw-broadcast-card">
   {% include broadcast-summary.html broadcast=broadcast heading=include.heading %}
   {% if additional_text != '' or attachments.size > 0 %}
