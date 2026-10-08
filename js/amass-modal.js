@@ -528,9 +528,21 @@
       }
     }
 
+    // mediaRecorder.stop() is async -- the 'stop' event (and the UI
+    // update in handleRecordingStopped()) can lag behind it noticeably
+    // on some devices, leaving the button saying "Recording..." with
+    // no visible change for a moment. Without feedback here, that
+    // reads as "the stop button didn't do anything," which invites a
+    // second tap -- disabling the button immediately removes that
+    // window entirely (a disabled button doesn't dispatch click
+    // events), and the label change confirms the tap registered.
     function stopRecording() {
       clearTimeout(recordingTimer);
-      if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        recordButton.disabled = true;
+        recordLabel.textContent = 'Stopping…';
+        mediaRecorder.stop();
+      }
     }
 
     function socialIsValid() {
