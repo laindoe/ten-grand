@@ -799,9 +799,31 @@ main {
 
 /* Reuses .amass-flow__review-play (style.css) -- the same icon+label
    play/pause button as the submission modal's review step, including
-   its white-idle / rainbow-pulse-while-playing treatment. */
+   its icon and label, with a role-colored pulse while playing. */
 .cw-voice-card__audio .amass-flow__review-play {
   flex-shrink: 0;
+}
+
+.cw-voice-card__audio--create { --cw-audio-color: var(--cw-color-create); }
+.cw-voice-card__audio--build { --cw-audio-color: var(--cw-color-build); }
+.cw-voice-card__audio--fund { --cw-audio-color: var(--cw-color-fund); }
+.cw-voice-card__audio--support { --cw-audio-color: var(--cw-color-support); }
+
+.cw-voice-card__audio .amass-flow__review-play:hover,
+.cw-voice-card__audio .amass-flow__review-play:focus-visible,
+.cw-voice-card__audio .amass-flow__review-play.is-playing {
+  color: var(--cw-audio-color);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cw-voice-card__audio .amass-flow__review-play.is-playing {
+    animation: cw-role-play-pulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes cw-role-play-pulse {
+  0%, 100% { opacity: 0.7; text-shadow: none; }
+  50% { opacity: 1; text-shadow: 0 0 8px currentColor; }
 }
 
 /* Fit every peak into the available width so the visible playhead
@@ -823,10 +845,7 @@ main {
   border-radius: 1px;
 }
 
-.cw-voice-card__audio--create .cw-voice-card__audio-bar { background: var(--cw-color-create); }
-.cw-voice-card__audio--build .cw-voice-card__audio-bar { background: var(--cw-color-build); }
-.cw-voice-card__audio--fund .cw-voice-card__audio-bar { background: var(--cw-color-fund); }
-.cw-voice-card__audio--support .cw-voice-card__audio-bar { background: var(--cw-color-support); }
+.cw-voice-card__audio-bar { background: var(--cw-audio-color); }
 
 .cw-voice-card__audio-bar:nth-child(3n)   { height: 100%; }
 .cw-voice-card__audio-bar:nth-child(3n+1) { height: 50%; }
