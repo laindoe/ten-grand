@@ -1142,11 +1142,12 @@ main {
      past the four stats regardless of its earlier DOM position --
      everything else keeps the default order (0), so it still reads
      Total / Builders / Creators / Investors / Supporters by source
-     order. Total's text gets the wider share (flex-grow 2) that
+     order. Total's text gets a slightly wider share (flex-grow 1.25) that
      .cw-stats__total itself carried before being un-boxed. */
   .cw-stats {
     display: flex;
     align-items: stretch;
+    padding-inline: max(var(--section-padding-x), calc((100% - var(--cw-max-width)) / 2 + var(--section-padding-x)));
   }
 
   .cw-stats__total {
@@ -1158,9 +1159,9 @@ main {
   }
 
   .cw-stats__total-text {
-    flex: 2 1 0;
+    flex: 1.25 1 0;
     min-width: 0;
-    padding: 20px var(--section-padding-x);
+    padding: 16px 12px 16px 0;
     border-right: 1px solid var(--color-card-border);
   }
 
@@ -1181,7 +1182,9 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px var(--section-padding-x);
+    flex: 0.65 1 0;
+    min-width: 0;
+    padding: 16px 0 16px 12px;
     margin-bottom: -1px;
     border-left: 1px solid var(--color-card-border);
   }
@@ -1201,7 +1204,13 @@ main {
   }
 
   .cw-stat__inner {
+    padding: 16px 8px;
     text-align: center;
+  }
+
+  .cw-stats__total-number,
+  .cw-stat__number {
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
   }
 
   .cw-stat__label {
