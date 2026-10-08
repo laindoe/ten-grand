@@ -669,7 +669,7 @@ main {
 /* Grows to match the row's own height (name + links + badge stack)
    instead of a fixed small size -- align-self:stretch overrides the
    row's flex-start for this one item, and aspect-ratio keeps it a
-   circle as that height changes. max-width caps it for short rows
+   square as that height changes. max-width caps it for short rows
    (e.g. no-website cards) so it can't balloon past a sensible size. */
 .cw-voice-card__avatar {
   flex-shrink: 0;
@@ -689,7 +689,6 @@ main {
 }
 
 .cw-voice-card__photo {
-  border-radius: 50%;
   object-fit: cover;
   outline: 2px solid var(--color-card-border);
   outline-offset: 2px;
