@@ -1,0 +1,20 @@
+---
+layout: null
+---
+{
+  "campaigns": {{ site.data.community_ticker.campaigns | jsonify }},
+  "broadcasts": [
+    {% assign broadcasts = site.broadcasts | sort: 'date' | reverse %}
+    {% assign separator = '' %}
+    {% for broadcast in broadcasts %}
+      {% unless broadcast.sample %}
+        {{ separator }}{
+          "id": {{ broadcast.relative_path | jsonify }},
+          "title": {{ broadcast.title | jsonify }},
+          "created_at": {{ broadcast.date | date_to_xmlschema | jsonify }}
+        }
+        {% assign separator = ',' %}
+      {% endunless %}
+    {% endfor %}
+  ]
+}

@@ -83,18 +83,12 @@ permalink: /community-wall/
       <div class="cw-inner cw-ticker__inner">
         <span class="cw-ticker__live"><span class="cw-ticker__live-dot" aria-hidden="true"></span>LIVE</span>
         <div class="cw-ticker__viewport">
-          <div class="cw-ticker__marquee">
+          <div class="cw-ticker__marquee" data-community-ticker data-feed-url="{{ '/community-activity.json' | relative_url }}" aria-label="Recent community activity">
             <span class="cw-ticker__group">
-              <span class="cw-ticker__item">New member 006 joined</span>
-              <span class="cw-ticker__item">3 builders in discussion</span>
-              <span class="cw-ticker__item">Beta testers wanted</span>
-              <span class="cw-ticker__item">2 new collaboration requests</span>
+              <span class="cw-ticker__item">Loading community updates…</span>
             </span>
             <span class="cw-ticker__group" aria-hidden="true">
-              <span class="cw-ticker__item">New member 006 joined</span>
-              <span class="cw-ticker__item">3 builders in discussion</span>
-              <span class="cw-ticker__item">Beta testers wanted</span>
-              <span class="cw-ticker__item">2 new collaboration requests</span>
+              <span class="cw-ticker__item">Loading community updates…</span>
             </span>
           </div>
         </div>
@@ -243,6 +237,7 @@ permalink: /community-wall/
   <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=9"></script>
   <script src="{{ '/js/community-wall.js' | relative_url }}?v=8"></script>
+  <script src="{{ '/js/community-ticker.js' | relative_url }}"></script>
   <script src="{{ '/js/broadcasts.js' | relative_url }}?v=2"></script>
 </body>
 </html>
