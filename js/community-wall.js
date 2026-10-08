@@ -198,6 +198,9 @@
       avatar.style.removeProperty("height");
       body.style.removeProperty("margin-top");
 
+      // Mobile uses a fixed photo with identity below; let CSS size the rows.
+      if (window.matchMedia("(max-width: 759px)").matches) return;
+
       var size = Math.max(identity.offsetHeight, badgeCol ? badgeCol.offsetHeight : 0);
       size = Math.min(size, AVATAR_MAX_SIZE);
       if (size > 0) {

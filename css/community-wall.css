@@ -438,7 +438,7 @@ main {
 
 .cw-broadcast-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
 }
 
@@ -595,6 +595,7 @@ main {
    safety net for every text node in the card, not just the ones
    below with a more specific fix for their own sizing too. */
 .cw-voice-card {
+  min-width: 0;
   border: 1px solid var(--color-card-border);
   padding: 20px;
   overflow-wrap: anywhere;
@@ -803,31 +804,22 @@ main {
   flex-shrink: 0;
 }
 
-/* More bars than any card is wide enough to show at this pitch --
-   overflow:hidden clips the excess, so the bars always pack edge to
-   edge regardless of how much space a given card's row leaves for
-   the wave, instead of justify-content stretching a fixed bar count
-   out into visible gaps. */
-/* flex-basis 0 (not auto) -- this item's width comes entirely from
-   flex-grow filling the row, never from its 100 fixed-width,
-   non-shrinking bars. Relying on shrink + overflow:hidden instead
-   (as this used to) depends on the browser treating overflow:hidden
-   as resetting the item's automatic minimum size to 0 per spec --
-   Safari/WebKit doesn't reliably do that, so the bars pushed this
-   element (and the whole page) wider instead of getting clipped. */
+/* Fit every peak into the available width so the visible playhead
+   represents the entire recording, including on narrow cards. */
 .cw-voice-card__audio-wave {
   flex: 1 1 0%;
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 1px;
+  gap: 0;
   height: 20px;
   overflow: hidden;
 }
 
 .cw-voice-card__audio-bar {
-  flex: 0 0 2px;
-  width: 2px;
+  flex: 1 1 0%;
+  min-width: 0;
+  transform: scaleX(0.67);
   border-radius: 1px;
 }
 
@@ -1171,7 +1163,7 @@ main {
   }
 
   .cw-voice-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .cw-resource-grid {
@@ -1203,6 +1195,28 @@ main {
 }
 
 @media (max-width: 759px) {
+  .cw-voice-card__top {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .cw-voice-card__avatar {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .cw-voice-card__badge-col {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+  }
+
+  .cw-voice-card__identity {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
   /* Single centered column: icon on top, then the eyebrow+title
      heading, then the subtitle. */
   .cw-hero__inner {
