@@ -122,7 +122,7 @@ permalink: /community-wall/
     </section>
 
     <!-- ============ CAMPAIGNS ============ -->
-    <section class="cw-campaigns">
+    <section class="cw-campaigns" id="campaigns">
       <div class="cw-inner">
         <div class="cw-campaigns__intro">
           <h2 class="cw-section-header__title"><span class="cw-section-header__slash" aria-hidden="true">/</span>CAMPAIGNS</h2>
@@ -142,7 +142,7 @@ permalink: /community-wall/
 
           <div class="cw-campaign__actions">
             <button type="button" class="cw-campaign__add-voice" data-modal-open="amass-modal">ADD YOUR VOICE &rarr;</button>
-            <a class="cw-campaign__view-all" href="#" aria-disabled="true" tabindex="-1">VIEW ALL &rarr;</a>
+            <a class="cw-campaign__view-all" href="{{ '/voices-heard/' | relative_url }}">VIEW ALL &rarr;</a>
           </div>
         </div>
 
@@ -242,7 +242,7 @@ permalink: /community-wall/
   <script src="{{ '/assets/js/supabase.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=9"></script>
-  <script src="{{ '/js/community-wall.js' | relative_url }}?v=7"></script>
+  <script src="{{ '/js/community-wall.js' | relative_url }}?v=8"></script>
   <script src="{{ '/js/broadcasts.js' | relative_url }}?v=2"></script>
 </body>
 </html>

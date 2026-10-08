@@ -496,43 +496,68 @@
     return article;
   }
 
-  // Replaces the four static example cards with real approved
-  // submissions. Left untouched (same as loadStats()) if the
-  // Supabase client isn't available, the query fails, or there are
-  // no approved submissions yet -- the page should never show an
-  // empty wall or break over this.
+  var voiceOffset = 0;
+  var voiceLoading = false;
   async function loadVoiceCards() {
-    if (!window.tenGrandSupabase) return;
+    var grid = document.querySelector(".cw-voice-grid");
+    if (!grid || voiceLoading) return;
+    var archive = grid.hasAttribute("data-voice-archive");
+    var button = document.getElementById("voice-load-more");
+    var message = document.getElementById("voice-message");
+    var status = document.getElementById("voice-status");
+    if (!window.tenGrandSupabase) {
+      if (message) message.textContent = "Voices could not be loaded. Please refresh to try again.";
+      grid.setAttribute("aria-busy", "false");
+      return;
+    }
+    voiceLoading = true;
+    grid.setAttribute("aria-busy", "true");
+    if (button) button.disabled = true;
     try {
-      var result = await window.tenGrandSupabase
+      var query = window.tenGrandSupabase
         .from("voices_heard")
-        .select("*")
+        .select("*", { count: "exact" })
         .eq("status", "approved")
         .order("created_at", { ascending: false })
-        .limit(24);
-      if (result.error || !result.data || !result.data.length) return;
-
-      var grid = document.querySelector(".cw-voice-grid");
-      if (!grid) return;
-
-      var cards = result.data
-        .map(function (row, i) { return buildVoiceCard(row, i + 1); })
-        .filter(Boolean);
-      if (!cards.length) return;
-
-      // Real cards wire their own play/pause listener in
-      // buildAudioBody() (driven by real <audio> events, not the
-      // class-toggle initVoiceCardAudio() uses for the static
-      // examples) -- re-running it here would double-bind their
-      // buttons and fight the real one.
-      grid.replaceChildren.apply(grid, cards);
+        .order("id", { ascending: false });
+      var result = await (archive ? query.range(voiceOffset, voiceOffset + 23) : query.limit(24));
+      if (result.error) throw result.error;
+      var rows = result.data || [];
+      var cards = rows.map(function (row, i) {
+        return buildVoiceCard(row, voiceOffset + i + 1);
+      }).filter(Boolean);
+      if (archive) {
+        cards.forEach(function (card) { grid.appendChild(card); });
+        voiceOffset += rows.length;
+        if (button) button.hidden = typeof result.count === "number"
+          ? voiceOffset >= result.count : rows.length < 24;
+        if (message) {
+          message.hidden = grid.children.length > 0;
+          message.textContent = "Voices are coming soon. Be the first to share yours.";
+        }
+        if (status) status.textContent = "Showing " + grid.children.length + " voices.";
+      } else if (cards.length) {
+        grid.replaceChildren.apply(grid, cards);
+      }
       fixVoiceCardLayout();
     } catch (error) {
+      if (message) {
+        message.hidden = false;
+        message.textContent = "Voices could not be loaded. Please try again.";
+      }
+      if (button) button.hidden = false;
       console.error("Ten Grand voice cards failed to load", error);
+    } finally {
+      voiceLoading = false;
+      grid.setAttribute("aria-busy", "false");
+      if (button) button.disabled = false;
     }
   }
 
-  loadStats();
+  var voiceLoadMore = document.getElementById("voice-load-more");
+  if (voiceLoadMore) voiceLoadMore.addEventListener("click", loadVoiceCards);
+
+  if (!document.querySelector("[data-voice-archive]")) loadStats();
   initJoinModal();
   initVoiceCardAudio();
   fixVoiceCardLayout();
