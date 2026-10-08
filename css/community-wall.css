@@ -689,7 +689,7 @@ main {
 
 .cw-voice-card__photo {
   object-fit: cover;
-  outline: 2px solid var(--color-card-border);
+  outline: 1px solid var(--color-card-border);
   outline-offset: 2px;
   filter: drop-shadow(0 0 3px var(--voice-glow)) drop-shadow(0 0 10px var(--voice-glow));
 }
