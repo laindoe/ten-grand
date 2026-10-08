@@ -1174,9 +1174,8 @@ main {
      only fills the parent's content box, not its border, so a flex
      child's bottom still lands 1px short of .cw-stats's own
      border-bottom; margin-bottom:-1px bleeds through that border so
-     border-left reaches the actual outer edge. display:flex centers
-     "Join ->" within the taller box instead of leaving it pinned to
-     the top. */
+     border-left reaches the actual outer edge. Bottom alignment places
+     Join on the same text line as the member labels. */
   .cw-stats__join {
     order: 10;
     display: flex;
@@ -1185,7 +1184,10 @@ main {
     flex: 0.65 1 0;
     min-width: 0;
     padding: 16px 0 16px 12px;
-    margin-bottom: -1px;
+    align-items: flex-end;
+    font-size: 0.72rem;
+    line-height: 1.5;
+    margin-bottom: 0;
     border-left: 1px solid var(--color-card-border);
   }
 
@@ -1200,7 +1202,8 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: -1px;
+    align-items: flex-end;
+    margin-bottom: 0;
   }
 
   .cw-stat__inner {
@@ -1211,9 +1214,16 @@ main {
   .cw-stats__total-number,
   .cw-stat__number {
     font-size: clamp(1.4rem, 2.5vw, 2rem);
+    line-height: 1;
+  }
+
+  .cw-stats__total-label,
+  .cw-stat__label {
+    line-height: 1.5;
   }
 
   .cw-stat__label {
+    margin-top: 6px;
     justify-content: center;
   }
 
