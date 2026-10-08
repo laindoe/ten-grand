@@ -5036,8 +5036,8 @@ body.modal-open {
   }
 }
 @media (max-width: 900px), (pointer: coarse) {
-  #amass-modal {
-    /* A fixed top edge avoids recentering on every keyboard resize. */
+  #amass-modal.has-keyboard {
+    /* Center short steps at rest; keep a stable top edge with a keyboard. */
     align-items: flex-start;
   }
   #amass-modal .amass-flow__panel {
