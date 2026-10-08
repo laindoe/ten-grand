@@ -140,6 +140,8 @@ main {
 
 .cw-hero__heading .section-eyebrow {
   color: var(--color-vandalism);
+  font-weight: 600;
+  letter-spacing: 0.05em;
 }
 
 .cw-hero__subtitle {
