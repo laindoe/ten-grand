@@ -147,7 +147,45 @@
     });
   }
 
+  // .cw-voice-card__avatar (CSS: grid + align-self:stretch +
+  // aspect-ratio) does correctly size itself to match the name/links
+  // column's real height, including when a 2-line name wraps -- but
+  // .cw-voice-card__top, the grid row containing it, doesn't grow to
+  // contain that stretched child: measured, the row's own box stays
+  // only as tall as its non-stretched children (badge column), so a
+  // taller avatar/identity overflows past the row's reported bottom
+  // edge. .cw-voice-card__body's margin-top is measured from that
+  // (too-small) edge, so it lands inside the overflow instead of
+  // below it. This corrects the gap directly: however far the
+  // content actually overflows past the row's box, add that onto the
+  // intended 24px gap.
+  function fixVoiceCardSpacing() {
+    var desiredGap = 24;
+    document.querySelectorAll(".cw-voice-card").forEach(function (card) {
+      var top = card.querySelector(".cw-voice-card__top");
+      var body = card.querySelector(".cw-voice-card__body");
+      if (!top || !body) return;
+      body.style.removeProperty("margin-top");
+      var edges = [top, top.querySelector(".cw-voice-card__avatar"), top.querySelector(".cw-voice-card__identity"), top.querySelector(".cw-voice-card__badge-col")]
+        .filter(Boolean)
+        .map(function (el) {
+          return el.getBoundingClientRect().bottom;
+        });
+      var contentBottom = Math.max.apply(null, edges);
+      var topBottom = top.getBoundingClientRect().bottom;
+      var shortfall = contentBottom - topBottom;
+      if (shortfall > 0.5) {
+        body.style.marginTop = Math.ceil(desiredGap + shortfall) + "px";
+      }
+    });
+  }
+
   loadStats();
   initJoinModal();
   initVoiceCardAudio();
+  fixVoiceCardSpacing();
+  window.addEventListener("resize", fixVoiceCardSpacing);
+  // Catches any late reflow from web fonts swapping in after this
+  // script runs, which can change whether a name wraps.
+  window.addEventListener("load", fixVoiceCardSpacing);
 })();

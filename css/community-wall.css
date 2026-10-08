@@ -657,7 +657,6 @@ main {
 .cw-voice-card {
   border: 1px solid var(--color-card-border);
   padding: 20px;
-  --cw-voice-card-pad: 20px;
 }
 
 /* Grid, not flex: a flex item with both width and height auto never
@@ -808,12 +807,8 @@ main {
 .cw-voice-card__role-label--fund    { color: var(--cw-color-fund); }
 .cw-voice-card__role-label--support { color: var(--cw-color-support); }
 
-.cw-voice-card__divider {
-  display: block;
-  width: calc(100% + 2 * var(--cw-voice-card-pad) + 2px);
-  margin: 16px calc(-1 * var(--cw-voice-card-pad) - 1px);
-  height: 1px;
-  background: var(--color-card-border);
+.cw-voice-card__body {
+  margin-top: 24px;
 }
 
 .cw-voice-card__subtitle {
