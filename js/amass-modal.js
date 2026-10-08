@@ -698,6 +698,17 @@
       }
       if (step === 7) buildReview();
       setNextState();
+      // Each step is a new page of the form. Move focus off the previous
+      // field (and dismiss its keyboard) before resetting dialog scroll.
+      if (modal.classList.contains('is-open')) {
+        titleEl.setAttribute('tabindex', '-1');
+        titleEl.focus({ preventScroll: true });
+      }
+      const dialogPanel = modal.querySelector('.amass-flow__panel');
+      dialogPanel.scrollTop = 0;
+      requestAnimationFrame(() => {
+        if (currentStep === step) dialogPanel.scrollTop = 0;
+      });
     }
 
     function resetFlow() {
