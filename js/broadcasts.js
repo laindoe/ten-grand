@@ -3,6 +3,21 @@
 
   initPagination();
   initBroadcastModal();
+  revealLinkedBroadcast();
+  window.addEventListener("hashchange", revealLinkedBroadcast);
+
+  function revealLinkedBroadcast() {
+    var id = window.location.hash.slice(1);
+    if (id.indexOf("broadcast-") !== 0) return;
+    var card = document.getElementById(id);
+    if (!card || !card.matches("article.cw-broadcast-card")) return;
+    var load = document.getElementById("broadcast-load-more");
+    while (card.hidden && load && !load.hidden) load.click();
+    card.scrollIntoView({ block: "center" });
+    card.focus({ preventScroll: true });
+    var readMore = card.querySelector("[data-broadcast-open]");
+    if (readMore) readMore.click();
+  }
 
   function initPagination() {
     var list = document.getElementById("broadcast-list");

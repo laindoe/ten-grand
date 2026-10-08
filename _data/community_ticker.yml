@@ -1,6 +1,7 @@
 # Add a source here for each public campaign submission table.
 campaigns:
   - id: voices-heard
+    url: /voices-heard/
     table: voices_heard
     name_field: name
     date_field: created_at
