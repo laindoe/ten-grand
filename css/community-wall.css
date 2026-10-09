@@ -682,7 +682,8 @@ main {
   object-fit: cover;
   outline: 1px solid var(--color-card-border);
   outline-offset: 2px;
-  filter: drop-shadow(0 0 3px var(--voice-glow)) drop-shadow(0 0 10px var(--voice-glow));
+  filter: none;
+  box-shadow: 0 0 3px var(--voice-glow), 0 0 16px var(--voice-glow);
 }
 
 .cw-voice-card__photo--create  { --voice-glow: var(--cw-color-create); }

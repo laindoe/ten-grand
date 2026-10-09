@@ -4,7 +4,7 @@
 <article class="cw-broadcast-card" id="broadcast-{{ broadcast.relative_path | slugify }}" tabindex="-1">
   {% include broadcast-summary.html broadcast=broadcast heading=include.heading %}
   {% if additional_text != '' or attachments.size > 0 %}
-  <button type="button" class="cw-broadcast-card__read-more" data-broadcast-open aria-haspopup="dialog" aria-controls="broadcast-modal" aria-label="Read more about {{ broadcast.title | escape }}">READ MORE</button>
+  <button type="button" class="cw-broadcast-card__read-more" data-broadcast-open aria-haspopup="dialog" aria-controls="broadcast-modal" aria-label="Read more about {{ broadcast.title | escape }}">READ MORE <span aria-hidden="true">&rarr;</span></button>
   <template class="broadcast-detail">
     <header class="broadcast-modal__original cw-broadcast-card">
       {% include broadcast-summary.html broadcast=broadcast heading='h2' %}

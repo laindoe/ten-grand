@@ -14,8 +14,8 @@ permalink: /community-wall/
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=158" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=83" />
-  <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=2" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=84" />
+  <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=4" />
 </head>
 <body>
 
@@ -102,7 +102,7 @@ permalink: /community-wall/
       <div class="cw-inner">
         <div class="cw-section-header">
           <div class="cw-section-header__text">
-            <h2 class="cw-section-header__title"><span class="cw-section-header__slash" aria-hidden="true">/</span>BROADCASTS</h2>
+            <h2 class="cw-section-header__title cw-section-header__title--broadcast">{% include broadcast-icon.html %}BROADCASTS</h2>
             <p class="cw-section-header__subtitle">Real-time updates from across the community.</p>
           </div>
           <a class="cw-section-header__link" href="{{ '/broadcasts/' | relative_url }}">VIEW ALL BROADCASTS &rarr;</a>
