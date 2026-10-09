@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'Italiana';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/Italiana-Regular.ttf') format('truetype');
+}
+
+/* Shared Grand Scheme dialog: site typography over the draft's blueprint. */
+.grand-scheme-trigger { font-family: inherit; cursor: pointer; border-radius: 0; }
+.nav__item.grand-scheme-trigger { border: 0; }
+.grand-scheme {
+  --gs-ink: var(--color-bg);
+  width: min(780px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 36px 28px 32px;
+  border: 1px solid var(--gs-ink);
+  color: var(--gs-ink);
+  background:
+    linear-gradient(rgba(0,0,0,.055) 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, rgba(0,0,0,.055) 1px, transparent 1px) 0 0 / 16px 16px,
+    #f7f7f4;
+  font-family: var(--font-body);
+  text-align: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.grand-scheme::backdrop { background: rgba(0,0,0,.8); }
+html.grand-scheme-open, html.grand-scheme-open body { overflow: hidden; }
+.grand-scheme__close {
+  position: absolute; top: 12px; right: 12px; width: 44px; height: 44px;
+  background: transparent; color: inherit; border: 0; cursor: pointer;
+  font: 300 36px/1 var(--font-body);
+}
+.grand-scheme__close:focus-visible, .grand-scheme__cta:focus-visible,
+.grand-scheme-trigger:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.grand-scheme__kicker { padding: 0 30px; font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 24px; }
+.grand-scheme__the { font: 400 1.35rem/1 var(--font-body); letter-spacing: .25em; margin-bottom: 10px; }
+.grand-scheme__title { font: 400 clamp(48px, 11vw, 96px)/.94 'Italiana', 'Bodoni MT', Didot, serif; letter-spacing: -.01em; margin: 0; }
+.grand-scheme__description { font-size: clamp(.9rem, 2.5vw, 1rem); line-height: 1.6; margin: 20px auto 0; max-width: 34ch; }
+.grand-scheme__target { position: relative; width: min(100%, 360px); aspect-ratio: 1; margin: 16px auto; }
+.grand-scheme__target > svg { display: block; width: 100%; height: 100%; }
+.grand-scheme__core { position: absolute; width: 37%; aspect-ratio: 1; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 50%; background: var(--gs-ink); overflow: hidden; }
+.grand-scheme__core iframe { position: absolute; inset: -12.5%; width: 125%; height: 125%; border: 0; pointer-events: none; }
+.grand-scheme__cta { font-family: var(--font-body); text-decoration: none; margin-top: 4px; }
+.grand-scheme__cta span { margin-left: 16px; }
+@media (max-width: 600px) {
+  .grand-scheme { padding: 32px 18px 24px; }
+  .grand-scheme__target { width: min(100%, 300px); }
+  .grand-scheme__cta { width: 100%; padding-inline: 20px; }
+}

@@ -14,7 +14,7 @@ permalink: /community-wall/
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=158" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=77" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=80" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=2" />
 </head>
 <body>
@@ -128,17 +128,19 @@ permalink: /community-wall/
 
       <div class="cw-inner cw-campaign">
         <div class="cw-campaign__intro">
-          <div class="cw-campaign__header">
-            <div class="cw-campaign__title-row">
-              <h3 class="cw-campaign__title">VOICES HEARD</h3>
-              <span class="cw-campaign__counter"><span data-stat="voices-total">0</span> VOICES HEARD</span>
-            </div>
-            <p class="cw-campaign__subtitle">Share what you contribute, why it matters, and who you hope to reach.</p>
+          <canvas class="cw-campaign__heat" data-voices-heat aria-hidden="true"></canvas>
+          <div class="cw-campaign__artwork" aria-hidden="true">
+            <img src="{{ '/assets/images/voices-heard-artwork.png' | relative_url }}" alt="" width="1536" height="1024">
           </div>
-
+          <h3 class="cw-campaign__title">VOICES HEARD</h3>
+          <p class="cw-campaign__counter">
+            <span data-stat="voices-total">0</span>
+            <span class="cw-campaign__counter-label">VOICES</span>
+          </p>
+          <p class="cw-campaign__subtitle">Share what you contribute, why it matters, and who you hope to reach.</p>
           <div class="cw-campaign__actions">
-            <button type="button" class="cw-campaign__add-voice" data-modal-open="amass-modal">ADD YOUR VOICE &rarr;</button>
-            <a class="cw-campaign__view-all" href="{{ '/voices-heard/' | relative_url }}">VIEW ALL &rarr;</a>
+            <button type="button" class="cw-campaign__add-voice" data-modal-open="amass-modal">ADD YOUR VOICE <span aria-hidden="true">&rarr;</span></button>
+            <a class="cw-campaign__view-all" href="{{ '/voices-heard/' | relative_url }}">VIEW ALL <span aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
 
@@ -234,6 +236,7 @@ permalink: /community-wall/
 
 {% include site-footer.html %}
 
+  <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=1"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="{{ '/assets/js/supabase.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>

@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N — Ten Grand Master</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{background:transparent;display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;-webkit-tap-highlight-color:transparent;}
+  .stage{width:min(90vmin,600px);height:min(90vmin,600px);position:relative;}
+  .anim{position:absolute;inset:0;width:100%;height:100%;display:none;}
+</style>
+</head>
+<body>
+<div class="stage" id="stage" role="img" aria-label="The N logomark cycling through Technology, Entertainment, Merchandise and Experiences, returning to the N after each">
+<svg id="tech_svg" class="anim" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="tech_webClip">
+        <rect x="205" y="215" width="190" height="225"/>
+      </clipPath>
+    </defs>
+    <g id="tech_mark" fill="#F5F4F2">
+      <!-- verticals: N sides -> browser frame sides -> phone frame sides -->
+      <rect id="tech_barL" x="210.9" y="80" width="5" height="440"/>
+      <rect id="tech_barR" x="384.1" y="80" width="5" height="440"/>
+      <!-- morphing beams: N diagonal halves -> browser top/bottom edges -> phone top/bottom edges -->
+      <polygon id="tech_m1"/>
+      <polygon id="tech_m2"/>
+
+      <!-- browser chrome -->
+      <rect id="tech_chromeDivider" x="190" y="195" width="220" height="3" opacity="0"/>
+      <g id="tech_chromeDots" opacity="0">
+        <circle cx="213" cy="175" r="5"/>
+        <circle cx="231" cy="175" r="5"/>
+        <circle cx="249" cy="175" r="5"/>
+      </g>
+
+      <!-- whole page scrolls together: hero, headline/subhead, then a two-column grid -->
+      <g id="tech_webRows" clip-path="url(#tech_webClip)"></g>
+
+      <!-- phone app -->
+      <rect id="tech_phoneNotch" x="280" y="178" width="40" height="8" rx="4" opacity="0"/>
+      <rect id="tech_phoneHome" x="275" y="380" width="50" height="5" rx="2.5" opacity="0"/>
+      <g id="tech_phoneIcons"></g>
+    </g>
+  </svg>
+<svg id="ent_svg" class="anim" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="ent_filmClip">
+        <rect x="112" y="180" width="376" height="240"/>
+      </clipPath>
+      <clipPath id="ent_phoneClip">
+        <rect x="196" y="116" width="208" height="368"/>
+      </clipPath>
+    </defs>
+    <g id="ent_mark" fill="#F5F4F2">
+      <!-- verticals -->
+      <rect id="ent_barL" x="210.9" y="80" width="5" height="440"/>
+      <rect id="ent_barR" x="384.1" y="80" width="5" height="440"/>
+      <!-- morphing beams: logo diagonals -> film rails -> staff lines -> phone top/bottom -->
+      <polygon id="ent_m1"/>
+      <polygon id="ent_m2"/>
+      <!-- frame dividers between the rails (the scene cells) -->
+      <g id="ent_dividers" clip-path="url(#ent_filmClip)"></g>
+      <!-- middle staff lines -->
+      <rect id="ent_s1" y="257.5" height="5" x="300" width="0"/>
+      <rect id="ent_s2" y="297.5" height="5" x="300" width="0"/>
+      <rect id="ent_s3" y="337.5" height="5" x="300" width="0"/>
+      <!-- melody -->
+      <g id="ent_notes"></g>
+      <!-- social feed inside the phone -->
+      <g id="ent_feed" clip-path="url(#ent_phoneClip)"></g>
+    </g>
+    <!-- perforations punched into rails -->
+    <g id="ent_perfs" fill="#161616" clip-path="url(#ent_filmClip)"></g>
+  </svg>
+<svg id="mer_svg" class="anim" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <g id="mer_mark" fill="#F5F4F2">
+      <!-- verticals: N sides -> box sides -->
+      <rect id="mer_barL" x="210.9" y="80" width="5" height="440"/>
+      <rect id="mer_barR" x="384.1" y="80" width="5" height="440"/>
+      <!-- morphing beams: N diagonals -> box top/bottom edges -->
+      <polygon id="mer_m1"/>
+      <polygon id="mer_m2"/>
+      <!-- box flaps, hinged at the top corners -->
+      <rect id="mer_flapL" x="206" y="206" width="94" height="8" opacity="0"/>
+      <rect id="mer_flapR" x="300" y="206" width="94" height="8" opacity="0"/>
+      <!-- products -->
+      <g id="mer_itemTee" opacity="0">
+        <polygon points="-16,-6 -8,-12 -4,-9 4,-9 8,-12 16,-6 11,1 7,-2 7,12 -7,12 -7,-2 -11,1"/>
+      </g>
+      <g id="mer_itemCap" opacity="0">
+        <path d="M -11 3 A 11 11 0 0 1 11 3 L 24 7 L 24 10 L -11 10 Z"/>
+      </g>
+      <g id="mer_itemBear" opacity="0">
+        <circle cx="-6" cy="-13" r="3.5"/>
+        <circle cx="6" cy="-13" r="3.5"/>
+        <circle cx="0" cy="-7" r="7.5"/>
+        <ellipse cx="0" cy="6" rx="8" ry="9"/>
+        <circle cx="-8" cy="3" r="3"/>
+        <circle cx="8" cy="3" r="3"/>
+        <circle cx="-5.5" cy="14.5" r="3.8"/>
+        <circle cx="5.5" cy="14.5" r="3.8"/>
+      </g>
+      <!-- sparkles -->
+      <g id="mer_sparkles"></g>
+    </g>
+  </svg>
+<svg id="exp_svg" class="anim" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <g id="exp_mark" fill="#F5F4F2">
+      <!-- N verticals -->
+      <rect id="exp_barL"/>
+      <rect id="exp_barR"/>
+      <!-- N diagonals <-> ticket top/bottom edges -->
+      <polygon id="exp_m1"/>
+      <polygon id="exp_m2"/>
+    </g>
+
+    <!-- notched ticket sides: the bite is carved into the shape itself -->
+    <g fill="#F5F4F2">
+      <path id="exp_sideNL" opacity="0"/>
+      <path id="exp_sideNR" opacity="0"/>
+    </g>
+
+    <!-- assembled-ticket decorations (primitive era) -->
+    <g fill="#161616">
+      <g id="exp_ripDashes" opacity="0" fill="#F5F4F2">
+        <rect x="297.5" y="252" width="5" height="10"/>
+        <rect x="297.5" y="270" width="5" height="10"/>
+        <rect x="297.5" y="288" width="5" height="10"/>
+        <rect x="297.5" y="306" width="5" height="10"/>
+        <rect x="297.5" y="324" width="5" height="10"/>
+        <rect x="297.5" y="342" width="5" height="10"/>
+      </g>
+    </g>
+
+    <!-- LEFT ticket half: rips, then rigid-rotates 90deg clockwise -->
+    <g id="exp_halfL" opacity="0">
+      <g fill="#F5F4F2">
+        <rect x="180" y="240" width="120" height="8"/>
+        <rect x="180" y="352" width="120" height="8"/>
+        <path id="exp_halfLside"/>
+      </g>
+      <path id="exp_tearL" fill="none" stroke="#F5F4F2" stroke-width="8"/>
+    </g>
+
+    <!-- RIGHT ticket half: rips and falls away -->
+    <g id="exp_halfR" opacity="0">
+      <g fill="#F5F4F2">
+        <rect x="300" y="240" width="120" height="8"/>
+        <rect x="300" y="352" width="120" height="8"/>
+        <path id="exp_halfRside"/>
+      </g>
+      <path id="exp_tearR" fill="none" stroke="#F5F4F2" stroke-width="8"/>
+    </g>
+  </svg>
+</div>
+<script>
+window.__anims = {};
+(function(){
+  "use strict";
+
+  // ---------- beam geometry: 5-point polygons ----------
+  var B1 = {
+    N:  [[211.2,80],[218.8,80],[388.8,257.3],[388.8,297.9],[211.2,111.9]],
+    BR: [[190,150],[410,150],[410,150],[410,156],[190,156]],
+    PA: [[241,155],[359,155],[359,155],[359,163],[241,163]]
+  };
+  var B2 = {
+    N:  [[211.2,304.6],[388.8,490.6],[388.8,520],[378.9,520],[211.2,344.7]],
+    BR: [[190,444],[410,444],[410,450],[190,450],[190,450]],
+    PA: [[241,397],[359,397],[359,405],[241,405],[241,405]]
+  };
+
+  // vertical bar states: {dx from center, y, h, w}
+  var BN  = {dx:86.6, y:80,  h:440, w:5};  // logo position
+  var BBr = {dx:110,  y:150, h:300, w:6};  // browser frame sides
+  var BPh = {dx:55,   y:155, h:250, w:8};  // phone frame sides (shorter, true proportions)
+
+  // ---------- timeline (ms) ----------
+  var T = {
+    holdN1:      [0,     700 ],
+    toBrowser:   [700,   1900],
+    chromeIn:    [1700,  2100],
+    webScroll:   [1900,  3900],
+    toPhone:     [3900,  4800],
+    browserOut:  [3500,  3900],
+    phoneChrome: [4500,  4900],
+    phoneIn:     [4700,  5500],
+    holdPhone:   [5500,  6300],
+    phoneOut:    [6300,  6700],
+    toN:         [6800,  7900],
+    holdN2:      [7900,  9400]
+  };
+  var TOTAL = 9400;
+  var ROW_SPEED = 0.14; // px/ms -- faster still, whole page moves briskly
+
+  // ---------- helpers ----------
+  function seg(t, r){
+    if (t <= r[0]) return 0;
+    if (t >= r[1]) return 1;
+    return (t - r[0]) / (r[1] - r[0]);
+  }
+  function easeInOut(p){
+    return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2;
+  }
+  function easeOut(p){
+    return 1 - Math.pow(1 - p, 3);
+  }
+  function easeOutBack(p){
+    var c1 = 1.70158, c3 = c1 + 1;
+    return 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2);
+  }
+  function lerp(a, b, p){ return a + (b - a) * p; }
+  function mod(n, m){ return ((n % m) + m) % m; }
+  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+  function lerpPts(A, B, p){
+    var out = [];
+    for (var i = 0; i < A.length; i++){
+      out.push([lerp(A[i][0],B[i][0],p), lerp(A[i][1],B[i][1],p)]);
+    }
+    return out;
+  }
+  function ptsAttr(pts){
+    return pts.map(function(pt){ return pt[0] + "," + pt[1]; }).join(" ");
+  }
+  function fadeInOut(t, inRange, outRange){
+    var s = 0;
+    if (t >= inRange[0] && t < outRange[0]) s = easeOut(Math.min(1, seg(t, inRange)));
+    else if (t >= outRange[0] && t < outRange[1]) s = 1 - easeOut(seg(t, outRange));
+    return clamp(s, 0, 1);
+  }
+
+  // ---------- dom ----------
+  var $ = function(id){ return document.getElementById("tech_"+id) || document.createElement("div"); };
+  var m1 = $("m1"), m2 = $("m2");
+  var barL = $("barL"), barR = $("barR");
+  var chromeDivider = $("chromeDivider"), chromeDots = $("chromeDots");
+  var webRowsGroup = $("webRows");
+  var phoneNotch = $("phoneNotch"), phoneHome = $("phoneHome"), phoneIconsGroup = $("phoneIcons");
+  var label = $("phaseLabel");
+  var fillEl = $("fill");
+  var stage = $("stage");
+  var progressEl = $("progress");
+
+  // one long page strip: hero, headline/subhead, then 7 rows of two-column content.
+  // Everything has a fixed position on the strip and the whole strip scrolls linearly --
+  // no wraparound, so nothing can ever re-enter and collide with the hero.
+  var pageItems = [
+    {x:205, w:190, y:0,   h:110, type:'img',  hero:true}, // hero
+    {x:205, w:150, y:120, h:7,   type:'line'},            // headline
+    {x:205, w:110, y:132, h:6,   type:'line'}             // subhead
+  ];
+  var ROW_START = 155, ROW_BLOCK = 135, ROW_COUNT = 7;
+  for (var ti = 0; ti < ROW_COUNT; ti++){
+    var base = ROW_START + ti * ROW_BLOCK;
+    [205, 310].forEach(function(colX){
+      pageItems.push({x:colX, w:85, y:base,     h:90, type:'img'});
+      pageItems.push({x:colX, w:65, y:base+98,  h:6,  type:'line'});
+      pageItems.push({x:colX, w:45, y:base+109, h:6,  type:'line'});
+    });
+  }
+  pageItems.forEach(function(el){
+    var rr = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rr.setAttribute("x", el.x);
+    rr.setAttribute("rx", el.type === 'img' ? 6 : 3);
+    webRowsGroup.appendChild(rr);
+    el.el = rr;
+  });
+
+  // phone icon grid: 2 cols x 3 rows, each its own group for staggered pop-in
+  var iconDefs = [
+    {cx:278,cy:228},{cx:322,cy:228},
+    {cx:278,cy:283},{cx:322,cy:283},
+    {cx:278,cy:338},{cx:322,cy:338}
+  ];
+  var iconEls = iconDefs.map(function(n, idx){
+    var g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("opacity", "0");
+    var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rect.setAttribute("x", n.cx - 17);
+    rect.setAttribute("y", n.cy - 17);
+    rect.setAttribute("width", 34);
+    rect.setAttribute("height", 34);
+    rect.setAttribute("rx", 8);
+    g.appendChild(rect);
+    phoneIconsGroup.appendChild(g);
+    return {el:g, cx:n.cx, cy:n.cy, idx:idx};
+  });
+
+  function setBars(b){
+    barL.setAttribute("x", 300 - b.dx - b.w/2);
+    barR.setAttribute("x", 300 + b.dx - b.w/2);
+    [barL, barR].forEach(function(el){
+      el.setAttribute("y", b.y);
+      el.setAttribute("height", b.h);
+      el.setAttribute("width", b.w);
+    });
+  }
+  function lerpBar(A, B, p){
+    return { dx:lerp(A.dx,B.dx,p), y:lerp(A.y,B.y,p), h:lerp(A.h,B.h,p), w:lerp(A.w,B.w,p) };
+  }
+
+  function labelFor(t){
+    if (t < T.toBrowser[0]) return "Ten Grand Technology";
+    if (t < T.toPhone[0])   return "Web";
+    if (t < T.toN[0])       return "App";
+    return "Ten Grand Technology";
+  }
+
+  // ---------- render ----------
+  function render(t){
+    // beams: N -> browser edges -> phone edges -> N
+    var from = "N", to = "N", p = 0;
+    if (t >= T.toBrowser[0] && t < T.toBrowser[1]){
+      from = "N"; to = "BR"; p = easeInOut(seg(t, T.toBrowser));
+    } else if (t >= T.toBrowser[1] && t < T.toPhone[0]){
+      from = "BR"; to = "BR";
+    } else if (t >= T.toPhone[0] && t < T.toPhone[1]){
+      from = "BR"; to = "PA"; p = easeInOut(seg(t, T.toPhone));
+    } else if (t >= T.toPhone[1] && t < T.toN[0]){
+      from = "PA"; to = "PA";
+    } else if (t >= T.toN[0] && t < T.toN[1]){
+      from = "PA"; to = "N"; p = easeInOut(seg(t, T.toN));
+    }
+    m1.setAttribute("points", ptsAttr(lerpPts(B1[from], B1[to], p)));
+    m2.setAttribute("points", ptsAttr(lerpPts(B2[from], B2[to], p)));
+
+    // bars: N -> browser sides -> phone sides -> N
+    var b = BN;
+    if (t >= T.toBrowser[0] && t < T.toBrowser[1]) b = lerpBar(BN, BBr, easeInOut(seg(t, T.toBrowser)));
+    else if (t >= T.toBrowser[1] && t < T.toPhone[0]) b = BBr;
+    else if (t >= T.toPhone[0] && t < T.toPhone[1]) b = lerpBar(BBr, BPh, easeInOut(seg(t, T.toPhone)));
+    else if (t >= T.toPhone[1] && t < T.toN[0]) b = BPh;
+    else if (t >= T.toN[0] && t < T.toN[1]) b = lerpBar(BPh, BN, easeInOut(seg(t, T.toN)));
+    setBars(b);
+
+    // browser chrome: dots + divider
+    var chromeS = fadeInOut(t, T.chromeIn, T.browserOut);
+    chromeDivider.setAttribute("opacity", chromeS);
+    chromeDots.setAttribute("opacity", chromeS);
+
+    // the whole page strip scrolls at one constant speed -- hero included
+    var feedS = fadeInOut(t, [T.chromeIn[0], T.chromeIn[0] + 400], T.browserOut);
+    var scrollOffset = ROW_SPEED * Math.max(0, t - T.webScroll[0]);
+    pageItems.forEach(function(el){
+      var top = 215 + el.y - scrollOffset;
+      el.el.setAttribute("y", top);
+      el.el.setAttribute("height", el.h);
+      el.el.setAttribute("width", el.w);
+      if (el.hero){
+        el.el.setAttribute("opacity", feedS);
+        return;
+      }
+      var center = top + el.h/2;
+      var vis = clamp(Math.min((440 - center)/40, (center - 215)/40, 1), 0, 1);
+      el.el.setAttribute("opacity", vis * feedS * (el.type === 'line' ? 0.55 : 1));
+    });
+
+    // phone chrome: notch + home indicator
+    var phoneChromeS = fadeInOut(t, T.phoneChrome, T.phoneOut);
+    phoneNotch.setAttribute("opacity", phoneChromeS);
+    phoneHome.setAttribute("opacity", phoneChromeS);
+
+    // phone icons: pop in one by one, fade out together
+    iconEls.forEach(function(n){
+      var inStart = T.phoneIn[0] + n.idx * 140;
+      var s = 0;
+      if (t >= inStart && t < T.phoneOut[0]){
+        s = easeOutBack(Math.min(1, (t - inStart) / 380));
+      } else if (t >= T.phoneOut[0] && t < T.phoneOut[1]){
+        s = 1 - easeInOut(seg(t, T.phoneOut));
+      }
+      s = Math.max(0, s);
+      n.el.setAttribute("opacity", Math.min(1, s * 1.3));
+      n.el.setAttribute("transform",
+        "translate(" + (n.cx * (1 - s)) + " " + (n.cy * (1 - s)) + ") scale(" + s + ")");
+    });
+
+    label.textContent = labelFor(t);
+    fillEl.style.width = (t / TOTAL * 100) + "%";
+  }
+
+  
+  window.__anims.tech = {render: render, TOTAL: TOTAL};
+})();
+(function(){
+  "use strict";
+
+  // ---------- beam geometry: 5-point polygons, traced from the source logo ----------
+  // m1 point order: TL, TR, TR', BR, BL   (TR' collapses into TR when rectangular)
+  // m2 point order: TL, TR, BR, BL', BL   (BL' collapses into BL when rectangular)
+  var B1 = {
+    N:  [[211.2,80],[218.8,80],[388.8,257.3],[388.8,297.9],[211.2,111.9]],
+    R:  [[112,192],[488,192],[488,192],[488,238],[112,238]],
+    ST: [[117.5,217.5],[482.5,217.5],[482.5,217.5],[482.5,222.5],[117.5,222.5]],
+    PH: [[188,108],[412,108],[412,108],[412,116],[188,116]]
+  };
+  var B2 = {
+    N:  [[211.2,304.6],[388.8,490.6],[388.8,520],[378.9,520],[211.2,344.7]],
+    R:  [[112,362],[488,362],[488,408],[112,408],[112,408]],
+    ST: [[117.5,377.5],[482.5,377.5],[482.5,382.5],[117.5,382.5],[117.5,382.5]],
+    PH: [[188,484],[412,484],[412,492],[188,492],[188,492]]
+  };
+
+  // vertical bar states: {dx from center, y, h, w}
+  var BN = {dx:86.6, y:80, h:440, w:5};    // logo / staff position
+  var BF = {dx:180, y:192, h:216, w:16};   // film-frame position (flush with rail edges)
+  var BS = {dx:180, y:217.5, h:165, w:5};  // staff barlines (flush with outer staff lines)
+  var BP = {dx:108, y:108, h:384, w:8};    // phone edges (flush with top/bottom beams)
+
+  // ---------- timeline (ms) ----------
+  var T = {
+    holdN1:      [0,     900 ],
+    straighten:  [900,   2100],
+    perfIn:      [2100,  2900],
+    dividersIn:  [2900,  3400],
+    play:        [3400,  6400],
+    perfOut:     [6500,  7050],
+    toStaff:     [7100,  8300],
+    linesIn:     [7400,  8600],
+    noteIn:      [8300,  9100],
+    holdStaff:   [9100, 10300],
+    noteOut:     [10300, 10800],
+    linesOut:    [10300, 11100],
+    toPhone:     [11200, 12400],
+    feedIn:      [12400, 13200],
+    feedScroll:  [13200, 15200],
+    feedOut:     [15200, 15700],
+    toN:         [15800, 17200],
+    holdN2:      [17200, 19500]
+  };
+  var TOTAL = 19500;
+  var SCROLL_DIST = 600;  // film: multiple of both pattern periods, lands realigned
+  var FEED_DIST = 348;    // feed: two posts scroll by
+
+  // ---------- helpers ----------
+  function seg(t, r){
+    if (t <= r[0]) return 0;
+    if (t >= r[1]) return 1;
+    return (t - r[0]) / (r[1] - r[0]);
+  }
+  function easeInOut(p){
+    return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2;
+  }
+  function easeOut(p){
+    return 1 - Math.pow(1 - p, 3);
+  }
+  function easeOutBack(p){
+    var c1 = 1.70158, c3 = c1 + 1;
+    return 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2);
+  }
+  function lerp(a, b, p){ return a + (b - a) * p; }
+  function mod(n, m){ return ((n % m) + m) % m; }
+  function lerpPts(A, B, p){
+    var out = [];
+    for (var i = 0; i < A.length; i++){
+      out.push([lerp(A[i][0],B[i][0],p), lerp(A[i][1],B[i][1],p)]);
+    }
+    return out;
+  }
+  function ptsAttr(pts){
+    return pts.map(function(pt){ return pt[0] + "," + pt[1]; }).join(" ");
+  }
+
+  // ---------- dom ----------
+  var $ = function(id){ return document.getElementById("ent_"+id) || document.createElement("div"); };
+  var m1 = $("m1"), m2 = $("m2");
+  var barL = $("barL"), barR = $("barR");
+  var mids = [$("s1"), $("s2"), $("s3")];
+  var notesGroup = $("notes");
+  var perfsGroup = $("perfs");
+  var dividersGroup = $("dividers");
+  var feedGroup = $("feed");
+  var label = $("phaseLabel");
+  var fillEl = $("fill");
+  var stage = $("stage");
+  var progressEl = $("progress");
+
+  // perforations: 10 per rail tiling every 50px (wraps over a 500px period)
+  var perfRects = [];
+  [215,385].forEach(function(cy){
+    for (var i = 0; i < 10; i++){
+      var r = document.createElementNS("http://www.w3.org/2000/svg","rect");
+      perfsGroup.appendChild(r);
+      perfRects.push({el:r, cx:100 + i*50, cy:cy, i:i});
+    }
+  });
+
+  // frame dividers: 4 bars tiling every 150px (wraps over a 600px period)
+  var dividerRects = [];
+  for (var d = 0; d < 4; d++){
+    var dr = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    dividersGroup.appendChild(dr);
+    dividerRects.push({el:dr, cx:175 + d*150});
+  }
+  var DIV_W = 14, DIV_TOP = 238, DIV_BOT = 362;
+
+  // melody: quarter notes stepping across the staff (staff lines y 220..380, spacing 40)
+  var noteDefs = [
+    {cx:180, cy:340},
+    {cx:265, cy:300},
+    {cx:350, cy:280},
+    {cx:435, cy:320}
+  ];
+  var noteEls = noteDefs.map(function(n){
+    var g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("fill", "#F5F4F2");
+    g.setAttribute("opacity", "0");
+    var stem = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    stem.setAttribute("x", n.cx + 10);
+    stem.setAttribute("y", n.cy - 72);
+    stem.setAttribute("width", 4);
+    stem.setAttribute("height", 70);
+    var head = document.createElementNS("http://www.w3.org/2000/svg","ellipse");
+    head.setAttribute("cx", n.cx);
+    head.setAttribute("cy", n.cy);
+    head.setAttribute("rx", 14);
+    head.setAttribute("ry", 10);
+    head.setAttribute("transform", "rotate(-18 " + n.cx + " " + n.cy + ")");
+    g.appendChild(stem);
+    g.appendChild(head);
+    notesGroup.appendChild(g);
+    return {el:g, cx:n.cx, cy:n.cy};
+  });
+
+  // social feed: 4 post blocks tiling every 174px (wraps over a 696px period)
+  // each block: image card + two text lines, in block-local coords (y 0..156)
+  var FEED_PERIOD = 174, FEED_WRAP = 696;
+  var feedBlocks = [];
+  for (var k = 0; k < 4; k++){
+    var g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("opacity", "0");
+    var img = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    img.setAttribute("x", 214); img.setAttribute("y", 0);
+    img.setAttribute("width", 172); img.setAttribute("height", 110);
+    img.setAttribute("rx", 6);
+    var l1 = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    l1.setAttribute("x", 214); l1.setAttribute("y", 124);
+    l1.setAttribute("width", 172); l1.setAttribute("height", 8);
+    l1.setAttribute("rx", 4);
+    var l2 = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    l2.setAttribute("x", 214); l2.setAttribute("y", 148);
+    l2.setAttribute("width", 118); l2.setAttribute("height", 8);
+    l2.setAttribute("rx", 4);
+    g.appendChild(img); g.appendChild(l1); g.appendChild(l2);
+    feedGroup.appendChild(g);
+    feedBlocks.push({el:g, k:k});
+  }
+
+  function setBars(b){
+    barL.setAttribute("x", 300 - b.dx - b.w/2);
+    barR.setAttribute("x", 300 + b.dx - b.w/2);
+    [barL, barR].forEach(function(el){
+      el.setAttribute("y", b.y);
+      el.setAttribute("height", b.h);
+      el.setAttribute("width", b.w);
+    });
+  }
+  function lerpBar(A, B, p){
+    return { dx:lerp(A.dx,B.dx,p), y:lerp(A.y,B.y,p), h:lerp(A.h,B.h,p), w:lerp(A.w,B.w,p) };
+  }
+
+  function labelFor(t){
+    if (t < T.straighten[0]) return "Ten Grand Entertainment";
+    if (t < T.perfOut[1])    return "Film & Shows";
+    if (t < T.toPhone[0])    return "Music";
+    if (t < T.toN[0])        return "Media";
+    return "Ten Grand Entertainment";
+  }
+
+  // ---------- render ----------
+  function render(t){
+    // beams: N -> rails -> staff outer lines -> phone top/bottom -> N
+    var from = "N", to = "N", p = 0;
+    if (t >= T.straighten[0] && t < T.straighten[1]){
+      from = "N"; to = "R"; p = easeInOut(seg(t, T.straighten));
+    } else if (t >= T.straighten[1] && t < T.toStaff[0]){
+      from = "R"; to = "R";
+    } else if (t >= T.toStaff[0] && t < T.toStaff[1]){
+      from = "R"; to = "ST"; p = easeInOut(seg(t, T.toStaff));
+    } else if (t >= T.toStaff[1] && t < T.toPhone[0]){
+      from = "ST"; to = "ST";
+    } else if (t >= T.toPhone[0] && t < T.toPhone[1]){
+      from = "ST"; to = "PH"; p = easeInOut(seg(t, T.toPhone));
+    } else if (t >= T.toPhone[1] && t < T.toN[0]){
+      from = "PH"; to = "PH";
+    } else if (t >= T.toN[0] && t < T.toN[1]){
+      from = "PH"; to = "N"; p = easeInOut(seg(t, T.toN));
+    }
+    m1.setAttribute("points", ptsAttr(lerpPts(B1[from], B1[to], p)));
+    m2.setAttribute("points", ptsAttr(lerpPts(B2[from], B2[to], p)));
+
+    // bars: N -> film frame -> staff barlines -> phone edges -> N
+    var b = BN;
+    if (t >= T.straighten[0] && t < T.straighten[1]) b = lerpBar(BN, BF, easeInOut(seg(t, T.straighten)));
+    else if (t >= T.straighten[1] && t < T.toStaff[0]) b = BF;
+    else if (t >= T.toStaff[0] && t < T.toStaff[1]) b = lerpBar(BF, BS, easeInOut(seg(t, T.toStaff)));
+    else if (t >= T.toStaff[1] && t < T.toPhone[0]) b = BS;
+    else if (t >= T.toPhone[0] && t < T.toPhone[1]) b = lerpBar(BS, BP, easeInOut(seg(t, T.toPhone)));
+    else if (t >= T.toPhone[1] && t < T.toN[0]) b = BP;
+    else if (t >= T.toN[0] && t < T.toN[1]) b = lerpBar(BP, BN, easeInOut(seg(t, T.toN)));
+    setBars(b);
+
+    // the strip runs: shared scroll offset, eased so it starts and settles smoothly
+    var offset = SCROLL_DIST * easeInOut(seg(t, T.play));
+
+    // perforations: staggered punch-in, scroll with the strip, fade out realigned
+    perfRects.forEach(function(pr){
+      var s = 0;
+      var inStart = T.perfIn[0] + pr.i * 50;
+      if (t >= inStart && t < T.perfOut[0]){
+        s = easeOutBack(Math.min(1, (t - inStart) / 350));
+      } else if (t >= T.perfOut[0] && t < T.perfOut[1]){
+        s = 1 - easeOut(seg(t, T.perfOut));
+      }
+      s = Math.max(0, s);
+      var half = 12.5 * s;
+      var x = 100 + mod(pr.cx - 100 - offset, 500);
+      pr.el.setAttribute("x", x - half);
+      pr.el.setAttribute("y", pr.cy - half);
+      pr.el.setAttribute("width", half * 2);
+      pr.el.setAttribute("height", half * 2);
+    });
+
+    // dividers: grow between the rails, scroll with the strip, fade with the perfs
+    dividerRects.forEach(function(dr){
+      var s = 0;
+      if (t >= T.dividersIn[0] && t < T.perfOut[0]){
+        s = easeOut(seg(t, T.dividersIn));
+      } else if (t >= T.perfOut[0] && t < T.perfOut[1]){
+        s = 1 - easeOut(seg(t, T.perfOut));
+      }
+      s = Math.max(0, s);
+      var x = 25 + mod(dr.cx - 25 - offset, 600);
+      var fullH = DIV_BOT - DIV_TOP;
+      var h = fullH * s;
+      var yMid = (DIV_TOP + DIV_BOT) / 2;
+      dr.el.setAttribute("x", x - DIV_W/2);
+      dr.el.setAttribute("y", yMid - h/2);
+      dr.el.setAttribute("width", DIV_W);
+      dr.el.setAttribute("height", h);
+    });
+
+    // middle staff lines: grow from center, staggered
+    mids.forEach(function(el, i){
+      var s = 0;
+      var inStart = T.linesIn[0] + i * 160;
+      var outStart = T.linesOut[0] + i * 120;
+      if (t >= inStart && t < T.linesOut[0]){
+        s = easeOut(Math.min(1, (t - inStart) / 600));
+      } else if (t >= outStart && t < outStart + 500){
+        s = 1 - easeInOut((t - outStart) / 500);
+      } else if (t >= outStart + 500){
+        s = 0;
+      } else if (t >= T.linesOut[0]){
+        s = 1;
+      }
+      s = Math.max(0, Math.min(1, s));
+      el.setAttribute("width", 365 * s);
+      el.setAttribute("x", 300 - 182.5 * s);
+    });
+
+    // melody: notes pop in left to right, slip out together
+    noteEls.forEach(function(n, i){
+      var ns = 0;
+      var inStart = T.noteIn[0] + i * 220;
+      if (t >= inStart && t < T.noteOut[0]){
+        ns = easeOutBack(Math.min(1, (t - inStart) / 420));
+      } else if (t >= T.noteOut[0] && t < T.noteOut[1]){
+        ns = 1 - easeInOut(seg(t, T.noteOut));
+      }
+      ns = Math.max(0, ns);
+      n.el.setAttribute("opacity", Math.min(1, ns * 1.4));
+      n.el.setAttribute("transform",
+        "translate(" + (n.cx * (1 - ns)) + " " + (n.cy * (1 - ns)) + ") scale(" + ns + ")");
+    });
+
+    // feed: posts pop in top to bottom, scroll upward, fade before the return
+    var feedOffset = FEED_DIST * easeInOut(seg(t, T.feedScroll));
+    feedBlocks.forEach(function(fb){
+      var fs = 0;
+      var inStart = T.feedIn[0] + fb.k * 180;
+      if (t >= inStart && t < T.feedOut[0]){
+        fs = easeOut(Math.min(1, (t - inStart) / 350));
+      } else if (t >= T.feedOut[0] && t < T.feedOut[1]){
+        fs = 1 - easeOut(seg(t, T.feedOut));
+      }
+      fs = Math.max(0, fs);
+      var y = -60 + mod(fb.k * FEED_PERIOD + 200 - feedOffset, FEED_WRAP);
+      fb.el.setAttribute("opacity", fs);
+      fb.el.setAttribute("transform", "translate(0 " + y + ")");
+    });
+
+    label.textContent = labelFor(t);
+    fillEl.style.width = (t / TOTAL * 100) + "%";
+  }
+
+  
+  window.__anims.ent = {render: render, TOTAL: TOTAL};
+})();
+(function(){
+  "use strict";
+
+  // ---------- beam geometry: 5-point polygons, traced from the source logo ----------
+  var B1 = {
+    N:  [[211.2,80],[218.8,80],[388.8,257.3],[388.8,297.9],[211.2,111.9]],
+    BX: [[206,206],[394,206],[394,206],[394,214],[206,214]]
+  };
+  var B2 = {
+    N:  [[211.2,304.6],[388.8,490.6],[388.8,520],[378.9,520],[211.2,344.7]],
+    BX: [[206,396],[394,396],[394,404],[206,404],[206,404]]
+  };
+
+  // vertical bar states: {dx from center, y, h, w}
+  var BN  = {dx:86.6, y:80,  h:440, w:5};  // logo position
+  var BBx = {dx:90,   y:206, h:198, w:8};  // box sides (flush with top/bottom edges)
+
+  // ---------- timeline (ms) ----------
+  var T = {
+    holdN1:     [0,     700 ],
+    toBox:      [700,   1900],
+    flapsOpen:  [2100,  2800],
+    itemsOut:   [2800,  3700],
+    float:      [3700,  5400],
+    vanish:     [5400,  6300],
+    flapsClose: [6500,  7200],
+    toN:        [7400,  8500],
+    holdN2:     [8500, 10000]
+  };
+  var TOTAL = 10000;
+
+  // ---------- helpers ----------
+  function seg(t, r){
+    if (t <= r[0]) return 0;
+    if (t >= r[1]) return 1;
+    return (t - r[0]) / (r[1] - r[0]);
+  }
+  function easeInOut(p){
+    return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2;
+  }
+  function easeOut(p){
+    return 1 - Math.pow(1 - p, 3);
+  }
+  function easeOutBack(p){
+    var c1 = 1.70158, c3 = c1 + 1;
+    return 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2);
+  }
+  function lerp(a, b, p){ return a + (b - a) * p; }
+  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+  function lerpPts(A, B, p){
+    var out = [];
+    for (var i = 0; i < A.length; i++){
+      out.push([lerp(A[i][0],B[i][0],p), lerp(A[i][1],B[i][1],p)]);
+    }
+    return out;
+  }
+  function ptsAttr(pts){
+    return pts.map(function(pt){ return pt[0] + "," + pt[1]; }).join(" ");
+  }
+
+  // ---------- dom ----------
+  var $ = function(id){ return document.getElementById("mer_"+id) || document.createElement("div"); };
+  var m1 = $("m1"), m2 = $("m2");
+  var barL = $("barL"), barR = $("barR");
+  var flapL = $("flapL"), flapR = $("flapR");
+  var sparklesGroup = $("sparkles");
+  var label = $("phaseLabel");
+  var fillEl = $("fill");
+  var stage = $("stage");
+  var progressEl = $("progress");
+
+  // products: start inside the box mouth, rise to float positions
+  var items = [
+    {el: $("itemTee"),  fx:222, fy:118, delay:0,   bobPhase:0},
+    {el: $("itemCap"),  fx:302, fy:72,  delay:220, bobPhase:2.1},
+    {el: $("itemBear"), fx:380, fy:126, delay:440, bobPhase:4.2}
+  ];
+  var MOUTH_X = 300, MOUTH_Y = 250;
+
+  // sparkles: little plus signs around the float zone
+  var sparkleDefs = [
+    {x:210, y:95},  {x:270, y:60},  {x:335, y:55},
+    {x:395, y:100}, {x:250, y:160}, {x:352, y:168}
+  ];
+  var sparkleEls = sparkleDefs.map(function(s, i){
+    var g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("opacity", "0");
+    var v = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    v.setAttribute("x", s.x - 1.5); v.setAttribute("y", s.y - 6);
+    v.setAttribute("width", 3); v.setAttribute("height", 12);
+    var h = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    h.setAttribute("x", s.x - 6); h.setAttribute("y", s.y - 1.5);
+    h.setAttribute("width", 12); h.setAttribute("height", 3);
+    g.appendChild(v); g.appendChild(h);
+    sparklesGroup.appendChild(g);
+    return {el:g, phase:i * 1.1};
+  });
+
+  function setBars(b){
+    barL.setAttribute("x", 300 - b.dx - b.w/2);
+    barR.setAttribute("x", 300 + b.dx - b.w/2);
+    [barL, barR].forEach(function(el){
+      el.setAttribute("y", b.y);
+      el.setAttribute("height", b.h);
+      el.setAttribute("width", b.w);
+    });
+  }
+  function lerpBar(A, B, p){
+    return { dx:lerp(A.dx,B.dx,p), y:lerp(A.y,B.y,p), h:lerp(A.h,B.h,p), w:lerp(A.w,B.w,p) };
+  }
+
+  function labelFor(t){
+    if (t < T.toBox[0])      return "Ten Grand Merchandise";
+    if (t < T.itemsOut[0])   return "Unboxing";
+    if (t < T.flapsClose[0]) return "Products";
+    if (t < T.toN[1])        return "Unboxing";
+    return "Ten Grand Merchandise";
+  }
+
+  // ---------- render ----------
+  function render(t){
+    // beams: N -> box top/bottom -> N
+    var from = "N", to = "N", p = 0;
+    if (t >= T.toBox[0] && t < T.toBox[1]){
+      from = "N"; to = "BX"; p = easeInOut(seg(t, T.toBox));
+    } else if (t >= T.toBox[1] && t < T.toN[0]){
+      from = "BX"; to = "BX";
+    } else if (t >= T.toN[0] && t < T.toN[1]){
+      from = "BX"; to = "N"; p = easeInOut(seg(t, T.toN));
+    }
+    m1.setAttribute("points", ptsAttr(lerpPts(B1[from], B1[to], p)));
+    m2.setAttribute("points", ptsAttr(lerpPts(B2[from], B2[to], p)));
+
+    // bars: N -> box sides -> N
+    var b = BN;
+    if (t >= T.toBox[0] && t < T.toBox[1]) b = lerpBar(BN, BBx, easeInOut(seg(t, T.toBox)));
+    else if (t >= T.toBox[1] && t < T.toN[0]) b = BBx;
+    else if (t >= T.toN[0] && t < T.toN[1]) b = lerpBar(BBx, BN, easeInOut(seg(t, T.toN)));
+    setBars(b);
+
+    // flaps: swing open from the top corners, swing closed before the return
+    var flapAngle = 0, flapVis = 0;
+    if (t >= T.flapsOpen[0] && t < T.flapsClose[0]){
+      flapAngle = 118 * easeOutBack(seg(t, T.flapsOpen));
+      flapVis = 1;
+    } else if (t >= T.flapsClose[0] && t < T.flapsClose[1]){
+      flapAngle = 118 * (1 - easeInOut(seg(t, T.flapsClose)));
+      flapVis = 1;
+    } else if (t >= T.flapsClose[1] && t < T.toN[0]){
+      flapAngle = 0; flapVis = 1;
+    }
+    flapL.setAttribute("opacity", flapVis);
+    flapR.setAttribute("opacity", flapVis);
+    flapL.setAttribute("transform", "rotate(" + (-flapAngle) + " 206 210)");
+    flapR.setAttribute("transform", "rotate(" + flapAngle + " 394 210)");
+
+    // products: rise out of the mouth, bob while floating, dissolve into the air
+    items.forEach(function(it){
+      var s = 0, x = MOUTH_X, y = MOUTH_Y;
+      var inStart = T.itemsOut[0] + it.delay;
+      if (t >= inStart && t < T.vanish[0]){
+        var rp = easeOutBack(Math.min(1, (t - inStart) / 750));
+        var rpc = clamp(rp, 0, 1.2);
+        s = clamp(rp, 0, 1);
+        x = lerp(MOUTH_X, it.fx, rpc);
+        y = lerp(MOUTH_Y, it.fy, rpc);
+        // gentle bob once risen
+        if (rp >= 1) y += 4 * Math.sin(t / 420 + it.bobPhase);
+      } else if (t >= T.vanish[0] && t < T.vanish[1]){
+        var vp = clamp((t - (T.vanish[0] + it.delay * 0.5)) / 500, 0, 1);
+        s = 1 - easeInOut(vp);
+        x = it.fx;
+        y = it.fy - 18 * easeOut(vp); // drift up as they dissolve
+      }
+      s = Math.max(0, s);
+      it.el.setAttribute("opacity", Math.min(1, s * 1.3));
+      it.el.setAttribute("transform", "translate(" + x + " " + y + ") scale(" + (s * 1.8) + ")");
+    });
+
+    // sparkles: twinkle during the float, flare as products vanish
+    sparkleEls.forEach(function(sp){
+      var o = 0;
+      if (t >= T.float[0] && t < T.vanish[1]){
+        var tw = 0.35 + 0.35 * Math.sin(t / 260 + sp.phase);
+        if (t >= T.vanish[0]) tw = Math.min(1, tw + 0.4 * seg(t, T.vanish));
+        var fadeTail = t >= T.vanish[1] - 200 ? (T.vanish[1] - t) / 200 : 1;
+        o = clamp(tw * fadeTail, 0, 1);
+      }
+      sp.el.setAttribute("opacity", o);
+    });
+
+    label.textContent = labelFor(t);
+    fillEl.style.width = (t / TOTAL * 100) + "%";
+  }
+
+  
+  window.__anims.mer = {render: render, TOTAL: TOTAL};
+})();
+(function(){
+  "use strict";
+
+  // ---------- beam states: 5-point polygons ----------
+  // m1: top diagonal <-> ticket top edge <-> square top <-> thick band <-> N
+  var B1 = {
+    N:  [[211.2,80],[218.8,80],[388.8,257.3],[388.8,297.9],[211.2,111.9]],
+    TK: [[180,240],[420,240],[420,240],[420,248],[180,248]],
+    SQ: [[240,240],[360,240],[360,240],[360,248],[240,248]],
+    TH: [[240,240],[360,240],[360,240],[360,276],[240,276]]
+  };
+  var B2 = {
+    N:  [[211.2,304.6],[388.8,490.6],[388.8,520],[378.9,520],[211.2,344.7]],
+    TK: [[180,352],[420,352],[420,360],[180,360],[180,360]],
+    SQ: [[240,352],[360,352],[360,360],[240,360],[240,360]],
+    TH: [[240,324],[360,324],[360,360],[240,360],[240,360]]
+  };
+
+  // ---------- bar states: per-bar {x, y, h, w} ----------
+  var BAR = {
+    NL:  {x:210.9, y:80,  h:440, w:5},
+    NR:  {x:384.1, y:80,  h:440, w:5},
+    // ticket sides
+    TKL: {x:180, y:240, h:120, w:8},
+    TKR: {x:412, y:240, h:120, w:8},
+    // square-frame sides (after the left half's rotation)
+    SQL: {x:240, y:240, h:120, w:8},
+    SQR: {x:352, y:240, h:120, w:8}
+  };
+
+  // ---------- timeline (ms) ----------
+  var T = {
+    holdN1:     [0,     700 ],
+    toTicket:   [700,   1900],
+    notchesIn:  [2000,  2400],
+    dashesIn:   [2400,  2900],
+    holdTicket: [2900,  3300],
+    rip:        [3300,  3700],
+    fallR:      [3700,  4600],
+    leftRotate: [4300,  5600],
+    thicken:    [5600,  6200],
+    slant:      [6100,  7100],
+    barsExtend: [6100,  7100],
+    holdN2:     [7500, 10100]
+  };
+  var TOTAL = 10100;
+
+  // ---------- helpers ----------
+  function seg(t, r){
+    if (t <= r[0]) return 0;
+    if (t >= r[1]) return 1;
+    return (t - r[0]) / (r[1] - r[0]);
+  }
+  function easeInOut(p){
+    return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2;
+  }
+  function easeOut(p){
+    return 1 - Math.pow(1 - p, 3);
+  }
+  function easeIn(p){
+    return p*p*p;
+  }
+  function lerp(a, b, p){ return a + (b - a) * p; }
+  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+  function lerpPts(A, B, p){
+    var out = [];
+    for (var i = 0; i < A.length; i++){
+      out.push([lerp(A[i][0],B[i][0],p), lerp(A[i][1],B[i][1],p)]);
+    }
+    return out;
+  }
+  function ptsAttr(pts){
+    return pts.map(function(pt){ return pt[0] + "," + pt[1]; }).join(" ");
+  }
+  function lerpRect(A, B, p){
+    return { x:lerp(A.x,B.x,p), y:lerp(A.y,B.y,p), h:lerp(A.h,B.h,p), w:lerp(A.w,B.w,p) };
+  }
+  function setRect(el, r, o){
+    el.setAttribute("x", r.x);
+    el.setAttribute("y", r.y);
+    el.setAttribute("width", r.w);
+    el.setAttribute("height", r.h);
+    el.setAttribute("opacity", o);
+  }
+  // vertical zigzag tear path with plumb ends: the first and last segments are
+  // vertical so the stroke's butt caps sit flush against the ticket's horizontal
+  // edges -- clean corners at both ends. amp eases to 0 to smooth the tear out.
+  function tearPath(cx, amp){
+    var pts = [
+      [cx, 240], [cx, 248],
+      [cx + amp, 258], [cx - amp, 269], [cx + amp, 279],
+      [cx - amp, 290], [cx + amp, 300], [cx - amp, 310],
+      [cx + amp, 321], [cx - amp, 331], [cx + amp, 342],
+      [cx, 352], [cx, 360]
+    ];
+    var d = "M " + pts[0][0] + " " + pts[0][1];
+    for (var i = 1; i < pts.length; i++){
+      d += " L " + pts[i][0] + " " + pts[i][1];
+    }
+    return d;
+  }
+  // ticket side with a semicircular bite carved into its outer edge;
+  // r animates 0 -> 14 (punch in) and back (smooth out). At r=0 it equals
+  // the plain side bar exactly, so swaps are pixel-identical.
+  function sidePath(xO, dirIn, r){
+    var xI = xO + 8 * dirIn;
+    if (r < 0.6){
+      return "M" + xO + " 240 L" + xI + " 240 L" + xI + " 360 L" + xO + " 360 Z";
+    }
+    var rI = r + 8;                                  // inner detour radius
+    var phiI = Math.acos(8 / rI);                    // inner intersection angle
+    var base = dirIn > 0 ? 0 : Math.PI;              // bulge direction
+    function arc(radius, thFrom, thTo){
+      var s = "";
+      for (var i = 0; i <= 10; i++){
+        var th = thFrom + (thTo - thFrom) * i / 10;
+        s += " L" + (xO + radius * Math.cos(th)) + " " + (300 + radius * Math.sin(th));
+      }
+      return s;
+    }
+    var aI = Math.sqrt(Math.max(0, rI * rI - 64));
+    var d = "M" + xO + " 240"
+          + " L" + xI + " 240"
+          + " L" + xI + " " + (300 - aI)
+          + arc(rI, base - dirIn * phiI, base + dirIn * phiI)  // inner edge detours around
+          + " L" + xI + " 360"
+          + " L" + xO + " 360"
+          + " L" + xO + " " + (300 + r)
+          + arc(r, base + dirIn * Math.PI / 2, base - dirIn * Math.PI / 2) // outer edge follows the bite
+          + " Z";
+    return d;
+  }
+
+  // ---------- dom ----------
+  var $ = function(id){ return document.getElementById("exp_"+id) || document.createElement("div"); };
+  var m1 = $("m1"), m2 = $("m2");
+  var barL = $("barL"), barR = $("barR");
+  var sideNL = $("sideNL"), sideNR = $("sideNR");
+  var ripDashes = $("ripDashes");
+  var halfL = $("halfL"), halfR = $("halfR");
+  var tearL = $("tearL"), tearR = $("tearR");
+  var halfLside = $("halfLside"), halfRside = $("halfRside");
+  var label = $("phaseLabel");
+  var fillEl = $("fill");
+  var stage = $("stage");
+  var progressEl = $("progress");
+
+  tearL.setAttribute("d", tearPath(296, 8));
+  tearR.setAttribute("d", tearPath(304, -8));
+  halfLside.setAttribute("d", sidePath(180, 1, 11));
+  halfRside.setAttribute("d", sidePath(420, -1, 11));
+
+  function labelFor(t){
+    if (t < T.toTicket[0])  return "Ten Grand Experiences";
+    if (t < T.slant[1])     return "Admit One";
+    return "Ten Grand Experiences";
+  }
+
+  // ---------- render ----------
+  function render(t){
+    var primO = (t >= T.rip[0] && t < T.leftRotate[1]) ? 0 : 1;
+
+    // ----- beams -----
+    var pts1, pts2;
+    if (t < T.toTicket[0]){
+      pts1 = B1.N; pts2 = B2.N;
+    } else if (t < T.toTicket[1]){
+      var tp = easeInOut(seg(t, T.toTicket));
+      pts1 = lerpPts(B1.N, B1.TK, tp);
+      pts2 = lerpPts(B2.N, B2.TK, tp);
+    } else if (t < T.rip[0]){
+      pts1 = B1.TK; pts2 = B2.TK;
+    } else if (t < T.thicken[0]){
+      // hidden during the rip and rotation; parked at the square state
+      pts1 = B1.SQ; pts2 = B2.SQ;
+    } else if (t < T.slant[0]){
+      var thp = easeInOut(seg(t, T.thicken));
+      pts1 = lerpPts(B1.SQ, B1.TH, thp);
+      pts2 = lerpPts(B2.SQ, B2.TH, thp);
+    } else if (t < T.slant[1]){
+      var sp = easeInOut(seg(t, T.slant));
+      pts1 = lerpPts(B1.TH, B1.N, sp);
+      pts2 = lerpPts(B2.TH, B2.N, sp);
+    } else {
+      pts1 = B1.N; pts2 = B2.N;
+    }
+    m1.setAttribute("points", ptsAttr(pts1));
+    m2.setAttribute("points", ptsAttr(pts2));
+    m1.setAttribute("opacity", primO);
+    m2.setAttribute("opacity", primO);
+
+    // ----- bars -----
+    var bL, bR, bO = primO;
+    if (t < T.toTicket[0]){
+      bL = BAR.NL; bR = BAR.NR;
+    } else if (t < T.toTicket[1]){
+      var bp = easeInOut(seg(t, T.toTicket));
+      bL = lerpRect(BAR.NL, BAR.TKL, bp);
+      bR = lerpRect(BAR.NR, BAR.TKR, bp);
+    } else if (t < T.notchesIn[0]){
+      bL = BAR.TKL; bR = BAR.TKR;
+    } else if (t < T.rip[0]){
+      // the notched side paths render the sides during this window
+      bL = BAR.TKL; bR = BAR.TKR; bO = 0;
+    } else if (t < T.barsExtend[0]){
+      // parked at square-frame sides while hidden / after swap
+      bL = BAR.SQL; bR = BAR.SQR;
+    } else if (t < T.barsExtend[1]){
+      var ep = easeInOut(seg(t, T.barsExtend));
+      bL = lerpRect(BAR.SQL, BAR.NL, ep);
+      bR = lerpRect(BAR.SQR, BAR.NR, ep);
+    } else {
+      bL = BAR.NL; bR = BAR.NR;
+    }
+    setRect(barL, bL, bO);
+    setRect(barR, bR, bO);
+
+    // ----- notched ticket sides + perforation (primitive era only) -----
+    var deco = (t >= T.rip[0]) ? 0 : 1;
+    var sidesOn = (t >= T.notchesIn[0] && t < T.rip[0]) ? 1 : 0;
+    if (sidesOn){
+      var nr = 11 * easeOut(seg(t, T.notchesIn));
+      sideNL.setAttribute("d", sidePath(180, 1, nr));
+      sideNR.setAttribute("d", sidePath(420, -1, nr));
+    }
+    sideNL.setAttribute("opacity", sidesOn);
+    sideNR.setAttribute("opacity", sidesOn);
+    var dashO = easeOut(Math.min(1, seg(t, T.dashesIn))) * deco;
+    ripDashes.setAttribute("opacity", dashO);
+
+    // ----- ripped halves -----
+    var hLo = 0, hRo = 0, hLt = "", hRt = "";
+    if (t >= T.rip[0] && t < T.leftRotate[1]){
+      hLo = 1;
+      var jp = easeOut(seg(t, T.rip));
+      var lTx = -10 * jp, lTy = 2 * jp, lRot = -3 * jp;
+      var rTx = 12 * jp,  rTy = 8 * jp, rRot = 5 * jp;
+
+      // right half falls away
+      if (t >= T.fallR[0]){
+        var fp = easeIn(seg(t, T.fallR));
+        rTx = 12 + 85 * fp;
+        rTy = 8 + 215 * fp;
+        rRot = 5 + 48 * fp;
+        hRo = 1 - fp;
+      } else {
+        hRo = 1;
+      }
+
+      // left half: rigid clockwise quarter-turn about its center (240, 300)
+      if (t >= T.leftRotate[0]){
+        var rp = easeInOut(seg(t, T.leftRotate));
+        lRot = -3 + 93 * rp;             // -3 -> 90
+        lTx = -10 * (1 - rp) + 60 * rp;  // jolt eases out; half travels to center
+        lTy = 2 * (1 - rp);
+        // tear and notch both smooth flat in the final stretch of the turn
+        var smooth = clamp((rp - 0.8) / 0.2, 0, 1);
+        tearL.setAttribute("d", tearPath(296, 8 * (1 - smooth)));
+        halfLside.setAttribute("d", sidePath(180, 1, 11 * (1 - smooth)));
+      } else {
+        tearL.setAttribute("d", tearPath(296, 8));
+        halfLside.setAttribute("d", sidePath(180, 1, 11));
+      }
+
+      hLt = "translate(" + lTx + " " + lTy + ") rotate(" + lRot + " 240 300)";
+      hRt = "translate(" + rTx + " " + rTy + ") rotate(" + rRot + " 360 300)";
+    }
+    halfL.setAttribute("opacity", hLo);
+    halfR.setAttribute("opacity", clamp(hRo, 0, 1));
+    halfL.setAttribute("transform", hLt);
+    halfR.setAttribute("transform", hRt);
+
+    label.textContent = labelFor(t);
+    fillEl.style.width = (t / TOTAL * 100) + "%";
+  }
+
+  
+  window.__anims.exp = {render: render, TOTAL: TOTAL};
+})();
+(function(){
+  "use strict";
+  var SEGS = [{k:"tech",end:7900,off:0,hold:2100},{k:"ent",end:17200,off:0,hold:2300},{k:"mer",end:8500,off:0,hold:2300},{k:"exp",end:7100,off:0,hold:2300}];
+  var HOLD = 800, A = window.__anims;
+  var starts = [], total = 0;
+  SEGS.forEach(function(s){ s.dur = s.end - s.off + s.hold; starts.push(total); total += s.dur; });
+  var svgEls = SEGS.map(function(s){ return document.getElementById(s.k + "_svg"); });
+  var cur = -1;
+  function renderMaster(t){
+    var i = SEGS.length - 1;
+    while (i > 0 && t < starts[i]) i--;
+    var s = SEGS[i];
+    var local = Math.min(s.end, s.off + (t - starts[i]));
+    if (i !== cur){
+      svgEls.forEach(function(e, j){ e.style.display = (j === i) ? "block" : "none"; });
+      cur = i;
+    }
+    A[s.k].render(local);
+  }
+  window.__tgMaster = {render: renderMaster, TOTAL: total, SEGS: SEGS, starts: starts};
+  var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var playing = false, startTime = null, pausedAt = 0, frameId = null;
+  function frame(now){
+    if (!playing) return;
+    if (startTime === null) startTime = now - pausedAt;
+    pausedAt = (now - startTime) % total;
+    renderMaster(pausedAt);
+    frameId = requestAnimationFrame(frame);
+  }
+  function setPlaying(value){
+    playing = value && !motion.matches && !document.hidden;
+    cancelAnimationFrame(frameId);
+    startTime = null;
+    if (playing) frameId = requestAnimationFrame(frame);
+    else if (motion.matches) { pausedAt = 0; renderMaster(0); }
+  }
+  var active = false;
+  window.addEventListener('message', function(event){
+    if (event.source !== parent || event.origin !== location.origin) return;
+    if (event.data.type !== 'grand-scheme:playback') return;
+    active = event.data.active;
+    setPlaying(active);
+  });
+  motion.addEventListener('change', function(){ setPlaying(active); });
+  document.addEventListener('visibilitychange', function(){ setPlaying(active); });
+  renderMaster(0);
+
+})();
+</script>
+</body>
+</html>

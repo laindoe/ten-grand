@@ -22,8 +22,12 @@
       <span class="nav__divider" aria-hidden="true"></span>
       <a class="nav__item" href="{{ '/' | relative_url }}#director">DIRECTOR</a>
       <span class="nav__divider" aria-hidden="true"></span>
-      <a class="nav__item nav__item--inverse" href="https://indd.adobe.com/view/8f3d3ba0-a58f-458b-bb9a-1ed40fc46061" target="_blank" rel="noopener">GRAND SCHEME</a>
+      <button type="button" class="nav__item nav__item--inverse grand-scheme-trigger" data-grand-scheme-open aria-haspopup="dialog" aria-controls="grand-scheme-modal">GRAND SCHEME</button>
     </div>
   </header>
   <script defer src="{{ '/js/nav.js' | relative_url }}?v=2"></script>
   <script defer src="{{ '/js/title-case.js' | relative_url }}?v=3"></script>
+
+{% include grand-scheme-modal.html %}
+<link rel="stylesheet" href="{{ '/css/grand-scheme.css' | relative_url }}?v=2">
+<script defer src="{{ '/js/grand-scheme.js' | relative_url }}?v=1"></script>
