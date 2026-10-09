@@ -1366,3 +1366,52 @@ main {
     max-width: 220px;
   }
 }
+
+/* Centered Voices Heard profiles, with existing padding and 24px body gap. */
+.cw-voice-card { position: relative; text-align: center; }
+.cw-voice-card__number { position: absolute; top: 20px; left: 20px; font-size: .8rem; font-weight: 700; }
+.cw-voice-card__top { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.cw-voice-card__avatar { width: 88px; height: 88px; border-radius: 50%; }
+.cw-voice-card__photo { outline-color: var(--voice-glow); }
+.cw-voice-card__identity { flex: none; width: 100%; }
+.cw-voice-card__links { align-items: center; }
+.cw-voice-card__badge-col { position: absolute; right: 20px; top: 20px; }
+.cw-voice-card__role-icon { width: 40px; height: 40px; fill: none; stroke: currentColor; stroke-width: 2; }
+.cw-voice-card__body { text-align: center; }
+.cw-voice-card__audio { grid-template-columns: auto minmax(0,1fr) 44px; column-gap: 12px; margin-top: 20px; }
+.cw-voice-card__audio-time { grid-column: 1; grid-row: 1; justify-self: start; }
+.cw-voice-card__audio-wave { grid-column: 2; grid-row: 1; justify-content: space-between; gap: 3px; height: 48px; }
+.cw-voice-card__audio-wave .cw-voice-card__audio-bar { flex: 0 1 3px; width: 3px; height: 8%; min-width: 1px; border-radius: 999px; transform: none; opacity: 1; box-shadow: 0 0 5px var(--cw-audio-color); }
+.cw-voice-card__audio .amass-flow__review-play { grid-column: 3; grid-row: 1; border: 0; border-radius: 50%; background: var(--cw-audio-color); color: var(--color-bg); animation: none; }
+.cw-voice-card__audio .amass-flow__review-play:hover,
+.cw-voice-card__audio .amass-flow__review-play:focus-visible,
+.cw-voice-card__audio .amass-flow__review-play.is-playing { color: var(--color-bg); animation: none; }
+@media (max-width: 380px) {
+  .cw-voice-card__avatar { width: 76px; height: 76px; }
+  .cw-voice-card__badge-col { right: 12px; }
+  .cw-voice-card__audio { column-gap: 8px; }
+  .cw-voice-card__audio-time { font-size: .6rem; }
+}
+
+/* Profile refinements: horizontal role label and a larger portrait. */
+.cw-voice-card { container-type: inline-size; }
+.cw-voice-card__badge-col { flex-direction: row; align-items: center; gap: 6px; }
+.cw-voice-card__role-icon { width: 26px; height: 26px; }
+.cw-voice-card__avatar { width: 112px; height: 112px; }
+.cw-voice-card__title { white-space: nowrap; font-size: clamp(.65rem, 3.7cqw, .95rem); }
+@media (max-width: 380px) {
+  .cw-voice-card__avatar { width: 96px; height: 96px; }
+  .cw-voice-card__role-icon { width: 22px; height: 22px; }
+  .cw-voice-card__badge-col { gap: 4px; }
+}
+
+/* Metadata gets its own row; the number uses the site's divider lines. */
+.cw-voice-card__meta { display: flex; justify-content: space-between; align-items: center; margin: -20px -20px 24px; }
+.cw-voice-card__number { position: static; display: flex; align-items: center; justify-content: center; align-self: stretch; min-width: 68px; min-height: 48px; padding: 12px 16px; border-bottom: 1px solid var(--color-card-border); border-right: 1px solid var(--color-card-border); }
+.cw-voice-card__badge-col { position: static; padding: 10px 20px; }
+.cw-voice-card__links { flex-direction: row; justify-content: center; align-items: center; gap: 12px; }
+.cw-voice-card__link { min-width: 0; font-size: .8rem; }
+@media (max-width: 380px) {
+  .cw-voice-card__links { gap: 10px; }
+  .cw-voice-card__link { font-size: .75rem; }
+}

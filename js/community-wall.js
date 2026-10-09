@@ -125,98 +125,6 @@
     else svgEl.removeAttribute("hidden");
   }
 
-  // These are static sample cards (no real audio file behind them),
-  // so "play" just demonstrates the interaction: toggling the button
-  // between its play and pause icons.
-  function initVoiceCardAudio() {
-    var buttons = document.querySelectorAll(".cw-voice-card__audio-play");
-    buttons.forEach(function (button) {
-      var playIcon = button.querySelector(".amass-flow__review-play-icon--play");
-      var pauseIcon = button.querySelector(".amass-flow__review-play-icon--pause");
-      var label = button.querySelector("span");
-      if (label) label.remove();
-      button.addEventListener("click", function () {
-        var isPlaying = !button.classList.contains("is-playing");
-        button.classList.toggle("is-playing", isPlaying);
-        setSvgHidden(playIcon, isPlaying);
-        setSvgHidden(pauseIcon, !isPlaying);
-        button.setAttribute("aria-label", isPlaying ? "Pause audio response" : "Play audio response");
-      });
-    });
-  }
-
-  // The avatar is a fixed 64px in CSS (see .cw-voice-card__orb /
-  // .cw-voice-card__photo) -- this is what actually makes it flush
-  // with the top of the name and the bottom of the last link in the
-  // common case. Letting CSS alone size the avatar from the row's own
-  // (stretched, aspect-ratio'd) height is a genuinely circular layout
-  // (the avatar's size depends on the row height, which depends on
-  // the identity column's width, which depends on how much space the
-  // avatar itself takes) -- confirmed breaking multiple ways across
-  // flex and grid.
-  //
-  // Doing the resize here in JS instead doesn't fully escape that
-  // circularity either: identity.offsetHeight is measured while the
-  // avatar still has its default 64px width, so it reflects how much
-  // identity wraps at THAT width -- but growing the avatar afterward
-  // narrows identity's real available width, which can make a long
-  // unbroken handle/website (which overflow-wrap:anywhere wraps
-  // character-by-character once its column gets narrow enough) wrap
-  // onto far more lines than the measurement assumed, in turn
-  // demanding a far taller avatar than what was just set. Confirmed
-  // with a deliberately pathological long handle/website: an
-  // unclamped measurement spiraled to a 336px avatar squeezing
-  // identity down to ~33px wide, wrapping one character per line into
-  // a 3700px+ tall column. Capping growth keeps the avatar flush for
-  // real name/link combinations (which top out well under this) while
-  // guaranteeing identity always keeps most of the row's width, so
-  // pathological content wraps as normal short lines instead of
-  // spiraling.
-  //
-  // Also corrects the gap to .cw-voice-card__body: however far the
-  // content still overflows the row's own reported box after the
-  // resize above (a flex row's own height doesn't always match its
-  // tallest child in every browser -- see the waveform-bar fix for
-  // the general class of bug), add that onto the intended 24px gap.
-  var AVATAR_MAX_SIZE = 120;
-  function fixVoiceCardLayout() {
-    var desiredGap = 24;
-    document.querySelectorAll(".cw-voice-card").forEach(function (card) {
-      var top = card.querySelector(".cw-voice-card__top");
-      var body = card.querySelector(".cw-voice-card__body");
-      var avatar = card.querySelector(".cw-voice-card__avatar");
-      var identity = card.querySelector(".cw-voice-card__identity");
-      var badgeCol = card.querySelector(".cw-voice-card__badge-col");
-      if (!top || !body || !avatar || !identity) return;
-
-      avatar.style.removeProperty("width");
-      avatar.style.removeProperty("height");
-      body.style.removeProperty("margin-top");
-
-      // Mobile uses a fixed photo with identity below; let CSS size the rows.
-      if (window.matchMedia("(max-width: 759px)").matches) return;
-
-      var size = Math.max(identity.offsetHeight, badgeCol ? badgeCol.offsetHeight : 0);
-      size = Math.min(size, AVATAR_MAX_SIZE);
-      if (size > 0) {
-        avatar.style.width = size + "px";
-        avatar.style.height = size + "px";
-      }
-
-      var edges = [top, avatar, identity, badgeCol]
-        .filter(Boolean)
-        .map(function (el) {
-          return el.getBoundingClientRect().bottom;
-        });
-      var contentBottom = Math.max.apply(null, edges);
-      var topBottom = top.getBoundingClientRect().bottom;
-      var shortfall = contentBottom - topBottom;
-      if (shortfall > 0.5) {
-        body.style.marginTop = Math.ceil(desiredGap + shortfall) + "px";
-      }
-    });
-  }
-
   var ROLE_DISPLAY = {
     create: { label: "CREATOR", verb: "CREATE" },
     build: { label: "BUILDER", verb: "BUILD" },
@@ -278,9 +186,9 @@
           '<feGaussianBlur stdDeviation="4"/>' +
         '</filter>' +
       '</defs>' +
-      '<rect class="cw-voice-card__orb-glow" x="10" y="10" width="44" height="44" style="fill:var(--cw-color-' + role + ')" opacity="0.52" filter="url(#' + glowId + ')"/>' +
-      '<rect class="cw-voice-card__orb-core" x="10" y="10" width="44" height="44" fill="url(#' + gradId + ')"/>' +
-      '<rect class="cw-voice-card__orb-ring" x="10" y="10" width="44" height="44" fill="none" style="stroke:var(--color-card-border)" stroke-width="1"/>';
+      '<circle class="cw-voice-card__orb-glow" cx="32" cy="32" r="22" style="fill:var(--cw-color-' + role + ')" opacity="0.52" filter="url(#' + glowId + ')"/>' +
+      '<circle class="cw-voice-card__orb-core" cx="32" cy="32" r="22" fill="url(#' + gradId + ')"/>' +
+      '<circle class="cw-voice-card__orb-ring" cx="32" cy="32" r="22" fill="none" style="stroke:var(--color-card-border)" stroke-width="1"/>';
     return svg;
   }
 
@@ -314,38 +222,6 @@
   var WEBSITE_ICON_HTML =
     '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/>';
 
-  // Draws the real waveform from a row's stored audio_peaks (one bar
-  // per peak, height scaled from its 0-1 amplitude), or -- for audio
-  // submitted before this existed, or if the client-side decode
-  // failed at submission time -- a plain evenly-varied placeholder
-  // pattern, so the card still reads as a waveform either way.
-  function renderWaveformBars(waveEl, peaks) {
-    waveEl.replaceChildren();
-    var count = peaks && peaks.length ? peaks.length : 60;
-    var minHeightPct = 12;
-    for (var i = 0; i < count; i++) {
-      var bar = document.createElement("span");
-      bar.className = "cw-voice-card__audio-bar";
-      var rawAmplitude = peaks && peaks.length ? peaks[i] : [1, 0.5, 0.75][i % 3];
-      var amplitude = Math.max(0, Math.min(1, rawAmplitude));
-      bar.style.height = Math.round(minHeightPct + amplitude * (100 - minHeightPct)) + "%";
-      waveEl.appendChild(bar);
-    }
-  }
-
-  function setPlayedBars(waveEl, fraction) {
-    var bars = waveEl.children;
-    var playedCount = Math.round(fraction * bars.length);
-    for (var i = 0; i < bars.length; i++) {
-      bars[i].classList.toggle("is-played", i < playedCount);
-    }
-  }
-
-  // Builds the audio row for a real submission: a real <audio> element
-  // (hidden -- .amass-flow__review-audio-el, same as the modal's own
-  // player) drives a real play/pause button and a waveform playhead,
-  // instead of the cosmetic class-toggle initVoiceCardAudio() gives
-  // the static example cards.
   function buildAudioBody(row) {
     var url = publicStorageUrl("voices-heard-audio", row.audio_path);
     var durationSeconds = row.audio_duration || 0;
@@ -357,6 +233,7 @@
 
     var audio = document.createElement("audio");
     audio.className = "amass-flow__review-audio-el";
+    audio.crossOrigin = "anonymous";
     if (url) audio.src = url;
     audio.preload = "none";
 
@@ -372,7 +249,7 @@
     var wave = document.createElement("span");
     wave.className = "cw-voice-card__audio-wave cw-voice-card__audio-wave--real";
     wave.setAttribute("aria-hidden", "true");
-    renderWaveformBars(wave, row.audio_peaks);
+    var equalizer = window.tenGrandEqualizer(audio, wave);
 
     var time = document.createElement("span");
     time.className = "cw-voice-card__audio-time";
@@ -388,7 +265,13 @@
 
     button.addEventListener("click", function () {
       if (!url) return;
-      if (audio.paused) audio.play();
+      if (audio.paused) {
+        equalizer.prepare();
+        audio.play().catch(function () {
+          setIcon(false);
+          button.setAttribute("aria-label", "Retry audio response playback");
+        });
+      }
       else audio.pause();
     });
     audio.addEventListener("play", function () { setIcon(true); });
@@ -396,15 +279,13 @@
     audio.addEventListener("ended", function () {
       setIcon(false);
       time.textContent = "0:00 / " + formatClock(durationSeconds);
-      setPlayedBars(wave, 0);
     });
     audio.addEventListener("timeupdate", function () {
       if (audio.paused) return;
       time.textContent = formatClock(audio.currentTime) + " / " + formatClock(durationSeconds);
-      if (audio.duration) setPlayedBars(wave, audio.currentTime / audio.duration);
     });
 
-    wrap.append(audio, button, wave, time);
+    wrap.append(audio, time, wave, button);
     return wrap;
   }
 
@@ -423,6 +304,13 @@
     article.className = "cw-voice-card";
     article.id = "voice-" + row.id;
     article.tabIndex = -1;
+    var number = document.createElement("span");
+    number.className = "cw-voice-card__number";
+    number.textContent = String(badgeNumber).padStart(4, "0");
+    var meta = document.createElement("div");
+    meta.className = "cw-voice-card__meta";
+    meta.appendChild(number);
+    article.appendChild(meta);
 
     var top = document.createElement("div");
     top.className = "cw-voice-card__top";
@@ -459,21 +347,21 @@
 
     var badgeCol = document.createElement("div");
     badgeCol.className = "cw-voice-card__badge-col";
+    var roleIcons = {
+      create: '<circle cx="19" cy="24" r="13"/><circle cx="29" cy="24" r="13"/>',
+      build: '<rect x="7" y="7" width="22" height="22"/><rect x="19" y="19" width="22" height="22"/>',
+      fund: '<ellipse cx="24" cy="15" rx="15" ry="6"/><path d="M9 15v9a15 6 0 0 0 30 0v-9M9 24v9a15 6 0 0 0 30 0v-9"/>',
+      support: '<path d="M24 4L28 20L44 24L28 28L24 44L20 28L4 24L20 20Z"/>'
+    };
     badgeCol.innerHTML =
-      '<span class="cw-voice-card__badge cw-voice-card__badge--' + row.role + '" aria-hidden="true">' +
-        '<span class="cw-voice-card__badge-ring"></span>' +
-        '<span class="cw-voice-card__badge-number">' + String(badgeNumber).padStart(4, "0") + "</span>" +
-      "</span>" +
-      '<span class="cw-voice-card__role-label cw-voice-card__role-label--' + row.role + '">' + role.label + "</span>";
+      '<svg class="cw-voice-card__role-icon cw-voice-card__role-label--' + row.role + '" viewBox="0 0 48 48" aria-hidden="true">' + roleIcons[row.role] + '</svg>' +
+      '<span class="cw-voice-card__role-label cw-voice-card__role-label--' + row.role + '">' + role.label + '</span>';
 
-    top.append(identity, badgeCol);
+    meta.appendChild(badgeCol);
+    top.appendChild(identity);
 
     var body = document.createElement("div");
     body.className = "cw-voice-card__body";
-    var subtitle = document.createElement("p");
-    subtitle.className = "cw-voice-card__subtitle";
-    subtitle.textContent = "WHY I " + role.verb;
-    body.appendChild(subtitle);
 
     if (row.response_title) {
       var title = document.createElement("p");
@@ -550,7 +438,6 @@
       } else if (cards.length) {
         grid.replaceChildren.apply(grid, cards);
       }
-      fixVoiceCardLayout();
       revealLinkedVoice();
       if (linkedVoice && archive && button && !button.hidden) {
         window.setTimeout(loadVoiceCards, 0);
@@ -574,11 +461,5 @@
 
   if (!document.querySelector("[data-voice-archive]")) loadStats();
   initJoinModal();
-  initVoiceCardAudio();
-  fixVoiceCardLayout();
   loadVoiceCards();
-  window.addEventListener("resize", fixVoiceCardLayout);
-  // Catches any late reflow from web fonts swapping in after this
-  // script runs, which can change whether a name wraps.
-  window.addEventListener("load", fixVoiceCardLayout);
 })();
