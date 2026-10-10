@@ -665,3 +665,38 @@ main {
   .archive-filters .archive-search { grid-column: 1 / -1; width: 100%; min-width: 0; font-size: 16px; }
   .archive-grid { grid-template-columns: minmax(0,1fr); }
 }
+
+/* Compact community link; the SVG slot can receive animated artwork later. */
+.archive-community { padding-block: 10px; }
+.archive-community__inner {
+  grid-template-columns: 84px minmax(0, 1fr); grid-template-areas: none;
+  gap: 8px; align-items: stretch; color: var(--color-text); text-decoration: none;
+}
+.archive-community__icon-frame {
+  grid-area: auto; align-self: stretch; padding: 15px 5px;
+  margin-top: -10px; margin-bottom: -11px;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; border-right: 1px solid var(--color-card-border);
+}
+.archive-community__icon { width: 100%; height: 58px; max-width: 100%; object-fit: contain; }
+.archive-community__link-body {
+  display: grid; grid-template-columns: minmax(0, 1fr) 24px; align-items: center;
+  gap: 8px; padding: 10px; border: 0;
+}
+.archive-community__text { grid-area: auto; text-align: left; }
+.archive-community__title { display: block; font-size: 1rem; line-height: 1.2; }
+.archive-community__subtitle { display: block; margin-top: 4px; font-size: .85rem; line-height: 1.3; }
+.archive-community__cta {
+  grid-area: auto; align-self: center; justify-self: end; font-size: 1.5rem;
+  line-height: 1; letter-spacing: 0; color: var(--color-text); animation: none;
+}
+.archive-community__inner:focus-visible { outline: 2px solid var(--color-text); outline-offset: 4px; }
+@media (max-width: 360px) {
+  .archive-community__inner { grid-template-columns: 64px minmax(0, 1fr); gap: 6px; }
+  .archive-community__link-body { padding: 8px; gap: 4px; grid-template-columns: minmax(0, 1fr) 18px; }
+  .archive-community__title { font-size: .85rem; }
+  .archive-community__subtitle { font-size: .75rem; }
+}
+@media (max-width: 759px) {
+  .archive-community__icon-frame { margin-left: calc(-1 * var(--section-padding-x)); }
+}
