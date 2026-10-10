@@ -965,7 +965,7 @@ main {
   width: 34px;
   height: 34px;
   fill: none;
-  stroke-width: 2.4;
+  stroke-width: 1.9;
   margin-bottom: 16px;
 }
 
@@ -1419,4 +1419,8 @@ main {
 @media (max-width: 380px) {
   .cw-voice-card__links { gap: 10px; }
   .cw-voice-card__link { font-size: .75rem; }
+}
+
+@media (max-width: 759px) {
+  .cw-section-header__title { line-height: 1.25; }
 }
