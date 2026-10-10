@@ -618,3 +618,50 @@ main {
     white-space: nowrap;
   }
 }
+
+/* Shared expandable feed; desktop filter layout stays intact. */
+.archive-category, .archive-search-toggle { display: none; }
+.archive-featured[hidden], .archive-empty[hidden], .featured-card__image[hidden] { display: none; }
+.archive-load-more {
+  display: block; width: 100%; margin-top: 24px; padding: 14px 20px;
+  border: 1px solid var(--color-card-border); border-radius: 0;
+  background: transparent; color: var(--color-text); font: 700 .85rem var(--font-body);
+  cursor: pointer;
+}
+.archive-load-more[hidden], .archive-search[hidden] { display: none; }
+.archive-load-more span { margin-left: 12px; }
+.archive-feed-status { margin-top: 12px; color: var(--color-text-muted); font-size: .8rem; }
+.archive-empty .archive-filter-btn { margin-top: 16px; }
+.archive-intro-card .featured-card__text { flex: 1; min-width: 0; }
+.archive-select:focus-visible, .archive-search-toggle:focus-visible,
+.archive-load-more:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
+@media (max-width: 759px) {
+  .archive-filters { padding-top: 16px; padding-bottom: 16px; }
+  .archive-filters__controls {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr) 44px;
+    gap: 8px;
+  }
+  .archive-filters__pillars { display: none; }
+  .archive-filters__row { display: contents; }
+  .archive-category { display: block; }
+  .archive-filters .archive-select {
+    min-width: 0; width: 100%; height: 44px;
+    padding: 10px 20px 10px 6px;
+    font-size: clamp(10px, 3.3vw, 14px); font-weight: 600; letter-spacing: 0;
+    text-transform: uppercase; text-overflow: ellipsis;
+    background-position: calc(100% - 14px) center, calc(100% - 8px) center;
+  }
+  .archive-category.is-active {
+    color: var(--color-bg); background-color: var(--color-text);
+    background-image: linear-gradient(45deg, transparent 50%, var(--color-bg) 50%), linear-gradient(135deg, var(--color-bg) 50%, transparent 50%);
+  }
+  .archive-search-toggle {
+    display: grid; place-items: center; width: 44px; height: 44px; padding: 10px;
+    background: transparent; color: var(--color-text);
+    border: 1px solid var(--color-card-border); border-radius: 0; cursor: pointer;
+  }
+  .archive-search-toggle svg { width: 24px; height: 24px; }
+  .archive-filters .archive-search { grid-column: 1 / -1; width: 100%; min-width: 0; font-size: 16px; }
+  .archive-grid { grid-template-columns: minmax(0,1fr); }
+}

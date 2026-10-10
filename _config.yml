@@ -24,3 +24,6 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
+
+# Keep the welcome pinned even when another post is marked featured.
+welcome_transmission: /transmissions/the-next-horizon/

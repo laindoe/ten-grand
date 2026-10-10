@@ -13,7 +13,7 @@ permalink: /transmissions/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=158" />
-  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=11" />
+  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=12" />
 </head>
 <body>
 
@@ -31,7 +31,15 @@ permalink: /transmissions/
     </section>
 
     <section class="archive-filters">
-      <div class="archive-inner">
+      <div class="archive-inner archive-filters__controls">
+        <select class="archive-select archive-category" id="category-filter" aria-label="Filter by category">
+          <option value="all">CATEGORIES</option>
+          <option value="all">All</option>
+          <option value="technology">Technology</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="merchandise">Merchandise</option>
+          <option value="experiences">Experiences</option>
+        </select>
         <div class="archive-filters__pillars" role="group" aria-label="Filter by pillar">
           <button type="button" class="archive-filter-btn is-active" data-filter-pillar="all">ALL</button>
           <button type="button" class="archive-filter-btn" data-filter-pillar="technology">TECHNOLOGY</button>
@@ -43,12 +51,14 @@ permalink: /transmissions/
         <div class="archive-filters__row">
           <select class="archive-select" id="series-filter" aria-label="Browse series">
             <option value="all">BROWSE SERIES</option>
+            <option value="all">All</option>
             {% assign all_series = site.posts | map: "series" | compact | uniq | sort %}
             {% for series in all_series %}
             <option value="{{ series | slugify }}">{{ series }}</option>
             {% endfor %}
           </select>
 
+          <button type="button" class="archive-search-toggle" id="search-toggle" aria-label="Show search" aria-expanded="false" aria-controls="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></button>
           <input type="search" class="archive-search" id="search-input" placeholder="Search transmissions&hellip;" aria-label="Search transmissions" />
         </div>
       </div>
@@ -69,9 +79,10 @@ permalink: /transmissions/
       </div>
     </section>
 
-    {% assign featured_post = site.posts | where: "featured", true | first %}
+    {% assign featured_post = site.posts | where: "url", site.welcome_transmission | first %}
+    {% unless featured_post %}{% assign featured_post = site.posts | where: "featured", true | first %}{% endunless %}
     {% if featured_post %}
-    <section class="archive-featured">
+    <section class="archive-featured" id="archive-welcome">
       <div class="archive-inner">
         <p class="archive-featured__label">FEATURED TRANSMISSION</p>
         <a class="featured-card" href="{{ featured_post.url | relative_url }}">
@@ -90,6 +101,19 @@ permalink: /transmissions/
     </section>
     {% endif %}
 
+    <section class="archive-featured" id="archive-introduction" hidden>
+      <div class="archive-inner">
+        <article class="featured-card archive-intro-card" aria-labelledby="archive-intro-title">
+          <div class="featured-card__image" id="archive-intro-image" hidden></div>
+          <div class="featured-card__text">
+            <p class="transmission-card__series" id="archive-intro-label"></p>
+            <h2 class="featured-card__title" id="archive-intro-title"></h2>
+            <p class="featured-card__excerpt" id="archive-intro-description"></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="archive-grid-section">
       <div class="archive-inner">
         <div class="archive-grid-section__header">
@@ -97,9 +121,11 @@ permalink: /transmissions/
         </div>
 
         {% assign featured_url = featured_post.url | default: "" %}
-        <div class="archive-grid" id="transmissions-grid">
+        <div class="archive-grid" id="transmissions-grid" data-index-url="{{ '/transmissions-index.json' | relative_url }}" data-baseurl="{{ site.baseurl }}">
+          {% assign initial_count = 0 %}
           {% for post in site.posts %}
-          {% unless post.url == featured_url %}
+          {% if post.url != featured_url and initial_count < 3 %}
+          {% assign initial_count = initial_count | plus: 1 %}
           <a class="transmission-card"
              href="{{ post.url | relative_url }}"
              data-pillars="{% for pillar in post.pillars %}{{ pillar | slugify }} {% endfor %}"
@@ -116,11 +142,14 @@ permalink: /transmissions/
               <span class="transmission-card__cta">&rarr; READ TRANSMISSION</span>
             </div>
           </a>
-          {% endunless %}
+          {% endif %}
           {% endfor %}
         </div>
 
-        <p class="archive-empty" id="archive-empty" hidden>No transmissions match your filters yet.</p>
+        <div class="archive-empty" id="archive-empty" hidden><p>No transmissions match your filters yet.</p><button type="button" class="archive-filter-btn" id="archive-clear">CLEAR FILTERS</button></div>
+        <button type="button" class="archive-load-more" id="archive-load-more" hidden>LOAD MORE <span aria-hidden="true">&rarr;</span></button>
+        <p class="archive-feed-status" id="archive-feed-status" role="status" aria-live="polite"></p>
+        <button type="button" class="archive-filter-btn" id="archive-retry" hidden>RETRY LOADING</button>
       </div>
     </section>
   </main>
@@ -129,6 +158,6 @@ permalink: /transmissions/
 
 {% include site-footer.html %}
 
-  <script src="{{ '/js/transmissions.js' | relative_url }}"></script>
+  <script src="{{ '/js/transmissions.js' | relative_url }}?v=2"></script>
 </body>
 </html>

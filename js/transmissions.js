@@ -1,52 +1,131 @@
-// ============================================================
-// TEN GRAND — Transmissions archive filtering
-// Combines pillar filter (buttons), series filter (dropdown), and
-// text search (input) client-side. No framework, no dependencies.
-// ============================================================
-
+// One archive state shared by desktop controls and the mobile toolbar.
 (() => {
+  'use strict';
   const grid = document.getElementById('transmissions-grid');
   if (!grid) return;
-
-  const cards = Array.from(grid.querySelectorAll('.transmission-card'));
-  const pillarButtons = document.querySelectorAll('[data-filter-pillar]');
-  const seriesSelect = document.getElementById('series-filter');
-  const searchInput = document.getElementById('search-input');
-  const emptyState = document.getElementById('archive-empty');
-
-  let activePillar = 'all';
-
-  function applyFilters() {
-    const activeSeries = seriesSelect ? seriesSelect.value : 'all';
-    const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
-
-    let visibleCount = 0;
-
-    cards.forEach((card) => {
-      const pillars = (card.dataset.pillars || '').split(' ').filter(Boolean);
-      const series = card.dataset.series || '';
-      const search = card.dataset.search || '';
-
-      const matchesPillar = activePillar === 'all' || pillars.includes(activePillar);
-      const matchesSeries = activeSeries === 'all' || series === activeSeries;
-      const matchesSearch = query === '' || search.includes(query);
-
-      const visible = matchesPillar && matchesSeries && matchesSearch;
-      card.hidden = !visible;
-      if (visible) visibleCount += 1;
-    });
-
-    if (emptyState) emptyState.hidden = visibleCount > 0;
+  const category = document.getElementById('category-filter');
+  const series = document.getElementById('series-filter');
+  const search = document.getElementById('search-input');
+  const toggle = document.getElementById('search-toggle');
+  const buttons = [...document.querySelectorAll('[data-filter-pillar]')];
+  const welcome = document.getElementById('archive-welcome');
+  const intro = document.getElementById('archive-introduction');
+  const empty = document.getElementById('archive-empty');
+  const more = document.getElementById('archive-load-more');
+  const status = document.getElementById('archive-feed-status');
+  const retry = document.getElementById('archive-retry');
+  const media = matchMedia('(max-width: 759px)');
+  const state = { category: 'all', series: 'all', query: '', limit: 3, searchOpen: false };
+  let posts = null, introductions = {}, pending = null;
+  function element(tag, className, text) {
+    const el = document.createElement(tag); el.className = className;
+    if (text) el.textContent = text;
+    return el;
   }
-
-  pillarButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      activePillar = button.dataset.filterPillar;
-      pillarButtons.forEach((b) => b.classList.toggle('is-active', b === button));
-      applyFilters();
-    });
+  function safeUrl(value) {
+    if (!value) return null;
+    try { const url = new URL(value, location.origin); return ['http:', 'https:'].includes(url.protocol) ? url.href : null; }
+    catch (_) { return null; }
+  }
+  function renderCard(post) {
+    const card = element('a', 'transmission-card');
+    card.href = safeUrl(post.url) || '#';
+    const image = element('div', 'transmission-card__image');
+    const imageUrl = safeUrl(post.image);
+    if (imageUrl) image.style.backgroundImage = `url(${JSON.stringify(imageUrl)})`;
+    const body = element('div', 'transmission-card__body');
+    if (post.sample) body.append(element('span', 'sample-badge', 'SAMPLE'));
+    body.append(element('p', 'transmission-card__date', post.displayDate));
+    if (post.series) body.append(element('p', 'transmission-card__series', post.series.toUpperCase()));
+    body.append(element('h3', 'transmission-card__title', post.title.toUpperCase()));
+    if (post.format) body.append(element('p', 'transmission-card__format', post.format.toUpperCase()));
+    const words = post.excerpt.trim().split(/\s+/);
+    body.append(element('p', 'transmission-card__excerpt', words.slice(0, 20).join(' ') + (words.length > 20 ? '…' : '')));
+    body.append(element('span', 'transmission-card__cta', '→ READ TRANSMISSION'));
+    card.append(image, body); return card;
+  }
+  function syncControls() {
+    category.value = state.category;
+    category.classList.toggle('is-active', state.category !== 'all');
+    series.value = state.series;
+    series.options[0].textContent = media.matches ? 'SERIES' : 'BROWSE SERIES';
+    buttons.forEach(b => { const active = b.dataset.filterPillar === state.category; b.classList.toggle('is-active', active); b.setAttribute('aria-pressed', String(active)); });
+    search.hidden = media.matches && !state.searchOpen;
+    toggle.setAttribute('aria-expanded', String(state.searchOpen));
+    toggle.setAttribute('aria-label', state.searchOpen ? 'Hide search' : 'Show search');
+  }
+  function showIntroduction() {
+    const defaultState = state.category === 'all' && state.series === 'all' && !state.query;
+    if (welcome) welcome.hidden = !defaultState;
+    intro.hidden = true;
+    if (state.query || defaultState) return;
+    const isSeries = state.series !== 'all';
+    const key = isSeries ? state.series : state.category;
+    const label = isSeries ? series.selectedOptions[0].textContent : category.selectedOptions[0].textContent;
+    const copy = introductions[isSeries ? 'series' : 'categories']?.[key] || {
+      title: label, description: `Draft: Explore the latest stories and perspectives in ${label}.`, artwork: ''
+    };
+    document.getElementById('archive-intro-label').textContent = label.toUpperCase();
+    document.getElementById('archive-intro-title').textContent = copy.title;
+    document.getElementById('archive-intro-description').textContent = copy.description;
+    const image = document.getElementById('archive-intro-image');
+    const path = copy.artwork?.startsWith('/') ? grid.dataset.baseurl + copy.artwork : copy.artwork;
+    const url = safeUrl(path);
+    image.hidden = !url;
+    image.style.backgroundImage = url ? `url(${JSON.stringify(url)})` : '';
+    intro.hidden = false;
+  }
+  function matches(post) {
+    return (state.query || !post.welcome) &&
+      (state.category === 'all' || post.pillars.includes(state.category)) &&
+      (state.series === 'all' || post.seriesKey === state.series) &&
+      (!state.query || `${post.title} ${post.excerpt}`.toLowerCase().includes(state.query));
+  }
+  function render(append = false) {
+    syncControls(); showIntroduction();
+    if (!posts) return;
+    const matching = posts.filter(matches);
+    const shown = Math.min(state.limit, matching.length);
+    const start = append ? grid.children.length : 0;
+    if (!append) grid.replaceChildren();
+    const fragment = document.createDocumentFragment();
+    matching.slice(start, shown).forEach(post => fragment.append(renderCard(post)));
+    grid.append(fragment);
+    empty.hidden = matching.length !== 0;
+    more.hidden = shown >= matching.length;
+    status.textContent = matching.length ? `Showing ${shown} of ${matching.length} transmissions.` : 'No matching transmissions.';
+  }
+  async function loadIndex() {
+    if (pending) return pending;
+    grid.setAttribute('aria-busy', 'true'); retry.hidden = true;
+    pending = (async () => {
+      try {
+        const response = await fetch(grid.dataset.indexUrl);
+        if (!response.ok) throw new Error('Index unavailable');
+        const index = await response.json();
+        posts = index.posts.sort((a, b) => b.date.localeCompare(a.date));
+        introductions = index.introductions || {};
+        render();
+      } catch (_) {
+        status.textContent = 'The archive could not load. Please retry.';
+        retry.hidden = false;
+      } finally { grid.setAttribute('aria-busy', 'false'); pending = null; }
+    })();
+    return pending;
+  }
+  function reset() { state.limit = 3; render(); }
+  function selectCategory(value) { state.category = value; state.series = 'all'; reset(); }
+  buttons.forEach(b => b.addEventListener('click', () => selectCategory(b.dataset.filterPillar)));
+  category.addEventListener('change', () => selectCategory(category.value));
+  series.addEventListener('change', () => { state.series = series.value; state.category = 'all'; reset(); });
+  search.addEventListener('input', () => { state.query = search.value.trim().toLowerCase(); reset(); });
+  toggle.addEventListener('click', () => { state.searchOpen = !state.searchOpen; syncControls(); if (state.searchOpen) search.focus(); });
+  search.addEventListener('keydown', e => { if (e.key === 'Escape' && media.matches) { state.searchOpen = false; syncControls(); toggle.focus(); } });
+  document.getElementById('archive-clear').addEventListener('click', () => {
+    state.category = 'all'; state.series = 'all'; state.query = ''; search.value = ''; reset();
   });
-
-  if (seriesSelect) seriesSelect.addEventListener('change', applyFilters);
-  if (searchInput) searchInput.addEventListener('input', applyFilters);
+  more.addEventListener('click', () => { state.limit += 10; render(true); });
+  retry.addEventListener('click', loadIndex);
+  media.addEventListener('change', syncControls);
+  syncControls(); loadIndex();
 })();

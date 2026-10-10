@@ -1,0 +1,27 @@
+---
+layout: null
+permalink: /transmissions-index.json
+---
+{% assign welcome = site.posts | where: "url", site.welcome_transmission | first %}
+    {% unless welcome %}{% assign welcome = site.posts | where: 'featured', true | first %}{% endunless %}
+{
+  "introductions": {{ site.data.transmission_intros | jsonify }},
+  "posts": [
+  {% for post in site.posts %}
+    {
+      "url": {{ post.url | relative_url | jsonify }},
+      "title": {{ post.title | jsonify }},
+      "date": {{ post.date | date: '%Y-%m-%d' | jsonify }},
+      "displayDate": {{ post.date | date: '%b %d, %Y' | upcase | jsonify }},
+      "series": {{ post.series | default: '' | jsonify }},
+      "seriesKey": {{ post.series | slugify | jsonify }},
+      "pillars": [{% for pillar in post.pillars %}{{ pillar | slugify | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+      "excerpt": {{ post.excerpt | strip_html | strip_newlines | jsonify }},
+      "image": {% if post.featured_image %}{{ post.featured_image | relative_url | jsonify }}{% else %}""{% endif %},
+      "format": {{ post.format | default: '' | jsonify }},
+      "sample": {% if post.sample %}true{% else %}false{% endif %},
+      "welcome": {% if post.url == welcome.url %}true{% else %}false{% endif %}
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+  ]
+}

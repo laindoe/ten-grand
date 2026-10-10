@@ -135,3 +135,9 @@ names, search fields, and response body text are unaffected.
 
 Title fields are limited to 80 characters by default; website titles use 40.
 Set an explicit `maxlength` when a title field needs a different limit.
+
+### Transmissions archive
+
+Mobile category and series selections replace one another; search uses post titles and excerpts. The first three matching stories appear initially, and Load More appends ten. Desktop keeps its existing controls.
+
+Edit category and series introduction copy and optional artwork paths in `_data/transmission_intros.json`. Series entries use the slug of the published series name; newly published series get a draft fallback introduction until configured. Set `welcome_transmission` in `_config.yml` to the pinned welcome post URL. That post appears in search but is excluded from regular chronological results. The archive uses a generated metadata-only JSON index, without fetching article bodies.

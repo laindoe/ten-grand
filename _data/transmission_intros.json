@@ -1,0 +1,12 @@
+{
+  "categories": {
+    "technology": {"title": "Technology and the creative future", "description": "Draft: Explore the tools, systems, and emerging technologies shaping how independent creators work, connect, and build.", "artwork": ""},
+    "entertainment": {"title": "Stories, culture, and connection", "description": "Draft: Explore the films, music, and experiences bringing people together and moving culture forward.", "artwork": ""},
+    "merchandise": {"title": "Ideas you can hold", "description": "Draft: Explore how creative ideas become products, objects, and independent brands with lasting meaning.", "artwork": ""},
+    "experiences": {"title": "Culture in the moment", "description": "Draft: Explore gatherings, spaces, and shared moments that turn creative expression into human connection.", "artwork": ""}
+  },
+  "series": {
+    "the-ai-argument": {"title": "The AI Argument", "description": "Draft: A continuing conversation about AI, independent creativity, and the choices that shape our future.", "artwork": ""},
+    "the-grand-ten": {"title": "The Grand Ten", "description": "Draft: Ten perspectives from people building culture, sharing what they see and where they are headed.", "artwork": ""}
+  }
+}
