@@ -153,7 +153,7 @@
   -webkit-mask: url('../assets/images/broadcast-arcs.svg') center / contain no-repeat;
   mask: url('../assets/images/broadcast-arcs.svg') center / contain no-repeat;
 }
-.cw-section-header__title--broadcast { display: flex; align-items: center; gap: 12px; }
+.cw-section-header__title--arc { display: flex; align-items: center; gap: 12px; }
 .broadcasts__breadcrumb .broadcast-arc { width: 14px; height: 24px; }
 @keyframes broadcast-thermal-drift {
   from { background-position: 50% 0%; }
