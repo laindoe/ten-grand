@@ -163,10 +163,10 @@
 .broadcast-arc {
   display: inline-block;
   flex: none;
-  width: 24px;
-  height: 42px;
-  -webkit-mask: url('../assets/images/broadcast-arcs.svg?v=5') center / contain no-repeat;
-  mask: url('../assets/images/broadcast-arcs.svg?v=5') center / contain no-repeat;
+  width: 19.05px;
+  height: 38.11px;
+  -webkit-mask: url('../assets/images/broadcast-arcs.svg?v=6') center / contain no-repeat;
+  mask: url('../assets/images/broadcast-arcs.svg?v=6') center / contain no-repeat;
 }
 .cw-section-header__title--arc { display: flex; align-items: center; gap: 12px; }
 .broadcasts__breadcrumb .broadcast-arc { width: 14px; height: 24px; }
@@ -181,4 +181,45 @@
 /* Subtitle starts below the title lettering, after the 24px arc + 12px gap. */
 .cw-section-header__title--arc + .cw-section-header__subtitle {
   margin-left: 36px;
+}
+
+/* Treat the heading and subtitle as one compact lockup beside the arc. */
+.cw-section-header__text,
+.cw-campaigns__intro { position: relative; }
+.cw-section-header__title--arc {
+  display: block;
+  padding-left: 36px;
+  line-height: 1;
+}
+.cw-section-header__title--arc .broadcast-arc {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.cw-section-header__title--arc + .cw-section-header__subtitle {
+  margin-top: 1px;
+  font-size: .9rem;
+  line-height: 1.1;
+}
+
+/* Anchor the subtitle to the bottom of the trimmed arc lockup. */
+.cw-section-header__text,
+.cw-campaigns__intro {
+  display: flex;
+  flex-direction: column;
+  min-height: 38.11px;
+}
+.cw-section-header__title--arc + .cw-section-header__subtitle {
+  margin-top: 1px;
+}
+
+.cw-section-header__title--arc .broadcast-arc {
+  top: 0;
+  bottom: auto;
+}
+
+/* Offset the font's space above capitals without moving the arc/subtitle. */
+.cw-section-header__label {
+  position: relative;
+  top: -.14em;
 }

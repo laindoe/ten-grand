@@ -1424,3 +1424,7 @@ main {
 @media (max-width: 759px) {
   .cw-section-header__title { line-height: 1.25; }
 }
+
+@media (max-width: 759px) {
+  .cw-broadcasts .cw-section-header__link { margin-left: 36px; }
+}
