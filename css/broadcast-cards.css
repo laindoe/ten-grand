@@ -8,7 +8,7 @@
     linear-gradient(var(--color-card-border), var(--color-card-border)) top right / 100% 1px no-repeat,
     linear-gradient(var(--color-card-border), var(--color-card-border)) bottom right / 100% 1px no-repeat,
     linear-gradient(var(--color-card-border), var(--color-card-border)) top right / 1px 100% no-repeat;
-  padding: 19px 19px 19px 18px;
+  padding: 19px 19px 19px 36px;
   color: var(--color-text);
   overflow-wrap: anywhere;
 }
