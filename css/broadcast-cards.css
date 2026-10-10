@@ -2,8 +2,13 @@
 .cw-broadcast-card {
   --broadcast-accent: #fb2f7b;
   position: relative;
-  border: 1px solid var(--color-card-border);
-  padding: 18px 18px 40px;
+  --broadcast-strip-width: 5px;
+  border: 0;
+  background:
+    linear-gradient(var(--color-card-border), var(--color-card-border)) top right / 100% 1px no-repeat,
+    linear-gradient(var(--color-card-border), var(--color-card-border)) bottom right / 100% 1px no-repeat,
+    linear-gradient(var(--color-card-border), var(--color-card-border)) top right / 1px 100% no-repeat;
+  padding: 19px 19px 19px 18px;
   color: var(--color-text);
   overflow-wrap: anywhere;
 }
@@ -14,8 +19,18 @@
   top: 0;
   bottom: 0;
   left: 0;
-  width: 5px;
+  width: var(--broadcast-strip-width);
   background: var(--broadcast-accent);
+}
+/* Paint the horizontal lines above the color strip, including its full width. */
+.cw-broadcast-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(var(--color-card-border), var(--color-card-border)) top / 100% 1px no-repeat,
+    linear-gradient(var(--color-card-border), var(--color-card-border)) bottom / 100% 1px no-repeat;
+  pointer-events: none;
 }
 .cw-broadcast-card__meta {
   display: flex;
@@ -28,7 +43,7 @@
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: var(--broadcast-accent);
+  color: var(--color-vandalism);
 }
 .cw-broadcast-card__time {
   font-size: 0.68rem;
@@ -69,7 +84,7 @@
   align-items: center;
   gap: 10px;
   margin-top: 18px;
-  padding: 10px 0;
+  padding: 10px 0 0;
   border: 0;
 }
 .cw-broadcast-card__read-more span { font-size: 1.2rem; line-height: 1; }
@@ -141,7 +156,7 @@
 /* Original thermal gradients, shared by the megaphone arcs and edge strips. */
 .broadcast-arc,
 .cw-broadcast-card::before {
-  background: linear-gradient(165deg, #fb2f7b 0%, #ff2337 15%, #ffce00 30%, #54e323 43%, #00dac1 56%, #1249ff 70%, #8f14d8 83%, #fb2f7b 100%);
+  background: linear-gradient(165deg, #be2026 13%, #e5dc16 52%, #007938 75%, #00b0e0 93%);
   background-size: 100% 220%;
   animation: broadcast-thermal-drift 16s ease-in-out infinite alternate;
 }

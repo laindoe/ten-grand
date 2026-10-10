@@ -1,7 +1,7 @@
 {% assign broadcast = include.broadcast %}
 <div class="cw-broadcast-card__meta">
   <span class="cw-broadcast-card__category">{{ broadcast.category | upcase | escape }}{% if broadcast.sample %}<span class="cw-broadcast-card__sample">SAMPLE</span>{% endif %}</span>
-  <time class="cw-broadcast-card__time" datetime="{{ broadcast.date | date: '%Y-%m-%d' }}">{{ broadcast.date | date: '%b %-d, %Y' | upcase }}</time>
+  <time class="cw-broadcast-card__time" datetime="{{ broadcast.date | date: '%Y-%m-%d' }}">{{ broadcast.date | date: '%m.%d.%y' }}</time>
 </div>
 {% if include.heading == 'h2' %}
 <h2 class="cw-broadcast-card__title">{{ broadcast.title | escape }}</h2>

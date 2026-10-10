@@ -18,12 +18,11 @@
     }
     vec3 thermal(float v) {
       vec3 c = vec3(.015,.015,.025);
-      c=mix(c,vec3(.03,.04,1.),smoothstep(.25,.39,v));
-      c=mix(c,vec3(.0,.85,.7),smoothstep(.39,.48,v));
-      c=mix(c,vec3(.18,1.,.02),smoothstep(.48,.57,v));
-      c=mix(c,vec3(1.,.92,.0),smoothstep(.57,.65,v));
-      c=mix(c,vec3(1.,.12,.02),smoothstep(.65,.74,v));
-      c=mix(c,vec3(1.,.0,.43),smoothstep(.74,.83,v));
+      // Exact stops from community-wall-eye-static.svg, cool to hot.
+      c=mix(c,vec3(0.,176./255.,224./255.),smoothstep(.20,.35,v));
+      c=mix(c,vec3(0.,121./255.,56./255.),smoothstep(.35,.50,v));
+      c=mix(c,vec3(229./255.,220./255.,22./255.),smoothstep(.50,.70,v));
+      c=mix(c,vec3(190./255.,32./255.,38./255.),smoothstep(.70,.90,v));
       return c;
     }
     void main(){
@@ -58,10 +57,12 @@
   const time = gl.getUniformLocation(program, 'time');
   const isHeader = canvas.parentElement.classList.contains('cw-hero');
   gl.uniform1f(gl.getUniformLocation(program, 'patternScale'), isHeader ? 1.3 : 2.6);
-  gl.uniform1f(gl.getUniformLocation(program, 'intensity'), isHeader ? .65 : 1);
+  const intensity = gl.getUniformLocation(program, 'intensity');
+  const mobile = matchMedia('(max-width: 759px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let visible = false, lost = false, frameId = 0, elapsed = 0, previous = 0;
   function draw() {
+    gl.uniform1f(intensity, isHeader ? (mobile.matches ? .975 : .65) : 1);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resolution, canvas.width, canvas.height);
     gl.uniform1f(time, reduced.matches ? 0 : elapsed);

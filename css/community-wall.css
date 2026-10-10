@@ -526,7 +526,7 @@ main {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(ellipse at 0% 25%, #fb2f7b77, transparent 45%),
+    radial-gradient(ellipse at 0% 25%, #be202677, transparent 45%),
     radial-gradient(ellipse at 100% 80%, #00b0e066, transparent 45%);
   pointer-events: none;
 }
