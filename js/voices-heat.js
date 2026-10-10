@@ -1,8 +1,7 @@
 // Original procedural thermal contours, confined to the Voices Heard title card.
 (() => {
   'use strict';
-  const canvas = document.querySelector('[data-voices-heat]');
-  if (!canvas) return;
+  document.querySelectorAll('[data-voices-heat]').forEach((canvas) => {
   const gl = canvas.getContext('webgl', { alpha: false, antialias: false, depth: false, preserveDrawingBuffer: true });
   if (!gl) return; // The CSS gradient remains as a static fallback.
   const vertex = 'attribute vec2 position; void main(){gl_Position=vec4(position,0.,1.);}';
@@ -10,6 +9,8 @@
     precision mediump float;
     uniform vec2 resolution;
     uniform float time;
+    uniform float patternScale;
+    uniform float intensity;
     float field(vec2 p) {
       return sin(p.x*3.1 + sin(p.y*2.4 + time*.16)*1.7 + time*.19)
         + sin(p.y*4.3 - time*.13 + cos(p.x*2.6-time*.11)*1.6)
@@ -27,12 +28,12 @@
     }
     void main(){
       vec2 uv=gl_FragCoord.xy/resolution;
-      vec2 p=(uv-.5)*vec2(resolution.x/resolution.y,1.)*2.6;
+      vec2 p=(uv-.5)*vec2(resolution.x/resolution.y,1.)*patternScale;
       float v=clamp(.5+field(p)*.20,0.,1.);
       vec3 color=thermal(v);
       // A dark column follows the content on both narrow and wide cards.
       float center=1.-smoothstep(.10,.49,abs(uv.x-.5));
-      float brightness=mix(.48,.055,center);
+      float brightness=mix(.48,.055,center)*intensity;
       gl_FragColor=vec4(mix(vec3(.078),color,brightness),1.);
     }`;
   function compile(type, source) {
@@ -55,6 +56,9 @@
   gl.enableVertexAttribArray(position); gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
   const resolution = gl.getUniformLocation(program, 'resolution');
   const time = gl.getUniformLocation(program, 'time');
+  const isHeader = canvas.parentElement.classList.contains('cw-hero');
+  gl.uniform1f(gl.getUniformLocation(program, 'patternScale'), isHeader ? 1.3 : 2.6);
+  gl.uniform1f(gl.getUniformLocation(program, 'intensity'), isHeader ? .65 : 1);
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let visible = false, lost = false, frameId = 0, elapsed = 0, previous = 0;
   function draw() {
@@ -93,4 +97,5 @@
     event.preventDefault(); lost = true; cancelAnimationFrame(frameId); canvas.style.visibility = 'hidden';
   });
   // Reloading the page restores animation after context loss; content remains usable.
+  });
 })();
