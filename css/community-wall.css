@@ -1716,3 +1716,41 @@ main {
   .cw-voice-card--library .cw-voice-card__title { font-size: clamp(18px, 2.4cqw, 24px); }
   .cw-voice-card--library .cw-voice-card__link-icon { width: 34px; height: 34px; stroke-width: 1; }
 }
+@media (max-width: 759px) {
+  .cw-voice-card--library { row-gap: 8px; }
+}
+/* On mobile the role text and number begin at the portrait's top edge. */
+@media (max-width: 759px) {
+  .cw-voice-card--library .cw-voice-card__badge-col { align-items: flex-start; }
+  .cw-voice-card--library .cw-voice-card__role-text { align-self: flex-start; }
+}
+/* Move the complete mobile metadata row while retaining its centered alignment. */
+@media (max-width: 759px) {
+  .cw-voice-card--library .cw-voice-card__badge-col {
+    align-items: center;
+    transform: translateY(calc((var(--voice-role-font-size) - var(--voice-role-icon-size)) / 2));
+  }
+  .cw-voice-card--library .cw-voice-card__role-text { align-self: center; }
+}
+@media (max-width: 759px) {
+  .cw-voice-card--library .cw-voice-card__badge-col { transform: none; }
+}
+/* Reserve timestamp width so changing digits never move the frequency bars. */
+.cw-voice-card--library .cw-voice-card__audio {
+  grid-template-columns: 5ch minmax(0, 1fr) 5ch 64px;
+}
+.cw-voice-card--library .cw-voice-card__audio-time,
+.cw-voice-card--library .cw-voice-card__audio-duration {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  width: 5ch; white-space: nowrap;
+}
+@media (max-width: 759px) {
+  .cw-voice-card--library .cw-voice-card__audio {
+    grid-template-columns: 5ch minmax(0, 1fr) 5ch 48px;
+  }
+}
+.cw-voice-card--library .cw-voice-card__audio { font-size: 1rem; }
+@media (max-width: 759px) {
+  .cw-voice-card--library .cw-voice-card__audio { font-size: .7rem; }
+}
