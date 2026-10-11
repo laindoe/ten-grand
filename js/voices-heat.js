@@ -1,4 +1,4 @@
-// Original procedural thermal contours, confined to the Voices Heard title card.
+// Shared procedural thermal contours for community headers and campaign cards.
 (() => {
   'use strict';
   document.querySelectorAll('[data-voices-heat]').forEach((canvas) => {
@@ -11,6 +11,7 @@
     uniform float time;
     uniform float patternScale;
     uniform float intensity;
+    uniform float darkCenter;
     float field(vec2 p) {
       return sin(p.x*3.1 + sin(p.y*2.4 + time*.16)*1.7 + time*.19)
         + sin(p.y*4.3 - time*.13 + cos(p.x*2.6-time*.11)*1.6)
@@ -31,7 +32,7 @@
       float v=clamp(.5+field(p)*.20,0.,1.);
       vec3 color=thermal(v);
       // A dark column follows the content on both narrow and wide cards.
-      float center=1.-smoothstep(.10,.49,abs(uv.x-.5));
+      float center=1.-smoothstep(.10,.49,abs(uv.x-darkCenter));
       float brightness=mix(.48,.055,center)*intensity;
       gl_FragColor=vec4(mix(vec3(.078),color,brightness),1.);
     }`;
@@ -55,13 +56,21 @@
   gl.enableVertexAttribArray(position); gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
   const resolution = gl.getUniformLocation(program, 'resolution');
   const time = gl.getUniformLocation(program, 'time');
-  const isHeader = canvas.parentElement.classList.contains('cw-hero');
+  const isHeader = canvas.parentElement.classList.contains('cw-hero') || canvas.dataset.heatVariant === 'header';
   gl.uniform1f(gl.getUniformLocation(program, 'patternScale'), isHeader ? 1.3 : 2.6);
   const intensity = gl.getUniformLocation(program, 'intensity');
+  const darkCenter = gl.getUniformLocation(program, 'darkCenter');
   const mobile = matchMedia('(max-width: 759px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let visible = false, lost = false, frameId = 0, elapsed = 0, previous = 0;
   function draw() {
+    const icon = canvas.parentElement.querySelector('.archive-community__icon-frame');
+    let center = .5;
+    if (icon) {
+      const bounds = canvas.getBoundingClientRect(), panel = icon.getBoundingClientRect();
+      center = (panel.left + panel.width / 2 - bounds.left) / Math.max(bounds.width, 1);
+    }
+    gl.uniform1f(darkCenter, center);
     gl.uniform1f(intensity, isHeader ? (mobile.matches ? .975 : .65) : 1);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resolution, canvas.width, canvas.height);
