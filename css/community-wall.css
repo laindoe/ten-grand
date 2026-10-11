@@ -1661,3 +1661,58 @@ main {
   font: inherit; line-height: inherit; letter-spacing: inherit;
   padding: 0; border: 0;
 }
+/* Mobile profile uses one third of the content width; identity uses two thirds. */
+@media (max-width: 759px) {
+  .cw-voice-card--library {
+    --portrait-size: calc((100cqw - 24px) / 3);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 12px;
+  }
+  .cw-voice-card--library .cw-voice-card__avatar {
+    grid-column: 1; width: 100%; height: auto; aspect-ratio: 1;
+  }
+  .cw-voice-card--library .cw-voice-card__identity { grid-column: 2 / 4; }
+}
+/* Desktop name and role metadata share the first text row. */
+@media (min-width: 760px) {
+  .cw-voice-card--library .cw-voice-card__identity {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto auto;
+    align-content: start;
+    column-gap: 18px;
+  }
+  .cw-voice-card--library .cw-voice-card__name {
+    grid-column: 1; grid-row: 1; align-self: center;
+  }
+  .cw-voice-card--library .cw-voice-card__badge-col {
+    grid-column: 2; grid-row: 1; align-self: center;
+    width: auto; padding: 0; margin: 0;
+  }
+  .cw-voice-card--library .cw-voice-card__role-text { flex: none; gap: 16px; }
+  .cw-voice-card--library .cw-voice-card__number { margin-left: 0; }
+  .cw-voice-card--library .cw-voice-card__title { grid-column: 1 / -1; grid-row: 2; }
+  .cw-voice-card--library .cw-voice-card__links { grid-column: 1 / -1; grid-row: 3; }
+}
+@media (min-width: 760px) {
+  .cw-voice-card--library .cw-voice-card__name { white-space: nowrap; }
+}
+@media (min-width: 760px) and (max-width: 1100px) {
+  .cw-voice-card--library {
+    --portrait-size: 200px; --voice-role-icon-size: 26px; --voice-role-font-size: .8rem;
+  }
+  .cw-voice-card--library .cw-voice-card__name { font-size: clamp(18px, 2.8cqw, 24px); }
+  .cw-voice-card--library .cw-voice-card__badge-col { min-height: 26px; }
+  .cw-voice-card--library .cw-voice-card__role-text { gap: 10px; }
+}
+/* Shorter desktop rows bring the player closer to the identity block. */
+@media (min-width: 760px) {
+  .cw-voice-card--library { --portrait-size: 190px; row-gap: 12px; }
+}
+@media (min-width: 760px) and (max-width: 1100px) {
+  .cw-voice-card--library { --portrait-size: 180px; }
+}
+@media (min-width: 760px) {
+  .cw-voice-card--library .cw-voice-card__title { font-size: clamp(18px, 2.4cqw, 24px); }
+  .cw-voice-card--library .cw-voice-card__link-icon { width: 34px; height: 34px; stroke-width: 1; }
+}
