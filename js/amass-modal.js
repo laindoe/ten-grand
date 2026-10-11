@@ -301,8 +301,8 @@
         whatTitle: 'WHAT DO YOU BUILD?',
         whyTitle: 'WHY DO YOU BUILD?',
         whyPlaceholder: 'Tell us why you build...',
-        accent: '#be2026',
-        accentBlend: '#e42320',
+        accent: '#da2126',
+        accentBlend: '#da2126',
         focusOptions: ['Studios', 'Venues', 'Platforms', 'Technology', 'Agencies', 'Distribution', 'Manufacturing', 'Education', 'Communities', 'Creative Services', 'Other'],
       },
       fund: {

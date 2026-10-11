@@ -311,10 +311,6 @@
     var number = document.createElement("span");
     number.className = "cw-voice-card__number";
     number.textContent = String(badgeNumber).padStart(4, "0");
-    var meta = document.createElement("div");
-    meta.className = "cw-voice-card__meta";
-    meta.appendChild(number);
-    article.appendChild(meta);
 
     var top = document.createElement("div");
     top.className = "cw-voice-card__top";
@@ -363,7 +359,11 @@
       '<svg class="cw-voice-card__role-icon cw-voice-card__role-label--' + row.role + '" viewBox="0 0 48 48" aria-hidden="true">' + roleIcons[row.role] + '</svg>' +
       '<span class="cw-voice-card__role-label cw-voice-card__role-label--' + row.role + '">' + role.label + '</span>';
 
-    meta.appendChild(badgeCol);
+    var roleText = document.createElement("div");
+    roleText.className = "cw-voice-card__role-text";
+    roleText.append(badgeCol.querySelector(".cw-voice-card__role-label"), number);
+    badgeCol.appendChild(roleText);
+    identity.insertBefore(badgeCol, name);
     top.appendChild(identity);
 
     var body = document.createElement("div");
@@ -372,7 +372,12 @@
     if (row.response_title) {
       var title = document.createElement("p");
       title.className = "cw-voice-card__title";
-      title.textContent = row.response_title;
+      var minorWords = /^(a|an|and|as|at|but|by|for|in|of|on|or|the|to|via)$/;
+      title.textContent = row.response_title.toLowerCase().split(/(\s+)/).map(function (word, index) {
+        if (!word.trim() || (index > 0 && minorWords.test(word))) return word;
+        if (/^(ai|nft|nfts|vr|ar|ip)$/.test(word)) return word.toUpperCase();
+        return word.replace(/(^|[-–])([a-z])/g, function (_, prefix, letter) { return prefix + letter.toUpperCase(); });
+      }).join("");
       identity.insertBefore(title, links);
     }
 

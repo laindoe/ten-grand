@@ -65,7 +65,9 @@
     return context;
   }
   window.tenGrandEqualizer = function (audio, wave) {
-    const bars = Array.from({ length: bands }, () => {
+    const desktop = matchMedia('(min-width: 760px)');
+    const visualBands = desktop.matches ? 64 : bands;
+    let bars = Array.from({ length: visualBands }, () => {
       const bar = document.createElement('span');
       bar.className = 'cw-voice-card__audio-bar';
       wave.appendChild(bar);
@@ -76,7 +78,15 @@
     let opening = [10,14,20,30,45,62,45,32,22,14,24,38,54,72,50,32,20,30,42,28,18,12,10,8];
     let snapshotRequested = false;
     const heights = new Float32Array(opening);
-    function rest() { heights.set(opening); bars.forEach((bar, i) => { bar.style.height = opening[i].toFixed(1) + '%'; }); }
+    function paint(values) {
+      bars.forEach((bar, i) => {
+        const position = i * (bands - 1) / (bars.length - 1);
+        const low = Math.floor(position), high = Math.min(bands - 1, low + 1);
+        const height = values[low] + (values[high] - values[low]) * (position - low);
+        bar.style.height = height.toFixed(1) + '%';
+      });
+    }
+    function rest() { heights.set(opening); paint(opening); }
     function loadOpening() {
       if (snapshotRequested || !audio.src) return;
       snapshotRequested = true;
@@ -103,8 +113,8 @@
         const strength = Math.sqrt(energy / Math.max(1, high - low)) / 255;
         const target = 8 + 92 * Math.pow(strength, 1.25);
         heights[i] += (target - heights[i]) * (target > heights[i] ? .35 : .16);
-        bars[i].style.height = heights[i].toFixed(1) + '%';
       }
+      paint(heights);
       frameId = requestAnimationFrame(frame);
     }
     function sync() {
@@ -132,6 +142,18 @@
         if (!connected) { source.connect(analyser); analyser.connect(ctx.destination); connected = true; }
       } catch (_) { analyser = null; rest(); }
     }
+    function resizeBands() {
+      const count = desktop.matches ? 64 : bands;
+      if (count === bars.length) return;
+      bars = Array.from({ length: count }, () => {
+        const bar = document.createElement('span');
+        bar.className = 'cw-voice-card__audio-bar';
+        return bar;
+      });
+      wave.replaceChildren(...bars);
+      paint(heights);
+    }
+    desktop.addEventListener('change', resizeBands);
     const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) loadOpening(); sync(); });
     observer.observe(wave);
     audio.addEventListener('playing', sync);
@@ -139,7 +161,7 @@
     audio.addEventListener('waiting', stop);
     audio.addEventListener('ended', () => { stop(); rest(); });
     audio.addEventListener('error', () => { stop(); rest(); });
-    function dispose() { stop(); observer.disconnect(); source?.disconnect(); analyser?.disconnect(); players.delete(player); }
+    function dispose() { stop(); desktop.removeEventListener('change', resizeBands); observer.disconnect(); source?.disconnect(); analyser?.disconnect(); players.delete(player); }
     const player = { sync, dispose, wave, audio };
     players.add(player);
     return { prepare };
