@@ -669,7 +669,7 @@ main {
 /* Compact community link; the SVG slot can receive animated artwork later. */
 .archive-community { padding-block: 10px; }
 .archive-community__inner {
-  grid-template-columns: 84px minmax(0, 1fr); grid-template-areas: none;
+  grid-template-columns: 96px minmax(0, 1fr); grid-template-areas: none;
   gap: 8px; align-items: stretch; color: var(--color-text); text-decoration: none;
 }
 .archive-community__icon-frame {
@@ -678,7 +678,7 @@ main {
   display: flex; align-items: center; justify-content: center;
   border: 0;
 }
-.archive-community__icon { width: 100%; height: 58px; max-width: 100%; object-fit: contain; }
+.archive-community__icon { width: 100%; height: 72px; max-width: 100%; object-fit: contain; }
 .archive-community__link-body {
   display: grid; grid-template-columns: minmax(0, 1fr) 24px; align-items: center;
   gap: 8px; padding: 10px; border: 0;
@@ -692,7 +692,7 @@ main {
 }
 .archive-community__inner:focus-visible { outline: 2px solid var(--color-text); outline-offset: 4px; }
 @media (max-width: 360px) {
-  .archive-community__inner { grid-template-columns: 64px minmax(0, 1fr); gap: 6px; }
+  .archive-community__inner { grid-template-columns: 76px minmax(0, 1fr); gap: 6px; }
   .archive-community__link-body { padding: 8px; gap: 4px; grid-template-columns: minmax(0, 1fr) 18px; }
   .archive-community__title { font-size: .85rem; }
   .archive-community__subtitle { font-size: .75rem; }
@@ -710,4 +710,35 @@ main {
 }
 .archive-community__heat {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+}
+@media (max-width: 759px) {
+  .archive-community__inner {
+    grid-template-columns: 64px minmax(0, 1fr); gap: 0; padding-right: 12px;
+  }
+  .archive-community__link-body {
+    padding: 10px 0; gap: 6px; grid-template-columns: minmax(0, 1fr) 18px;
+  }
+  .archive-community__title { font-size: clamp(12px, 3.7vw, 16px); white-space: nowrap; }
+  .archive-community__subtitle { font-size: clamp(10px, 3vw, 12px); white-space: nowrap; }
+}
+@media (max-width: 759px) {
+  .archive-community__icon-frame {
+    margin-left: 0; padding-left: 0; padding-right: 0;
+  }
+}
+@media (max-width: 759px) {
+  .archive-community__inner { padding-left: 0; grid-template-columns: 80px minmax(0, 1fr); }
+}
+@media (max-width: 759px) {
+  .archive-community__inner {
+    padding-left: var(--section-padding-x);
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+  .archive-community__icon-frame { margin-left: 0; }
+}
+@media (max-width: 759px) {
+  .archive-community__inner { column-gap: 10px; }
+}
+@media (max-width: 360px) {
+  .archive-community__subtitle { font-size: 9.5px; }
 }

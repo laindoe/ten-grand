@@ -57,7 +57,8 @@
   const resolution = gl.getUniformLocation(program, 'resolution');
   const time = gl.getUniformLocation(program, 'time');
   const isHeader = canvas.parentElement.classList.contains('cw-hero') || canvas.dataset.heatVariant === 'header';
-  gl.uniform1f(gl.getUniformLocation(program, 'patternScale'), isHeader ? 1.3 : 2.6);
+  const patternScale = Number(canvas.dataset.heatScale) || (isHeader ? 1.3 : 2.6);
+  gl.uniform1f(gl.getUniformLocation(program, 'patternScale'), patternScale);
   const intensity = gl.getUniformLocation(program, 'intensity');
   const darkCenter = gl.getUniformLocation(program, 'darkCenter');
   const mobile = matchMedia('(max-width: 759px)');

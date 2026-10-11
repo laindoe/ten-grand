@@ -13,7 +13,7 @@ permalink: /transmissions/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=158" />
-  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=16" />
+  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=21" />
 </head>
 <body>
 
@@ -65,7 +65,7 @@ permalink: /transmissions/
     </section>
 
     <section class="archive-community" aria-label="Explore the community">
-      <canvas class="archive-community__heat" data-voices-heat data-heat-variant="header" aria-hidden="true"></canvas>
+      <canvas class="archive-community__heat" data-voices-heat data-heat-variant="header" data-heat-scale="0.8" aria-hidden="true"></canvas>
       <a class="archive-inner archive-community__inner" href="{{ '/community-wall/' | relative_url }}">
         <span class="archive-community__icon-frame">
           <img class="archive-community__icon" src="{{ '/assets/images/community-megaphone.svg' | relative_url }}" alt="" width="300" height="260" />
@@ -159,7 +159,7 @@ permalink: /transmissions/
 
 {% include site-footer.html %}
 
-  <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=7"></script>
+  <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=8"></script>
   <script src="{{ '/js/transmissions.js' | relative_url }}?v=2"></script>
 </body>
 </html>
