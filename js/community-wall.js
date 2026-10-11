@@ -254,7 +254,7 @@
     var time = document.createElement("span");
     time.className = "cw-voice-card__audio-time";
     time.setAttribute("aria-hidden", "true");
-    time.textContent = "0:00 / " + formatClock(durationSeconds);
+    time.textContent = "0:00";
 
     function setIcon(isPlaying) {
       setSvgHidden(playIcon, isPlaying);
@@ -278,14 +278,18 @@
     audio.addEventListener("pause", function () { setIcon(false); });
     audio.addEventListener("ended", function () {
       setIcon(false);
-      time.textContent = "0:00 / " + formatClock(durationSeconds);
+      time.textContent = "0:00";
     });
     audio.addEventListener("timeupdate", function () {
       if (audio.paused) return;
-      time.textContent = formatClock(audio.currentTime) + " / " + formatClock(durationSeconds);
+      time.textContent = formatClock(audio.currentTime);
     });
 
-    wrap.append(audio, time, wave, button);
+    var duration = document.createElement("span");
+    duration.className = "cw-voice-card__audio-duration";
+    duration.textContent = formatClock(durationSeconds);
+    duration.setAttribute("aria-hidden", "true");
+    wrap.append(audio, time, wave, duration, button);
     return wrap;
   }
 
@@ -301,7 +305,7 @@
     if (!role || !row.name) return null;
 
     var article = document.createElement("article");
-    article.className = "cw-voice-card";
+    article.className = "cw-voice-card cw-voice-card--library";
     article.id = "voice-" + row.id;
     article.tabIndex = -1;
     var number = document.createElement("span");
@@ -331,6 +335,7 @@
       var prefix = SOCIAL_URL_PREFIX[row.social_platform] || SOCIAL_URL_PREFIX.Instagram;
       var handleLink = buildLinkRow(HANDLE_ICON_HTML, "cw-voice-card__handle");
       handleLink.href = prefix + handle;
+      handleLink.setAttribute("aria-label", row.social_platform + ": @" + handle);
       handleLink.querySelector(".cw-voice-card__link-text").textContent = "@" + handle;
       handleLink.hidden = false;
       links.appendChild(handleLink);
@@ -339,6 +344,7 @@
       var websiteLink = buildLinkRow(WEBSITE_ICON_HTML, "cw-voice-card__website");
       var websiteHref = /^https?:\/\//i.test(row.website) ? row.website : "https://" + row.website;
       websiteLink.href = websiteHref;
+      websiteLink.setAttribute("aria-label", "Website: " + row.website);
       websiteLink.querySelector(".cw-voice-card__link-text").textContent = row.website.replace(/^https?:\/\//i, "");
       websiteLink.hidden = false;
       links.appendChild(websiteLink);
@@ -367,7 +373,7 @@
       var title = document.createElement("p");
       title.className = "cw-voice-card__title";
       title.textContent = row.response_title;
-      body.appendChild(title);
+      identity.insertBefore(title, links);
     }
 
     if (row.response_type === "audio" && row.audio_path) {
