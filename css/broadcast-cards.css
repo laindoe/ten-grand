@@ -122,7 +122,6 @@
   justify-content: space-between;
   gap: 16px;
   padding: calc(16px + env(safe-area-inset-top, 0px)) var(--section-padding-x) 16px;
-  border-bottom: 1px solid var(--color-card-border);
   flex-shrink: 0;
   font-weight: 700;
   font-size: 0.85rem;
