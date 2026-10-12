@@ -193,7 +193,7 @@
 .broadcast-modal__back:hover { color: #fb2f7b; }
 .broadcast-modal__body,
 .broadcast-modal__attachments {
-  margin-top: 28px;
+  margin-top: 20px;
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
