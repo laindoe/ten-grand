@@ -1,6 +1,14 @@
 <dialog class="broadcast-modal" id="broadcast-modal" data-baseurl="{{ site.baseurl | escape }}" aria-labelledby="broadcast-modal-title">
   <div class="broadcast-modal__toolbar">
-    <span>BROADCAST</span>
+    <div class="broadcast-modal__toolbar-text">
+      <nav class="broadcast-modal__crumb" aria-label="Breadcrumb">
+        <span class="broadcast-modal__crumb-slash" aria-hidden="true"></span>
+        <a href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL</a>
+        <span class="broadcast-modal__crumb-slash" aria-hidden="true"></span>
+        <span class="broadcast-modal__crumb-current" aria-current="page">BROADCASTS</span>
+      </nav>
+      <span class="broadcast-modal__toolbar-title">BROADCASTS</span>
+    </div>
     <button type="button" class="broadcast-modal__close" data-broadcast-close aria-label="Close broadcast" autofocus><span aria-hidden="true">×</span></button>
   </div>
   <div class="broadcast-modal__scroll">
