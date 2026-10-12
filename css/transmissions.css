@@ -843,7 +843,14 @@ main {
   }
   .archive-dock__btn:last-child { border-right: none; }
 
+  .archive-dock__btn--icon { flex: 0 0 auto; padding: 0 18px; }
   .archive-dock__btn--icon svg { width: 18px; height: 18px; }
+
+  /* Same glow as the Community Wall CTA section up the page. */
+  .archive-dock__wall {
+    background: radial-gradient(ellipse at 0% 25%, #be202677, transparent 45%),
+                radial-gradient(ellipse at 100% 80%, #00b0e066, transparent 45%);
+  }
 
   .archive-dock__count {
     display: inline-flex;
