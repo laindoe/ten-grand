@@ -126,34 +126,30 @@
   font-weight: 700;
   font-size: 0.85rem;
 }
-.broadcast-modal__toolbar-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-.broadcast-modal__toolbar-title { font-weight: 700; font-size: 0.85rem; }
 .broadcast-modal__crumb {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--color-text-muted);
+  min-width: 0;
 }
 .broadcast-modal__crumb a { color: var(--color-text-muted); text-decoration: none; }
 .broadcast-modal__crumb a:hover { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; }
 .broadcast-modal__crumb-current { color: var(--color-text); }
 /* Same thermal gradient/animation as the broadcast card edge strips
    (.cw-broadcast-card::before / .broadcast-arc below), just thin and
-   rotated into a slash instead of a wide vertical bar. */
-.broadcast-modal__crumb-slash {
+   rotated into a forward-slash instead of a wide vertical bar. Shared
+   by every breadcrumb that reuses this look (modal, Broadcasts' own
+   full and condensed headers). */
+.broadcast-slash {
   display: inline-block;
   flex: none;
   width: 2px;
   height: 22px;
-  transform: rotate(-20deg);
+  transform: rotate(20deg);
   background: linear-gradient(165deg, #be2026 13%, #e5dc16 52%, #007938 75%, #00b0e0 93%);
   background-size: 100% 220%;
   animation: broadcast-thermal-drift 16s ease-in-out infinite alternate;
@@ -229,13 +225,12 @@
   mask: url('../assets/images/broadcast-arcs.svg?v=6') center / contain no-repeat;
 }
 .cw-section-header__title--arc { display: flex; align-items: center; gap: 12px; }
-.broadcasts__breadcrumb .broadcast-arc { width: 14px; height: 24px; }
 @keyframes broadcast-thermal-drift {
   from { background-position: 50% 0%; }
   to { background-position: 50% 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .broadcast-arc, .cw-broadcast-card::before, .broadcast-modal__crumb-slash { animation: none; }
+  .broadcast-arc, .cw-broadcast-card::before, .broadcast-slash { animation: none; }
 }
 
 /* Subtitle starts below the title lettering, after the 24px arc + 12px gap. */

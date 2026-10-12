@@ -67,7 +67,6 @@
   .broadcasts-condensed__crumb a { color: var(--color-text); text-decoration: none; }
   .broadcasts-condensed__crumb a:hover { text-decoration: underline; text-underline-offset: 4px; }
   .broadcasts-condensed__crumb [aria-current="page"] { color: var(--color-text-muted); }
-  .broadcasts-condensed__crumb-sep { color: var(--color-text-muted); }
 
   .broadcasts-condensed__row {
     display: flex;
@@ -159,8 +158,8 @@
 }
 
 .broadcasts__header {
-  padding-bottom: 24px;
-  margin-bottom: 20px;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .broadcasts__header h1 {

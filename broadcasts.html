@@ -12,8 +12,8 @@ permalink: /broadcasts/
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=159" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=9" />
-  <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=36" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=10" />
+  <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=37" />
 </head>
 <body>
   <div class="site-frame">
@@ -22,8 +22,9 @@ permalink: /broadcasts/
     <div class="broadcasts-condensed" id="broadcasts-condensed" hidden>
       <div class="broadcasts-condensed__inner">
         <nav class="broadcasts-condensed__crumb" aria-label="Breadcrumb">
+          <span class="broadcast-slash" aria-hidden="true"></span>
           <a href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL</a>
-          <span class="broadcasts-condensed__crumb-sep" aria-hidden="true">/</span>
+          <span class="broadcast-slash" aria-hidden="true"></span>
           <span aria-current="page">BROADCASTS</span>
         </nav>
         <div class="broadcasts-condensed__row">
@@ -42,9 +43,9 @@ permalink: /broadcasts/
       <div class="broadcasts__sticky">
         <div class="broadcasts__sticky-inner">
       <nav class="broadcasts__breadcrumb" aria-label="Breadcrumb">
-        {% include broadcast-icon.html %}
+        <span class="broadcast-slash" aria-hidden="true"></span>
         <a href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL</a>
-        {% include broadcast-icon.html %}
+        <span class="broadcast-slash" aria-hidden="true"></span>
         <span aria-current="page">BROADCASTS</span>
       </nav>
         <header class="broadcasts__header">
