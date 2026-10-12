@@ -14,7 +14,7 @@ permalink: /voices-heard/
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=159" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=121" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=13" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=14" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=40" />
 </head>
 <body>
@@ -56,7 +56,7 @@ permalink: /voices-heard/
         <div class="broadcasts__controls" role="group" aria-label="Voice search and filters">
           <div class="broadcasts__search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg>
-            <input type="search" placeholder="Search voices…" aria-label="Search voices (coming soon)" disabled />
+            <input type="search" id="voices-search-input" placeholder="Search voices…" aria-label="Search voices" />
           </div>
           <button class="broadcasts__filter" type="button" id="voices-filter-toggle" aria-haspopup="dialog" aria-controls="voices-filter-panel">FILTER <span aria-hidden="true">⌄</span><span class="voices-filter-count" id="voices-filter-count-full" hidden>0</span></button>
         </div>
@@ -114,7 +114,7 @@ permalink: /voices-heard/
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=14"></script>
   <script src="{{ '/js/voice-equalizer.js' | relative_url }}?v=3"></script>
   <script src="{{ '/js/voices-heat.js' | relative_url }}?v=8"></script>
-  <script src="{{ '/js/community-wall.js' | relative_url }}?v=22"></script>
+  <script src="{{ '/js/community-wall.js' | relative_url }}?v=23"></script>
   <script src="{{ '/js/archive-header.js' | relative_url }}?v=2"></script>
 </body>
 </html>

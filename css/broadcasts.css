@@ -238,7 +238,13 @@
   isolation: isolate;
   overflow: hidden;
   margin-top: 16px;
-  padding: 20px;
+  /* Full-bleed: the background spans the whole section edge to edge
+     (matching .archive-community's technique on Transmissions) while
+     the content inside stays padded for readability. */
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin-left: calc(-1 * var(--section-padding-x));
+  margin-right: calc(-1 * var(--section-padding-x));
+  padding: 24px var(--section-padding-x);
 }
 .voices-heat-band::before {
   content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
@@ -250,6 +256,8 @@
 }
 .voices-heat-band__inner {
   position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

@@ -411,7 +411,7 @@
   // Only ever set on the archive page (voices-heard.html), via the
   // filter panel -- the Community Wall homepage preview has no filter
   // UI, so these stay empty there and the query is unaffected.
-  var voiceFilters = { role: "", type: "" };
+  var voiceFilters = { role: "", type: "", query: "" };
   async function loadVoiceCards(reset) {
     var grid = document.querySelector(".cw-voice-grid");
     if (!grid || voiceLoading) return;
@@ -438,6 +438,12 @@
         .eq("status", "approved");
       if (archive && voiceFilters.role) query = query.eq("role", voiceFilters.role);
       if (archive && voiceFilters.type) query = query.eq("response_type", voiceFilters.type);
+      if (archive && voiceFilters.query) {
+        // Strip characters that are syntactically meaningful to PostgREST's
+        // filter DSL so a search term can't break out of the ilike pattern.
+        var term = voiceFilters.query.replace(/[%,()]/g, "");
+        query = query.or("name.ilike.%" + term + "%,response_title.ilike.%" + term + "%,why_detail.ilike.%" + term + "%");
+      }
       query = query.order("created_at", { ascending: false }).order("id", { ascending: false });
       var result = await (archive ? query.range(voiceOffset, voiceOffset + 23) : query.limit(24));
       if (result.error) throw result.error;
@@ -452,8 +458,8 @@
           ? voiceOffset >= result.count : rows.length < 24;
         if (message) {
           message.hidden = grid.children.length > 0;
-          message.textContent = (voiceFilters.role || voiceFilters.type)
-            ? "No voices match your filters."
+          message.textContent = (voiceFilters.role || voiceFilters.type || voiceFilters.query)
+            ? "No voices match your search or filters."
             : "Voices are coming soon. Be the first to share yours.";
         }
         if (status) status.textContent = "Showing " + grid.children.length + " voices.";
@@ -593,6 +599,19 @@
     if (panelApply) panelApply.addEventListener("click", applyPanel);
     panelRole.addEventListener("change", function () { draft.role = panelRole.value; });
     panelType.addEventListener("change", function () { draft.type = panelType.value; });
+
+    var searchInput = document.getElementById("voices-search-input");
+    var searchDebounce = null;
+    if (searchInput) {
+      searchInput.addEventListener("input", function () {
+        var value = searchInput.value.trim();
+        clearTimeout(searchDebounce);
+        searchDebounce = window.setTimeout(function () {
+          voiceFilters.query = value;
+          loadVoiceCards(true);
+        }, 300);
+      });
+    }
 
     updateCounts();
   }
