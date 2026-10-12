@@ -11,6 +11,109 @@
   border-bottom: 1px solid var(--color-card-border);
 }
 
+/* Broadcasts v2: the opening header scrolls away normally instead of
+   staying permanently pinned -- .broadcasts-condensed (below) replaces
+   it once it's gone. Scoped to .broadcasts--v2 only so Voices Heard,
+   which still shares these .broadcasts__* classes, keeps its current
+   always-sticky behavior untouched. */
+/* Mobile only: desktop keeps the original always-sticky full header,
+   since there's no condensed replacement for it at that width. */
+@media (max-width: 759px) {
+  .broadcasts--v2 .broadcasts__sticky {
+    position: static;
+  }
+
+  /* A search that narrows the list to very few cards can otherwise
+     shrink the page shorter than the current scroll position, which
+     forces the browser to snap scroll back to 0 -- collapsing the
+     condensed header (and closing its open search row) out from under
+     whoever is typing. */
+  .broadcasts--v2 .broadcasts__results { min-height: 100vh; }
+}
+
+/* ---------- Condensed sticky header (mobile) ----------
+   Mirrors the Transmissions sticky-breadcrumb mechanism: hidden until
+   the opening .broadcasts__sticky section scrolls out of view, then
+   fixed below the nav for the rest of the scroll. */
+.broadcasts-condensed { display: none; }
+@media (max-width: 759px) {
+  .broadcasts-condensed {
+    display: block;
+    position: fixed;
+    top: var(--b-nav-height, 64px);
+    left: var(--frame-margin);
+    right: var(--frame-margin);
+    z-index: 90;
+    background: var(--color-bg);
+    border-top: 1px solid var(--color-card-border);
+    border-bottom: 1px solid var(--color-card-border);
+    border-left: 1px solid var(--color-card-border);
+    border-right: 1px solid var(--color-card-border);
+  }
+  .broadcasts-condensed[hidden] { display: none; }
+
+  .broadcasts-condensed__inner {
+    padding: 12px var(--section-padding-x);
+  }
+
+  .broadcasts-condensed__crumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .broadcasts-condensed__crumb a { color: var(--color-text); text-decoration: none; }
+  .broadcasts-condensed__crumb a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .broadcasts-condensed__crumb [aria-current="page"] { color: var(--color-text-muted); }
+  .broadcasts-condensed__crumb-sep { color: var(--color-text-muted); }
+
+  .broadcasts-condensed__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .broadcasts-condensed__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .broadcasts-condensed__search-toggle {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid var(--color-card-border);
+    color: var(--color-text);
+    cursor: pointer;
+  }
+  .broadcasts-condensed__search-toggle svg { width: 18px; height: 18px; }
+  .broadcasts-condensed__search-toggle[aria-expanded="true"] {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .broadcasts-condensed__search-row { margin-top: 10px; }
+  .broadcasts-condensed__search-row[hidden] { display: none; }
+  .broadcasts-condensed__search-row input {
+    width: 100%;
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-card-border);
+    padding: 12px 14px;
+    font: inherit;
+    font-size: max(16px, 0.9rem);
+  }
+  .broadcasts-condensed__search-row input::placeholder { color: var(--color-text-muted); }
+}
+
 .broadcasts__sticky-inner {
   max-width: 1100px;
   margin: 0 auto;

@@ -3,6 +3,7 @@
 
   initPagination();
   initBroadcastModal();
+  initCondensedHeader();
   revealLinkedBroadcast();
   window.addEventListener("hashchange", revealLinkedBroadcast);
 
@@ -23,14 +24,39 @@
     var list = document.getElementById("broadcast-list");
     var button = document.getElementById("broadcast-load-more");
     var status = document.getElementById("broadcast-status");
+    var emptySearch = document.getElementById("broadcast-search-empty");
+    var searchFull = document.getElementById("broadcasts-search-full");
+    var searchCondensed = document.getElementById("broadcasts-search-condensed");
     if (!list || !button) return;
 
     var cards = Array.prototype.slice.call(list.children);
+    var texts = cards.map(function (card) { return card.textContent.toLowerCase(); });
     var visibleCount = Math.min(10, cards.length);
+    var query = "";
+
+    function matching() {
+      if (!query) return cards;
+      return cards.filter(function (card, index) { return texts[index].indexOf(query) !== -1; });
+    }
 
     function update() {
-      cards.forEach(function (card, index) { card.hidden = index >= visibleCount; });
-      button.hidden = visibleCount >= cards.length;
+      var matched = matching();
+      var matchedSet = new Set(matched);
+      var shownCount = 0;
+      cards.forEach(function (card) {
+        var within = matchedSet.has(card) && (query !== "" || shownCount < visibleCount);
+        card.hidden = !within;
+        if (within) shownCount++;
+      });
+      button.hidden = query !== "" || visibleCount >= cards.length;
+      if (emptySearch) emptySearch.hidden = query === "" || matched.length > 0;
+    }
+
+    function setQuery(value) {
+      query = value.trim().toLowerCase();
+      if (searchFull && searchFull.value !== value) searchFull.value = value;
+      if (searchCondensed && searchCondensed.value !== value) searchCondensed.value = value;
+      update();
     }
 
     update();
@@ -44,6 +70,76 @@
         firstNewCard.focus({ preventScroll: true });
       }
     });
+
+    if (searchFull) searchFull.addEventListener("input", function () { setQuery(searchFull.value); });
+    if (searchCondensed) searchCondensed.addEventListener("input", function () { setQuery(searchCondensed.value); });
+  }
+
+  function initCondensedHeader() {
+    var opening = document.querySelector(".broadcasts--v2 .broadcasts__sticky");
+    var condensed = document.getElementById("broadcasts-condensed");
+    var nav = document.querySelector(".site-frame > .nav");
+    if (!opening || !condensed || !nav) return;
+
+    function updateNavHeight() {
+      document.documentElement.style.setProperty("--b-nav-height", nav.getBoundingClientRect().height + "px");
+    }
+    updateNavHeight();
+    if (typeof ResizeObserver !== "undefined") new ResizeObserver(updateNavHeight).observe(nav);
+    window.addEventListener("resize", updateNavHeight);
+
+    var toggle = document.getElementById("broadcasts-search-toggle");
+    var searchRow = document.getElementById("broadcasts-condensed-search-row");
+    var condensedInput = document.getElementById("broadcasts-search-condensed");
+
+    function closeCondensedSearch() {
+      if (!toggle || !searchRow) return;
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Show search");
+      searchRow.hidden = true;
+    }
+
+    function setCollapsed(value) {
+      if (condensed.hidden === !value) return;
+      condensed.hidden = !value;
+      if (!value) closeCondensedSearch();
+    }
+
+    var media = window.matchMedia("(max-width: 759px)");
+    var observer = null;
+
+    function setupObserver() {
+      if (observer) { observer.disconnect(); observer = null; }
+      if (!media.matches) { setCollapsed(false); return; }
+      if (!("IntersectionObserver" in window)) return;
+      var navHeight = Math.round(nav.getBoundingClientRect().height);
+      observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) { setCollapsed(entry.boundingClientRect.bottom < navHeight); });
+      }, { threshold: 0, rootMargin: "-" + navHeight + "px 0px 0px 0px" });
+      observer.observe(opening);
+    }
+
+    media.addEventListener("change", setupObserver);
+    setupObserver();
+
+    if (toggle && searchRow) {
+      toggle.addEventListener("click", function () {
+        var open = toggle.getAttribute("aria-expanded") === "true";
+        if (open) {
+          closeCondensedSearch();
+        } else {
+          toggle.setAttribute("aria-expanded", "true");
+          toggle.setAttribute("aria-label", "Hide search");
+          searchRow.hidden = false;
+          if (condensedInput) condensedInput.focus();
+        }
+      });
+      if (condensedInput) {
+        condensedInput.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") { closeCondensedSearch(); toggle.focus(); }
+        });
+      }
+    }
   }
 
   function initBroadcastModal() {
