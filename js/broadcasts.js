@@ -150,7 +150,8 @@
     var trigger = null;
     var scrollLock = null;
     var scrollArea = modal.querySelector(".broadcast-modal__scroll");
-    var closeButton = modal.querySelector("[data-broadcast-close]");
+    var closeButton = modal.querySelector(".broadcast-modal__close");
+    var closeButtons = modal.querySelectorAll("[data-broadcast-close]");
 
     function lockScroll() {
       var body = document.body;
@@ -197,7 +198,9 @@
       });
     });
 
-    closeButton.addEventListener("click", function () { modal.close(); });
+    closeButtons.forEach(function (button) {
+      button.addEventListener("click", function () { modal.close(); });
+    });
     // Native dialog handles Escape, traps focus, and makes the page inert.
     modal.addEventListener("close", function () {
       if (scrollLock) {
