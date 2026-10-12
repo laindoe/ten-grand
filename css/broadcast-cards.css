@@ -164,8 +164,9 @@
 .broadcast-modal__body,
 .broadcast-modal__attachments {
   border-top: 1px solid var(--color-card-border);
-  margin-top: 28px;
-  padding-top: 28px;
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin: 28px calc(-1 * var(--section-padding-x)) 0;
+  padding: 28px var(--section-padding-x) 0;
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
