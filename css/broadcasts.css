@@ -116,7 +116,7 @@
 .broadcasts__sticky-inner {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 40px var(--section-padding-x) 16px;
+  padding: 40px var(--section-padding-x);
 }
 
 .broadcasts__results {
@@ -223,7 +223,7 @@
 .broadcasts__status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .broadcasts__empty { color: var(--color-text-muted); padding: 20px 0; }
 @media (max-width: 480px) {
-  .broadcasts__sticky-inner { padding-top: 28px; }
+  .broadcasts__sticky-inner { padding-top: 28px; padding-bottom: 28px; }
   .broadcasts__filter { padding: 12px; font-size: 0.75rem; }
   .broadcasts__search { gap: 8px; padding: 12px; }
   .broadcasts__search input { font-size: 0.8rem; }
