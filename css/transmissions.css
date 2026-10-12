@@ -817,7 +817,11 @@ main {
     left: var(--frame-margin);
     right: var(--frame-margin);
     z-index: 90;
-    padding: 16px 0 max(16px, env(safe-area-inset-bottom, 0px));
+    /* Reserved dead space below the bar for the home-indicator area --
+       kept off the buttons themselves so their padding (and the vertical
+       dividers it carries) stays symmetric top/bottom, and so those
+       dividers run the bar's full height edge to edge. */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     background: var(--color-bg);
     border-top: 1px solid var(--color-card-border);
     border-left: 1px solid var(--color-card-border);
@@ -831,6 +835,7 @@ main {
     align-items: center;
     justify-content: center;
     gap: 6px;
+    padding: 16px 0;
     background: none;
     border: none;
     border-right: 1px solid var(--color-card-border);
@@ -843,7 +848,7 @@ main {
   }
   .archive-dock__btn:last-child { border-right: none; }
 
-  .archive-dock__btn--icon { flex: 0 0 auto; padding: 0 18px; }
+  .archive-dock__btn--icon { flex: 0 0 auto; padding: 16px 18px; }
   .archive-dock__btn--icon svg { width: 18px; height: 18px; }
 
   /* Same glow as the Community Wall CTA section up the page. */
