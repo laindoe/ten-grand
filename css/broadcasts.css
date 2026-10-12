@@ -153,13 +153,6 @@
   outline-offset: 4px;
 }
 
-.broadcasts__slash {
-  color: var(--broadcast-accent);
-  font-size: 1.8rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
 .broadcasts__header {
   padding-bottom: 4px;
   margin-bottom: 8px;
@@ -234,3 +227,204 @@
   .broadcasts__search { gap: 8px; padding: 12px; }
   .broadcasts__search input { font-size: 0.8rem; }
 }
+
+/* ---------- Voices Heard heat-map band ---------- */
+/* Same radial-gradient + animated canvas treatment as the Community
+   Wall CTA band on Transmissions (.archive-community), just reused
+   here under new names since that CSS lives in transmissions.css,
+   which this page doesn't load. */
+.voices-heat-band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: 16px;
+  padding: 20px;
+}
+.voices-heat-band::before {
+  content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+  background: radial-gradient(ellipse at 0% 25%, #be202677, transparent 45%),
+              radial-gradient(ellipse at 100% 80%, #00b0e066, transparent 45%);
+}
+.voices-heat-band__heat {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+}
+.voices-heat-band__inner {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.voices-heat-band__title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.voices-heat-band__icon {
+  width: 48px;
+  height: auto;
+  flex-shrink: 0;
+}
+.voices-heat-band__title h1 {
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-text);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.voices-heat-band__cta.cw-campaign__add-voice {
+  width: auto;
+  flex: none;
+}
+.voices-subtitle {
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+/* ---------- Voices Heard filter count badge ---------- */
+.voices-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-left: 6px;
+}
+.voices-filter-count[hidden] { display: none; }
+
+/* ---------- Voices Heard bottom filter dock (mobile) ---------- */
+/* Same conventions as the Transmissions dock: inset to match the
+   site-frame border, symmetric padding on the button itself so the
+   full-height look holds and the safe-area reserve stays outside it. */
+.voices-dock { display: none; }
+@media (max-width: 759px) {
+  .voices-dock {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: var(--frame-margin);
+    right: var(--frame-margin);
+    z-index: 90;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--color-bg);
+    border-top: 1px solid var(--color-card-border);
+    border-left: 1px solid var(--color-card-border);
+    border-right: 1px solid var(--color-card-border);
+    border-bottom: 1px solid var(--color-card-border);
+  }
+  .voices-dock[hidden] { display: none; }
+  .voices-dock__btn {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 0;
+    background: none;
+    border: 0;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+  }
+}
+
+/* ---------- Voices Heard filter panel ---------- */
+/* Opens from either the full header's FILTER button or the bottom
+   dock's, at any viewport width -- unlike Transmissions' panel, this
+   one isn't gated to mobile, since the top FILTER button is its only
+   trigger on desktop. */
+.voices-filter-panel {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+.voices-filter-panel[hidden] { display: none; }
+.voices-filter-panel__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.voices-filter-panel__sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-card-border);
+  padding: 20px var(--section-padding-x) calc(20px + env(safe-area-inset-bottom, 0px));
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: voices-panel-up 0.2s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .voices-filter-panel__sheet { animation: none; }
+}
+@keyframes voices-panel-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.voices-filter-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.voices-filter-panel__header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.voices-filter-panel__close {
+  background: none;
+  border: 1px solid var(--color-card-border);
+  color: var(--color-text);
+  width: 32px;
+  height: 32px;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.voices-filter-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.voices-filter-select {
+  width: 100%;
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-card-border);
+  padding: 14px 20px;
+  font-family: var(--font-body);
+  font-size: max(16px, 0.85rem);
+  letter-spacing: 0.02em;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-text) 50%), linear-gradient(135deg, var(--color-text) 50%, transparent 50%);
+  background-position: calc(100% - 22px) center, calc(100% - 16px) center;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+.voices-filter-select option { background: var(--color-bg); color: var(--color-text); }
+.voices-filter-panel__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+.voices-filter-panel__actions .broadcasts__filter { flex: 1 1 0; text-align: center; cursor: pointer; }

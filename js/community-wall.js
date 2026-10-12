@@ -408,7 +408,11 @@
 
   var voiceOffset = 0;
   var voiceLoading = false;
-  async function loadVoiceCards() {
+  // Only ever set on the archive page (voices-heard.html), via the
+  // filter panel -- the Community Wall homepage preview has no filter
+  // UI, so these stay empty there and the query is unaffected.
+  var voiceFilters = { role: "", type: "" };
+  async function loadVoiceCards(reset) {
     var grid = document.querySelector(".cw-voice-grid");
     if (!grid || voiceLoading) return;
     var archive = grid.hasAttribute("data-voice-archive");
@@ -420,6 +424,10 @@
       grid.setAttribute("aria-busy", "false");
       return;
     }
+    if (archive && reset) {
+      voiceOffset = 0;
+      grid.replaceChildren();
+    }
     voiceLoading = true;
     grid.setAttribute("aria-busy", "true");
     if (button) button.disabled = true;
@@ -427,9 +435,10 @@
       var query = window.tenGrandSupabase
         .from("voices_heard")
         .select("id,name,role,response_type,response_title,why_detail,audio_path,audio_duration,photo_path,website,social_platform,social_handle,created_at,campaign_number", { count: "exact" })
-        .eq("status", "approved")
-        .order("created_at", { ascending: false })
-        .order("id", { ascending: false });
+        .eq("status", "approved");
+      if (archive && voiceFilters.role) query = query.eq("role", voiceFilters.role);
+      if (archive && voiceFilters.type) query = query.eq("response_type", voiceFilters.type);
+      query = query.order("created_at", { ascending: false }).order("id", { ascending: false });
       var result = await (archive ? query.range(voiceOffset, voiceOffset + 23) : query.limit(24));
       if (result.error) throw result.error;
       var rows = result.data || [];
@@ -443,7 +452,9 @@
           ? voiceOffset >= result.count : rows.length < 24;
         if (message) {
           message.hidden = grid.children.length > 0;
-          message.textContent = "Voices are coming soon. Be the first to share yours.";
+          message.textContent = (voiceFilters.role || voiceFilters.type)
+            ? "No voices match your filters."
+            : "Voices are coming soon. Be the first to share yours.";
         }
         if (status) status.textContent = "Showing " + grid.children.length + " voices.";
       } else if (cards.length) {
@@ -468,9 +479,126 @@
   }
 
   var voiceLoadMore = document.getElementById("voice-load-more");
-  if (voiceLoadMore) voiceLoadMore.addEventListener("click", loadVoiceCards);
+  if (voiceLoadMore) voiceLoadMore.addEventListener("click", function () { loadVoiceCards(false); });
+
+  function initVoicesHeardHeader() {
+    var sticky = document.querySelector(".broadcasts--v2 .broadcasts__sticky");
+    var condensed = document.getElementById("voices-condensed");
+    var nav = document.querySelector(".site-frame > .nav");
+    if (!sticky || !condensed || !nav) return;
+
+    function updateNavHeight() {
+      document.documentElement.style.setProperty("--b-nav-height", nav.getBoundingClientRect().height + "px");
+    }
+    updateNavHeight();
+    if (typeof ResizeObserver !== "undefined") new ResizeObserver(updateNavHeight).observe(nav);
+    window.addEventListener("resize", updateNavHeight);
+
+    var media = window.matchMedia("(max-width: 759px)");
+    var observer = null;
+
+    function setCollapsed(value) {
+      if (condensed.hidden === !value) return;
+      condensed.hidden = !value;
+      var dock = document.getElementById("voices-dock");
+      if (dock) dock.hidden = !value;
+      if (!value) closePanel();
+    }
+
+    function setupObserver() {
+      if (observer) { observer.disconnect(); observer = null; }
+      if (!media.matches) { setCollapsed(false); return; }
+      if (!("IntersectionObserver" in window)) return;
+      var navHeight = Math.round(nav.getBoundingClientRect().height);
+      observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) { setCollapsed(entry.boundingClientRect.bottom < navHeight); });
+      }, { threshold: 0, rootMargin: "-" + navHeight + "px 0px 0px 0px" });
+      observer.observe(sticky);
+    }
+
+    media.addEventListener("change", setupObserver);
+    setupObserver();
+
+    var panel = document.getElementById("voices-filter-panel");
+    var panelBackdrop = document.getElementById("voices-filter-panel-backdrop");
+    var panelClose = document.getElementById("voices-filter-panel-close");
+    var panelRole = document.getElementById("voices-filter-role");
+    var panelType = document.getElementById("voices-filter-type");
+    var panelClear = document.getElementById("voices-filter-clear");
+    var panelApply = document.getElementById("voices-filter-apply");
+    var toggleFull = document.getElementById("voices-filter-toggle");
+    var toggleDock = document.getElementById("voices-dock-filters");
+    var countFull = document.getElementById("voices-filter-count-full");
+    var countDock = document.getElementById("voices-filter-count-dock");
+    if (!panel || !panelRole || !panelType) return;
+
+    var draft = null;
+    var panelOpener = null;
+
+    function focusables() {
+      var list = panel.querySelectorAll("button, select, input, [href]");
+      return Array.prototype.filter.call(list, function (el) { return !el.disabled && el.offsetParent !== null; });
+    }
+    function onPanelKeydown(event) {
+      if (event.key === "Escape") { event.preventDefault(); closePanel(); return; }
+      if (event.key !== "Tab") return;
+      var list = focusables();
+      if (!list.length) return;
+      var first = list[0], last = list[list.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+    function syncDraftControls() {
+      panelRole.value = draft.role;
+      panelType.value = draft.type;
+    }
+    function openPanel(opener) {
+      draft = { role: voiceFilters.role, type: voiceFilters.type };
+      syncDraftControls();
+      panelOpener = opener || document.activeElement;
+      panel.hidden = false;
+      document.addEventListener("keydown", onPanelKeydown);
+      panelRole.focus();
+    }
+    function closePanel() {
+      if (panel.hidden) return;
+      panel.hidden = true;
+      document.removeEventListener("keydown", onPanelKeydown);
+      draft = null;
+      if (panelOpener) panelOpener.focus();
+    }
+    function updateCounts() {
+      var count = (voiceFilters.role ? 1 : 0) + (voiceFilters.type ? 1 : 0);
+      [countFull, countDock].forEach(function (el) {
+        if (!el) return;
+        el.hidden = count === 0;
+        el.textContent = String(count);
+      });
+    }
+    function applyPanel() {
+      voiceFilters.role = draft.role;
+      voiceFilters.type = draft.type;
+      closePanel();
+      updateCounts();
+      loadVoiceCards(true);
+      var results = document.querySelector(".broadcasts__results");
+      if (results) results.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    }
+
+    if (toggleFull) toggleFull.addEventListener("click", function () { openPanel(toggleFull); });
+    if (toggleDock) toggleDock.addEventListener("click", function () { openPanel(toggleDock); });
+    if (panelClose) panelClose.addEventListener("click", closePanel);
+    if (panelBackdrop) panelBackdrop.addEventListener("click", closePanel);
+    if (panelClear) panelClear.addEventListener("click", function () { draft = { role: "", type: "" }; syncDraftControls(); });
+    if (panelApply) panelApply.addEventListener("click", applyPanel);
+    panelRole.addEventListener("change", function () { draft.role = panelRole.value; });
+    panelType.addEventListener("change", function () { draft.type = panelType.value; });
+
+    updateCounts();
+  }
 
   if (!document.querySelector("[data-voice-archive]")) loadStats();
   initJoinModal();
-  loadVoiceCards();
+  initVoicesHeardHeader();
+  loadVoiceCards(true);
 })();
