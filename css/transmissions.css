@@ -761,11 +761,13 @@ main {
     display: block;
     position: fixed;
     top: var(--t-nav-height, 64px);
-    left: 0;
-    right: 0;
+    left: var(--frame-margin);
+    right: var(--frame-margin);
     z-index: 90;
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-card-border);
+    border-left: 1px solid var(--color-card-border);
+    border-right: 1px solid var(--color-card-border);
   }
   .archive-crumb[hidden] { display: none; }
 
@@ -812,13 +814,14 @@ main {
     display: flex;
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: var(--frame-margin);
+    right: var(--frame-margin);
     z-index: 90;
-    height: 56px;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding: 16px 0 max(16px, env(safe-area-inset-bottom, 0px));
     background: var(--color-bg);
     border-top: 1px solid var(--color-card-border);
+    border-left: 1px solid var(--color-card-border);
+    border-right: 1px solid var(--color-card-border);
   }
   .archive-dock[hidden] { display: none; }
 
