@@ -15,8 +15,40 @@
   const status = document.getElementById('archive-feed-status');
   const retry = document.getElementById('archive-retry');
   const media = matchMedia('(max-width: 759px)');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const state = { category: 'all', series: 'all', query: '', limit: 3, searchOpen: false };
   let posts = null, introductions = {}, pending = null;
+
+  // Collapsing breadcrumb + bottom filter dock (mobile only). Appear once
+  // the Community Wall banner scrolls fully out of view above the
+  // viewport, and disappear again scrolling back up. The filter panel
+  // they open shares `state` as its single source of truth: it stages
+  // edits in `draft` until Apply, rather than keeping its own copy.
+  const crumb = document.getElementById('archive-crumb');
+  const crumbRoot = document.getElementById('archive-crumb-root');
+  const crumbSep = document.getElementById('archive-crumb-sep');
+  const crumbCurrent = document.getElementById('archive-crumb-current');
+  const dock = document.getElementById('archive-dock');
+  const dockFilters = document.getElementById('archive-dock-filters');
+  const dockSearch = document.getElementById('archive-dock-search');
+  const dockCount = document.getElementById('archive-dock-count');
+  const panel = document.getElementById('archive-filter-panel');
+  const panelBackdrop = document.getElementById('archive-filter-panel-backdrop');
+  const panelClose = document.getElementById('archive-filter-panel-close');
+  const panelCategory = document.getElementById('panel-category-filter');
+  const panelSeries = document.getElementById('panel-series-filter');
+  const panelSearch = document.getElementById('panel-search-input');
+  const panelClear = document.getElementById('archive-filter-panel-clear');
+  const panelApply = document.getElementById('archive-filter-panel-apply');
+  const community = document.querySelector('.archive-community');
+  const siteNav = document.querySelector('.site-frame > .nav');
+  let collapsed = false, draft = null, panelOpener = null, observer = null;
+  function updateNavHeight() {
+    if (siteNav) document.documentElement.style.setProperty('--t-nav-height', siteNav.getBoundingClientRect().height + 'px');
+  }
+  updateNavHeight();
+  if (siteNav && 'ResizeObserver' in window) new ResizeObserver(updateNavHeight).observe(siteNav);
+  window.addEventListener('resize', updateNavHeight);
   function element(tag, className, text) {
     const el = document.createElement(tag); el.className = className;
     if (text) el.textContent = text;
@@ -53,6 +85,88 @@
     search.hidden = media.matches && !state.searchOpen;
     toggle.setAttribute('aria-expanded', String(state.searchOpen));
     toggle.setAttribute('aria-label', state.searchOpen ? 'Hide search' : 'Show search');
+    updateCrumb();
+    updateDockCount();
+  }
+  function activeFilterLabel() {
+    if (state.series !== 'all') return series.selectedOptions[0].textContent;
+    if (state.category !== 'all') return category.selectedOptions[0].textContent;
+    return null;
+  }
+  function updateCrumb() {
+    const label = activeFilterLabel();
+    crumbSep.hidden = !label;
+    crumbCurrent.hidden = !label;
+    if (label) {
+      crumbCurrent.textContent = label;
+      crumbRoot.removeAttribute('aria-current');
+      crumbCurrent.setAttribute('aria-current', 'page');
+    } else {
+      crumbCurrent.removeAttribute('aria-current');
+      crumbRoot.setAttribute('aria-current', 'page');
+    }
+  }
+  function updateDockCount() {
+    const count = (state.category !== 'all' ? 1 : 0) + (state.series !== 'all' ? 1 : 0) + (state.query ? 1 : 0);
+    dockCount.hidden = count === 0;
+    dockCount.textContent = String(count);
+  }
+  function setCollapsed(value) {
+    if (collapsed === value) return;
+    collapsed = value;
+    crumb.hidden = !value;
+    dock.hidden = !value;
+    if (!value) closePanel();
+  }
+  function setupObserver() {
+    if (observer) { observer.disconnect(); observer = null; }
+    if (!media.matches) { setCollapsed(false); return; }
+    if (!community || !('IntersectionObserver' in window)) return;
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => setCollapsed(entry.boundingClientRect.bottom < 0));
+    }, { threshold: 0 });
+    observer.observe(community);
+  }
+  function syncPanelControls() {
+    panelCategory.value = draft.category;
+    panelSeries.value = draft.series;
+    panelSearch.value = draft.query;
+  }
+  function panelFocusables() {
+    return [...panel.querySelectorAll('button, select, input, [href]')].filter(el => !el.disabled && el.offsetParent !== null);
+  }
+  function onPanelKeydown(e) {
+    if (e.key === 'Escape') { e.preventDefault(); closePanel(); return; }
+    if (e.key !== 'Tab') return;
+    const list = panelFocusables();
+    if (!list.length) return;
+    const first = list[0], last = list[list.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+  function openPanel(focusTarget) {
+    draft = { category: state.category, series: state.series, query: state.query };
+    syncPanelControls();
+    panelOpener = document.activeElement;
+    panel.hidden = false;
+    document.addEventListener('keydown', onPanelKeydown);
+    (focusTarget || panelCategory).focus();
+  }
+  function closePanel() {
+    if (panel.hidden) return;
+    panel.hidden = true;
+    document.removeEventListener('keydown', onPanelKeydown);
+    draft = null;
+    if (panelOpener) panelOpener.focus();
+  }
+  function applyPanel() {
+    state.category = draft.category;
+    state.series = draft.series;
+    state.query = draft.query;
+    search.value = draft.query;
+    closePanel();
+    reset();
+    grid.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
   }
   function showIntroduction() {
     const defaultState = state.category === 'all' && state.series === 'all' && !state.query;
@@ -127,5 +241,18 @@
   more.addEventListener('click', () => { state.limit += 10; render(true); });
   retry.addEventListener('click', loadIndex);
   media.addEventListener('change', syncControls);
-  syncControls(); loadIndex();
+  crumbRoot.addEventListener('click', () => {
+    state.category = 'all'; state.series = 'all'; state.query = ''; search.value = ''; reset();
+  });
+  dockFilters.addEventListener('click', () => openPanel(panelCategory));
+  dockSearch.addEventListener('click', () => openPanel(panelSearch));
+  panelClose.addEventListener('click', closePanel);
+  panelBackdrop.addEventListener('click', closePanel);
+  panelClear.addEventListener('click', () => { draft = { category: 'all', series: 'all', query: '' }; syncPanelControls(); });
+  panelApply.addEventListener('click', applyPanel);
+  panelCategory.addEventListener('change', () => { draft.category = panelCategory.value; draft.series = 'all'; syncPanelControls(); });
+  panelSeries.addEventListener('change', () => { draft.series = panelSeries.value; draft.category = 'all'; syncPanelControls(); });
+  panelSearch.addEventListener('input', () => { draft.query = panelSearch.value.trim().toLowerCase(); });
+  media.addEventListener('change', setupObserver);
+  syncControls(); loadIndex(); setupObserver();
 })();

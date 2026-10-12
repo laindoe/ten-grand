@@ -742,3 +742,187 @@ main {
 @media (max-width: 360px) {
   .archive-community__subtitle { font-size: 9.5px; }
 }
+
+/* ---------- Collapsing breadcrumb + bottom filter dock (mobile) ----------
+   Appear once .archive-community scrolls fully out of view above the
+   viewport (see js/transmissions.js), replacing the page's own filter
+   controls -- which have scrolled away by then -- with a condensed path
+   back to them. Desktop never shows these; JS only toggles them inside
+   the mobile breakpoint, and the hard `display: none` below is a
+   defense-in-depth guard against a flash before JS runs. */
+.archive-crumb,
+.archive-dock,
+.archive-filter-panel {
+  display: none;
+}
+
+@media (max-width: 759px) {
+  .archive-crumb {
+    display: block;
+    position: fixed;
+    top: var(--t-nav-height, 64px);
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-card-border);
+  }
+  .archive-crumb[hidden] { display: none; }
+
+  .archive-crumb__inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .archive-crumb__root {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+  .archive-crumb__root[aria-current="page"] { color: var(--color-text-muted); cursor: default; }
+
+  .archive-crumb__sep {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    transform: skewX(-15deg);
+    display: inline-block;
+  }
+  .archive-crumb__sep[hidden] { display: none; }
+
+  .archive-crumb__current {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .archive-dock {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    height: 56px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--color-bg);
+    border-top: 1px solid var(--color-card-border);
+  }
+  .archive-dock[hidden] { display: none; }
+
+  .archive-dock__btn {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    border-right: 1px solid var(--color-card-border);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+  }
+  .archive-dock__btn:last-child { border-right: none; }
+
+  .archive-dock__btn--icon svg { width: 18px; height: 18px; }
+
+  .archive-dock__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+  .archive-dock__count[hidden] { display: none; }
+
+  .archive-filter-panel {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+  }
+  .archive-filter-panel[hidden] { display: none; }
+
+  .archive-filter-panel__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .archive-filter-panel__sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-bg);
+    border-top: 1px solid var(--color-card-border);
+    padding: 20px var(--section-padding-x) calc(20px + env(safe-area-inset-bottom, 0px));
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: archive-panel-up 0.2s ease-out;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .archive-filter-panel__sheet { animation: none; }
+  }
+  @keyframes archive-panel-up {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .archive-filter-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .archive-filter-panel__header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .archive-filter-panel__close {
+    background: none;
+    border: 1px solid var(--color-card-border);
+    color: var(--color-text);
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .archive-filter-panel__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .archive-filter-panel__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .archive-filter-panel__actions .archive-filter-btn { flex: 1 1 0; text-align: center; }
+}
