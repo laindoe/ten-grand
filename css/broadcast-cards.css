@@ -92,9 +92,13 @@
 .broadcast-modal__close:hover { border-color: #fb2f7b; }
 .cw-broadcast-card:focus { outline: none; }
 
-.cw-broadcast-card__read-more:focus-visible,
-.broadcast-modal button:focus-visible,
-.broadcast-modal a:focus-visible { outline: 2px solid #fb2f7b; outline-offset: 4px; }
+/* Keyboard/mouse only -- a touch tap shouldn't leave a focus ring
+   sitting on the button afterward. */
+@media (hover: hover) and (pointer: fine) {
+  .cw-broadcast-card__read-more:focus-visible,
+  .broadcast-modal button:focus-visible,
+  .broadcast-modal a:focus-visible { outline: 2px solid #fb2f7b; outline-offset: 4px; }
+}
 .broadcast-modal {
   position: fixed;
   inset: 0;
@@ -137,10 +141,6 @@
   margin: 0 auto;
   padding: 28px var(--section-padding-x) 0;
 }
-.broadcast-modal__back-wrap {
-  margin-top: 28px;
-  border-top: 1px solid var(--color-card-border);
-}
 .broadcast-modal__back {
   display: flex;
   align-items: center;
@@ -163,10 +163,7 @@
 .broadcast-modal__back:hover { color: #fb2f7b; }
 .broadcast-modal__body,
 .broadcast-modal__attachments {
-  border-top: 1px solid var(--color-card-border);
-  width: calc(100% + 2 * var(--section-padding-x));
-  margin: 28px calc(-1 * var(--section-padding-x)) 0;
-  padding: 28px var(--section-padding-x) 0;
+  margin-top: 28px;
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
