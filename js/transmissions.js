@@ -122,9 +122,23 @@
     if (observer) { observer.disconnect(); observer = null; }
     if (!media.matches) { setCollapsed(false); return; }
     if (!community || !('IntersectionObserver' in window)) return;
+    // Trigger right as the Featured Transmission header reaches the nav,
+    // not when the community banner's own box crosses y=0 -- the sticky
+    // nav covers the top of the viewport, and the featured header sits a
+    // further fixed gap below the banner, so both have to be folded into
+    // the margin or the collapse fires late (reads as "halfway into the
+    // next section"). The banner itself stays the observed element
+    // because it's always present and never hidden by filtering, unlike
+    // the featured section.
+    const navHeight = siteNav ? Math.round(siteNav.getBoundingClientRect().height) : 0;
+    const featuredLabel = document.querySelector('.archive-featured__label');
+    const gap = featuredLabel
+      ? Math.max(0, Math.round(featuredLabel.getBoundingClientRect().top - community.getBoundingClientRect().bottom))
+      : 0;
+    const margin = navHeight - gap;
     observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => setCollapsed(entry.boundingClientRect.bottom < 0));
-    }, { threshold: 0 });
+      entries.forEach(entry => setCollapsed(entry.boundingClientRect.bottom < margin));
+    }, { threshold: 0, rootMargin: `-${margin}px 0px 0px 0px` });
     observer.observe(community);
   }
   function syncPanelControls() {
