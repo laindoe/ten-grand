@@ -853,7 +853,7 @@
       try {
         const { count, error } = await window.tenGrandSupabase
           .from('voices_heard')
-          .select('*', { count: 'exact', head: true })
+          .select('id', { count: 'exact', head: true })
           .eq('status', 'approved');
         if (error || typeof count !== 'number') return;
         countEl.textContent = `${count.toLocaleString('en-US')} voices heard`;

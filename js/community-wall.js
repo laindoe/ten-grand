@@ -11,7 +11,7 @@
   async function approvedCount(role) {
     var query = window.tenGrandSupabase
       .from("voices_heard")
-      .select("*", { count: "exact", head: true })
+      .select("id,role", { count: "exact", head: true })
       .eq("status", "approved");
     if (role) query = query.eq("role", role);
     var result = await query;
@@ -426,7 +426,7 @@
     try {
       var query = window.tenGrandSupabase
         .from("voices_heard")
-        .select("*", { count: "exact" })
+        .select("id,name,role,response_type,response_title,why_detail,audio_path,audio_duration,photo_path,website,social_platform,social_handle,created_at,campaign_number", { count: "exact" })
         .eq("status", "approved")
         .order("created_at", { ascending: false })
         .order("id", { ascending: false });

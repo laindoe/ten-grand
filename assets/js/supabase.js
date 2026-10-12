@@ -19,14 +19,4 @@
     publishableKey
   );
 
-  async function testSupabaseConnection() {
-    const { data, error } = await window.tenGrandSupabase
-      .from("voices_heard")
-      .select("*")
-      .eq("status", "approved");
-
-    console.log("Ten Grand Supabase connection test", { data, error });
-  }
-
-  testSupabaseConnection();
 })();
