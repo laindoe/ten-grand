@@ -118,19 +118,22 @@
 .broadcast-modal::backdrop { background: var(--color-bg); }
 .broadcast-modal__toolbar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  flex-direction: column;
+  gap: 10px;
   padding: calc(16px + env(safe-area-inset-top, 0px)) var(--section-padding-x) 16px;
   flex-shrink: 0;
   font-weight: 700;
   font-size: 0.85rem;
 }
+.broadcast-modal__toolbar-top {
+  display: flex;
+  justify-content: flex-end;
+}
 .broadcast-modal__crumb {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--color-text-muted);
