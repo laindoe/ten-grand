@@ -138,19 +138,19 @@
   padding: 28px var(--section-padding-x) 0;
 }
 .broadcast-modal__back-wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 var(--section-padding-x) calc(40px + env(safe-area-inset-bottom, 0px));
+  margin-top: 28px;
+  border-top: 1px solid var(--color-card-border);
 }
 .broadcast-modal__back {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 10px;
+  max-width: 1100px;
   width: 100%;
-  margin-top: 28px;
-  padding-top: 28px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 28px var(--section-padding-x) calc(40px + env(safe-area-inset-bottom, 0px));
   border: 0;
-  border-top: 1px solid var(--color-card-border);
   background: none;
   color: var(--color-text);
   font: inherit;
