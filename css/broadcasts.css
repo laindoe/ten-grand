@@ -285,11 +285,13 @@
   min-width: 0;
 }
 .voices-heat-band__content h1 {
-  font-size: clamp(1.4rem, 5vw, 2rem);
-  font-weight: 700;
-  line-height: 1.1;
-  color: var(--color-text);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  line-height: 0;
+}
+.voices-heat-band__wordmark {
+  display: block;
+  width: clamp(220px, 34vw, 420px);
+  height: auto;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
 }
 .voices-heat-band__cta.cw-campaign__add-voice {
   width: auto;
