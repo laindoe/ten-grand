@@ -315,10 +315,11 @@
   }
 }
 .voices-subtitle {
-  color: var(--color-text-muted);
+  color: var(--color-text);
+  opacity: 0.85;
   line-height: 1.5;
-  margin-top: 16px;
-  margin-bottom: 8px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  max-width: 44ch;
 }
 
 /* ---------- Voices Heard filter count badge ---------- */
