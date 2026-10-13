@@ -237,7 +237,11 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  margin-top: 0;
+  /* Now that the breadcrumb lives outside .broadcasts__sticky-inner,
+     the heat band is that container's first child again and needs to
+     cancel its own top padding (40px desktop, 28px under 480px) to
+     stay flush against the breadcrumb strip above it. */
+  margin-top: -40px;
   /* Full-bleed: the background spans the whole section edge to edge
      (matching .archive-community's technique on Transmissions) while
      the content inside stays padded for readability. */
@@ -245,6 +249,9 @@
   margin-left: calc(-1 * var(--section-padding-x));
   margin-right: calc(-1 * var(--section-padding-x));
   padding: 24px var(--section-padding-x);
+}
+@media (max-width: 480px) {
+  .voices-heat-band { margin-top: -28px; }
 }
 .voices-heat-band::before {
   content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
@@ -448,10 +455,6 @@
 .broadcasts-condensed__crumb.voices-crumb {
   background: var(--color-text);
   color: var(--color-bg);
-  padding: 6px 12px;
-  margin-left: calc(-1 * var(--section-padding-x));
-  margin-right: calc(-1 * var(--section-padding-x));
-  width: calc(100% + 2 * var(--section-padding-x));
   box-sizing: border-box;
   margin-bottom: 0;
 }
@@ -461,11 +464,25 @@
 .broadcasts-condensed__crumb.voices-crumb [aria-current="page"] {
   color: var(--color-bg);
 }
-/* Flush with the nav above: cancel out the parent's own top padding
-   (.broadcasts__sticky-inner's 40px, 28px under 480px; .broadcasts-
-   condensed__inner's 12px) so no black gap shows above the strip. */
-.broadcasts__breadcrumb.voices-crumb { margin-top: -40px; }
-.broadcasts-condensed__crumb.voices-crumb { margin-top: -12px; }
-@media (max-width: 480px) {
-  .broadcasts__breadcrumb.voices-crumb { margin-top: -28px; }
+/* Full header: a direct child of .broadcasts__sticky now (moved there
+   in the markup), which has no max-width cap and no padding of its
+   own -- unlike .broadcasts__sticky-inner, which caps out at 1100px
+   and left a black gap on wide desktop viewports when the strip tried
+   to break out of just that inner padding. Being outside it entirely
+   means the strip's own background already reaches the true edges, so
+   it just needs its own horizontal padding for the text. */
+.broadcasts__breadcrumb.voices-crumb {
+  padding: 6px var(--section-padding-x);
+  width: 100%;
+}
+/* Condensed header: still nested inside .broadcasts-condensed__inner's
+   padded box (mobile only; that bar is already sized to the site-frame
+   exactly, so there's no 1100px-cap issue to work around here) --
+   break out of that padding and cancel its top inset to stay flush. */
+.broadcasts-condensed__crumb.voices-crumb {
+  padding: 6px 12px;
+  margin-left: calc(-1 * var(--section-padding-x));
+  margin-right: calc(-1 * var(--section-padding-x));
+  width: calc(100% + 2 * var(--section-padding-x));
+  margin-top: -12px;
 }
