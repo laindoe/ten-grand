@@ -1015,6 +1015,15 @@
       try {
         if (!window.tenGrandSupabase) throw new Error('Supabase client unavailable');
 
+        if (window.tenGrandVoiceSecurity?.enabled) {
+          if (!window.tenGrandSecureVoiceSubmit) throw new Error('Protected submission service unavailable.');
+          await window.tenGrandSecureVoiceSubmit(payload, audioBlob, photoBlob);
+          if (submittedVersion !== flowVersion) return;
+          showStep(8);
+          loadApprovedCount();
+          return;
+        }
+
         if (hasAudio) {
           const extension = audioFileExtension(audioBlob.type);
           const fileName = `${crypto.randomUUID()}.${extension}`;
@@ -1066,7 +1075,7 @@
       } catch (error) {
         console.error('Ten Grand voice submission failed', error);
         if (submittedVersion === flowVersion) {
-          errorEl.textContent = 'Your voice could not be added. Please try again.';
+          errorEl.textContent = window.tenGrandVoiceSecurity?.enabled ? error.message || 'Please try again.' : 'Your voice could not be added. Please try again.';
           errorEl.hidden = false;
         }
       } finally {
