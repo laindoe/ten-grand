@@ -539,6 +539,7 @@
     var inlineType = document.getElementById("voices-filter-type");
     if (!panel || !panelRole || !panelType) return;
 
+    panel.addEventListener("pointerdown", function () { panel.classList.remove("is-keyboard"); });
     var draft = null;
     var panelOpener = null;
 
@@ -549,10 +550,11 @@
     function onPanelKeydown(event) {
       if (event.key === "Escape") { event.preventDefault(); closePanel(); return; }
       if (event.key !== "Tab") return;
+      panel.classList.add("is-keyboard");
       var list = focusables();
       if (!list.length) return;
       var first = list[0], last = list[list.length - 1];
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === panel.querySelector(".voices-filter-panel__sheet"))) { event.preventDefault(); last.focus(); }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     }
     function syncDraftControls() {
@@ -577,11 +579,12 @@
       draft = { role: voiceFilters.role, type: voiceFilters.type };
       syncDraftControls();
       panelOpener = opener || document.activeElement;
+      panel.classList.remove("is-keyboard");
       panel.hidden = false;
       if (toggleFull) toggleFull.setAttribute("aria-expanded", "true");
       positionPanel();
       document.addEventListener("keydown", onPanelKeydown);
-      panelRole.focus();
+      panel.querySelector(".voices-filter-panel__sheet").focus({ preventScroll: true });
     }
     function closePanel() {
       if (panel.hidden) return;

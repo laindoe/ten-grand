@@ -14,7 +14,7 @@ permalink: /voices-heard/
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=159" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=139" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=30" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=31" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=40" />
 </head>
 <body>
@@ -70,7 +70,7 @@ permalink: /voices-heard/
 
   <div class="voices-filter-panel" id="voices-filter-panel" hidden>
     <div class="voices-filter-panel__backdrop" id="voices-filter-panel-backdrop"></div>
-    <div class="voices-filter-panel__sheet" role="dialog" aria-modal="true" aria-labelledby="voices-filter-panel-title">
+    <div class="voices-filter-panel__sheet" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="voices-filter-panel-title">
       <div class="voices-filter-panel__header">
         <h2 id="voices-filter-panel-title">Filters</h2>
         <button type="button" class="voices-filter-panel__close" id="voices-filter-panel-close" aria-label="Close filters">&times;</button>
@@ -104,7 +104,7 @@ permalink: /voices-heard/
   <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=14"></script>
   <script src="{{ '/js/voice-equalizer.js' | relative_url }}?v=3"></script>
-  <script src="{{ '/js/community-wall.js' | relative_url }}?v=28"></script>
+  <script src="{{ '/js/community-wall.js' | relative_url }}?v=29"></script>
   <script src="{{ '/js/archive-header.js' | relative_url }}?v=2"></script>
 </body>
 </html>
