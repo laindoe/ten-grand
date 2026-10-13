@@ -4265,6 +4265,7 @@ select.amass-flow__field {
 }
 
 .amass-disclosure {
+  text-align: left;
   margin-top: 24px;
 }
 

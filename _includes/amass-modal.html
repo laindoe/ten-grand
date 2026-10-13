@@ -209,6 +209,15 @@
             <div class="amass-flow__content">
               <div class="amass-flow__review" id="amass-review"></div>
               <div class="amass-disclosure">
+                <button type="button" class="amass-disclosure__toggle" id="amass-security-toggle" aria-expanded="false" aria-controls="amass-security-panel">
+                  <span>IS MY DATA PROTECTED?</span>
+                  <svg class="amass-disclosure__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
+                </button>
+                <div class="amass-disclosure__panel" id="amass-security-panel" hidden>
+                  <p>Entries are reviewed before publishing. Photos and recordings are scanned privately, and website links are checked by Google Web Risk. Cloudflare verifies submissions to help prevent spam.</p>
+                </div>
+              </div>
+              <div class="amass-disclosure">
                 <button type="button" class="amass-disclosure__toggle" id="amass-removal-toggle" aria-expanded="false" aria-controls="amass-removal-panel">
                   <span>WHAT IF I CHANGE MY MIND?</span>
                   <svg class="amass-disclosure__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
@@ -217,7 +226,6 @@
                   <p>You can request to have your entry removed from the Community Wall at any time. Just email info@tengrand.co with the name or alias you submitted under, and we'll take care of the rest.</p>
                 </div>
               </div>
-              <p class="amass-flow__helper" id="amass-security-note">Entries are reviewed before publishing. Photos and recordings are scanned privately, and website links are checked by Google Web Risk. Cloudflare verifies submissions to help prevent spam.</p>
               <p class="amass-flow__error" id="amass-form-error" role="alert" hidden>Something went wrong. Please try again.</p>
             </div>
             <div class="amass-flow__actions">

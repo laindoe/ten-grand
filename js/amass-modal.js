@@ -255,8 +255,7 @@
     const cropImage = document.getElementById('amass-crop-image');
     const cropCancelBtn = document.getElementById('amass-crop-cancel');
     const cropConfirmBtn = document.getElementById('amass-crop-confirm');
-    const removalToggle = document.getElementById('amass-removal-toggle');
-    const removalPanel = document.getElementById('amass-removal-panel');
+    const disclosureToggles = form.querySelectorAll('[data-amass-step="7"] .amass-disclosure__toggle');
     const errorEl = document.getElementById('amass-form-error');
     const submitButton = form.querySelector('[type="submit"]');
     const reviewEl = document.getElementById('amass-review');
@@ -857,8 +856,10 @@
       clearPhoto();
       closeCropOverlay();
       resetRecording();
-      removalPanel.hidden = true;
-      removalToggle.setAttribute('aria-expanded', 'false');
+      disclosureToggles.forEach((toggle) => {
+        document.getElementById(toggle.getAttribute('aria-controls')).hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+      });
       showStep(1);
     }
 
@@ -945,10 +946,12 @@
       }, 'image/jpeg', 0.9);
     });
 
-    removalToggle.addEventListener('click', () => {
-      const isExpanded = removalToggle.getAttribute('aria-expanded') === 'true';
-      removalToggle.setAttribute('aria-expanded', String(!isExpanded));
-      removalPanel.hidden = isExpanded;
+    disclosureToggles.forEach((toggle) => {
+      toggle.addEventListener('click', () => {
+        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!isExpanded));
+        document.getElementById(toggle.getAttribute('aria-controls')).hidden = isExpanded;
+      });
     });
 
     writeToggle.addEventListener('click', () => {
