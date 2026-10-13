@@ -821,7 +821,7 @@ main {
        kept off the buttons themselves so their padding (and the vertical
        dividers it carries) stays symmetric top/bottom, and so those
        dividers run the bar's full height edge to edge. */
-    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: 0;
     background: var(--color-bg);
     border-top: 1px solid var(--color-card-border);
     border-left: 1px solid var(--color-card-border);
@@ -980,4 +980,11 @@ main {
   .archive-return-ready .site-footer,
   .archive-return-ready .archive-crumb,
   .archive-return-ready .archive-dock { animation: none; }
+}
+
+/* Keep the safe-area gap outside the button border so the label remains centered. */
+@media (max-width: 759px) {
+  .archive-dock { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .archive-dock__wall { justify-content: center; align-items: center; text-align: center; padding: 16px 0; }
+  .site-footer { margin-bottom: calc(var(--archive-bottom-clearance, 0px) + 12px + env(safe-area-inset-bottom, 0px)); }
 }
