@@ -1,0 +1,128 @@
+---
+title: Voices Heard Design Preview
+permalink: /voices-preview/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voices Heard design preview — Ten Grand</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Meet the creators, builders, investors, and supporters sharing their voices with Ten Grand." />
+  <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=160" />
+  <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=139" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=32" />
+  <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=42" />
+  <link rel="stylesheet" href="{{ '/css/voices-preview.css' | relative_url }}">
+</head>
+<body>
+  <div class="site-frame">
+    {% include nav.html %}
+
+    <div class="broadcasts-condensed" id="voices-condensed" hidden>
+      <div class="broadcasts-condensed__inner">
+        <nav class="broadcasts-condensed__crumb voices-crumb" aria-label="Breadcrumb">
+          <span class="broadcast-slash" aria-hidden="true"></span>
+          <a href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL</a>
+          <span class="broadcast-slash" aria-hidden="true"></span>
+          <span aria-current="page">CAMPAIGNS</span>
+        </nav>
+        <div class="broadcasts-condensed__row">
+          <h2 class="broadcasts-condensed__title">VOICES HEARD</h2>
+          <div class="voices-sticky-actions">
+            <button class="broadcasts__filter" type="button" id="voices-filter-toggle" aria-expanded="false" aria-haspopup="dialog" aria-controls="voices-filter-panel">FILTER <span class="voices-filter-count" id="voices-filter-count-full" hidden>0</span></button>
+            <button class="broadcasts-condensed__search-toggle" type="button" id="voices-search-toggle" aria-label="Search voices" aria-expanded="false" aria-controls="voices-search-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg></button>
+          </div>
+        </div>
+        <div class="broadcasts-condensed__search-row" id="voices-search-row" hidden>
+          <input type="search" id="voices-search-input" placeholder="Search voices…" aria-label="Search voices" />
+        </div>
+      </div>
+    </div>
+
+    <main class="broadcasts broadcasts--v2 voices-page">
+      <div class="broadcasts__sticky">
+        <div class="voices-heat-band">
+          <div class="voices-heat-band__inner">
+            <img class="voices-heat-band__icon" src="{{ '/assets/images/voices-heard-artwork.png' | relative_url }}" alt="" width="300" height="200" aria-hidden="true" />
+            <div class="voices-heat-band__content">
+              <h1 id="voices-title"><img class="voices-heat-band__wordmark" src="{{ '/assets/images/voices-heard-bars.svg' | relative_url }}" alt="Voices Heard" /></h1>
+              <p class="cw-campaign__counter">
+                <span data-stat="voices-total">0016</span>
+                <span class="cw-campaign__counter-label">SAMPLE VOICES</span>
+              </p>
+              <p class="voices-subtitle">Share what you contribute, why it matters, and who you hope to reach.</p>
+            </div>
+            <span class="voices-preview-badge">DESIGN PREVIEW</span>
+          </div>
+        </div>
+      </div>
+      <section class="broadcasts__results" aria-labelledby="voices-title">
+        <div class="voices-preview-controls">
+          <p>16 sample entries, with preview numbers only. Names and audio are fictional; photo examples share an existing site portrait. These entries do not create submissions or use official campaign numbers.</p>
+          <div class="voices-preview-filters">
+            <label>Response<select id="voices-preview-type"><option value="">All responses</option><option value="written">Written only</option><option value="audio">Audio only</option></select></label>
+            <label>Photo<select id="voices-preview-photo"><option value="">With and without photos</option><option value="yes">With photo</option><option value="no">Without photo</option></select></label>
+            <label>Role<select id="voices-preview-role"><option value="">All roles</option><option value="create">Creator</option><option value="build">Builder</option><option value="fund">Investor</option><option value="support">Supporter</option></select></label>
+          </div>
+        </div>
+        <div class="cw-voice-grid" id="voice-list" data-voice-archive data-voice-preview aria-busy="true"></div>
+        <p class="broadcasts__empty" id="voice-message" role="status">Loading voices…</p>
+        <button type="button" class="broadcasts__load" id="voice-load-more" aria-controls="voice-list" hidden>LOAD MORE <span aria-hidden="true">↓</span></button>
+        <p class="broadcasts__status" id="voice-status" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+  </div>
+
+  <div class="voices-filter-panel" id="voices-filter-panel" hidden>
+    <div class="voices-filter-panel__backdrop" id="voices-filter-panel-backdrop"></div>
+    <div class="voices-filter-panel__sheet" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="voices-filter-panel-title">
+      <div class="voices-filter-panel__header">
+        <h2 id="voices-filter-panel-title">Filters</h2>
+        <button type="button" class="voices-filter-panel__close" id="voices-filter-panel-close" aria-label="Close filters">&times;</button>
+      </div>
+      <div class="voices-filter-panel__body">
+        <select class="voices-filter-select" id="voices-filter-role-panel" aria-label="Filter by role">
+          <option value="">ALL ROLES</option>
+          <option value="create">Creator</option>
+          <option value="build">Builder</option>
+          <option value="fund">Investor</option>
+          <option value="support">Supporter</option>
+        </select>
+        <select class="voices-filter-select" id="voices-filter-type-panel" aria-label="Filter by response type">
+          <option value="">ALL TYPES</option>
+          <option value="written">Written</option>
+          <option value="audio">Audio</option>
+        </select>
+      </div>
+      <div class="voices-filter-panel__actions">
+        <button type="button" class="broadcasts__filter" id="voices-filter-clear">CLEAR</button>
+        <button type="button" class="broadcasts__filter voices-filter-panel__apply" id="voices-filter-apply">APPLY</button>
+      </div>
+    </div>
+  </div>
+
+
+  {% include site-footer.html %}
+  <script>
+    window.tenGrandVoicePreview = {
+      dataUrl: "{{ '/assets/voices-preview/voices.json' | relative_url }}",
+      mediaPaths: {
+        portrait: "{{ '/assets/images/director-photo.jpg' | relative_url }}",
+        create: "{{ '/assets/voices-preview/create.mp3' | relative_url }}",
+        build: "{{ '/assets/voices-preview/build.mp3' | relative_url }}",
+        fund: "{{ '/assets/voices-preview/fund.mp3' | relative_url }}",
+        support: "{{ '/assets/voices-preview/support.mp3' | relative_url }}"
+      }
+    };
+  </script>
+  <script src="{{ '/js/voice-equalizer.js' | relative_url }}?v=3"></script>
+  <script src="{{ '/js/community-wall.js' | relative_url }}?v=31"></script>
+  <script src="{{ '/js/archive-header.js' | relative_url }}?v=2"></script>
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+.voices-preview-badge {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}
+.voices-preview-controls {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(243, 243, 244, 0.25);
+  color: var(--color-text-muted);
+  text-align: left;
+}
+.voices-preview-controls p {
+  max-width: 760px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.voices-preview-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.voices-preview-filters label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+.voices-preview-filters select {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid currentColor;
+  border-radius: 0;
+  background: #111;
+  color: inherit;
+  font: inherit;
+}
+@media (max-width: 600px) {
+  .voices-preview-filters { grid-template-columns: 1fr; }
+}

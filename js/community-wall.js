@@ -22,6 +22,7 @@
   }
 
   async function loadStats() {
+    if (document.querySelector('[data-voice-preview]')) return;
     if (!window.tenGrandSupabase) return;
     try {
       // "total" (Total Members) and the four role-breakdown stats
@@ -158,6 +159,9 @@
   }
 
   function publicStorageUrl(bucket, path, voiceId) {
+    if (document.querySelector('[data-voice-preview]')) {
+      return window.tenGrandVoicePreview?.mediaPaths?.[path] || null;
+    }
     if (!path || !window.tenGrandSupabase) return null;
     if (window.tenGrandVoiceSecurity?.enabled) {
       if (!voiceId || !window.tenGrandVoiceSecurity.mediaEndpoint) return null;
@@ -418,9 +422,63 @@
   // filter panel -- the Community Wall homepage preview has no filter
   // UI, so these stay empty there and the query is unaffected.
   var voiceFilters = { role: "", type: "", query: "" };
+  var previewRows = null;
+  async function loadPreviewCards(grid) {
+    voiceLoading = true;
+    grid.setAttribute("aria-busy", "true");
+    var message = document.getElementById("voice-message");
+    var status = document.getElementById("voice-status");
+    try {
+      if (!previewRows) {
+        var response = await fetch(window.tenGrandVoicePreview.dataUrl);
+        if (!response.ok) throw new Error("Preview data unavailable");
+        previewRows = await response.json();
+      }
+      document.getElementById("voices-preview-type").value = voiceFilters.type;
+      document.getElementById("voices-preview-role").value = voiceFilters.role;
+      var rows = previewRows.filter(function (row) {
+        var photoFilter = document.getElementById("voices-preview-photo").value;
+        return (!voiceFilters.role || row.role === voiceFilters.role) &&
+          (!voiceFilters.type || row.response_type === voiceFilters.type) &&
+          (!photoFilter || Boolean(row.photo_path) === (photoFilter === "yes")) &&
+          (!voiceFilters.query || [row.name, row.response_title, row.why_detail]
+            .join(" ").toLowerCase().includes(voiceFilters.query.toLowerCase()));
+      });
+      grid.replaceChildren.apply(grid, rows.map(function (row) {
+        return buildVoiceCard(row, row.campaign_number);
+      }).filter(Boolean));
+      setStat("voices-total", previewRows.length);
+      if (message) {
+        message.hidden = rows.length > 0;
+        message.textContent = "No samples match these filters.";
+      }
+      if (status) status.textContent = "Showing " + rows.length + " of " + previewRows.length + " sample voices. Preview numbers are separate from official approvals.";
+      revealLinkedVoice();
+    } catch (error) {
+      if (message) {
+        message.hidden = false;
+        message.textContent = "Preview samples could not be loaded. Please refresh.";
+      }
+      console.error("Ten Grand preview failed to load", error);
+    } finally {
+      voiceLoading = false;
+      grid.setAttribute("aria-busy", "false");
+    }
+  }
+  ["type", "role", "photo"].forEach(function (key) {
+    var control = document.getElementById("voices-preview-" + key);
+    if (control) control.addEventListener("change", function () {
+      if (key !== "photo") voiceFilters[key] = control.value;
+      loadVoiceCards(true);
+    });
+  });
   async function loadVoiceCards(reset) {
     var grid = document.querySelector(".cw-voice-grid");
     if (!grid || voiceLoading) return;
+    if (grid.hasAttribute("data-voice-preview")) {
+      await loadPreviewCards(grid);
+      return;
+    }
     var archive = grid.hasAttribute("data-voice-archive");
     var button = document.getElementById("voice-load-more");
     var message = document.getElementById("voice-message");
