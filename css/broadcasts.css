@@ -296,6 +296,23 @@
   width: auto;
   flex: none;
 }
+/* Desktop: icon on the left, title + CTA grouped on the right instead
+   of stacked and centered (which stays the mobile default). */
+@media (min-width: 760px) {
+  .voices-heat-band__inner {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 24px;
+  }
+  .voices-heat-band__icon {
+    max-width: 45%;
+    margin-right: auto;
+  }
+  .voices-heat-band__content {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
 .voices-subtitle {
   color: var(--color-text-muted);
   line-height: 1.5;
