@@ -514,6 +514,7 @@
   color: var(--color-bg);
   box-sizing: border-box;
   margin-bottom: 0;
+  font-size: 0.78rem;
 }
 .broadcasts__breadcrumb.voices-crumb a,
 .broadcasts-condensed__crumb.voices-crumb a,
@@ -529,7 +530,7 @@
    means the strip's own background already reaches the true edges, so
    it just needs its own horizontal padding for the text. */
 .broadcasts__breadcrumb.voices-crumb {
-  padding: 16px var(--section-padding-x);
+  padding: 6px var(--section-padding-x);
   width: 100%;
 }
 /* Condensed header: still nested inside .broadcasts-condensed__inner's
@@ -537,7 +538,7 @@
    exactly, so there's no 1100px-cap issue to work around here) --
    break out of that padding and cancel its top inset to stay flush. */
 .broadcasts-condensed__crumb.voices-crumb {
-  padding: 12px var(--section-padding-x);
+  padding: 6px var(--section-padding-x);
   margin-left: calc(-1 * var(--section-padding-x));
   margin-right: calc(-1 * var(--section-padding-x));
   width: calc(100% + 2 * var(--section-padding-x));
@@ -545,10 +546,3 @@
 }
 
 
-/* Match the Broadcasts header's mobile inset while keeping the white strip. */
-@media (max-width: 480px) {
-  .broadcasts__breadcrumb.voices-crumb {
-    padding-top: 28px;
-    padding-bottom: 28px;
-  }
-}
