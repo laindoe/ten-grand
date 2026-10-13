@@ -170,7 +170,7 @@
 .broadcast-modal__content {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 12px var(--section-padding-x) 0;
+  padding: 20px var(--section-padding-x) 0;
 }
 .broadcast-modal__back {
   display: flex;
