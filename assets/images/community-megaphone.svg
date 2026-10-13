@@ -14,5 +14,5 @@
     <!-- Wireframe handle. -->
     <path d="m49 161 18 66q4 13 18 12l20-3q14-3 9-16l-18-49M63 164l19 64q2 7 8 7M80 167l18 60M55 180l47-3M61 199l47-5M67 218l46-7" stroke-width="3"/>
   </g>
-  <ellipse cx="224" cy="122" rx="23" ry="44" fill="url(#voice)"/>
+  <ellipse cx="224" cy="122" rx="32" ry="60" fill="url(#voice)"/>
 </svg>
