@@ -117,6 +117,7 @@
 .broadcast-modal[open] { display: flex; flex-direction: column; }
 .broadcast-modal::backdrop { background: var(--color-bg); }
 .broadcast-modal__toolbar {
+  border-bottom: 1px solid var(--color-card-border);
   display: flex;
   flex-direction: column;
   gap: 10px;
