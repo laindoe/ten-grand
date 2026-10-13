@@ -157,8 +157,12 @@
     return parts.join(" ");
   }
 
-  function publicStorageUrl(bucket, path) {
+  function publicStorageUrl(bucket, path, voiceId) {
     if (!path || !window.tenGrandSupabase) return null;
+    if (window.tenGrandVoiceSecurity?.enabled) {
+      if (!voiceId || !window.tenGrandVoiceSecurity.mediaEndpoint) return null;
+      return window.tenGrandVoiceSecurity.mediaEndpoint + '?id=' + encodeURIComponent(voiceId) + '&kind=' + (bucket === 'voices-heard-photos' ? 'photo' : 'audio');
+    }
     var result = window.tenGrandSupabase.storage.from(bucket).getPublicUrl(path);
     return (result && result.data && result.data.publicUrl) || null;
   }
@@ -225,7 +229,7 @@
     '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/>';
 
   function buildAudioBody(row) {
-    var url = publicStorageUrl("voices-heard-audio", row.audio_path);
+    var url = publicStorageUrl("voices-heard-audio", row.audio_path, row.id);
     var durationSeconds = row.audio_duration || 0;
 
     var wrap = document.createElement("div");
@@ -312,12 +316,12 @@
     article.tabIndex = -1;
     var number = document.createElement("span");
     number.className = "cw-voice-card__number";
-    number.textContent = String(badgeNumber).padStart(4, "0");
+    number.textContent = row.campaign_number == null ? "—" : String(row.campaign_number).padStart(4, "0");
 
     var top = document.createElement("div");
     top.className = "cw-voice-card__top";
 
-    var photoUrl = publicStorageUrl("voices-heard-photos", row.photo_path);
+    var photoUrl = publicStorageUrl("voices-heard-photos", row.photo_path, row.id);
     top.appendChild(photoUrl ? buildPhotoAvatar(photoUrl, row.role) : buildOrbAvatar(row.role, badgeNumber));
 
     var identity = document.createElement("div");

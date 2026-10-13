@@ -15,7 +15,7 @@ permalink: /voices-security-test/
 <body>
   <main style="max-width:640px;margin:48px auto;padding:24px">
     <h1>Submission test</h1>
-    <p>This page uses the protected Voices Heard workflow. It creates real pending test records; the main public form is unchanged.</p>
+    <p>This page uses the protected Voices Heard workflow. It creates real pending test records; the public form also uses this protected workflow.</p>
     <p>Start with a written response named “Security Test Written”, without a photo, audio, or website. After verifying that record, test media and website checks separately.</p>
     <p>Each submission requires Cloudflare verification. The limit is three verified submission sessions per hour per IP address.</p>
     <button type="button" class="amass-flow__cta" data-modal-open="amass-modal">Start test submission</button>
@@ -24,7 +24,7 @@ permalink: /voices-security-test/
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="{{ '/assets/js/supabase.js' | relative_url }}?v=2"></script>
   <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>
-  <script src="{{ '/assets/js/voices-security-config.js' | relative_url }}?v=1"></script>
+  <script src="{{ '/assets/js/voices-security-config.js' | relative_url }}?v=2"></script>
   <script>window.tenGrandVoiceSecurity.enabled = true;</script>
   <script src="{{ '/js/voices-secure-submit.js' | relative_url }}?v=1"></script>
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=16"></script>
