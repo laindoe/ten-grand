@@ -559,17 +559,34 @@
       panelRole.value = draft.role;
       panelType.value = draft.type;
     }
+    function positionPanel() {
+      if (panel.hidden || !toggleFull) return;
+      var button = toggleFull.getBoundingClientRect();
+      var sheet = panel.querySelector(".voices-filter-panel__sheet");
+      var width = sheet.getBoundingClientRect().width;
+      var top = button.bottom + 8;
+      var left = Math.max(16, Math.min(button.right - width, window.innerWidth - width - 16));
+      sheet.style.top = top + "px";
+      sheet.style.left = left + "px";
+      sheet.style.maxHeight = Math.max(0, window.innerHeight - top - 16) + "px";
+    }
+    window.addEventListener("resize", positionPanel);
+    window.addEventListener("scroll", positionPanel, { passive: true });
     function openPanel(opener) {
+      if (!panel.hidden) { closePanel(); return; }
       draft = { role: voiceFilters.role, type: voiceFilters.type };
       syncDraftControls();
       panelOpener = opener || document.activeElement;
       panel.hidden = false;
+      if (toggleFull) toggleFull.setAttribute("aria-expanded", "true");
+      positionPanel();
       document.addEventListener("keydown", onPanelKeydown);
       panelRole.focus();
     }
     function closePanel() {
       if (panel.hidden) return;
       panel.hidden = true;
+      if (toggleFull) toggleFull.setAttribute("aria-expanded", "false");
       document.removeEventListener("keydown", onPanelKeydown);
       draft = null;
       if (panelOpener) panelOpener.focus();

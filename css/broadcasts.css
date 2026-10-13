@@ -377,10 +377,7 @@
 .voices-filter-count[hidden] { display: none; }
 
 /* ---------- Voices Heard filter panel ---------- */
-/* Opens from either the full header's FILTER button or the bottom
-   dock's, at any viewport width -- unlike Transmissions' panel, this
-   one isn't gated to mobile, since the top FILTER button is its only
-   trigger on desktop. */
+/* A compact dropdown anchored below the sticky header Filter button. */
 .voices-filter-panel {
   display: block;
   position: fixed;
@@ -391,28 +388,25 @@
 .voices-filter-panel__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: transparent;
 }
 .voices-filter-panel__sheet {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  max-width: 1100px;
-  margin: 0 auto;
+  position: fixed;
+  width: min(340px, calc(100vw - 32px));
+  box-sizing: border-box;
   background: var(--color-bg);
-  border-top: 1px solid var(--color-card-border);
-  padding: 20px var(--section-padding-x) calc(20px + env(safe-area-inset-bottom, 0px));
-  max-height: 80vh;
+  border: 1px solid var(--color-card-border);
+  padding: 20px;
   overflow-y: auto;
-  animation: voices-panel-up 0.2s ease-out;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+  animation: voices-panel-down .16s ease-out;
 }
 @media (prefers-reduced-motion: reduce) {
   .voices-filter-panel__sheet { animation: none; }
 }
-@keyframes voices-panel-up {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+@keyframes voices-panel-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .voices-filter-panel__header {
   display: flex;
