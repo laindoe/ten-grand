@@ -942,3 +942,20 @@ main {
   }
   .archive-filter-panel__actions .archive-filter-btn { flex: 1 1 0; text-align: center; }
 }
+
+/* Mobile sticky controls sit beside Transmissions; the bottom CTA stands alone. */
+@media (max-width: 759px) {
+  .archive-crumb__inner { justify-content: space-between; }
+  .archive-crumb__path {
+    display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;
+  }
+  .archive-crumb__root { flex-shrink: 0; }
+  .archive-sticky-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .archive-sticky-actions .archive-dock__btn {
+    flex: none; padding: 10px 12px; border: 1px solid var(--color-card-border);
+  }
+  .archive-sticky-actions .archive-dock__btn--icon {
+    width: 44px; height: 44px; padding: 0; border: 0;
+  }
+  .archive-dock__wall { width: 100%; }
+}

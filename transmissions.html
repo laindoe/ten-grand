@@ -13,7 +13,7 @@ permalink: /transmissions/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=159" />
-  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=26" />
+  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=27" />
 </head>
 <body>
 
@@ -23,9 +23,19 @@ permalink: /transmissions/
 
   <nav class="archive-crumb" id="archive-crumb" aria-label="Breadcrumb" hidden>
     <div class="archive-inner archive-crumb__inner">
+      <div class="archive-crumb__path">
       <button type="button" class="archive-crumb__root" id="archive-crumb-root">Transmissions</button>
       <span class="archive-crumb__sep" id="archive-crumb-sep" aria-hidden="true" hidden>/</span>
       <span class="archive-crumb__current" id="archive-crumb-current" hidden></span>
+      </div>
+      <div class="archive-sticky-actions">
+    <button type="button" class="archive-dock__btn" id="archive-sticky-filters" aria-haspopup="dialog" aria-controls="archive-filter-panel">
+      FILTERS <span class="archive-dock__count" id="archive-sticky-count" hidden>0</span>
+    </button>
+    <button type="button" class="archive-dock__btn archive-dock__btn--icon" id="archive-sticky-search" aria-haspopup="dialog" aria-controls="archive-filter-panel" aria-label="Search transmissions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg>
+    </button>
+      </div>
     </div>
   </nav>
 
@@ -166,12 +176,6 @@ permalink: /transmissions/
   </div>
 
   <div class="archive-dock" id="archive-dock" hidden>
-    <button type="button" class="archive-dock__btn" id="archive-dock-filters" aria-haspopup="dialog" aria-controls="archive-filter-panel">
-      FILTERS <span class="archive-dock__count" id="archive-dock-count" hidden>0</span>
-    </button>
-    <button type="button" class="archive-dock__btn archive-dock__btn--icon" id="archive-dock-search" aria-haspopup="dialog" aria-controls="archive-filter-panel" aria-label="Search transmissions">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg>
-    </button>
     <a class="archive-dock__btn archive-dock__wall" href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL <span aria-hidden="true">&nearr;</span></a>
   </div>
 
@@ -211,6 +215,6 @@ permalink: /transmissions/
 {% include site-footer.html %}
 
   <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=8"></script>
-  <script src="{{ '/js/transmissions.js' | relative_url }}?v=4"></script>
+  <script src="{{ '/js/transmissions.js' | relative_url }}?v=5"></script>
 </body>
 </html>

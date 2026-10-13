@@ -29,9 +29,9 @@
   const crumbSep = document.getElementById('archive-crumb-sep');
   const crumbCurrent = document.getElementById('archive-crumb-current');
   const dock = document.getElementById('archive-dock');
-  const dockFilters = document.getElementById('archive-dock-filters');
-  const dockSearch = document.getElementById('archive-dock-search');
-  const dockCount = document.getElementById('archive-dock-count');
+  const dockFilters = document.getElementById('archive-sticky-filters');
+  const dockSearch = document.getElementById('archive-sticky-search');
+  const dockCount = document.getElementById('archive-sticky-count');
   const panel = document.getElementById('archive-filter-panel');
   const panelBackdrop = document.getElementById('archive-filter-panel-backdrop');
   const panelClose = document.getElementById('archive-filter-panel-close');
