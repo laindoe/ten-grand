@@ -821,7 +821,7 @@ main {
        kept off the buttons themselves so their padding (and the vertical
        dividers it carries) stays symmetric top/bottom, and so those
        dividers run the bar's full height edge to edge. */
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     background: var(--color-bg);
     border-top: 1px solid var(--color-card-border);
     border-left: 1px solid var(--color-card-border);
