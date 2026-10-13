@@ -963,3 +963,21 @@ main {
 /* Reserve the visible fixed CTA's measured height, including its safe area,
    so the copyright can scroll completely above the bottom button. */
 .site-footer { margin-bottom: var(--archive-bottom-clearance, 0px); }
+
+/* Keep the intermediate archive layout out of view during a saved return.
+   Visibility preserves the geometry needed to restore the card's position. */
+.archive-restoring main,
+.archive-restoring .site-footer,
+.archive-restoring .archive-crumb,
+.archive-restoring .archive-dock { visibility: hidden; }
+.archive-return-ready main,
+.archive-return-ready .site-footer,
+.archive-return-ready .archive-crumb,
+.archive-return-ready .archive-dock { animation: archive-return-fade .16s ease-out; }
+@keyframes archive-return-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .archive-return-ready main,
+  .archive-return-ready .site-footer,
+  .archive-return-ready .archive-crumb,
+  .archive-return-ready .archive-dock { animation: none; }
+}

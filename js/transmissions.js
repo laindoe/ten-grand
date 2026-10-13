@@ -49,6 +49,19 @@
     if (!card || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     if (new URL(card.href).origin === location.origin) rememberArchive(card);
   });
+  function revealArchive(animate = true) {
+    clearTimeout(window.archiveRestoreFallback);
+    const root = document.documentElement;
+    if (root.classList.contains('archive-restoring') && animate) {
+      root.classList.add('archive-return-ready');
+      setTimeout(() => root.classList.remove('archive-return-ready'), 200);
+    }
+    root.classList.remove('archive-restoring');
+    history.scrollRestoration = 'auto';
+  }
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) revealArchive(false);
+  });
   async function restorePosition() {
     if (!restore) return;
     if (document.fonts) await document.fonts.ready;
@@ -58,6 +71,8 @@
     const top = card ? scrollY + card.getBoundingClientRect().top - restore.offset : restore.y;
     window.scrollTo({ top: Math.max(0, Number(top) || 0), behavior: 'instant' });
     restore = null;
+    // Allow the sticky controls and bottom clearance to settle before revealing.
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
   }
 
   // Collapsing breadcrumb + bottom filter dock (mobile only). Appear once
@@ -286,7 +301,7 @@
       } catch (_) {
         status.textContent = 'The archive could not load. Please retry.';
         retry.hidden = false;
-      } finally { grid.setAttribute('aria-busy', 'false'); pending = null; }
+      } finally { grid.setAttribute('aria-busy', 'false'); pending = null; revealArchive(); }
     })();
     return pending;
   }
