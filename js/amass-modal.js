@@ -241,7 +241,6 @@
     const nameInput = form.elements.name;
     const roleInputs = Array.from(form.elements.role);
     const whyInput = form.elements.why_detail;
-    const websiteTitleInput = form.elements.website_title;
     const websiteInput = form.elements.website;
     const websiteError = document.getElementById('amass-website-error');
     const responseTitleInput = form.elements.response_title;
@@ -591,8 +590,23 @@
       return Boolean(platformInput.value) === Boolean(handleInput.value.trim());
     }
 
+    function normalizedWebsite() {
+      const value = websiteInput.value.trim();
+      if (!value) return null;
+      const candidate = /^[a-z][a-z0-9+.-]*:/i.test(value) ? value : `https://${value}`;
+      const url = new URL(candidate);
+      const host = url.hostname.toLowerCase();
+      if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password ||
+          (url.port && !['80', '443'].includes(url.port)) || !host.includes('.') ||
+          /(^|\.)(localhost|local|internal|test|invalid)$/.test(host) ||
+          /^\[|^[\d.]+$/.test(host) || /\s|\\/.test(value)) throw new Error('Invalid website.');
+      url.hash = '';
+      if ([...url.href].length > 255) throw new Error('Website is too long.');
+      return url.href;
+    }
+
     function websiteIsValid() {
-      return Boolean(websiteTitleInput.value.trim()) === Boolean(websiteInput.value.trim());
+      try { normalizedWebsite(); return true; } catch { return false; }
     }
 
     function setNextState() {
@@ -773,8 +787,7 @@
         addReviewItem(`Why you ${config.verb}`, whyInput.value.trim());
       }
       if (websiteInput.value.trim()) {
-        const titleValue = websiteTitleInput.value.trim();
-        addReviewItem('Website', titleValue ? `${titleValue} · ${websiteInput.value.trim()}` : websiteInput.value.trim());
+        addReviewItem('Website', normalizedWebsite());
       }
       if (platformInput.value && handleInput.value.trim()) {
         const label = platformInput.options[platformInput.selectedIndex].textContent;
@@ -875,6 +888,7 @@
           socialError.hidden = false;
           return;
         }
+        if (currentStep === 6 && websiteInput.value.trim()) websiteInput.value = normalizedWebsite();
         showStep(currentStep + 1);
       });
     });
@@ -898,7 +912,7 @@
       });
     });
 
-    [websiteTitleInput, websiteInput].forEach((input) => {
+    [websiteInput].forEach((input) => {
       input.addEventListener('input', () => {
         websiteError.hidden = true;
         setNextState();
@@ -999,8 +1013,8 @@
         audio_path: null,
         audio_duration: hasAudio ? recordedSeconds : null,
         photo_path: null,
-        website_title: websiteTitleInput.value.trim() || null,
-        website: websiteInput.value.trim() || null,
+        website_title: null,
+        website: websiteIsValid() ? normalizedWebsite() : null,
         social_platform: platformInput.value || null,
         social_handle: handleInput.value.trim() || null,
       };
