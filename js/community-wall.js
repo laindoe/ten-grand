@@ -502,20 +502,16 @@
     if (typeof ResizeObserver !== "undefined") new ResizeObserver(updateNavHeight).observe(nav);
     window.addEventListener("resize", updateNavHeight);
 
-    var media = window.matchMedia("(max-width: 759px)");
     var observer = null;
 
     function setCollapsed(value) {
       if (condensed.hidden === !value) return;
       condensed.hidden = !value;
-      var dock = document.getElementById("voices-dock");
-      if (dock) dock.hidden = !value;
-      if (!value) closePanel();
+      if (!value) { closePanel(); closeSearch(); }
     }
 
     function setupObserver() {
       if (observer) { observer.disconnect(); observer = null; }
-      if (!media.matches) { setCollapsed(false); return; }
       if (!("IntersectionObserver" in window)) return;
       var navHeight = Math.round(nav.getBoundingClientRect().height);
       observer = new IntersectionObserver(function (entries) {
@@ -524,7 +520,7 @@
       observer.observe(sticky);
     }
 
-    media.addEventListener("change", setupObserver);
+    window.addEventListener("resize", setupObserver);
     setupObserver();
 
     var panel = document.getElementById("voices-filter-panel");
@@ -534,10 +530,6 @@
     var panelType = document.getElementById("voices-filter-type-panel");
     var panelClear = document.getElementById("voices-filter-clear");
     var panelApply = document.getElementById("voices-filter-apply");
-    var toggleDock = document.getElementById("voices-dock-filters");
-    var countDock = document.getElementById("voices-filter-count-dock");
-    // Mobile keeps the original FILTER button, opening the same panel as
-    // the dock. Desktop replaces it with the inline selects below.
     var toggleFull = document.getElementById("voices-filter-toggle");
     var countFull = document.getElementById("voices-filter-count-full");
     // The header's own role/type selects, visible inline in the controls
@@ -584,7 +576,7 @@
     }
     function updateCounts() {
       var count = (voiceFilters.role ? 1 : 0) + (voiceFilters.type ? 1 : 0);
-      [countFull, countDock].forEach(function (el) {
+      [countFull].forEach(function (el) {
         if (!el) return;
         el.hidden = count === 0;
         el.textContent = String(count);
@@ -606,7 +598,6 @@
     }
 
     if (toggleFull) toggleFull.addEventListener("click", function () { openPanel(toggleFull); });
-    if (toggleDock) toggleDock.addEventListener("click", function () { openPanel(toggleDock); });
     if (panelClose) panelClose.addEventListener("click", closePanel);
     if (panelBackdrop) panelBackdrop.addEventListener("click", closePanel);
     if (panelClear) panelClear.addEventListener("click", function () { draft = { role: "", type: "" }; syncDraftControls(); });
@@ -630,6 +621,27 @@
     }
 
     var searchInput = document.getElementById("voices-search-input");
+    var searchToggle = document.getElementById("voices-search-toggle");
+    var searchRow = document.getElementById("voices-search-row");
+    function closeSearch() {
+      if (!searchRow || !searchToggle) return;
+      searchRow.hidden = true;
+      searchToggle.setAttribute("aria-expanded", "false");
+    }
+    if (searchToggle && searchRow && searchInput) {
+      searchToggle.addEventListener("click", function () {
+        var opening = searchRow.hidden;
+        searchRow.hidden = !opening;
+        searchToggle.setAttribute("aria-expanded", String(opening));
+        if (opening) searchInput.focus();
+      });
+      searchInput.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeSearch();
+          searchToggle.focus();
+        }
+      });
+    }
     var searchDebounce = null;
     if (searchInput) {
       searchInput.addEventListener("input", function () {

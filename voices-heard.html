@@ -14,7 +14,7 @@ permalink: /voices-heard/
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=159" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=139" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=28" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=29" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=40" />
 </head>
 <body>
@@ -29,18 +29,21 @@ permalink: /voices-heard/
           <span class="broadcast-slash" aria-hidden="true"></span>
           <span aria-current="page">CAMPAIGNS</span>
         </nav>
-        <h2 class="broadcasts-condensed__title">VOICES HEARD</h2>
+        <div class="broadcasts-condensed__row">
+          <h2 class="broadcasts-condensed__title">VOICES HEARD</h2>
+          <div class="voices-sticky-actions">
+            <button class="broadcasts__filter" type="button" id="voices-filter-toggle" aria-haspopup="dialog" aria-controls="voices-filter-panel">FILTER <span class="voices-filter-count" id="voices-filter-count-full" hidden>0</span></button>
+            <button class="broadcasts-condensed__search-toggle" type="button" id="voices-search-toggle" aria-label="Search voices" aria-expanded="false" aria-controls="voices-search-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg></button>
+          </div>
+        </div>
+        <div class="broadcasts-condensed__search-row" id="voices-search-row" hidden>
+          <input type="search" id="voices-search-input" placeholder="Search voices…" aria-label="Search voices" />
+        </div>
       </div>
     </div>
 
     <main class="broadcasts broadcasts--v2 voices-page">
       <div class="broadcasts__sticky">
-      <nav class="broadcasts__breadcrumb voices-crumb" aria-label="Breadcrumb">
-        <span class="broadcast-slash" aria-hidden="true"></span>
-        <a href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL</a>
-        <span class="broadcast-slash" aria-hidden="true"></span>
-        <a href="{{ '/community-wall/' | relative_url }}#campaigns">CAMPAIGNS</a>
-      </nav>
         <div class="voices-heat-band">
           <div class="voices-heat-band__inner">
             <img class="voices-heat-band__icon" src="{{ '/assets/images/voices-heard-artwork.png' | relative_url }}" alt="" width="300" height="200" aria-hidden="true" />
@@ -55,29 +58,6 @@ permalink: /voices-heard/
             <button type="button" class="cw-campaign__add-voice voices-heat-band__cta" data-modal-open="amass-modal">ADD YOURS &rarr;</button>
           </div>
         </div>
-        <div class="broadcasts__sticky-inner">
-        <div class="broadcasts__controls voices-controls" role="group" aria-label="Voice search and filters">
-          <div class="broadcasts__search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg>
-            <input type="search" id="voices-search-input" placeholder="Search voices…" aria-label="Search voices" />
-          </div>
-          <button class="broadcasts__filter voices-filter-toggle" type="button" id="voices-filter-toggle" aria-haspopup="dialog" aria-controls="voices-filter-panel">FILTER <span aria-hidden="true">⌄</span><span class="voices-filter-count" id="voices-filter-count-full" hidden>0</span></button>
-          <div class="voices-filter-box">
-            <select class="voices-filter-select" id="voices-filter-role" aria-label="Filter by role">
-              <option value="">ALL ROLES</option>
-              <option value="create">Creator</option>
-              <option value="build">Builder</option>
-              <option value="fund">Investor</option>
-              <option value="support">Supporter</option>
-            </select>
-            <select class="voices-filter-select" id="voices-filter-type" aria-label="Filter by response type">
-              <option value="">ALL TYPES</option>
-              <option value="written">Written</option>
-              <option value="audio">Audio</option>
-            </select>
-          </div>
-        </div>
-        </div>
       </div>
       <section class="broadcasts__results" aria-labelledby="voices-title">
         <div class="cw-voice-grid" id="voice-list" data-voice-archive aria-busy="true"></div>
@@ -86,12 +66,6 @@ permalink: /voices-heard/
         <p class="broadcasts__status" id="voice-status" role="status" aria-live="polite"></p>
       </section>
     </main>
-  </div>
-
-  <div class="voices-dock" id="voices-dock" hidden>
-    <button type="button" class="voices-dock__btn" id="voices-dock-filters" aria-haspopup="dialog" aria-controls="voices-filter-panel">
-      FILTERS <span class="voices-filter-count" id="voices-filter-count-dock" hidden>0</span>
-    </button>
   </div>
 
   <div class="voices-filter-panel" id="voices-filter-panel" hidden>
@@ -130,7 +104,7 @@ permalink: /voices-heard/
   <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=14"></script>
   <script src="{{ '/js/voice-equalizer.js' | relative_url }}?v=3"></script>
-  <script src="{{ '/js/community-wall.js' | relative_url }}?v=26"></script>
+  <script src="{{ '/js/community-wall.js' | relative_url }}?v=27"></script>
   <script src="{{ '/js/archive-header.js' | relative_url }}?v=2"></script>
 </body>
 </html>

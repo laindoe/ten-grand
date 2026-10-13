@@ -376,45 +376,6 @@
 }
 .voices-filter-count[hidden] { display: none; }
 
-/* ---------- Voices Heard bottom filter dock (mobile) ---------- */
-/* Same conventions as the Transmissions dock: inset to match the
-   site-frame border, symmetric padding on the button itself so the
-   full-height look holds and the safe-area reserve stays outside it. */
-.voices-dock { display: none; }
-@media (max-width: 759px) {
-  .voices-dock {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: var(--frame-margin);
-    right: var(--frame-margin);
-    z-index: 90;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    background: var(--color-bg);
-    border-top: 1px solid var(--color-card-border);
-    border-left: 1px solid var(--color-card-border);
-    border-right: 1px solid var(--color-card-border);
-    border-bottom: 1px solid var(--color-card-border);
-  }
-  .voices-dock[hidden] { display: none; }
-  .voices-dock__btn {
-    flex: 1 1 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 16px 0;
-    background: none;
-    border: 0;
-    color: var(--color-text);
-    font-family: var(--font-body);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-  }
-}
-
 /* ---------- Voices Heard filter panel ---------- */
 /* Opens from either the full header's FILTER button or the bottom
    dock's, at any viewport width -- unlike Transmissions' panel, this
@@ -546,3 +507,43 @@
 }
 
 
+
+/* Voices Heard reveals its breadcrumb and controls only after the hero passes. */
+.voices-page .broadcasts__sticky { position: static; }
+.voices-page .broadcasts__results { min-height: 100vh; }
+.voices-heat-band__inner { padding-top: 48px; padding-bottom: 48px; }
+#voices-condensed {
+  display: block;
+  position: fixed;
+  top: var(--b-nav-height, 64px);
+  left: var(--frame-margin);
+  right: var(--frame-margin);
+  z-index: 90;
+  background: var(--color-bg);
+  border: 1px solid var(--color-card-border);
+}
+#voices-condensed[hidden] { display: none; }
+#voices-condensed .broadcasts-condensed__inner { padding: 12px var(--section-padding-x) 16px; }
+#voices-condensed .broadcasts-condensed__row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding-top: 16px;
+}
+#voices-condensed .broadcasts-condensed__title { font-size: 1.1rem; line-height: 1.2; }
+.voices-sticky-actions { display: flex; align-items: center; gap: 10px; }
+.voices-sticky-actions .broadcasts__filter { padding: 10px 12px; cursor: pointer; }
+#voices-condensed .broadcasts-condensed__search-toggle {
+  width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+  background: none; border: 0; color: var(--color-text); cursor: pointer;
+}
+#voices-condensed .broadcasts-condensed__search-toggle svg { width: 18px; height: 18px; }
+#voices-condensed .broadcasts-condensed__search-row { margin-top: 12px; }
+#voices-condensed .broadcasts-condensed__search-row[hidden] { display: none; }
+#voices-condensed .broadcasts-condensed__search-row input {
+  width: 100%; padding: 12px 14px; background: transparent; color: var(--color-text);
+  border: 1px solid var(--color-card-border); font: inherit; font-size: max(16px, .9rem);
+}
+
+#voices-condensed .broadcasts-condensed__crumb {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+  font-size: .78rem; font-weight: 700;
+}
