@@ -14,7 +14,7 @@ permalink: /voices-heard/
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=159" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=121" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=21" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=22" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=40" />
 </head>
 <body>
@@ -41,7 +41,6 @@ permalink: /voices-heard/
         <span class="broadcast-slash" aria-hidden="true"></span>
         <a href="{{ '/community-wall/' | relative_url }}#campaigns">CAMPAIGNS</a>
       </nav>
-        <div class="broadcasts__sticky-inner">
         <div class="voices-heat-band">
           <canvas class="voices-heat-band__heat" data-voices-heat data-heat-variant="header" data-heat-scale="1.3" aria-hidden="true"></canvas>
           <div class="voices-heat-band__inner">
@@ -49,16 +48,30 @@ permalink: /voices-heard/
             <div class="voices-heat-band__content">
               <h1 id="voices-title">VOICES HEARD</h1>
               <p class="voices-subtitle">Share what you contribute, why it matters, and who you hope to reach.</p>
-              <button type="button" class="cw-campaign__add-voice voices-heat-band__cta" data-modal-open="amass-modal">ADD YOURS &rarr;</button>
             </div>
+            <button type="button" class="cw-campaign__add-voice voices-heat-band__cta" data-modal-open="amass-modal">ADD YOURS &rarr;</button>
           </div>
         </div>
-        <div class="broadcasts__controls" role="group" aria-label="Voice search and filters">
+        <div class="broadcasts__sticky-inner">
+        <div class="broadcasts__controls voices-controls" role="group" aria-label="Voice search and filters">
           <div class="broadcasts__search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg>
             <input type="search" id="voices-search-input" placeholder="Search voices…" aria-label="Search voices" />
           </div>
-          <button class="broadcasts__filter" type="button" id="voices-filter-toggle" aria-haspopup="dialog" aria-controls="voices-filter-panel">FILTER <span aria-hidden="true">⌄</span><span class="voices-filter-count" id="voices-filter-count-full" hidden>0</span></button>
+          <div class="voices-filter-box">
+            <select class="voices-filter-select" id="voices-filter-role" aria-label="Filter by role">
+              <option value="">ALL ROLES</option>
+              <option value="create">Creator</option>
+              <option value="build">Builder</option>
+              <option value="fund">Investor</option>
+              <option value="support">Supporter</option>
+            </select>
+            <select class="voices-filter-select" id="voices-filter-type" aria-label="Filter by response type">
+              <option value="">ALL TYPES</option>
+              <option value="written">Written</option>
+              <option value="audio">Audio</option>
+            </select>
+          </div>
         </div>
         </div>
       </div>
@@ -85,14 +98,14 @@ permalink: /voices-heard/
         <button type="button" class="voices-filter-panel__close" id="voices-filter-panel-close" aria-label="Close filters">&times;</button>
       </div>
       <div class="voices-filter-panel__body">
-        <select class="voices-filter-select" id="voices-filter-role" aria-label="Filter by role">
+        <select class="voices-filter-select" id="voices-filter-role-panel" aria-label="Filter by role">
           <option value="">ALL ROLES</option>
           <option value="create">Creator</option>
           <option value="build">Builder</option>
           <option value="fund">Investor</option>
           <option value="support">Supporter</option>
         </select>
-        <select class="voices-filter-select" id="voices-filter-type" aria-label="Filter by response type">
+        <select class="voices-filter-select" id="voices-filter-type-panel" aria-label="Filter by response type">
           <option value="">ALL TYPES</option>
           <option value="written">Written</option>
           <option value="audio">Audio</option>
@@ -114,7 +127,7 @@ permalink: /voices-heard/
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=14"></script>
   <script src="{{ '/js/voice-equalizer.js' | relative_url }}?v=3"></script>
   <script src="{{ '/js/voices-heat.js' | relative_url }}?v=8"></script>
-  <script src="{{ '/js/community-wall.js' | relative_url }}?v=23"></script>
+  <script src="{{ '/js/community-wall.js' | relative_url }}?v=24"></script>
   <script src="{{ '/js/archive-header.js' | relative_url }}?v=2"></script>
 </body>
 </html>

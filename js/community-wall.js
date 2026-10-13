@@ -528,14 +528,17 @@
     var panel = document.getElementById("voices-filter-panel");
     var panelBackdrop = document.getElementById("voices-filter-panel-backdrop");
     var panelClose = document.getElementById("voices-filter-panel-close");
-    var panelRole = document.getElementById("voices-filter-role");
-    var panelType = document.getElementById("voices-filter-type");
+    var panelRole = document.getElementById("voices-filter-role-panel");
+    var panelType = document.getElementById("voices-filter-type-panel");
     var panelClear = document.getElementById("voices-filter-clear");
     var panelApply = document.getElementById("voices-filter-apply");
-    var toggleFull = document.getElementById("voices-filter-toggle");
     var toggleDock = document.getElementById("voices-dock-filters");
-    var countFull = document.getElementById("voices-filter-count-full");
     var countDock = document.getElementById("voices-filter-count-dock");
+    // The header's own role/type selects, visible inline in the controls
+    // row -- unlike the dock's panel (a draft-then-Apply sheet), these
+    // apply a change the moment it's made.
+    var inlineRole = document.getElementById("voices-filter-role");
+    var inlineType = document.getElementById("voices-filter-type");
     if (!panel || !panelRole || !panelType) return;
 
     var draft = null;
@@ -575,23 +578,26 @@
     }
     function updateCounts() {
       var count = (voiceFilters.role ? 1 : 0) + (voiceFilters.type ? 1 : 0);
-      [countFull, countDock].forEach(function (el) {
-        if (!el) return;
-        el.hidden = count === 0;
-        el.textContent = String(count);
-      });
+      if (countDock) {
+        countDock.hidden = count === 0;
+        countDock.textContent = String(count);
+      }
+    }
+    function syncInlineControls() {
+      if (inlineRole) inlineRole.value = voiceFilters.role;
+      if (inlineType) inlineType.value = voiceFilters.type;
     }
     function applyPanel() {
       voiceFilters.role = draft.role;
       voiceFilters.type = draft.type;
       closePanel();
+      syncInlineControls();
       updateCounts();
       loadVoiceCards(true);
       var results = document.querySelector(".broadcasts__results");
       if (results) results.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
     }
 
-    if (toggleFull) toggleFull.addEventListener("click", function () { openPanel(toggleFull); });
     if (toggleDock) toggleDock.addEventListener("click", function () { openPanel(toggleDock); });
     if (panelClose) panelClose.addEventListener("click", closePanel);
     if (panelBackdrop) panelBackdrop.addEventListener("click", closePanel);
@@ -599,6 +605,21 @@
     if (panelApply) panelApply.addEventListener("click", applyPanel);
     panelRole.addEventListener("change", function () { draft.role = panelRole.value; });
     panelType.addEventListener("change", function () { draft.type = panelType.value; });
+
+    if (inlineRole) {
+      inlineRole.addEventListener("change", function () {
+        voiceFilters.role = inlineRole.value;
+        updateCounts();
+        loadVoiceCards(true);
+      });
+    }
+    if (inlineType) {
+      inlineType.addEventListener("change", function () {
+        voiceFilters.type = inlineType.value;
+        updateCounts();
+        loadVoiceCards(true);
+      });
+    }
 
     var searchInput = document.getElementById("voices-search-input");
     var searchDebounce = null;

@@ -171,6 +171,7 @@
 
 .broadcasts__controls {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 0;
 }
@@ -237,22 +238,12 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  /* Now that the breadcrumb lives outside .broadcasts__sticky-inner,
-     the heat band is that container's first child again and needs to
-     cancel its own top padding (40px desktop, 28px under 480px) to
-     stay flush against the breadcrumb strip above it. */
-  margin-top: -40px;
-  /* Full-bleed: the background spans the whole section edge to edge
-     (matching .archive-community's technique on Transmissions) while
-     the content inside stays padded for readability. */
-  width: calc(100% + 2 * var(--section-padding-x));
-  margin-left: calc(-1 * var(--section-padding-x));
-  margin-right: calc(-1 * var(--section-padding-x));
+  /* A direct child of .broadcasts__sticky (a sibling of the breadcrumb
+     and .broadcasts__sticky-inner, not nested inside that 1100px-capped
+     container), so its own full width already reaches the true
+     site-frame edges -- same fix as the breadcrumb strip above it. */
   padding: 24px var(--section-padding-x);
   border-bottom: 1px solid var(--color-card-border);
-}
-@media (max-width: 480px) {
-  .voices-heat-band { margin-top: -28px; }
 }
 .voices-heat-band::before {
   content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
@@ -297,21 +288,27 @@
   width: auto;
   flex: none;
 }
-/* Desktop: icon on the left, title + CTA grouped on the right instead
-   of stacked and centered (which stays the mobile default). */
+/* Desktop: icon, then title + subtitle as a second column right next
+   to it, with the CTA pushed out to sit on its own at the far right
+   (auto margin eats the remaining row width). */
 @media (min-width: 760px) {
   .voices-heat-band__inner {
     flex-direction: row;
-    justify-content: flex-end;
-    gap: 24px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 28px;
   }
   .voices-heat-band__icon {
-    max-width: 45%;
-    margin-right: auto;
+    max-width: 180px;
   }
   .voices-heat-band__content {
-    align-items: flex-end;
-    text-align: right;
+    align-items: flex-start;
+    text-align: left;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .voices-heat-band__cta.cw-campaign__add-voice {
+    margin-left: auto;
   }
 }
 .voices-subtitle {
@@ -320,6 +317,35 @@
   line-height: 1.5;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   max-width: 44ch;
+}
+
+/* ---------- Voices Heard controls: smaller search + inline filter box ----------
+   Scoped with .voices-controls rather than touching .broadcasts__search/
+   .broadcasts__controls directly, since Broadcasts shares those same
+   classes and still wants its search field to fill the row. */
+.broadcasts__controls.voices-controls .broadcasts__search {
+  flex: 1 1 240px;
+  max-width: 360px;
+}
+.voices-filter-box {
+  display: flex;
+  flex: 1 1 280px;
+  border: 1px solid var(--color-card-border);
+}
+.voices-filter-box .voices-filter-select {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  border: 0;
+  padding: 14px 32px 14px 16px;
+  background-position: calc(100% - 16px) center, calc(100% - 10px) center;
+}
+.voices-filter-box .voices-filter-select + .voices-filter-select {
+  border-left: 1px solid var(--color-card-border);
+}
+@media (max-width: 480px) {
+  .broadcasts__controls.voices-controls .broadcasts__search { flex-basis: 100%; max-width: none; }
+  .voices-filter-box { flex-basis: 100%; }
 }
 
 /* ---------- Voices Heard filter count badge ---------- */
