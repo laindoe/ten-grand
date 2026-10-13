@@ -12,6 +12,7 @@
     uniform float patternScale;
     uniform float intensity;
     uniform float darkCenter;
+    uniform float wordmark;
     float field(vec2 p) {
       return sin(p.x*3.1 + sin(p.y*2.4 + time*.16)*1.7 + time*.19)
         + sin(p.y*4.3 - time*.13 + cos(p.x*2.6-time*.11)*1.6)
@@ -28,6 +29,25 @@
     }
     void main(){
       vec2 uv=gl_FragCoord.xy/resolution;
+      if (wordmark > .5) {
+        // Three soft fields join and separate while a slow warp stretches
+        // their contours. Color follows field strength, not a moving circle.
+        vec2 q=uv;
+        q += .035*vec2(sin(uv.y*11.+time*.29), cos(uv.x*9.-time*.23));
+        vec2 travel=vec2(.5+.29*sin(time*.17), .5+.22*sin(time*.21+.8));
+        vec2 a=travel+vec2(.07*cos(time*.33), .09*sin(time*.27));
+        vec2 b=travel+vec2(.13*sin(time*.25+1.7), .16*cos(time*.31));
+        vec2 c=travel+vec2(.17*cos(time*.19+2.3), .13*sin(time*.37+1.1));
+        vec2 da=(q-a)/vec2(.13,.22);
+        vec2 db=(q-b)/vec2(.11,.18);
+        vec2 dc=(q-c)/vec2(.10,.16);
+        float density=exp(-dot(da,da)*2.)
+          + .85*exp(-dot(db,db)*2.) + .7*exp(-dot(dc,dc)*2.);
+        float coverage=smoothstep(.19,.38,density);
+        vec3 color=thermal(clamp(.28+density*.48, .28, 1.));
+        gl_FragColor=vec4(mix(vec3(1.),color,coverage),1.);
+        return;
+      }
       vec2 p=(uv-.5)*vec2(resolution.x/resolution.y,1.)*patternScale;
       float v=clamp(.5+field(p)*.20,0.,1.);
       vec3 color=thermal(v);
@@ -56,6 +76,8 @@
   gl.enableVertexAttribArray(position); gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
   const resolution = gl.getUniformLocation(program, 'resolution');
   const time = gl.getUniformLocation(program, 'time');
+  const isWordmark = canvas.dataset.heatVariant === 'wordmark';
+  gl.uniform1f(gl.getUniformLocation(program, 'wordmark'), isWordmark ? 1 : 0);
   const isHeader = canvas.parentElement.classList.contains('cw-hero') || canvas.dataset.heatVariant === 'header';
   const patternScale = Number(canvas.dataset.heatScale) || (isHeader ? 1.3 : 2.6);
   gl.uniform1f(gl.getUniformLocation(program, 'patternScale'), patternScale);
@@ -77,6 +99,7 @@
     gl.uniform2f(resolution, canvas.width, canvas.height);
     gl.uniform1f(time, reduced.matches ? 0 : elapsed);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
+    if (isWordmark) canvas.parentElement.classList.add('has-heat');
   }
   function frame(now) {
     frameId = 0;
@@ -106,7 +129,9 @@
   document.addEventListener('visibilitychange', sync);
   canvas.addEventListener('webglcontextlost', (event) => {
     event.preventDefault(); lost = true; cancelAnimationFrame(frameId); canvas.style.visibility = 'hidden';
+    if (isWordmark) canvas.parentElement.classList.remove('has-heat');
   });
   // Reloading the page restores animation after context loss; content remains usable.
   });
 })();
+
