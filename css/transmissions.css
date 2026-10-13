@@ -982,9 +982,11 @@ main {
   .archive-return-ready .archive-dock { animation: none; }
 }
 
-/* Keep the safe-area gap outside the button border so the label remains centered. */
+/* Pin the bar to the screen edge; symmetric safe-area padding centers its label. */
 @media (max-width: 759px) {
-  .archive-dock { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
-  .archive-dock__wall { justify-content: center; align-items: center; text-align: center; padding: 16px 0; }
-  .site-footer { margin-bottom: calc(var(--archive-bottom-clearance, 0px) + 12px + env(safe-area-inset-bottom, 0px)); }
+  .archive-dock { bottom: 0; padding-bottom: 0; }
+  .archive-dock__wall {
+    justify-content: center; align-items: center; text-align: center;
+    padding: calc(22px + env(safe-area-inset-bottom, 0px) / 2) 0;
+  }
 }
