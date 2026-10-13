@@ -105,12 +105,10 @@
       if (!value) closeCondensedSearch();
     }
 
-    var media = window.matchMedia("(max-width: 759px)");
     var observer = null;
 
     function setupObserver() {
       if (observer) { observer.disconnect(); observer = null; }
-      if (!media.matches) { setCollapsed(false); return; }
       if (!("IntersectionObserver" in window)) return;
       var navHeight = Math.round(nav.getBoundingClientRect().height);
       observer = new IntersectionObserver(function (entries) {
@@ -119,7 +117,7 @@
       observer.observe(opening);
     }
 
-    media.addEventListener("change", setupObserver);
+    window.addEventListener("resize", setupObserver);
     setupObserver();
 
     if (toggle && searchRow) {

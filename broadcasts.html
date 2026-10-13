@@ -12,7 +12,7 @@ permalink: /broadcasts/
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=159" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=25" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=33" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=40" />
 </head>
 <body>
@@ -21,7 +21,7 @@ permalink: /broadcasts/
 
     <div class="broadcasts-condensed" id="broadcasts-condensed" hidden>
       <div class="broadcasts-condensed__inner">
-        <nav class="broadcasts-condensed__crumb" aria-label="Breadcrumb">
+        <nav class="broadcasts-condensed__crumb voices-crumb" aria-label="Breadcrumb">
           <span class="broadcast-slash" aria-hidden="true"></span>
           <a href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL</a>
           <span class="broadcast-slash" aria-hidden="true"></span>
@@ -39,15 +39,9 @@ permalink: /broadcasts/
       </div>
     </div>
 
-    <main class="broadcasts broadcasts--v2">
+    <main class="broadcasts broadcasts--v2 house-page">
       <div class="broadcasts__sticky">
         <div class="broadcasts__sticky-inner">
-      <nav class="broadcasts__breadcrumb" aria-label="Breadcrumb">
-        <span class="broadcast-slash" aria-hidden="true"></span>
-        <a href="{{ '/community-wall/' | relative_url }}">COMMUNITY WALL</a>
-        <span class="broadcast-slash" aria-hidden="true"></span>
-        <span aria-current="page">BROADCASTS</span>
-      </nav>
         <header class="broadcasts__header">
           <h1 id="house-title">FROM THE HOUSE</h1>
           <p>Official broadcasts from Ten Grand.</p>
@@ -76,7 +70,7 @@ permalink: /broadcasts/
   </div>
   {% include broadcast-modal.html %}
   {% include site-footer.html %}
-  <script src="{{ '/js/broadcasts.js' | relative_url }}?v=5"></script>
+  <script src="{{ '/js/broadcasts.js' | relative_url }}?v=6"></script>
   <script src="{{ '/js/archive-header.js' | relative_url }}?v=2"></script>
 </body>
 </html>
