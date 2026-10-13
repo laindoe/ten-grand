@@ -959,3 +959,7 @@ main {
   }
   .archive-dock__wall { width: 100%; }
 }
+
+/* Reserve the visible fixed CTA's measured height, including its safe area,
+   so the copyright can scroll completely above the bottom button. */
+.site-footer { margin-bottom: var(--archive-bottom-clearance, 0px); }
