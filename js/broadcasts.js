@@ -146,6 +146,8 @@
     if (!modal || !content || typeof modal.showModal !== "function") return;
 
     var trigger = null;
+    var closingFromHistory = false;
+    var openId = null;
     var scrollLock = null;
     var scrollArea = modal.querySelector(".broadcast-modal__scroll");
     var closeButton = modal.querySelector(".broadcast-modal__close");
@@ -176,6 +178,10 @@
         var template = button.closest(".cw-broadcast-card").querySelector("template.broadcast-detail");
         if (!template || modal.open) return;
         trigger = button;
+        openId = button.closest(".cw-broadcast-card").id;
+        if (openId && history.state?.broadcastModal !== openId) {
+          history.pushState({ ...history.state, broadcastModal: openId }, "", "#" + openId);
+        }
         content.replaceChildren(template.content.cloneNode(true));
         content.querySelector(".cw-broadcast-card__title").id = "broadcast-modal-title";
         // CMS rich text uses root-relative media paths. Apply the deployed
@@ -194,6 +200,18 @@
         if (scrollArea) scrollArea.scrollTop = 0;
         closeButton.focus({ preventScroll: true });
       });
+    });
+
+    window.addEventListener("popstate", function () {
+      var id = history.state && history.state.broadcastModal;
+      if (modal.open && id !== openId) {
+        closingFromHistory = true;
+        modal.close();
+      } else if (!modal.open && id) {
+        var card = document.getElementById(id);
+        var button = card && card.querySelector("[data-broadcast-open]");
+        if (button) button.click();
+      }
     });
 
     closeButtons.forEach(function (button) {
@@ -219,6 +237,10 @@
       content.replaceChildren();
       if (trigger) trigger.focus({ preventScroll: true });
       trigger = null;
+      var shouldGoBack = !closingFromHistory && openId && history.state?.broadcastModal === openId;
+      closingFromHistory = false;
+      openId = null;
+      if (shouldGoBack) history.back();
     });
   }
 })();

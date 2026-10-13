@@ -18,6 +18,47 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const state = { category: 'all', series: 'all', query: '', limit: 3, searchOpen: false };
   let posts = null, introductions = {}, pending = null;
+  const returnParam = new URL(location.href).searchParams.get('return');
+  let restore = history.state?.transmissionArchive || null;
+  if (returnParam) {
+    try { restore = JSON.parse(sessionStorage.getItem('tg-archive:' + returnParam)) || restore; } catch (_) {}
+    const clean = new URL(location.href); clean.searchParams.delete('return');
+    history.replaceState({ ...history.state, transmissionArchive: restore }, '', clean);
+  }
+  if (restore) {
+    state.category = [...category.options].some(o => o.value === restore.category) ? restore.category : 'all';
+    state.series = [...series.options].some(o => o.value === restore.series) ? restore.series : 'all';
+    state.query = typeof restore.query === 'string' ? restore.query : '';
+    state.limit = Math.max(3, Number(restore.limit) || 3);
+    state.searchOpen = !!restore.searchOpen;
+    search.value = state.query;
+  }
+  let restoreCancelled = false;
+  ['wheel', 'touchstart', 'keydown'].forEach(type => window.addEventListener(type, () => { restoreCancelled = true; }, { once: true, passive: true }));
+  function rememberArchive(card) {
+    const snapshot = { ...state, y: scrollY, card: card.href, offset: card.getBoundingClientRect().top };
+    history.replaceState({ ...history.state, transmissionArchive: snapshot }, '');
+    try {
+      const token = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      sessionStorage.setItem('tg-archive:' + token, JSON.stringify(snapshot));
+      sessionStorage.setItem('tg-return:' + new URL(card.href).pathname, JSON.stringify({ token, archive: location.href }));
+    } catch (_) {}
+  }
+  document.addEventListener('click', event => {
+    const card = event.target.closest('a.transmission-card, a.featured-card');
+    if (!card || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (new URL(card.href).origin === location.origin) rememberArchive(card);
+  });
+  async function restorePosition() {
+    if (!restore) return;
+    if (document.fonts) await document.fonts.ready;
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    if (restoreCancelled) { restore = null; return; }
+    const card = [...document.querySelectorAll('a.transmission-card, a.featured-card')].find(el => el.href === restore.card);
+    const top = card ? scrollY + card.getBoundingClientRect().top - restore.offset : restore.y;
+    window.scrollTo({ top: Math.max(0, Number(top) || 0), behavior: 'instant' });
+    restore = null;
+  }
 
   // Collapsing breadcrumb + bottom filter dock (mobile only). Appear once
   // the Community Wall banner scrolls fully out of view above the
@@ -241,6 +282,7 @@
         posts = index.posts.sort((a, b) => b.date.localeCompare(a.date));
         introductions = index.introductions || {};
         render();
+        await restorePosition();
       } catch (_) {
         status.textContent = 'The archive could not load. Please retry.';
         retry.hidden = false;
