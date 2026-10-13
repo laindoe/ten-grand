@@ -259,23 +259,22 @@
   max-width: 1100px;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 24px;
+  gap: 16px;
 }
 .voices-heat-band__icon {
   flex: none;
   width: auto;
   height: 140px;
-  max-width: 45%;
+  max-width: 80%;
   object-fit: contain;
-  margin-right: auto;
 }
 .voices-heat-band__content {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
+  align-items: center;
+  text-align: center;
   gap: 14px;
   min-width: 0;
 }
@@ -440,3 +439,24 @@
   margin-top: 20px;
 }
 .voices-filter-panel__actions .broadcasts__filter { flex: 1 1 0; text-align: center; cursor: pointer; }
+
+/* ---------- Voices Heard breadcrumb: inverted, compact ---------- */
+/* Scoped with an extra class rather than touching .broadcasts__breadcrumb/
+   .broadcasts-condensed__crumb directly, since Broadcasts shares those
+   same classes and keeps its black breadcrumb. */
+.broadcasts__breadcrumb.voices-crumb,
+.broadcasts-condensed__crumb.voices-crumb {
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 6px 12px;
+  margin-left: calc(-1 * var(--section-padding-x));
+  margin-right: calc(-1 * var(--section-padding-x));
+  width: calc(100% + 2 * var(--section-padding-x));
+  box-sizing: border-box;
+}
+.broadcasts__breadcrumb.voices-crumb a,
+.broadcasts-condensed__crumb.voices-crumb a,
+.broadcasts__breadcrumb.voices-crumb [aria-current="page"],
+.broadcasts-condensed__crumb.voices-crumb [aria-current="page"] {
+  color: var(--color-bg);
+}
