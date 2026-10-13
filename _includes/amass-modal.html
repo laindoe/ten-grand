@@ -198,15 +198,6 @@
               <input class="amass-flow__field" id="amass-social-handle" name="social_handle" type="text" placeholder="@yourhandle" autocomplete="off">
               <p class="amass-flow__error" id="amass-social-error" role="alert" hidden>Please add both a platform and handle, or leave both blank.</p>
 
-              <div class="amass-disclosure">
-                <button type="button" class="amass-disclosure__toggle" id="amass-removal-toggle" aria-expanded="false" aria-controls="amass-removal-panel">
-                  <span>WHAT IF I CHANGE MY MIND?</span>
-                  <svg class="amass-disclosure__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
-                </button>
-                <div class="amass-disclosure__panel" id="amass-removal-panel" hidden>
-                  <p>You can request to have your entry removed from the Community Wall at any time. Just email info@tengrand.co with the name or alias you submitted under, and we'll take care of the rest.</p>
-                </div>
-              </div>
             </div>
             <div class="amass-flow__actions">
               <button type="button" class="amass-flow__back" data-amass-back>Back</button>
@@ -217,6 +208,16 @@
           <section class="amass-flow__step" data-amass-step="7" hidden>
             <div class="amass-flow__content">
               <div class="amass-flow__review" id="amass-review"></div>
+              <div class="amass-disclosure">
+                <button type="button" class="amass-disclosure__toggle" id="amass-removal-toggle" aria-expanded="false" aria-controls="amass-removal-panel">
+                  <span>WHAT IF I CHANGE MY MIND?</span>
+                  <svg class="amass-disclosure__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6 L8 10 L12 6" /></svg>
+                </button>
+                <div class="amass-disclosure__panel" id="amass-removal-panel" hidden>
+                  <p>You can request to have your entry removed from the Community Wall at any time. Just email info@tengrand.co with the name or alias you submitted under, and we'll take care of the rest.</p>
+                </div>
+              </div>
+              <p class="amass-flow__helper" id="amass-security-note">Entries are reviewed before publishing. Photos and recordings are scanned privately, and website links are checked by Google Web Risk. Cloudflare verifies submissions to help prevent spam.</p>
               <p class="amass-flow__error" id="amass-form-error" role="alert" hidden>Something went wrong. Please try again.</p>
             </div>
             <div class="amass-flow__actions">

@@ -7,9 +7,7 @@
   if(!form||!review)return;
   const trap=document.createElement('input');trap.name='company_url';trap.type='text';trap.tabIndex=-1;trap.autocomplete='off';trap.setAttribute('aria-hidden','true');
   trap.style.cssText='position:absolute;left:-10000px;width:1px;height:1px;';form.append(trap);
-  const explanation=document.createElement('p');explanation.className='amass-flow__helper';
-  explanation.textContent='Submissions are checked before publishing. Bot verification uses Cloudflare; website addresses are checked by Google Web Risk. Photos and recordings are scanned privately.';
-  const widget=document.createElement('div');review.append(explanation,widget);
+  const widget=document.createElement('div');review.append(widget);
   let token='',widgetId=null;
   const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';script.async=true;
   script.onload=()=>{widgetId=window.turnstile.render(widget,{sitekey:config.turnstileSiteKey,action:'voices-submit',theme:'dark',size:'flexible',callback:value=>{token=value;},'expired-callback':()=>{token='';},'error-callback':()=>{token='';}});};
