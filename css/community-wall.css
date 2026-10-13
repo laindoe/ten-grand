@@ -1871,3 +1871,18 @@ main {
     margin-bottom: 10px;
   }
 }
+
+
+/* Voices Heard uses the supplied textured artwork on both entry points. */
+.cw-campaign__intro--voices,
+.voices-heat-band {
+  background: #08090a url('../assets/images/voices-heard-background.jpg') center / cover no-repeat;
+}
+.cw-campaign__intro--voices::before { content: none; }
+.cw-campaign__counter [data-stat="voices-total"] {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .18em;
+  padding-left: .18em;
+  font-weight: 400;
+}
+.voices-heat-band .cw-campaign__counter { margin: 0; }

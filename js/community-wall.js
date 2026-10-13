@@ -4,7 +4,9 @@
   function setStat(key, value) {
     var el = document.querySelector('[data-stat="' + key + '"]');
     if (el && typeof value === "number") {
-      el.textContent = value.toLocaleString("en-US");
+      el.textContent = key === "voices-total"
+        ? String(value).padStart(4, "0")
+        : value.toLocaleString("en-US");
     }
   }
 
@@ -643,8 +645,9 @@
     updateCounts();
   }
 
-  if (!document.querySelector("[data-voice-archive]")) loadStats();
+  if (document.querySelector('[data-stat="voices-total"]')) loadStats();
   initJoinModal();
   initVoicesHeardHeader();
   loadVoiceCards(true);
 })();
+
