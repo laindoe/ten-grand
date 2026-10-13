@@ -14,7 +14,7 @@ permalink: /community-wall/
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=159" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=132" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=135" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=40" />
 </head>
 <body>
@@ -30,7 +30,14 @@ permalink: /community-wall/
       <canvas class="cw-campaign__heat" data-voices-heat aria-hidden="true"></canvas>
       <div class="cw-inner cw-hero__inner">
         <div class="cw-hero__heading">
-          <h1 class="cw-hero__title">AMASS Comm(unity) Wall</h1>
+          <h1 class="cw-hero__title">
+            <span class="cw-hero__title-text">AMASS Comm(unity) Wall</span>
+            <span class="cw-hero__wordmark-stage" aria-hidden="true">
+              <span class="cw-hero__wordmark">
+                <canvas class="cw-hero__wordmark-heat" data-voices-heat data-heat-scale="1.6"></canvas>
+              </span>
+            </span>
+          </h1>
         </div>
         <img class="cw-hero__icon" src="{{ '/assets/images/icon-voices-heard.svg' | relative_url }}?v=2" alt="" width="150" height="98" aria-hidden="true">
         <p class="cw-hero__subtitle">A living record of the people building, creating, funding, and shaping the future of culture.</p>

@@ -134,11 +134,72 @@ main {
 }
 
 .cw-hero__title {
-  font-size: clamp(2.2rem, 9vw, 4rem);
-  font-weight: 700;
-  line-height: 1;
+  display: block;
   margin-bottom: 18px;
-  text-transform: uppercase;
+}
+
+/* Real text for search engines and screen readers -- the visible
+   wordmark graphic below is aria-hidden, same clip-path technique as
+   .broadcasts__status. */
+.cw-hero__title-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The bubble-lettering wordmark, with the same moving thermal heat
+   field used elsewhere on the page (.cw-campaign__heat) showing
+   through it like a stained-glass cutout instead of sitting flat as a
+   solid color.
+   Two layers: .cw-hero__wordmark-stage is the unmasked outer box that
+   paints a dark "stage" behind the letters (needed because the ambient
+   hero background is the same heat field and otherwise reads as one
+   undifferentiated smear); .cw-hero__wordmark inside it carries the
+   mask and the canvas, clipped tightly to the letterform. A mask
+   clips an element's own pseudo-elements along with it, so the stage
+   backdrop has to live one level up to extend past the letter edges
+   instead of being cut off at them. */
+.cw-hero__wordmark-stage {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 640px;
+}
+.cw-hero__wordmark-stage::before {
+  content: "";
+  position: absolute;
+  inset: -16%;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(8, 8, 11, 0.92) 0%, rgba(8, 8, 11, 0.78) 55%, rgba(8, 8, 11, 0) 100%);
+}
+.cw-hero__wordmark {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1400 / 583;
+  -webkit-mask-image: url('../assets/images/amass-community-wall-wordmark.png');
+  mask-image: url('../assets/images/amass-community-wall-wordmark.png');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  /* A dark halo following the letterform silhouette itself, tighter
+     than the stage backdrop, for crisp edges right at the letters. */
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 20px rgba(0, 0, 0, 0.7));
+}
+
+.cw-hero__wordmark-heat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .cw-hero__heading .section-eyebrow {
@@ -1337,14 +1398,12 @@ main {
     text-align: center;
   }
 
-  /* A clear step up from .cw-section-header__title's flat 1.6rem (used
-     by BROADCASTS, MEMBER RESOURCES, etc.) so this reads as the page
-     title, not just another section header -- the previous clamp
-     landed within a hair of 1.6rem at common phone widths. */
   .cw-hero__title {
-    font-size: clamp(1.8rem, 8vw, 2.4rem);
-    text-align: center;
     margin-bottom: 4px;
+  }
+
+  .cw-hero__wordmark-stage {
+    margin: 0 auto;
   }
 
   /* Same red solid-color-plus-pulse cue treatment as .amass__cue's
