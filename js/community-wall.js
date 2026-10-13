@@ -534,9 +534,13 @@
     var panelApply = document.getElementById("voices-filter-apply");
     var toggleDock = document.getElementById("voices-dock-filters");
     var countDock = document.getElementById("voices-filter-count-dock");
+    // Mobile keeps the original FILTER button, opening the same panel as
+    // the dock. Desktop replaces it with the inline selects below.
+    var toggleFull = document.getElementById("voices-filter-toggle");
+    var countFull = document.getElementById("voices-filter-count-full");
     // The header's own role/type selects, visible inline in the controls
-    // row -- unlike the dock's panel (a draft-then-Apply sheet), these
-    // apply a change the moment it's made.
+    // row on desktop -- unlike the panel (a draft-then-Apply sheet),
+    // these apply a change the moment it's made.
     var inlineRole = document.getElementById("voices-filter-role");
     var inlineType = document.getElementById("voices-filter-type");
     if (!panel || !panelRole || !panelType) return;
@@ -578,10 +582,11 @@
     }
     function updateCounts() {
       var count = (voiceFilters.role ? 1 : 0) + (voiceFilters.type ? 1 : 0);
-      if (countDock) {
-        countDock.hidden = count === 0;
-        countDock.textContent = String(count);
-      }
+      [countFull, countDock].forEach(function (el) {
+        if (!el) return;
+        el.hidden = count === 0;
+        el.textContent = String(count);
+      });
     }
     function syncInlineControls() {
       if (inlineRole) inlineRole.value = voiceFilters.role;
@@ -598,6 +603,7 @@
       if (results) results.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
     }
 
+    if (toggleFull) toggleFull.addEventListener("click", function () { openPanel(toggleFull); });
     if (toggleDock) toggleDock.addEventListener("click", function () { openPanel(toggleDock); });
     if (panelClose) panelClose.addEventListener("click", closePanel);
     if (panelBackdrop) panelBackdrop.addEventListener("click", closePanel);

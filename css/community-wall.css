@@ -1432,6 +1432,18 @@ main {
 
 /* Voice library: portrait, role-led identity, corner number, then player. */
 .cw-voice-grid { grid-template-columns: minmax(0, 1fr); }
+/* Desktop archive (voices-heard.html) only: two columns instead of one.
+   The higher-specificity attribute selector wins over the unscoped rule
+   above regardless of source order. The homepage preview grid (no
+   data-voice-archive) keeps its single column. */
+@media (min-width: 760px) {
+  .cw-voice-grid[data-voice-archive] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .cw-voice-grid[data-voice-archive] .cw-voice-card--library {
+    --portrait-size: 160px;
+  }
+}
 .cw-voice-card--library {
   --portrait-size: 220px;
   display: grid; grid-template-columns: var(--portrait-size) minmax(0, 1fr) 44px;
@@ -1753,4 +1765,27 @@ main {
 .cw-voice-card--library .cw-voice-card__audio { font-size: 1rem; }
 @media (max-width: 759px) {
   .cw-voice-card--library .cw-voice-card__audio { font-size: .7rem; }
+}
+
+/* The desktop identity layout (name + role badge side by side, name
+   forced to one line) assumes a full-row single-column card. In the
+   two-column archive grid each card is roughly half that width --
+   not enough room for a one-line name next to the badge, which
+   squeezed the name into a sliver and broke it mid-word. Fall back to
+   the mobile-style stacked layout (badge above name, both full width)
+   instead. Uses the card's own container width (it's already a
+   container-type: inline-size element) rather than viewport, since
+   this only ever happens at a card width the viewport-based
+   breakpoints above don't anticipate. */
+@container (max-width: 600px) {
+  .cw-voice-card--library .cw-voice-card__identity {
+    display: block;
+  }
+  .cw-voice-card--library .cw-voice-card__name {
+    white-space: normal;
+  }
+  .cw-voice-card--library .cw-voice-card__badge-col {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }

@@ -319,33 +319,48 @@
   max-width: 44ch;
 }
 
-/* ---------- Voices Heard controls: smaller search + inline filter box ----------
+/* ---------- Voices Heard controls: mobile FILTER button, desktop inline selects ----------
    Scoped with .voices-controls rather than touching .broadcasts__search/
    .broadcasts__controls directly, since Broadcasts shares those same
-   classes and still wants its search field to fill the row. */
-.broadcasts__controls.voices-controls .broadcasts__search {
-  flex: 1 1 240px;
-  max-width: 360px;
+   classes and still wants its search field to fill the row.
+   Mobile keeps the original FILTER button -> bottom-sheet panel flow;
+   only desktop swaps it for the two selects inline in the header. */
+.voices-filter-box { display: none; }
+@media (min-width: 760px) {
+  .broadcasts__controls.voices-controls .broadcasts__search {
+    flex: 1 1 240px;
+    max-width: 360px;
+  }
+  .voices-filter-toggle { display: none; }
+  .voices-filter-box {
+    display: flex;
+    flex: 1 1 280px;
+    gap: 12px;
+  }
+  .voices-filter-box .voices-filter-select {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    padding: 14px 32px 14px 16px;
+    background-position: calc(100% - 16px) center, calc(100% - 10px) center;
+  }
 }
-.voices-filter-box {
-  display: flex;
-  flex: 1 1 280px;
-  border: 1px solid var(--color-card-border);
-}
-.voices-filter-box .voices-filter-select {
-  flex: 1 1 0;
-  width: auto;
-  min-width: 0;
-  border: 0;
-  padding: 14px 32px 14px 16px;
-  background-position: calc(100% - 16px) center, calc(100% - 10px) center;
-}
-.voices-filter-box .voices-filter-select + .voices-filter-select {
-  border-left: 1px solid var(--color-card-border);
-}
-@media (max-width: 480px) {
-  .broadcasts__controls.voices-controls .broadcasts__search { flex-basis: 100%; max-width: none; }
-  .voices-filter-box { flex-basis: 100%; }
+
+/* ---------- Voices Heard desktop spacing: tighter header, more room
+   above the card grid ----------
+   Shifts some of the vertical breathing room out of the search/filter
+   row and into the gap below the divider, so the cards don't start
+   right under it. Scoped to .voices-page since .broadcasts__sticky-inner
+   and .broadcasts__results are shared with Broadcasts, which keeps its
+   own spacing untouched. */
+@media (min-width: 760px) {
+  .voices-page .broadcasts__sticky-inner {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  .voices-page .broadcasts__results {
+    padding-top: 32px;
+  }
 }
 
 /* ---------- Voices Heard filter count badge ---------- */
