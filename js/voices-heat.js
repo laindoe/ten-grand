@@ -27,6 +27,16 @@
       c=mix(c,vec3(190./255.,32./255.,38./255.),smoothstep(.70,.90,v));
       return c;
     }
+    // Bright cyan-to-red spectrum for the supplied white-letter reference.
+    vec3 wordmarkThermal(float v) {
+      vec3 c=vec3(0.,205./255.,226./255.);
+      c=mix(c,vec3(0.,186./255.,128./255.),smoothstep(.18,.35,v));
+      c=mix(c,vec3(167./255.,232./255.,25./255.),smoothstep(.35,.48,v));
+      c=mix(c,vec3(1.,229./255.,0.),smoothstep(.48,.62,v));
+      c=mix(c,vec3(1.,123./255.,0.),smoothstep(.62,.79,v));
+      c=mix(c,vec3(1.,41./255.,39./255.),smoothstep(.79,.98,v));
+      return c;
+    }
     void main(){
       vec2 uv=gl_FragCoord.xy/resolution;
       if (wordmark > .5) {
@@ -44,7 +54,7 @@
         float density=exp(-dot(da,da)*2.)
           + .85*exp(-dot(db,db)*2.) + .7*exp(-dot(dc,dc)*2.);
         float coverage=smoothstep(.19,.38,density);
-        vec3 color=thermal(clamp(.28+density*.48, .28, 1.));
+        vec3 color=wordmarkThermal(clamp((density-.19)*.85, 0., 1.));
         gl_FragColor=vec4(mix(vec3(1.),color,coverage),1.);
         return;
       }

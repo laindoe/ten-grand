@@ -157,7 +157,7 @@ main {
   position: relative;
   display: block;
   width: 100%;
-  max-width: 640px;
+  max-width: 720px;
 }
 .cw-hero__wordmark {
   position: relative;
@@ -181,8 +181,8 @@ main {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 28% 52%, #e5dc16 0%, #007938 4%, #00b0e0 8%, transparent 17%),
-    radial-gradient(ellipse at 38% 66%, #be2026 0%, #00b0e0 5%, transparent 13%);
+    radial-gradient(ellipse at 28% 52%, #ffe500 0%, #00ba80 4%, #00cde2 8%, transparent 17%),
+    radial-gradient(ellipse at 38% 66%, #ff2927 0%, #00cde2 5%, transparent 13%);
   pointer-events: none;
 }
 .cw-hero__wordmark-heat {
@@ -223,7 +223,7 @@ main {
   grid-area: icon;
   flex-shrink: 0;
   display: block;
-  width: clamp(120px, 22vw, 260px);
+  width: clamp(100px, 18vw, 220px);
   height: auto;
 }
 
@@ -1399,7 +1399,8 @@ main {
   }
 
   .cw-hero__wordmark-stage {
-    margin: 0 auto;
+    width: calc(100% + 24px);
+    margin: 0 -12px;
   }
 
   /* Same red solid-color-plus-pulse cue treatment as .amass__cue's
@@ -1422,8 +1423,8 @@ main {
 
   .cw-hero__icon {
     justify-self: center;
-    width: 50%;
-    max-width: 220px;
+    width: 40%;
+    max-width: 180px;
   }
 }
 
