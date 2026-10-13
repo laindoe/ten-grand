@@ -241,8 +241,14 @@
   /* A direct child of .broadcasts__sticky (a sibling of the breadcrumb
      and .broadcasts__sticky-inner, not nested inside that 1100px-capped
      container), so its own full width already reaches the true
-     site-frame edges -- same fix as the breadcrumb strip above it. */
-  padding: 24px var(--section-padding-x);
+     site-frame edges -- same fix as the breadcrumb strip above it. The
+     background/canvas stay on this unpadded, uncapped box so they
+     reach those edges; the content's own alignment comes from
+     .voices-heat-band__inner below, sized exactly like
+     .broadcasts__sticky-inner and .broadcasts__results so the icon,
+     title, and CTA line up with the filter row and card grid under it
+     at every viewport width instead of centering independently inside
+     a max-width wider than theirs. */
   border-bottom: 1px solid var(--color-card-border);
 }
 .voices-heat-band::before {
@@ -257,6 +263,7 @@
   position: relative;
   max-width: 1100px;
   margin: 0 auto;
+  padding: 24px var(--section-padding-x);
   display: flex;
   flex-direction: column;
   align-items: center;
