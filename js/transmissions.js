@@ -147,7 +147,7 @@
     stickyInput.value = state.query;
     category.classList.toggle('is-active', state.category !== 'all');
     series.value = state.series;
-    series.options[0].textContent = media.matches ? 'SERIES' : 'BROWSE SERIES';
+    series.options[0].textContent = 'SERIES';
     buttons.forEach(b => { const active = b.dataset.filterPillar === state.category; b.classList.toggle('is-active', active); b.setAttribute('aria-pressed', String(active)); });
     search.hidden = media.matches && !state.searchOpen;
     toggle.setAttribute('aria-expanded', String(state.searchOpen));

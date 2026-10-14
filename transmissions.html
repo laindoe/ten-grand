@@ -51,10 +51,10 @@ permalink: /transmissions/
     <button type="button" class="archive-dock__btn" id="archive-sticky-filters" aria-haspopup="dialog" aria-controls="archive-filter-panel">
       FILTERS <span class="archive-dock__count" id="archive-sticky-count" hidden>0</span>
     </button>
-    <button type="button" class="archive-dock__btn archive-dock__btn--icon" id="archive-sticky-search" aria-haspopup="dialog" aria-controls="archive-filter-panel" aria-label="Search transmissions">
+    <button type="button" class="archive-dock__btn archive-dock__btn--icon" id="archive-sticky-search" aria-haspopup="dialog" aria-controls="archive-filter-panel" aria-label="Search Transmissions">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg>
     </button>
-        <input type="search" class="archive-search archive-sticky-input" id="archive-sticky-input" placeholder="Search transmissions…" aria-label="Search transmissions" />
+        <input type="search" class="archive-search archive-sticky-input" id="archive-sticky-input" placeholder="Search Transmissions…" aria-label="Search Transmissions" />
       </div>
     </div>
   </nav>
@@ -87,8 +87,8 @@ permalink: /transmissions/
         </div>
 
         <div class="archive-filters__row">
-          <select class="archive-select" id="series-filter" aria-label="Browse series">
-            <option value="all">BROWSE SERIES</option>
+          <select class="archive-select" id="series-filter" aria-label="Filter by series">
+            <option value="all">SERIES</option>
             <option value="all">All</option>
             {% assign all_series = site.posts | map: "series" | compact | uniq | sort %}
             {% for series in all_series %}
@@ -97,7 +97,7 @@ permalink: /transmissions/
           </select>
 
           <button type="button" class="archive-search-toggle" id="search-toggle" aria-label="Show search" aria-expanded="false" aria-controls="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></button>
-          <input type="search" class="archive-search" id="search-input" placeholder="Search transmissions&hellip;" aria-label="Search transmissions" />
+          <input type="search" class="archive-search" id="search-input" placeholder="Search Transmissions&hellip;" aria-label="Search Transmissions" />
         </div>
       </div>
     </section>
@@ -215,15 +215,15 @@ permalink: /transmissions/
           <option value="merchandise">Merchandise</option>
           <option value="experiences">Experiences</option>
         </select>
-        <select class="archive-select" id="panel-series-filter" aria-label="Browse series">
-          <option value="all">BROWSE SERIES</option>
+        <select class="archive-select" id="panel-series-filter" aria-label="Filter by series">
+          <option value="all">SERIES</option>
           <option value="all">All</option>
           {% assign all_series = site.posts | map: "series" | compact | uniq | sort %}
           {% for series in all_series %}
           <option value="{{ series | slugify }}">{{ series }}</option>
           {% endfor %}
         </select>
-        <input type="search" class="archive-search" id="panel-search-input" placeholder="Search transmissions&hellip;" aria-label="Search transmissions" />
+        <input type="search" class="archive-search" id="panel-search-input" placeholder="Search Transmissions&hellip;" aria-label="Search Transmissions" />
       </div>
       <div class="archive-filter-panel__actions">
         <button type="button" class="archive-filter-btn" id="archive-filter-panel-clear">CLEAR</button>
@@ -235,6 +235,6 @@ permalink: /transmissions/
 {% include site-footer.html %}
 
   <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=8"></script>
-  <script src="{{ '/js/transmissions.js' | relative_url }}?v=9"></script>
+  <script src="{{ '/js/transmissions.js' | relative_url }}?v=10"></script>
 </body>
 </html>
