@@ -100,3 +100,17 @@ html.grand-scheme-open, html.grand-scheme-open body { overflow: hidden; }
 /* Outlined campaign artwork preserves the supplied typography on both steps. */
 .grand-scheme__wordmark { width: 100%; max-width: 400px; margin: 0 auto; }
 .grand-scheme__wordmark img { display: block; width: 100%; height: auto; }
+
+/* Match the form action to the centered GET THE PLAN button. */
+.grand-scheme .formkit-form[data-uid='db9ca5304a'] .formkit-submit {
+  justify-self: center;
+  width: auto !important;
+  max-width: 100%;
+  margin: 20px auto 0 !important;
+  padding: 18px 40px !important;
+  border: 1px solid var(--gs-ink) !important;
+  background: var(--gs-ink) !important;
+  color: var(--color-text) !important;
+  font: 700 .9rem/1.4 var(--font-body) !important;
+  letter-spacing: .05em;
+}
