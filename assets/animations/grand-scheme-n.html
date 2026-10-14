@@ -762,6 +762,9 @@ window.__anims = {};
 
   // ---------- dom ----------
   var $ = function(id){ return document.getElementById("mer_"+id) || document.createElement("div"); };
+  var mark = $("mark");
+  // Center the box plus the products above it as one composition.
+  var BOX_DROP = 72;
   var m1 = $("m1"), m2 = $("m2");
   var barL = $("barL"), barR = $("barR");
   var flapL = $("flapL"), flapR = $("flapR");
@@ -821,6 +824,11 @@ window.__anims = {};
 
   // ---------- render ----------
   function render(t){
+    var boxPosition = 0;
+    if (t >= T.toBox[0] && t < T.toBox[1]) boxPosition = easeInOut(seg(t, T.toBox));
+    else if (t >= T.toBox[1] && t < T.toN[0]) boxPosition = 1;
+    else if (t >= T.toN[0] && t < T.toN[1]) boxPosition = 1 - easeInOut(seg(t, T.toN));
+    mark.setAttribute("transform", "translate(0 " + BOX_DROP * boxPosition + ")");
     // beams: N -> box top/bottom -> N
     var from = "N", to = "N", p = 0;
     if (t >= T.toBox[0] && t < T.toBox[1]){

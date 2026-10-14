@@ -74,3 +74,25 @@ html.grand-scheme-open, html.grand-scheme-open body { overflow: hidden; }
   .grand-scheme__target { width: min(100%, 200px); }
   .grand-scheme .formkit-form[data-uid='db9ca5304a'] .formkit-fields { grid-template-columns: 1fr; }
 }
+
+[data-grand-scheme-intro][hidden], [data-grand-scheme-fields][hidden] { display: none; }
+.grand-scheme__next {
+  display: block; width: 100%; max-width: 460px; margin: 20px auto 0;
+  padding: 10px 20px; border: 1px solid var(--gs-ink); border-radius: 0;
+  background: var(--gs-ink); color: #f7f7f4;
+  font: 700 .9rem/1.4 var(--font-body); letter-spacing: .04em; cursor: pointer;
+}
+[data-grand-scheme-fields] { margin-top: 28px; }
+.grand-scheme__back { margin-top: 20px; padding: 8px; background: transparent; border: 0; color: var(--gs-ink); font: 700 .8rem var(--font-body); cursor: pointer; }
+.grand-scheme [data-element="powered-by"] { margin-top: 24px !important; }
+
+/* Desktop blueprint sheet uses US Letter's 8.5 by 11 portrait ratio. */
+@media (min-width: 760px) {
+  .grand-scheme {
+    box-sizing: border-box;
+    width: min(560px, calc((100dvh - 48px) * .77272727), calc(100vw - 48px));
+    height: min(724.70588px, calc(100dvh - 48px), calc((100vw - 48px) * 1.29411765));
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+  }
+}

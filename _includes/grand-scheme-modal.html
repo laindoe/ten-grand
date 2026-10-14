@@ -3,7 +3,8 @@
   <p class="grand-scheme__kicker">Ten Grand Company Presents</p>
   <p class="grand-scheme__the">THE</p>
   <h2 id="grand-scheme-title" class="grand-scheme__title">GRAND<br>SCHEME</h2>
-  <p id="grand-scheme-description" class="grand-scheme__description">Blueprint for a new creative economy.</p>
+  <div data-grand-scheme-intro>
+  <p id="grand-scheme-description" class="grand-scheme__description">Blueprint for a new creative economy</p>
   <div class="grand-scheme__target">
     <svg viewBox="0 0 400 400" aria-hidden="true">
       <g fill="none" stroke="currentColor">
@@ -14,14 +15,18 @@
       </g>
     </svg>
     <div class="grand-scheme__core">
-      <iframe data-grand-scheme-animation data-src="{{ '/assets/animations/grand-scheme-n.html' | relative_url }}" title="N logo morphing through Technology, Entertainment, Merchandise and Experiences" tabindex="-1"></iframe>
+      <iframe data-grand-scheme-animation data-src="{{ '/assets/animations/grand-scheme-n.html' | relative_url }}?v=2" title="N logo morphing through Technology, Entertainment, Merchandise and Experiences" tabindex="-1"></iframe>
     </div>
   </div>
-  <p class="grand-scheme__delivery">The Grand Scheme unfolds in your inbox.</p>
+  <button type="button" class="grand-scheme__next" data-grand-scheme-next>GET THE PLAN &rarr;</button>
+  </div>
+  <div data-grand-scheme-fields hidden>
   <div class="grand-scheme__signup" data-grand-scheme-signup aria-busy="false">
     <p class="grand-scheme__form-status" data-grand-scheme-form-status role="status" hidden></p>
     <button type="button" class="grand-scheme__retry" data-grand-scheme-retry hidden>Try loading the form again</button>
     <noscript>Please enable JavaScript to sign up for the Grand Scheme email rollout.</noscript>
   </div>
   <p class="grand-scheme__consent">Sign up for the Grand Scheme email rollout. Check your inbox to confirm your email. You can unsubscribe at any time.</p>
+  <button type="button" class="grand-scheme__back" data-grand-scheme-back>&larr; BACK</button>
+  </div>
 </dialog>

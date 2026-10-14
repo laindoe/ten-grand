@@ -6,6 +6,23 @@
   const signup = modal.querySelector('[data-grand-scheme-signup]');
   const formStatus = modal.querySelector('[data-grand-scheme-form-status]');
   const retry = modal.querySelector('[data-grand-scheme-retry]');
+  const intro = modal.querySelector('[data-grand-scheme-intro]');
+  const fields = modal.querySelector('[data-grand-scheme-fields]');
+  const next = modal.querySelector('[data-grand-scheme-next]');
+  const back = modal.querySelector('[data-grand-scheme-back]');
+  function showStep(showFields) {
+    intro.hidden = showFields;
+    fields.hidden = !showFields;
+    modal.scrollTop = 0;
+    playback();
+    if (showFields) {
+      loadSignupForm();
+      const first = signup.querySelector('input');
+      (first || back).focus({ preventScroll: true });
+    } else next.focus({ preventScroll: true });
+  }
+  next.addEventListener('click', () => showStep(true));
+  back.addEventListener('click', () => showStep(false));
   let signupLoading = false;
   let signupScript = null;
   const fieldLabels = {
@@ -39,10 +56,11 @@
       button.type = 'submit';
       button.classList.add('grand-scheme__cta');
       const caption = button.querySelector('span');
-      if (caption) caption.textContent = 'GET THE PLAN';
+      if (caption) caption.textContent = 'SUBMIT';
     }
     const errors = form.querySelector('[data-element="errors"]');
     if (errors) errors.setAttribute('role', 'alert');
+    if (!fields.hidden && modal.open) form.querySelector('input')?.focus({ preventScroll: true });
   }
   if (signup) {
     const observer = new MutationObserver(styleSignupForm);
@@ -82,7 +100,7 @@
   let scrollY = 0;
   let bodyStyle = '';
   function playback() {
-    animation.contentWindow?.postMessage({ type: 'grand-scheme:playback', active: modal.open }, location.origin);
+    animation.contentWindow?.postMessage({ type: 'grand-scheme:playback', active: modal.open && !intro.hidden }, location.origin);
   }
   animation.addEventListener('load', playback);
   document.querySelectorAll('[data-grand-scheme-open]').forEach((button) => {
@@ -92,7 +110,7 @@
       scrollY = window.scrollY;
       bodyStyle = document.body.style.cssText;
       modal.showModal();
-      loadSignupForm();
+      showStep(false);
       document.documentElement.classList.add('grand-scheme-open');
       // Fixed positioning also locks the page on mobile Safari.
       Object.assign(document.body.style, { position: 'fixed', top: `-${scrollY}px`, width: '100%' });
