@@ -124,3 +124,21 @@ html.grand-scheme-open, html.grand-scheme-open body { overflow: hidden; }
   font: inherit !important;
   line-height: inherit !important;
 }
+
+/* Desktop rollover lets the blueprint show through both actions. */
+@media (min-width: 760px) and (hover: hover) and (pointer: fine) {
+  .grand-scheme__next,
+  .grand-scheme .formkit-form[data-uid='db9ca5304a'] .formkit-submit {
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+  .grand-scheme__next:hover {
+    background: transparent;
+    color: var(--gs-ink);
+    border-color: var(--gs-ink);
+  }
+  .grand-scheme .formkit-form[data-uid='db9ca5304a'] .formkit-submit:hover {
+    background: transparent !important;
+    color: var(--gs-ink) !important;
+    border-color: var(--gs-ink) !important;
+  }
+}
