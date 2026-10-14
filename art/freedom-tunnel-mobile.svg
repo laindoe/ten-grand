@@ -9,7 +9,7 @@
       <stop offset="0" stop-color="#fb2f7b"/>
       <stop offset="1" stop-color="#a91fa6"/>
     </linearGradient>
-    <radialGradient id="mobile-orb"><stop offset=".13" stop-color="#be2026"/><stop offset=".52" stop-color="#e5dc16"/><stop offset=".75" stop-color="#007938"/><stop offset=".93" stop-color="#00b0e0"/></radialGradient>
+    <radialGradient id="mobile-orb"><stop offset="0" stop-color="#EB1528"/><stop offset="0.18" stop-color="#FF3220"/><stop offset="0.42" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF19"/><stop offset="0.73" stop-color="#14C980"/><stop offset="0.88" stop-color="#00CDE8"/><stop offset="1" stop-color="#45CDF6"/></radialGradient>
     <filter id="mobile-orb-glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="21"/></filter>
   </defs>
   <g clip-path="url(#clippath)">
