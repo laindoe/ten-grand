@@ -663,7 +663,7 @@ main {
   .archive-search-toggle {
     display: grid; place-items: center; width: 44px; height: 44px; padding: 10px;
     background: transparent; color: var(--color-text);
-    border: 1px solid var(--color-card-border); border-radius: 0; cursor: pointer;
+    border: 0; border-radius: 0; cursor: pointer;
   }
   .archive-search-toggle svg { width: 24px; height: 24px; }
   .archive-filters .archive-search { grid-column: 1 / -1; width: 100%; min-width: 0; font-size: 16px; }
@@ -1059,4 +1059,15 @@ main {
 .archive-select:focus-visible {
   outline: none;
   box-shadow: none;
+}
+
+@media (max-width: 759px) {
+  .archive-search-toggle:focus,
+  .archive-search-toggle:focus-visible { outline: none; box-shadow: none; }
+}
+
+/* The sticky archive title stays white in every filter state. */
+.archive-crumb__root,
+.archive-crumb__root[aria-current="page"] {
+  color: var(--color-text);
 }
