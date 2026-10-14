@@ -112,24 +112,20 @@ main {
   padding-bottom: 32px;
 }
 
-/* Grid (not flex) so the three pieces -- heading, icon, subtitle --
-   can be reordered per breakpoint via grid-template-areas instead of
-   DOM order: desktop keeps heading+subtitle stacked in a left column
-   beside the icon, mobile stacks all three in heading / icon /
-   subtitle order (see the max-width:759px override below). */
+/* One centered stack: megaphone, wordmark, then subtitle. */
 .cw-hero__inner {
   display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    "heading icon"
-    "subtitle icon";
+  grid-template-columns: 1fr;
+  grid-template-areas: "icon" "heading" "subtitle";
   align-items: center;
-  column-gap: 24px;
-  row-gap: 0;
+  justify-items: center;
+  gap: 16px;
+  text-align: center;
 }
 
 .cw-hero__heading {
   grid-area: heading;
+  width: 100%;
   min-width: 0;
 }
 
@@ -158,6 +154,7 @@ main {
   display: block;
   width: 100%;
   max-width: 720px;
+  margin-inline: auto;
 }
 .cw-hero__wordmark {
   position: relative;
@@ -1888,3 +1885,5 @@ main {
   outline: none !important;
   box-shadow: none !important;
 }
+
+.cw-hero__subtitle { color: var(--color-text); text-align: center; }
