@@ -5226,3 +5226,19 @@ input[type="search"]:not(#broadcasts-search-full):not(#broadcasts-search-condens
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l12 12M18 6L6 18' stroke='black' stroke-width='3' fill='none'/%3E%3C/svg%3E") center / contain no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l12 12M18 6L6 18' stroke='black' stroke-width='3' fill='none'/%3E%3C/svg%3E") center / contain no-repeat;
 }
+
+/* Prevent page-edge bounce from separating fixed and sticky headers. */
+html, body { overscroll-behavior-y: none; }
+
+body:has(#archive-crumb:not([hidden])) { --archive-primary-nav-height: var(--t-nav-height, 64px); }
+body:has(:is(#voices-condensed, #broadcasts-condensed):not([hidden])) { --archive-primary-nav-height: var(--b-nav-height, 64px); }
+body:has(:is(#archive-crumb, #voices-condensed, #broadcasts-condensed):not([hidden])) .site-frame {
+  /* Reserve the nav's original space when it becomes fixed. */
+  padding-top: var(--archive-primary-nav-height);
+}
+body:has(:is(#archive-crumb, #voices-condensed, #broadcasts-condensed):not([hidden])) .site-frame > .nav {
+  position: fixed;
+  top: 0;
+  left: calc(var(--frame-margin) + 1px);
+  right: calc(var(--frame-margin) + 1px);
+}

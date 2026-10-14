@@ -30,7 +30,7 @@ permalink: /transmissions/
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=162" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=163" />
   <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=37" />
 </head>
 <body>
@@ -72,7 +72,7 @@ permalink: /transmissions/
       <div class="archive-inner archive-filters__controls">
         <select class="archive-select archive-category" id="category-filter" aria-label="Filter by category">
           <option value="all">CATEGORIES</option>
-          <option value="all">All</option>
+          <option value="all">ALL</option>
           <option value="technology">Technology</option>
           <option value="entertainment">Entertainment</option>
           <option value="merchandise">Merchandise</option>
@@ -89,10 +89,10 @@ permalink: /transmissions/
         <div class="archive-filters__row">
           <select class="archive-select" id="series-filter" aria-label="Filter by series">
             <option value="all">SERIES</option>
-            <option value="all">All</option>
+            <option value="all">ALL</option>
             {% assign all_series = site.posts | map: "series" | compact | uniq | sort %}
             {% for series in all_series %}
-            <option value="{{ series | slugify }}">{{ series }}</option>
+            <option value="{{ series | slugify }}">{{ series | upcase }}</option>
             {% endfor %}
           </select>
 
@@ -209,7 +209,7 @@ permalink: /transmissions/
       <div class="archive-filter-panel__body">
         <select class="archive-select archive-category" id="panel-category-filter" aria-label="Filter by category">
           <option value="all">CATEGORIES</option>
-          <option value="all">All</option>
+          <option value="all">ALL</option>
           <option value="technology">Technology</option>
           <option value="entertainment">Entertainment</option>
           <option value="merchandise">Merchandise</option>
@@ -217,10 +217,10 @@ permalink: /transmissions/
         </select>
         <select class="archive-select" id="panel-series-filter" aria-label="Filter by series">
           <option value="all">SERIES</option>
-          <option value="all">All</option>
+          <option value="all">ALL</option>
           {% assign all_series = site.posts | map: "series" | compact | uniq | sort %}
           {% for series in all_series %}
-          <option value="{{ series | slugify }}">{{ series }}</option>
+          <option value="{{ series | slugify }}">{{ series | upcase }}</option>
           {% endfor %}
         </select>
         <input type="search" class="archive-search" id="panel-search-input" placeholder="SEARCH" aria-label="Search Transmissions" />
