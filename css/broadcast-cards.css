@@ -92,13 +92,12 @@
 .broadcast-modal__close:hover { border-color: #fb2f7b; }
 .cw-broadcast-card:focus { outline: none; }
 
-/* Keyboard/mouse only -- a touch tap shouldn't leave a focus ring
-   sitting on the button afterward. */
-@media (hover: hover) and (pointer: fine) {
-  .cw-broadcast-card__read-more:focus-visible,
-  .broadcast-modal button:focus-visible,
-  .broadcast-modal a:focus-visible { outline: 2px solid #fb2f7b; outline-offset: 4px; }
-}
+.cw-broadcast-card__read-more:focus,
+.cw-broadcast-card__read-more:focus-visible,
+.broadcast-modal button:focus,
+.broadcast-modal button:focus-visible,
+.broadcast-modal a:focus,
+.broadcast-modal a:focus-visible { outline: none; box-shadow: none; }
 .broadcast-modal {
   position: fixed;
   inset: 0;
