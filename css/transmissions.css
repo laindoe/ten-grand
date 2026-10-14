@@ -1044,3 +1044,12 @@ main {
     line-height: 1.2;
   }
 }
+
+/* Match the regular Transmissions search to the boxed sticky search. */
+#search-input {
+  padding-left: 46px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f3f3f4' stroke-width='2'%3E%3Ccircle cx='10' cy='10' r='7'/%3E%3Cpath d='m15 15 6 6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 14px center;
+  background-size: 20px 20px;
+}
