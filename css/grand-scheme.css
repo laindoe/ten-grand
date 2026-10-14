@@ -114,3 +114,13 @@ html.grand-scheme-open, html.grand-scheme-open body { overflow: hidden; }
   font: 700 .9rem/1.4 var(--font-body) !important;
   letter-spacing: .05em;
 }
+
+/* Kit pads its inner caption as well; keep padding on the button only. */
+.grand-scheme .formkit-form[data-uid='db9ca5304a'] .formkit-submit > span {
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  font: inherit !important;
+  line-height: inherit !important;
+}
