@@ -1074,3 +1074,13 @@ main {
 
 /* The main nav's bottom border supplies this shared divider. */
 .archive-crumb { border-top: 0; }
+
+/* Footer CTA shares the vivid thermal animation of the community banner. */
+.archive-dock .archive-dock__wall {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(110deg, #EB152880, #FF322080 18%, #FFDC0080 42%, #B8EF1980 58%, #14C98080 73%, #00CDE880 88%, #45CDF680);
+}
+.archive-dock__heat { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.archive-dock__label { position: relative; z-index: 1; }
