@@ -115,6 +115,9 @@ a {
   border: 1px solid var(--color-card-border);
 }
 
+/* The navigation supplies the frame's top edge; avoid stacked 1px lines. */
+.site-frame:has(> .nav) { border-top: 0; }
+
 /* ---------- Site footer ---------- */
 
 .site-footer {
