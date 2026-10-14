@@ -2,7 +2,7 @@
    TEN GRAND — Community Wall
    Reuses tokens/classes from style.css (colors, .site-frame, .nav,
    .section-eyebrow, .site-footer). Role accent colors are drawn from
-   the site's existing "imagination" orb gradient, not invented here.
+   the shared saturated thermal reference palette.
    ============================================================ */
 
 :root {
@@ -11,14 +11,14 @@
      (var(--color-accent)) everywhere on this page, matching the
      bridge artwork's mountain gradient (#br-pink-gradient's #fb2f7b). */
   --cw-color-accent: #fb2f7b;
-  --cw-color-create: #dbe916;
-  --cw-color-build: #da2126;
-  --cw-color-fund: #4fb620;
-  --cw-color-support: #00b0e0;
-  --cw-color-create-blend: #e5dc16;
-  --cw-color-build-blend: #da2126;
-  --cw-color-fund-blend: #77d34e;
-  --cw-color-support-blend: #1fe0c7;
+  --cw-color-create: var(--thermal-yellow);
+  --cw-color-build: var(--thermal-red);
+  --cw-color-fund: var(--thermal-green);
+  --cw-color-support: var(--thermal-cyan);
+  --cw-color-create-blend: var(--thermal-lime);
+  --cw-color-build-blend: var(--thermal-cherry);
+  --cw-color-fund-blend: var(--thermal-lime);
+  --cw-color-support-blend: var(--thermal-blue);
 }
 
 main {
@@ -181,8 +181,8 @@ main {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 28% 52%, #ffe500 0%, #00ba80 4%, #00cde2 8%, transparent 17%),
-    radial-gradient(ellipse at 38% 66%, #ff2927 0%, #00cde2 5%, transparent 13%);
+    radial-gradient(ellipse at 28% 52%, var(--thermal-red) 0%, var(--thermal-yellow) 4%, var(--thermal-lime) 7%, var(--thermal-green) 10%, var(--thermal-cyan) 13%, transparent 19%),
+    radial-gradient(ellipse at 38% 66%, var(--thermal-cherry) 0%, var(--thermal-yellow) 4%, var(--thermal-green) 7%, var(--thermal-cyan) 10%, transparent 16%);
   pointer-events: none;
 }
 .cw-hero__wordmark-heat {
@@ -581,8 +581,8 @@ main {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(ellipse at 0% 25%, #be202677, transparent 45%),
-    radial-gradient(ellipse at 100% 80%, #00b0e066, transparent 45%);
+    radial-gradient(ellipse at 0% 25%, #ff322088, transparent 45%),
+    radial-gradient(ellipse at 100% 80%, #00cde877, transparent 45%);
   pointer-events: none;
 }
 .cw-campaign__heat {

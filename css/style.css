@@ -8,6 +8,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
+  --thermal-cherry: #EB1528;
+  --thermal-red: #FF3220;
+  --thermal-yellow: #FFDC00;
+  --thermal-lime: #B8EF19;
+  --thermal-green: #14C980;
+  --thermal-cyan: #00CDE8;
+  --thermal-blue: #45CDF6;
+
   /* Pulled from Figma "intro" frame design context */
   --color-bg: #141414;
   --color-card: rgba(217, 217, 217, 0);
@@ -1283,7 +1291,7 @@ a {
 .middle-path__art .mp-destination-backdrop { display: block; }
 .middle-path__art .mp-mobile-mountain-art { display: none; }
 .middle-path__art .mp-orb-glow {
-  fill: #00b0e0;
+  fill: var(--thermal-cyan);
   opacity: .58;
   filter: url(#mp-orb-glow);
 }
@@ -2045,7 +2053,7 @@ a {
   transform-origin:447.75px 87.91px;
 }
 .route__art .rt3-start-glow {
-  fill:#00b0e0;
+  fill:var(--thermal-cyan);
   opacity:.48;
   transform:scale(1.12);
   transform-origin:447.75px 87.91px;
@@ -2061,7 +2069,7 @@ a {
   transform-origin:478.86px 1742.74px;
 }
 .route__art .rt3-impact-glow {
-  fill:#00b0e0;
+  fill:var(--thermal-cyan);
   opacity:0;
   transform:scale(.75);
   transform-origin:478.86px 1742.74px;
@@ -2797,11 +2805,11 @@ a {
 @property --amass-pulse {
   syntax: '<color>';
   inherits: true;
-  initial-value: #be2026;
+  initial-value: #EB1528;
 }
 
 .amass__timeline-toggle {
-  --amass-pulse: #be2026;
+  --amass-pulse: var(--thermal-cherry);
   grid-row: 1;
   grid-column: 2;
   justify-self: center;
@@ -2830,13 +2838,13 @@ a {
    property above; border-color and the pulse ring both read var(--amass-pulse)
    live, so they follow it automatically. */
 @keyframes amassHue {
-  0%      { --amass-pulse: #be2026; }
-  16.667% { --amass-pulse: #c54123; }
-  33.333% { --amass-pulse: #d9a11b; }
-  50%     { --amass-pulse: #96ba22; }
-  66.667% { --amass-pulse: #008a6a; }
-  83.333% { --amass-pulse: #00b0e0; }
-  100%    { --amass-pulse: #be2026; }
+  0%, 100% { --amass-pulse: var(--thermal-cherry); }
+  14.286% { --amass-pulse: var(--thermal-red); }
+  28.571% { --amass-pulse: var(--thermal-yellow); }
+  42.857% { --amass-pulse: var(--thermal-lime); }
+  57.143% { --amass-pulse: var(--thermal-green); }
+  71.429% { --amass-pulse: var(--thermal-cyan); }
+  85.714% { --amass-pulse: var(--thermal-blue); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -4094,10 +4102,10 @@ select.amass-flow__field {
   transition: stroke 0.18s ease, fill 0.18s ease, fill-opacity 0.18s ease;
 }
 
-.amass-role-card--create { --role-accent: #dbe916; }
-.amass-role-card--build { --role-accent: #da2126; }
-.amass-role-card--fund { --role-accent: #4fb620; }
-.amass-role-card--support { --role-accent: #00b0e0; }
+.amass-role-card--create { --role-accent: var(--thermal-yellow); }
+.amass-role-card--build { --role-accent: var(--thermal-red); }
+.amass-role-card--fund { --role-accent: var(--thermal-green); }
+.amass-role-card--support { --role-accent: var(--thermal-cyan); }
 
 .amass-role-card input:checked + .amass-role-card__content,
 .amass-role-card input:focus-visible + .amass-role-card__content {

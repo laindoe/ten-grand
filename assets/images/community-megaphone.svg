@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260" fill="none">
   <defs>
-    <linearGradient id="spectrum" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#be2026"/><stop offset=".2" stop-color="#f34425"/><stop offset=".42" stop-color="#e5dc16"/><stop offset=".57" stop-color="#007938"/><stop offset=".75" stop-color="#00b0e0"/><stop offset="1" stop-color="#6535e8"/></linearGradient>
-    <radialGradient id="voice"><stop stop-color="#be2026"/><stop offset=".25" stop-color="#e95120"/><stop offset=".5" stop-color="#e5dc16"/><stop offset=".72" stop-color="#007938"/><stop offset="1" stop-color="#00b0e0"/></radialGradient>
+    <linearGradient id="spectrum" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EB1528"/><stop offset="0.18" stop-color="#FF3220"/><stop offset="0.42" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF19"/><stop offset="0.73" stop-color="#14C980"/><stop offset="0.88" stop-color="#00CDE8"/><stop offset="1" stop-color="#45CDF6"/></linearGradient>
+    <radialGradient id="voice"><stop offset="0" stop-color="#EB1528"/><stop offset="0.18" stop-color="#FF3220"/><stop offset="0.42" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF19"/><stop offset="0.73" stop-color="#14C980"/><stop offset="0.88" stop-color="#00CDE8"/><stop offset="1" stop-color="#45CDF6"/></radialGradient>
   </defs>
   <g stroke="url(#spectrum)" stroke-width="2.3" stroke-linejoin="round">
     <!-- Perspective cone and wireframe barrel. -->

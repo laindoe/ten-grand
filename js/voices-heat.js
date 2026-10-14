@@ -19,24 +19,16 @@
         + .55*sin(p.x*5.2+p.y*3.2+time*.09);
     }
     vec3 thermal(float v) {
-      vec3 c = vec3(.015,.015,.025);
-      // Exact stops from community-wall-eye-static.svg, cool to hot.
-      c=mix(c,vec3(0.,176./255.,224./255.),smoothstep(.20,.35,v));
-      c=mix(c,vec3(0.,121./255.,56./255.),smoothstep(.35,.50,v));
-      c=mix(c,vec3(229./255.,220./255.,22./255.),smoothstep(.50,.70,v));
-      c=mix(c,vec3(190./255.,32./255.,38./255.),smoothstep(.70,.90,v));
+      vec3 c=vec3(69./255.,205./255.,246./255.);
+      c=mix(c,vec3(0.,205./255.,232./255.),smoothstep(0.,.12,v));
+      c=mix(c,vec3(20./255.,201./255.,128./255.),smoothstep(.12,.27,v));
+      c=mix(c,vec3(184./255.,239./255.,25./255.),smoothstep(.27,.42,v));
+      c=mix(c,vec3(1.,220./255.,0.),smoothstep(.42,.58,v));
+      c=mix(c,vec3(1.,50./255.,32./255.),smoothstep(.58,.82,v));
+      c=mix(c,vec3(235./255.,21./255.,40./255.),smoothstep(.82,1.,v));
       return c;
     }
-    // Bright cyan-to-red spectrum for the supplied white-letter reference.
-    vec3 wordmarkThermal(float v) {
-      vec3 c=vec3(0.,205./255.,226./255.);
-      c=mix(c,vec3(0.,186./255.,128./255.),smoothstep(.18,.35,v));
-      c=mix(c,vec3(167./255.,232./255.,25./255.),smoothstep(.35,.48,v));
-      c=mix(c,vec3(1.,229./255.,0.),smoothstep(.48,.62,v));
-      c=mix(c,vec3(1.,123./255.,0.),smoothstep(.62,.79,v));
-      c=mix(c,vec3(1.,41./255.,39./255.),smoothstep(.79,.98,v));
-      return c;
-    }
+    vec3 wordmarkThermal(float v) { return thermal(v); }
     void main(){
       vec2 uv=gl_FragCoord.xy/resolution;
       if (wordmark > .5) {
@@ -63,7 +55,7 @@
       vec3 color=thermal(v);
       // A dark column follows the content on both narrow and wide cards.
       float center=1.-smoothstep(.10,.49,abs(uv.x-darkCenter));
-      float brightness=mix(.48,.055,center)*intensity;
+      float brightness=mix(.75,.08,center)*intensity;
       gl_FragColor=vec4(mix(vec3(.078),color,brightness),1.);
     }`;
   function compile(type, source) {
@@ -104,7 +96,7 @@
       center = (panel.left + panel.width / 2 - bounds.left) / Math.max(bounds.width, 1);
     }
     gl.uniform1f(darkCenter, center);
-    gl.uniform1f(intensity, isHeader ? (mobile.matches ? .975 : .65) : 1);
+    gl.uniform1f(intensity, isHeader ? (mobile.matches ? 1. : .85) : 1);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resolution, canvas.width, canvas.height);
     gl.uniform1f(time, reduced.matches ? 0 : elapsed);
