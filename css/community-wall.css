@@ -1860,3 +1860,27 @@ main {
   font-weight: 400;
 }
 .voices-heat-band .cw-campaign__counter { margin: 0; }
+
+/* Dedicated Kit invitation form, styled within the existing network modal. */
+.cw-join__signup { text-align: left; }
+.cw-join__consent { margin-top: 18px; color: var(--color-text-muted); font-size: .75rem; line-height: 1.5; }
+.cw-join__signup [data-kit-status] { color: var(--color-text-muted); font-size: .9rem; line-height: 1.5; }
+.cw-join__signup [data-kit-retry] { padding: 12px; background: transparent; border: 1px solid currentColor; color: var(--color-text); font: inherit; cursor: pointer; }
+.cw-join__signup .formkit-form[data-uid='5c335c76f2'] { width: 100% !important; max-width: none !important; min-width: 0 !important; margin: 0 !important; background: transparent !important; font-family: var(--font-body) !important; }
+.cw-join__signup .formkit-form[data-uid='5c335c76f2'] [data-style='clean'] { padding: 0 !important; }
+.cw-join__signup .formkit-form[data-uid='5c335c76f2'] .formkit-fields { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0 !important; }
+.cw-join__signup .formkit-form[data-uid='5c335c76f2'] .formkit-field { min-width: 0; margin: 0 !important; }
+.cw-join__signup .formkit-form[data-uid='5c335c76f2'] .formkit-field:nth-child(n+3),
+.cw-join__signup .formkit-form[data-uid='5c335c76f2'] .formkit-submit { grid-column: 1 / -1; }
+.cw-join__signup .formkit-field label { display: block; margin-bottom: 7px; color: var(--color-text-muted); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.cw-join__signup .formkit-form[data-uid='5c335c76f2'] .formkit-input { width: 100% !important; padding: 13px 12px !important; border: 1px solid var(--color-text-muted) !important; border-radius: 0 !important; background: transparent !important; color: var(--color-text) !important; font: 400 1rem/1.4 var(--font-body) !important; box-shadow: none !important; }
+.cw-join__signup .formkit-form[data-uid='5c335c76f2'] .formkit-submit { width: 100% !important; margin: 4px 0 0 !important; padding: 8px !important; border-radius: 0 !important; background: var(--color-text) !important; color: var(--color-bg) !important; font: 700 .85rem/1.4 var(--font-body) !important; pointer-events: auto; cursor: pointer; }
+.cw-join__signup .formkit-input:focus-visible, .cw-join__signup .formkit-submit:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
+.cw-join__signup .formkit-form[data-uid='5c335c76f2'] .formkit-alert { font-family: var(--font-body); font-size: .9rem; line-height: 1.5; }
+.cw-join__signup [data-element='powered-by'] { filter: invert(1); }
+@media (max-width: 600px) {
+  .cw-join__signup .formkit-form[data-uid='5c335c76f2'] .formkit-fields { grid-template-columns: 1fr; }
+}
+#cw-join-modal .cw-join__panel { max-width: 520px; max-height: calc(100dvh - 48px); overflow-y: auto; overscroll-behavior: contain; }
+.cw-join__signup .formkit-submit > span { background: transparent !important; }
+.cw-join__signup .formkit-input:focus-visible, .cw-join__signup .formkit-submit:focus-visible { outline: 2px solid var(--color-text) !important; outline-offset: 3px; }

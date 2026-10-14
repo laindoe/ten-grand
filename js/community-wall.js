@@ -95,6 +95,7 @@
       lockScroll();
       modal.classList.add("is-open");
       modal.setAttribute("aria-hidden", "false");
+      modal.dispatchEvent(new CustomEvent("modal:open"));
       document.body.classList.add("modal-open");
       modal.querySelector(".modal__close").focus({ preventScroll: true });
     }
@@ -115,6 +116,16 @@
     });
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && modal.classList.contains("is-open")) closeModal();
+      if (event.key === "Tab" && modal.classList.contains("is-open")) {
+        var focusable = Array.from(modal.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex="0"]'))
+          .filter(function (element) { return element.getClientRects().length > 0; });
+        var first = focusable[0], last = focusable[focusable.length - 1];
+        if (first && event.shiftKey && document.activeElement === first) {
+          event.preventDefault(); last.focus();
+        } else if (last && !event.shiftKey && document.activeElement === last) {
+          event.preventDefault(); first.focus();
+        }
+      }
     });
   }
 
