@@ -1898,3 +1898,12 @@ main {
 .cw-join__signup [data-element="powered-by"] {
   margin-top: 24px !important;
 }
+
+/* Preserve the invitation controls' single borders when focused. */
+.cw-join__signup .formkit-input:focus,
+.cw-join__signup .formkit-input:focus-visible,
+.cw-join__signup .formkit-submit:focus,
+.cw-join__signup .formkit-submit:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
