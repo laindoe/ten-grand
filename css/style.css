@@ -2428,11 +2428,11 @@ a {
 .bridge__art .bridge-sun-core { fill: url(#br-sun-gradient); }
 .bridge__art .bridge-sun-glow {
   fill: url(#br-sun-halo-gradient);
-  opacity: .48;
+  opacity: .28;
 }
 @keyframes bridgeSunGlowPulse {
-  0%, 100% { opacity: .48; }
-  42%, 58% { opacity: .8; }
+  0%, 100% { opacity: .28; }
+  42%, 58% { opacity: .45; }
 }
 
 /* The water's light-streaks get the same glow technique as the sun -- a
