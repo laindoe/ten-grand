@@ -1889,3 +1889,12 @@ main {
 #cw-join-modal .cw-join__panel { max-width: 520px; max-height: calc(100dvh - 48px); overflow-y: auto; overscroll-behavior: contain; }
 .cw-join__signup .formkit-submit > span { background: transparent !important; }
 .cw-join__signup .formkit-input:focus-visible, .cw-join__signup .formkit-submit:focus-visible { outline: 2px solid var(--color-text) !important; outline-offset: 3px; }
+
+.cw-join__step[hidden] { display: none; }
+.cw-join__next { pointer-events: auto; width: 100%; margin-top: 24px; padding: 16px; font: 700 .85rem var(--font-body); cursor: pointer; }
+.cw-join__back { margin-top: 20px; border: 0; background: transparent; color: var(--color-text); font: 700 .8rem var(--font-body); cursor: pointer; }
+
+/* Separate the invitation submit action from Kit's attribution. */
+.cw-join__signup [data-element="powered-by"] {
+  margin-top: 24px !important;
+}

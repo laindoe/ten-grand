@@ -14,7 +14,7 @@ permalink: /community-wall/
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=163" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=143" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=145" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=44" />
 </head>
 <body>
@@ -223,17 +223,21 @@ permalink: /community-wall/
       <h3 class="cw-join__lockup" id="cw-join-modal-title">
         <img class="cw-join__logo" src="{{ '/assets/images/logo-white-network.png' | relative_url }}" alt="Ten Grand Network" width="813" height="428">
       </h3>
+      <div class="cw-join__step" data-invitation-intro>
       <div class="modal__body cw-join__body">
         <p class="cw-join__subtitle">A curated network for creators, builders, investors, and tastemakers shaping what comes next.</p>
-        <p class="cw-join__doors">Doors Open 2027</p>
-        <p class="cw-join__fineprint">Invitations are extended to people with well-crafted work, clear vision, and something meaningful to contribute.</p>
       </div>
-      <div class="cw-join__signup" data-kit-signup data-kit-uid="5c335c76f2" data-kit-button="REQUEST AN INVITATION" aria-busy="false">
+      <button type="button" class="cw-join__cta cw-join__next" data-invitation-next>REQUEST AN INVITATION &rarr;</button>
+      </div>
+      <div class="cw-join__step" data-invitation-fields hidden>
+      <div class="cw-join__signup" data-kit-signup data-kit-uid="5c335c76f2" data-kit-button="SUBMIT" aria-busy="false">
         <p data-kit-status role="status" hidden></p>
         <button type="button" data-kit-retry hidden>Try loading the form again</button>
         <noscript>Please enable JavaScript to request an invitation.</noscript>
       </div>
       <p class="cw-join__consent">Submit your details to request an invitation. Check your inbox to confirm your email. You can unsubscribe at any time.</p>
+      <button type="button" class="cw-join__back" data-invitation-back>&larr; BACK</button>
+      </div>
     </div>
   </div>
 
@@ -253,7 +257,7 @@ permalink: /community-wall/
   <script src="{{ '/js/voices-secure-submit.js' | relative_url }}?v=3"></script>
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=17"></script>
   <script src="{{ '/js/voice-equalizer.js' | relative_url }}?v=3"></script>
-  <script src="{{ '/js/kit-signup.js' | relative_url }}?v=1"></script>
+  <script src="{{ '/js/kit-signup.js' | relative_url }}?v=2"></script>
   <script src="{{ '/js/community-wall.js' | relative_url }}?v=34"></script>
   <script src="{{ '/js/community-ticker.js' | relative_url }}?v=2"></script>
   <script src="{{ '/js/broadcasts.js' | relative_url }}?v=8"></script>
