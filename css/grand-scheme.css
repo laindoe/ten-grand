@@ -77,10 +77,10 @@ html.grand-scheme-open, html.grand-scheme-open body { overflow: hidden; }
 
 [data-grand-scheme-intro][hidden], [data-grand-scheme-fields][hidden] { display: none; }
 .grand-scheme__next {
-  display: block; width: 100%; max-width: 460px; margin: 20px auto 0;
-  padding: 10px 20px; border: 1px solid var(--gs-ink); border-radius: 0;
-  background: var(--gs-ink); color: #f7f7f4;
-  font: 700 .9rem/1.4 var(--font-body); letter-spacing: .04em; cursor: pointer;
+  display: inline-block; width: auto; max-width: 100%; margin: 20px auto 0;
+  padding: 18px 40px; border: 1px solid var(--gs-ink); border-radius: 0;
+  background: var(--gs-ink); color: var(--color-text);
+  font: 700 .9rem/1.4 var(--font-body); letter-spacing: .05em; cursor: pointer;
 }
 [data-grand-scheme-fields] { margin-top: 28px; }
 .grand-scheme__back { margin-top: 20px; padding: 8px; background: transparent; border: 0; color: var(--gs-ink); font: 700 .8rem var(--font-body); cursor: pointer; }
