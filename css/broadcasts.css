@@ -597,3 +597,20 @@
   #voices-condensed #voices-search-row { display: block; margin: 0; }
   #voices-condensed #voices-search-input:focus { outline: none; box-shadow: none; }
 }
+
+/* Shared boxed search treatment, matching the full House search. */
+:is(#voices-condensed, #broadcasts-condensed) .broadcasts-condensed__search-row input {
+  padding: 14px 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f3f3f4' stroke-width='2'%3E%3Ccircle cx='10' cy='10' r='7'/%3E%3Cpath d='m15 15 6 6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 14px center;
+  background-size: 20px 20px;
+}
+@media (min-width: 760px) {
+  #broadcasts-condensed .broadcasts-condensed__inner { grid-template-columns: minmax(0, 1fr) minmax(240px, 340px); }
+  #broadcasts-condensed #broadcasts-search-toggle,
+  #voices-condensed #voices-search-toggle { display: none; }
+  #broadcasts-condensed #broadcasts-condensed-search-row[hidden] { display: block; }
+  :is(#voices-condensed, #broadcasts-condensed) .broadcasts-condensed__search-row input { font-size: .9rem; }
+  #voices-condensed .voices-filter-select { font-size: .85rem; width: 140px; }
+}
