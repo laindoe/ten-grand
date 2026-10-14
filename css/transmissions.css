@@ -1071,3 +1071,6 @@ main {
 .archive-crumb__root[aria-current="page"] {
   color: var(--color-text);
 }
+
+/* The main nav's bottom border supplies this shared divider. */
+.archive-crumb { border-top: 0; }

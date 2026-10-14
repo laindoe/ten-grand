@@ -627,3 +627,6 @@
   }
   .house-page .broadcasts__search { box-sizing: border-box; height: 44px; padding-block: 0; }
 }
+
+/* The main nav's bottom border supplies this shared divider. */
+:is(#voices-condensed, #broadcasts-condensed) { border-top: 0; }
