@@ -614,3 +614,16 @@
   :is(#voices-condensed, #broadcasts-condensed) .broadcasts-condensed__search-row input { font-size: .9rem; }
   #voices-condensed .voices-filter-select { font-size: .85rem; width: 140px; }
 }
+
+/* Give desktop search fields and dropdowns the same outer height. */
+@media (min-width: 760px) {
+  :is(#voices-condensed, #broadcasts-condensed) .broadcasts-condensed__search-row input,
+  #voices-condensed .voices-filter-select {
+    box-sizing: border-box;
+    height: 44px;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1.2;
+  }
+  .house-page .broadcasts__search { box-sizing: border-box; height: 44px; padding-block: 0; }
+}

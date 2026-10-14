@@ -1033,3 +1033,14 @@ main {
     background-size: 20px 20px;
   }
 }
+
+@media (min-width: 760px) {
+  #archive-sticky-input,
+  .archive-desktop-filters .archive-select {
+    box-sizing: border-box;
+    height: 44px;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1.2;
+  }
+}
