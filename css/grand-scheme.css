@@ -96,3 +96,7 @@ html.grand-scheme-open, html.grand-scheme-open body { overflow: hidden; }
     overflow-y: auto;
   }
 }
+
+/* Outlined campaign artwork preserves the supplied typography on both steps. */
+.grand-scheme__wordmark { width: 100%; max-width: 400px; margin: 0 auto; }
+.grand-scheme__wordmark img { display: block; width: 100%; height: auto; }
