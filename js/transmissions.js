@@ -253,7 +253,7 @@
     search.value = draft.query;
     closePanel();
     reset();
-    grid.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
+    scrollToOpeningCard();
   }
   function showIntroduction() {
     const defaultState = state.category === 'all' && state.series === 'all' && !state.query;
@@ -315,6 +315,16 @@
     })();
     return pending;
   }
+  function scrollToOpeningCard() {
+    requestAnimationFrame(() => {
+      const section = !intro.hidden ? intro : (welcome && !welcome.hidden ? welcome : null);
+      const target = section ? section.querySelector('.featured-card') || section : grid;
+      const navHeight = siteNav ? siteNav.getBoundingClientRect().height : 0;
+      const toolbarHeight = crumb.hidden ? 0 : crumb.getBoundingClientRect().height;
+      const top = window.scrollY + target.getBoundingClientRect().top - navHeight - toolbarHeight - 16;
+      window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    });
+  }
   function reset() { state.limit = 3; render(); }
   function selectCategory(value) { state.category = value; state.series = 'all'; reset(); }
   buttons.forEach(b => b.addEventListener('click', () => selectCategory(b.dataset.filterPillar)));
@@ -334,7 +344,7 @@
   });
   dockFilters.addEventListener('click', () => openPanel(panelCategory));
   dockSearch.addEventListener('click', () => { if (!media.matches) stickyInput.focus(); else openPanel(panelSearch); });
-  stickyCategory.addEventListener('change', () => selectCategory(stickyCategory.value));
+  stickyCategory.addEventListener('change', () => { selectCategory(stickyCategory.value); scrollToOpeningCard(); });
   stickySeries.addEventListener('change', () => { state.series = stickySeries.value; state.category = 'all'; reset(); });
   stickyInput.addEventListener('input', () => { state.query = stickyInput.value.trim().toLowerCase(); search.value = stickyInput.value; reset(); });
   panelClose.addEventListener('click', closePanel);
