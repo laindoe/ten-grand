@@ -990,3 +990,27 @@ main {
     padding: calc(22px + env(safe-area-inset-bottom, 0px) / 2) 0;
   }
 }
+
+.archive-desktop-filters, .archive-sticky-input { display: none; }
+@media (min-width: 760px) {
+  .archive-crumb {
+    display: block; position: fixed; top: var(--t-nav-height, 64px);
+    left: var(--frame-margin); right: var(--frame-margin); z-index: 90;
+    background: var(--color-bg); border: 1px solid var(--color-card-border);
+  }
+  .archive-crumb[hidden], .archive-dock[hidden] { display: none; }
+  .archive-crumb__inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+  .archive-crumb__path { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .archive-crumb__root { background: none; border: 0; padding: 0; color: var(--color-text); font: 700 .85rem var(--font-body); cursor: pointer; }
+  .archive-crumb__current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .85rem; }
+  .archive-sticky-actions { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .archive-desktop-filters { display: flex; gap: 10px; }
+  .archive-desktop-filters .archive-select { display: block; width: 150px; padding: 12px 30px 12px 12px; background-position: calc(100% - 18px) center, calc(100% - 12px) center; }
+  #archive-sticky-filters { display: none; }
+  #archive-sticky-search { display: flex; align-items: center; justify-content: center; flex: none; background: none; border: 0; color: var(--color-text); cursor: pointer; padding: 0; width: 32px; }
+  #archive-sticky-search svg { width: 18px; height: 18px; }
+  .archive-sticky-input { display: block; width: clamp(130px, 18vw, 280px); padding: 12px; }
+  .archive-sticky-input:focus, .archive-desktop-filters .archive-select:focus { outline: none; box-shadow: none; }
+  .archive-dock { display: flex; position: fixed; bottom: 0; left: var(--frame-margin); right: var(--frame-margin); z-index: 90; background: var(--color-bg); border: 1px solid var(--color-card-border); }
+  .archive-dock__wall { display: flex; justify-content: center; width: 100%; padding: 20px 0; color: var(--color-text); font: 700 .75rem var(--font-body); text-decoration: none; background: radial-gradient(ellipse at 0% 25%, #be202677, transparent 45%), radial-gradient(ellipse at 100% 80%, #00b0e066, transparent 45%); }
+}

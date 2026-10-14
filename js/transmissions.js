@@ -7,6 +7,14 @@
   const series = document.getElementById('series-filter');
   const search = document.getElementById('search-input');
   const toggle = document.getElementById('search-toggle');
+  const stickyFilters = document.getElementById('archive-desktop-filters');
+  const stickyCategory = category.cloneNode(true);
+  const stickySeries = series.cloneNode(true);
+  stickyCategory.id = 'archive-sticky-category';
+  stickySeries.id = 'archive-sticky-series';
+  stickyFilters.append(stickyCategory, stickySeries);
+  const stickyInput = document.getElementById('archive-sticky-input');
+
   const buttons = [...document.querySelectorAll('[data-filter-pillar]')];
   const welcome = document.getElementById('archive-welcome');
   const intro = document.getElementById('archive-introduction');
@@ -75,7 +83,7 @@
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
   }
 
-  // Collapsing breadcrumb + bottom filter dock (mobile only). Appear once
+  // Collapsing breadcrumb and community dock on desktop and mobile. Appear once
   // the Community Wall banner scrolls fully out of view above the
   // viewport, and disappear again scrolling back up. The filter panel
   // they open shares `state` as its single source of truth: it stages
@@ -134,6 +142,9 @@
   }
   function syncControls() {
     category.value = state.category;
+    stickyCategory.value = state.category;
+    stickySeries.value = state.series;
+    stickyInput.value = state.query;
     category.classList.toggle('is-active', state.category !== 'all');
     series.value = state.series;
     series.options[0].textContent = media.matches ? 'SERIES' : 'BROWSE SERIES';
@@ -183,7 +194,6 @@
   }
   function setupObserver() {
     if (observer) { observer.disconnect(); observer = null; }
-    if (!media.matches) { setCollapsed(false); return; }
     if (!community || !('IntersectionObserver' in window)) return;
     // Trigger right as the Featured Transmission header reaches the nav,
     // not when the community banner's own box crosses y=0 -- the sticky
@@ -201,7 +211,7 @@
     const margin = navHeight - gap;
     observer = new IntersectionObserver(entries => {
       entries.forEach(entry => setCollapsed(entry.boundingClientRect.bottom < margin));
-    }, { threshold: 0, rootMargin: `-${margin}px 0px 0px 0px` });
+    }, { threshold: 0, rootMargin: `${-margin}px 0px 0px 0px` });
     observer.observe(community);
   }
   function syncPanelControls() {
@@ -323,7 +333,10 @@
     state.category = 'all'; state.series = 'all'; state.query = ''; search.value = ''; reset();
   });
   dockFilters.addEventListener('click', () => openPanel(panelCategory));
-  dockSearch.addEventListener('click', () => openPanel(panelSearch));
+  dockSearch.addEventListener('click', () => { if (!media.matches) stickyInput.focus(); else openPanel(panelSearch); });
+  stickyCategory.addEventListener('change', () => selectCategory(stickyCategory.value));
+  stickySeries.addEventListener('change', () => { state.series = stickySeries.value; state.category = 'all'; reset(); });
+  stickyInput.addEventListener('input', () => { state.query = stickyInput.value.trim().toLowerCase(); search.value = stickyInput.value; reset(); });
   panelClose.addEventListener('click', closePanel);
   panelBackdrop.addEventListener('click', closePanel);
   panelClear.addEventListener('click', () => { draft = { category: 'all', series: 'all', query: '' }; syncPanelControls(); });

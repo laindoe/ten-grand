@@ -1246,7 +1246,8 @@ main {
 
   .cw-stats__total-text {
     flex: 1.25 1 0;
-    min-width: 0;
+    min-width: max-content;
+    justify-content: flex-end;
     padding: 16px 12px 16px 0;
     border-right: 1px solid var(--color-card-border);
   }
@@ -1301,6 +1302,10 @@ main {
   .cw-stats__total-label,
   .cw-stat__label {
     line-height: 1.5;
+  }
+
+  .cw-stats__total-label {
+    white-space: nowrap;
   }
 
   .cw-stat__label {

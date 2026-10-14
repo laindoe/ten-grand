@@ -224,6 +224,8 @@
   function buildLinkRow(iconPathHtml, extraClass) {
     var a = document.createElement("a");
     a.className = "cw-voice-card__link " + extraClass;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
     a.hidden = true;
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("class", "cw-voice-card__link-icon");
@@ -723,6 +725,10 @@
     }
     if (searchToggle && searchRow && searchInput) {
       searchToggle.addEventListener("click", function () {
+        if (window.matchMedia("(min-width: 760px)").matches) {
+          searchInput.focus();
+          return;
+        }
         var opening = searchRow.hidden;
         searchRow.hidden = !opening;
         searchToggle.setAttribute("aria-expanded", String(opening));

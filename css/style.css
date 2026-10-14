@@ -3223,7 +3223,10 @@ a {
    sitting inset with a black margin around it. */
 .invitation__card {
   width: 100%;
-  background: var(--color-text);
+  background:
+    linear-gradient(rgba(0,0,0,.055) 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, rgba(0,0,0,.055) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--color-text);
   color: var(--color-bg);
   padding: 60px var(--section-padding-x);
   text-align: center;

@@ -56,6 +56,7 @@
       query = value.trim().toLowerCase();
       if (searchFull && searchFull.value !== value) searchFull.value = value;
       if (searchCondensed && searchCondensed.value !== value) searchCondensed.value = value;
+      document.querySelectorAll('[data-house-search-clear]').forEach(function (button) { button.hidden = !value; });
       update();
     }
 
@@ -73,6 +74,12 @@
 
     if (searchFull) searchFull.addEventListener("input", function () { setQuery(searchFull.value); });
     if (searchCondensed) searchCondensed.addEventListener("input", function () { setQuery(searchCondensed.value); });
+    document.querySelectorAll('[data-house-search-clear]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        setQuery('');
+        document.getElementById(button.dataset.houseSearchClear).focus();
+      });
+    });
   }
 
   function initCondensedHeader() {
@@ -96,6 +103,7 @@
       if (!toggle || !searchRow) return;
       toggle.setAttribute("aria-expanded", "false");
       toggle.setAttribute("aria-label", "Show search");
+      if (document.activeElement === condensedInput) condensedInput.blur();
       searchRow.hidden = true;
     }
 
@@ -104,6 +112,21 @@
       condensed.hidden = !value;
       if (!value) closeCondensedSearch();
     }
+
+    // Close on intentional scrolling, not layout shifts caused by filtering.
+    window.addEventListener('wheel', function (event) {
+      if (!searchRow.hidden && Math.abs(event.deltaY) > 4) closeCondensedSearch();
+    }, { passive: true });
+    var touchStartY = null;
+    window.addEventListener('touchstart', function (event) {
+      touchStartY = event.touches[0]?.clientY ?? null;
+    }, { passive: true });
+    window.addEventListener('touchmove', function (event) {
+      if (!searchRow.hidden && touchStartY !== null && Math.abs(event.touches[0].clientY - touchStartY) > 24) closeCondensedSearch();
+    }, { passive: true });
+    window.addEventListener('keydown', function (event) {
+      if (!searchRow.hidden && ['PageDown', 'PageUp'].includes(event.key)) closeCondensedSearch();
+    });
 
     var observer = null;
 

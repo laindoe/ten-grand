@@ -121,16 +121,26 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: calc(16px + env(safe-area-inset-top, 0px)) var(--section-padding-x) 8px;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 0 8px;
   flex-shrink: 0;
   font-weight: 700;
   font-size: 0.85rem;
 }
-.broadcast-modal__toolbar-top {
+/* Keep navigation and close control within the detail content margins. */
+.broadcast-modal__toolbar-row {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  max-width: 1100px;
+  width: 100%;
+  margin-inline: auto;
+  padding-left: calc(var(--section-padding-x) + 36px);
+  padding-right: var(--section-padding-x);
+  box-sizing: border-box;
 }
 .broadcast-modal__crumb {
+  flex: 1;
+  flex-wrap: wrap;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -140,9 +150,9 @@
   color: var(--color-text-muted);
   min-width: 0;
 }
-.broadcast-modal__crumb a { color: var(--color-text-muted); text-decoration: none; }
+.broadcast-modal__crumb a { color: var(--color-text); text-decoration: none; }
 .broadcast-modal__crumb a:hover { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; }
-.broadcast-modal__crumb-current { color: var(--color-text); }
+.broadcast-modal__crumb-current { color: var(--color-text); border: 0; padding: 0; background: transparent; font: inherit; letter-spacing: inherit; cursor: pointer; }
 /* Same thermal gradient/animation as the broadcast card edge strips
    (.cw-broadcast-card::before / .broadcast-arc below), just thin and
    rotated into a forward-slash instead of a wide vertical bar. Shared
@@ -159,6 +169,8 @@
   animation: broadcast-thermal-drift 16s ease-in-out infinite alternate;
 }
 .broadcast-modal__close {
+  flex: none;
+  margin-right: -10px;
   border: 0;
   padding: 10px;
   display: inline-flex;
@@ -191,7 +203,7 @@
   cursor: pointer;
 }
 .broadcast-modal__back span { font-size: 1.1rem; line-height: 1; }
-.broadcast-modal__back:hover { color: #fb2f7b; }
+.broadcast-modal__back:hover { color: var(--color-vandalism); }
 .broadcast-modal__body,
 .broadcast-modal__attachments {
   margin-top: 20px;

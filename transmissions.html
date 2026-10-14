@@ -31,7 +31,7 @@ permalink: /transmissions/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=159" />
-  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=32" />
+  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=33" />
 </head>
 <body>
 
@@ -47,12 +47,14 @@ permalink: /transmissions/
       <span class="archive-crumb__current" id="archive-crumb-current" hidden></span>
       </div>
       <div class="archive-sticky-actions">
+        <div class="archive-desktop-filters" id="archive-desktop-filters"></div>
     <button type="button" class="archive-dock__btn" id="archive-sticky-filters" aria-haspopup="dialog" aria-controls="archive-filter-panel">
       FILTERS <span class="archive-dock__count" id="archive-sticky-count" hidden>0</span>
     </button>
     <button type="button" class="archive-dock__btn archive-dock__btn--icon" id="archive-sticky-search" aria-haspopup="dialog" aria-controls="archive-filter-panel" aria-label="Search transmissions">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg>
     </button>
+        <input type="search" class="archive-search archive-sticky-input" id="archive-sticky-input" placeholder="Search transmissions…" aria-label="Search transmissions" />
       </div>
     </div>
   </nav>
@@ -121,7 +123,7 @@ permalink: /transmissions/
     {% if featured_post %}
     <section class="archive-featured" id="archive-welcome">
       <div class="archive-inner">
-        <p class="archive-featured__label">FEATURED TRANSMISSION</p>
+        <p class="archive-featured__label">WELCOME TRANSMISSION</p>
         <a class="featured-card" href="{{ featured_post.url | relative_url }}">
           <div class="featured-card__image" style="background-image: url('{{ featured_post.featured_image | relative_url }}');"></div>
           <div class="featured-card__text">
@@ -233,6 +235,6 @@ permalink: /transmissions/
 {% include site-footer.html %}
 
   <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=8"></script>
-  <script src="{{ '/js/transmissions.js' | relative_url }}?v=8"></script>
+  <script src="{{ '/js/transmissions.js' | relative_url }}?v=9"></script>
 </body>
 </html>
