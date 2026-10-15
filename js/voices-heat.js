@@ -12,6 +12,9 @@
     uniform float patternScale;
     uniform float intensity;
     uniform float darkCenter;
+    uniform vec2 textCenter;
+    uniform vec2 textRadius;
+    uniform float shadeText;
     uniform float wordmark;
     uniform float header;
     float field(vec2 p) {
@@ -66,6 +69,14 @@
         float contours=.5+.5*sin(field(p)*.8);
         vec3 shaded=mix(color,vec3(.025,.24,.23),shade*.58);
         shaded*=1.-shade*(.72+.08*contours);
+        if (shadeText > .5) {
+          // A broad, softly warped pool follows the actual label, retaining
+          // the heatmap's colors and contours instead of overlaying black.
+          vec2 textPool=(uv-textCenter+flow*.018)/textRadius;
+          float distanceSquared=dot(textPool,textPool);
+          float textShade=exp(-distanceSquared*distanceSquared*1.1);
+          shaded=color*(1.-textShade*(.83+.03*contours));
+        }
         gl_FragColor=vec4(shaded,1.);
         return;
       }
@@ -102,15 +113,22 @@
   const patternScaleUniform = gl.getUniformLocation(program, 'patternScale');
   const intensity = gl.getUniformLocation(program, 'intensity');
   const darkCenter = gl.getUniformLocation(program, 'darkCenter');
+  const textCenter = gl.getUniformLocation(program, 'textCenter');
+  const textRadius = gl.getUniformLocation(program, 'textRadius');
+  const shadeText = gl.getUniformLocation(program, 'shadeText');
+  const label = canvas.parentElement.querySelector('.archive-community__text, .archive-dock__label');
+  gl.uniform1f(shadeText, label ? 1 : 0);
   const mobile = matchMedia('(max-width: 759px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let visible = false, lost = false, frameId = 0, elapsed = 0, previous = 0;
   function draw() {
-    const icon = canvas.parentElement.querySelector('.archive-community__icon-frame');
     let center = .5;
-    if (icon) {
-      const bounds = canvas.getBoundingClientRect(), panel = icon.getBoundingClientRect();
-      center = (panel.left + panel.width / 2 - bounds.left) / Math.max(bounds.width, 1);
+    if (label) {
+      const bounds = canvas.getBoundingClientRect(), panel = label.getBoundingClientRect();
+      const width = Math.max(bounds.width, 1), height = Math.max(bounds.height, 1);
+      center = (panel.left + panel.width / 2 - bounds.left) / width;
+      gl.uniform2f(textCenter, center, 1 - (panel.top + panel.height / 2 - bounds.top) / height);
+      gl.uniform2f(textRadius, panel.width / (2 * width) + .12, Math.max(.8, panel.height / (2 * height) + .3));
     }
     // Broader thermal pools on desktop headers; preserve mobile sizing.
     gl.uniform1f(patternScaleUniform, patternScale * (isHeader && !mobile.matches ? 0.65 : 1));
