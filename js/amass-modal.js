@@ -326,7 +326,8 @@
     const titles = {
       0: 'CAMPAIGNS',
       1: 'AMASS Comm(unity) Wall',
-      2: 'VOICES HEARD',
+      2: 'WHAT SHOULD WE CALL YOU?',
+      9: 'VOICES HEARD',
       3: 'HOW DO YOU SHOW UP?',
       6: 'MAKE YOURSELF VISIBLE',
       7: 'READY TO LEAVE YOUR MARK?',
@@ -812,7 +813,7 @@
       titleEl.textContent = titleForStep(step);
       modal.querySelector('.amass-flow__panel').dataset.amassScreen = String(step);
       const progress = modal.querySelector('#amass-step-progress');
-      progress.hidden = step === 0 || step === 1;
+      progress.hidden = step === 0 || step === 1 || step === 9;
       progress.textContent = step === 8 ? 'Complete' : `Step ${step - 1} of 6`;
       errorEl.hidden = true;
       socialError.hidden = true;
@@ -845,9 +846,6 @@
 
     function resetFlow() {
       form.reset();
-      campaignDetails.hidden = true;
-      readMore.setAttribute('aria-expanded', 'false');
-      readMore.textContent = 'READ MORE';
       lastFocusRole = null;
       flowVersion += 1;
       submitButton.disabled = isSubmitting;
@@ -880,27 +878,20 @@
           return;
         }
         if (currentStep === 6 && websiteInput.value.trim()) websiteInput.value = normalizedWebsite();
-        showStep(currentStep === 1 ? 0 : currentStep + 1);
+        showStep(currentStep === 1 ? 0 : currentStep === 9 ? 2 : currentStep + 1);
       });
     });
 
     modal.querySelectorAll('[data-amass-back]').forEach((button) => {
       button.addEventListener('click', () => {
         if (currentStep === 0) showStep(1);
-        else if (currentStep === 2) showStep(0);
+        else if (currentStep === 9) showStep(0);
+        else if (currentStep === 2) showStep(9);
         else if (currentStep > 2 && currentStep < 8) showStep(currentStep - 1);
       });
     });
 
-    modal.querySelector('[data-amass-campaign="voices-heard"]').addEventListener('click', () => showStep(2));
-    const readMore = modal.querySelector('[data-amass-read-more]');
-    const campaignDetails = modal.querySelector('#amass-campaign-details');
-    readMore.addEventListener('click', () => {
-      const expanded = readMore.getAttribute('aria-expanded') === 'true';
-      readMore.setAttribute('aria-expanded', String(!expanded));
-      readMore.textContent = expanded ? 'READ MORE' : 'READ LESS';
-      campaignDetails.hidden = expanded;
-    });
+    modal.querySelector('[data-amass-campaign="voices-heard"]').addEventListener('click', () => showStep(9));
     nameInput.addEventListener('input', setNextState);
     roleInputs.forEach((input) => input.addEventListener('change', setNextState));
     [platformInput, handleInput].forEach((input) => {

@@ -33,12 +33,21 @@
             </div>
           </section>
 
+          <section class="amass-flow__step" data-amass-step="9" hidden>
+            <div class="amass-flow__content">
+              <div class="amass-flow__campaign-header">
+                <img src="{{ '/assets/images/voices-heard-campaign.jpg' | relative_url }}" alt="Voices Heard" width="1024" height="1280">
+              </div>
+              <p class="amass-flow__intro">Voices Heard is an invitation to share what you contribute, why it matters, and who you hope to reach. Choose how you show up, tell us about your contribution, and share your story in writing or audio.</p>
+            </div>
+            <div class="amass-flow__actions">
+              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
+              <button type="button" class="amass-flow__cta" data-amass-next>Next</button>
+            </div>
+          </section>
+
           <section class="amass-flow__step" data-amass-step="2" hidden>
             <div class="amass-flow__content">
-              <img class="amass-flow__voices-brand" src="{{ '/assets/images/voices-heard-bars.svg' | relative_url }}?v=3" alt="" width="600" height="160" aria-hidden="true">
-              <button type="button" class="amass-flow__read-more" data-amass-read-more aria-expanded="false" aria-controls="amass-campaign-details">READ MORE</button>
-              <p class="amass-flow__intro" id="amass-campaign-details" hidden>Voices Heard is an invitation to share what you contribute, why it matters, and who you hope to reach. Choose how you show up, tell us about your contribution, and share your story in writing or audio.</p>
-              <label class="amass-flow__name-label" for="amass-name">WHAT SHOULD WE CALL YOU?</label>
               <input class="amass-flow__field" id="amass-name" name="name" type="text" placeholder="Your name or alias" autocomplete="name" aria-label="Name / Alias" required>
             </div>
             <div class="amass-flow__actions">
@@ -228,6 +237,13 @@
           <section class="amass-flow__step" data-amass-step="7" hidden>
             <div class="amass-flow__content">
               <div class="amass-flow__review" id="amass-review"></div>
+              <p class="amass-flow__error" id="amass-form-error" role="alert" hidden>Something went wrong. Please try again.</p>
+              <div id="amass-verification"></div>
+            <div class="amass-flow__actions">
+              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
+              <button type="submit" class="amass-flow__cta">Add My Voice</button>
+            </div>
+              <div class="amass-flow__fine-print">
               <div class="amass-disclosure">
                 <button type="button" class="amass-disclosure__toggle" id="amass-security-toggle" aria-expanded="false" aria-controls="amass-security-panel">
                   <span>WHAT HAPPENS AFTER I SUBMIT?</span>
@@ -246,11 +262,7 @@
                   <p>You can request to have your entry removed from the Community Wall at any time. Just email info@tengrand.co with the name or alias you submitted under, and we'll take care of the rest.</p>
                 </div>
               </div>
-              <p class="amass-flow__error" id="amass-form-error" role="alert" hidden>Something went wrong. Please try again.</p>
-            </div>
-            <div class="amass-flow__actions">
-              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
-              <button type="submit" class="amass-flow__cta">Add My Voice</button>
+              </div>
             </div>
           </section>
         </form>

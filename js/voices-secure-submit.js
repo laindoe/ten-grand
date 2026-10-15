@@ -3,14 +3,14 @@
   const config=window.tenGrandVoiceSecurity;
   if (!config?.enabled) return;
   const form=document.querySelector('#amass-voice-form');
-  const review=document.querySelector('[data-amass-step="7"] .amass-flow__content');
+  const review=document.getElementById('amass-verification');
   if(!form||!review)return;
   const trap=document.createElement('input');trap.name='company_url';trap.type='text';trap.tabIndex=-1;trap.autocomplete='off';trap.setAttribute('aria-hidden','true');
   trap.style.cssText='position:absolute;left:-10000px;width:1px;height:1px;';form.append(trap);
-  const widget=document.createElement('div');widget.style.marginTop='24px';review.append(widget);
+  const widget=document.createElement('div');review.append(widget);
   let token='',widgetId=null;
   const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';script.async=true;
-  script.onload=()=>{widgetId=window.turnstile.render(widget,{sitekey:config.turnstileSiteKey,action:'voices-submit',theme:'dark',size:'flexible',callback:value=>{token=value;},'expired-callback':()=>{token='';},'error-callback':()=>{token='';}});};
+  script.onload=()=>{widgetId=window.turnstile.render(widget,{sitekey:config.turnstileSiteKey,action:'voices-submit',theme:'dark',size:'flexible',appearance:'interaction-only','before-interactive-callback':()=>{widget.style.marginBlock='16px';},'after-interactive-callback':()=>{widget.style.marginBlock='0';},callback:value=>{token=value;},'expired-callback':()=>{token='';},'error-callback':()=>{token='';}});};
   document.head.append(script);
   const fields=['name','role','focus_areas','focus_other','response_type','response_title','why_detail','website','website_title','social_platform','social_handle'];
   async function post(path,options) {

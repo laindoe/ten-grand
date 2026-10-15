@@ -5265,7 +5265,7 @@ body:has(:is(#archive-crumb, #voices-condensed, #broadcasts-condensed):not([hidd
 }
 #amass-modal :is([data-amass-screen="1"], [data-amass-screen="8"]) .amass-flow__heat { display: block; }
 #amass-modal [data-amass-screen="0"] { background: #101314; }
-#amass-modal :is([data-amass-screen="0"], [data-amass-screen="1"], [data-amass-screen="2"]) > .amass-flow__screen > .modal__title {
+#amass-modal :is([data-amass-screen="0"], [data-amass-screen="1"], [data-amass-screen="9"]) > .amass-flow__screen > .modal__title {
   position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0;
 }
 #amass-modal .amass-flow__progress[hidden],
@@ -5336,3 +5336,10 @@ body.archive-stacked-page:has(:is(#voices-condensed, #broadcasts-condensed):not(
   position: relative; top: auto; left: auto; right: auto;
   border-left: 0; border-right: 0;
 }
+
+/* Display just the header portion of the supplied campaign design. */
+.amass-flow__campaign-header { position: relative; width: 100%; aspect-ratio: 1024 / 340; overflow: hidden; margin-bottom: 24px; }
+.amass-flow__campaign-header img { display: block; width: 100%; height: auto; transform: translateY(-29.6875%); }
+
+/* Verification stays above submission; optional policy details follow it. */
+.amass-flow__fine-print { margin-top: 24px; }
