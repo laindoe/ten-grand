@@ -182,14 +182,6 @@
     dockCount.hidden = count === 0;
     dockCount.textContent = String(count);
   }
-  function syncBottomClearance() {
-    const height = dock.hidden ? 0 : Math.ceil(dock.getBoundingClientRect().height);
-    const inset = dock.hidden ? 0 : Math.max(0, parseFloat(getComputedStyle(dock).bottom) || 0);
-    document.documentElement.style.setProperty('--archive-bottom-clearance', height ? (height + inset + 16) + 'px' : '0px');
-  }
-  if ('ResizeObserver' in window) new ResizeObserver(syncBottomClearance).observe(dock);
-  window.addEventListener('resize', syncBottomClearance);
-  if (window.visualViewport) window.visualViewport.addEventListener('resize', syncBottomClearance);
   function setCollapsed(value) {
     // Live search can shorten the page; keep its toolbar in place while typing.
     if (!value && (!panel.hidden || !stickySearchRow.hidden)) return;
@@ -197,7 +189,6 @@
     collapsed = value;
     crumb.hidden = !value;
     dock.hidden = !value;
-    syncBottomClearance();
     if (!value) { closePanel(); closeSearchPanel(); }
   }
   function setupObserver() {

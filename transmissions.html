@@ -31,7 +31,7 @@ permalink: /transmissions/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=165" />
-  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=49" />
+  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=51" />
 </head>
 <body class="transmissions-page">
 
@@ -40,6 +40,13 @@ permalink: /transmissions/
   <div class="archive-nav-slot">
     <div class="archive-nav-stack" id="archive-nav-stack">
 {% include nav.html %}
+
+  <div class="archive-dock" id="archive-dock" hidden>
+    <a class="archive-dock__btn archive-dock__wall" href="{{ '/community-wall/' | relative_url }}">
+      <canvas class="archive-dock__heat" data-voices-heat data-heat-variant="header" data-heat-scale="0.5" aria-hidden="true"></canvas>
+      <span class="archive-dock__label">AMASS COMM(UNITY) WALL <span aria-hidden="true">&nearr;</span></span>
+    </a>
+  </div>
 
   <nav class="archive-crumb" id="archive-crumb" aria-label="Breadcrumb" hidden>
     <div class="archive-inner archive-crumb__inner">
@@ -202,12 +209,6 @@ permalink: /transmissions/
 
   </div>
 
-  <div class="archive-dock" id="archive-dock" hidden>
-    <a class="archive-dock__btn archive-dock__wall" href="{{ '/community-wall/' | relative_url }}">
-      <canvas class="archive-dock__heat" data-voices-heat data-heat-variant="header" data-heat-scale="0.5" aria-hidden="true"></canvas>
-      <span class="archive-dock__label">AMASS COMM(UNITY) WALL <span aria-hidden="true">&nearr;</span></span>
-    </a>
-  </div>
 
   <div class="archive-filter-panel" id="archive-filter-panel" hidden>
     <div class="archive-filter-panel__backdrop" id="archive-filter-panel-backdrop"></div>
@@ -255,6 +256,6 @@ permalink: /transmissions/
 {% include site-footer.html %}
 
   <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=21"></script>
-  <script src="{{ '/js/transmissions.js' | relative_url }}?v=14"></script>
+  <script src="{{ '/js/transmissions.js' | relative_url }}?v=15"></script>
 </body>
 </html>
