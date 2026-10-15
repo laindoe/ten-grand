@@ -22,17 +22,15 @@
               <img class="amass-flow__brand amass-flow__brand--small" src="{{ '/assets/images/amass-comm-logo.svg' | relative_url }}?v=4" alt="Amass Comm(unity) Wall" width="2796" height="1950">
               <p class="amass-flow__intro">Culture should be shaped by the people who participate.</p>
               <p class="amass-flow__intro">Explore ways to contribute to the community.</p>
-              <button type="button" class="amass-campaign-card" data-amass-campaign="voices-heard">
-                <img src="{{ '/assets/images/voices-heard-bars.svg' | relative_url }}?v=3" alt="Voices Heard" width="600" height="160">
-                <span>Share what you contribute, why it matters, and who you hope to reach.</span>
-                <span class="amass-campaign-card__action">ADD YOUR VOICE &rarr;</span>
+              <button type="button" class="amass-campaign-card amass-campaign-card--image" data-amass-campaign="voices-heard" aria-label="Join Voices Heard">
+                <img src="{{ '/assets/images/voices-heard-campaign.jpg' | relative_url }}" alt="Voices Heard. One voice can inspire an idea, spark a connection, or bring people together. Let yours be heard." width="1024" height="1280">
               </button>
               <div class="amass-campaign-card amass-campaign-card--coming">
                 <strong>MORE TO COME</strong>
                 <span>More campaigns coming soon.</span>
               </div>
+              <button type="button" class="amass-flow__back" data-amass-back>Back</button>
             </div>
-            <button type="button" class="amass-flow__back" data-amass-back>Back</button>
           </section>
 
           <section class="amass-flow__step" data-amass-step="2" hidden>
@@ -259,11 +257,10 @@
 
         <section class="amass-flow__step amass-flow__success" data-amass-step="8" hidden>
             <div class="amass-flow__content">
-            <img class="amass-flow__success-icon" src="{{ '/assets/images/megaphone-signal-animation.svg' | relative_url }}?v=3" alt="" width="150" height="110" aria-hidden="true">
+            <img class="amass-flow__brand amass-flow__brand--small" src="{{ '/assets/images/amass-comm-logo.svg' | relative_url }}?v=4" alt="Amass Comm(unity) Wall" width="2796" height="1950">
             <p class="amass-flow__campaign-label amass-flow__success-status">Pending Approval</p>
             <p class="amass-flow__helper">Thank you for sharing your voice. If approved, it will appear on the Community Wall.</p>
             <p class="amass-flow__success-fine-print">Check out more ways to AMASS Comm(unity) from the Transmissions page.</p>
-            <p class="amass-flow__voice-count" id="amass-voice-count" hidden></p>
             </div>
             <button type="button" class="amass-flow__cta" data-modal-close>Done</button>
         </section>

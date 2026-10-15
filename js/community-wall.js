@@ -522,7 +522,7 @@
         query = query.or("name.ilike.%" + term + "%,response_title.ilike.%" + term + "%,why_detail.ilike.%" + term + "%");
       }
       query = query.order("created_at", { ascending: false }).order("id", { ascending: false });
-      var result = await (archive ? query.range(voiceOffset, voiceOffset + 23) : query.limit(24));
+      var result = await (archive ? query.range(voiceOffset, voiceOffset + 23) : query.limit(3));
       if (result.error) throw result.error;
       var rows = result.data || [];
       var cards = rows.map(function (row, i) {

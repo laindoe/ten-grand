@@ -1201,8 +1201,3 @@ body.transmissions-page:has(#archive-crumb:not([hidden])) .site-frame {
 
 /* No bottom dock remains; finish the feed compactly with room for copyright. */
 .transmissions-page .archive-grid-section { padding-bottom: 24px; }
-.transmissions-page .site-frame { margin-bottom: 0; }
-.transmissions-page .site-footer {
-  margin-bottom: 0;
-  padding: 24px var(--frame-margin) max(24px, calc(env(safe-area-inset-bottom, 0px) + 12px));
-}

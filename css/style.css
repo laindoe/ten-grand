@@ -119,7 +119,7 @@ a {
 
 .site-frame {
   margin: var(--frame-margin);
-  margin-bottom: calc(var(--frame-margin) + max(16px, env(safe-area-inset-bottom, 0px)));
+  margin-bottom: 0;
   border: 1px solid var(--color-card-border);
 }
 
@@ -129,7 +129,8 @@ a {
 /* ---------- Site footer ---------- */
 
 .site-footer {
-  padding: 4px var(--frame-margin) calc(16px + env(safe-area-inset-bottom, 0px));
+  margin-bottom: 0;
+  padding: 24px var(--frame-margin) max(24px, calc(env(safe-area-inset-bottom, 0px) + 12px));
   text-align: center;
 }
 
@@ -5257,12 +5258,12 @@ body:has(:is(#archive-crumb, #voices-condensed, #broadcasts-condensed):not([hidd
 /* Shared Amass entry and campaign chooser; submission fields keep their flow. */
 #amass-modal .amass-flow__panel { position: relative; isolation: isolate; }
 .amass-flow__heat { display: none; position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-#amass-modal [data-amass-screen="1"] {
+#amass-modal :is([data-amass-screen="1"], [data-amass-screen="8"]) {
   background: radial-gradient(ellipse at 5% 15%, #00CDE8 0%, transparent 45%),
     radial-gradient(ellipse at 95% 30%, #FF3220 0%, #FFDC00 15%, transparent 45%),
     radial-gradient(ellipse at 10% 95%, #EB1528 0%, transparent 40%), #062d30;
 }
-#amass-modal [data-amass-screen="1"] .amass-flow__heat { display: block; }
+#amass-modal :is([data-amass-screen="1"], [data-amass-screen="8"]) .amass-flow__heat { display: block; }
 #amass-modal [data-amass-screen="0"] { background: #101314; }
 #amass-modal :is([data-amass-screen="0"], [data-amass-screen="1"], [data-amass-screen="2"]) > .amass-flow__screen > .modal__title {
   position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0;
@@ -5283,3 +5284,28 @@ body:has(:is(#archive-crumb, #voices-condensed, #broadcasts-condensed):not([hidd
 @media (max-width: 900px), (pointer: coarse) {
   #amass-modal :is([data-amass-screen="0"], [data-amass-screen="1"]) { padding-top: calc(72px + env(safe-area-inset-top)); }
 }
+
+/* Square campaign controls and a scroll lane beside fields and actions. */
+#amass-modal .amass-campaign-card,
+#amass-modal .amass-flow__back,
+#amass-modal .amass-flow__cta { border-radius: 0; }
+#amass-modal .amass-flow__panel { scrollbar-gutter: stable; }
+#amass-modal [data-amass-screen="8"] :is(.amass-flow__helper, .amass-flow__success-fine-print) {
+  color: var(--color-text);
+  text-shadow: 0 1px 3px #00191b;
+}
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal .amass-flow__step:is([data-amass-step="5"], [data-amass-step="6"]) {
+    scrollbar-gutter: stable;
+    padding-right: 16px;
+  }
+  #amass-modal .amass-flow__step:is([data-amass-step="5"], [data-amass-step="6"]) .amass-flow__content {
+    padding-right: 0;
+    scrollbar-gutter: auto;
+  }
+  #amass-modal [data-amass-step="0"] .amass-flow__back { margin-top: 16px; flex-shrink: 0; }
+}
+
+/* Campaign artwork includes its own branding and copy; show the whole design. */
+#amass-modal .amass-campaign-card--image { padding: 0; gap: 0; background: #000; overflow: hidden; }
+#amass-modal .amass-campaign-card--image img { display: block; width: 100%; height: auto; }

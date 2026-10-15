@@ -259,7 +259,6 @@
     const errorEl = document.getElementById('amass-form-error');
     const submitButton = form.querySelector('[type="submit"]');
     const reviewEl = document.getElementById('amass-review');
-    const countEl = document.getElementById('amass-voice-count');
     const focusHelper = document.getElementById('amass-focus-helper');
     const focusGrid = document.getElementById('amass-focus-grid');
     const focusCounter = document.getElementById('amass-focus-counter');
@@ -838,7 +837,7 @@
       }
       const dialogPanel = modal.querySelector('.amass-flow__panel');
       dialogPanel.scrollTop = 0;
-      steps.forEach((panel) => { panel.querySelector('.amass-flow__content').scrollTop = 0; });
+      steps.forEach((panel) => { panel.scrollTop = 0; panel.querySelector('.amass-flow__content').scrollTop = 0; });
       requestAnimationFrame(() => {
         if (currentStep === step) dialogPanel.scrollTop = 0;
       });
@@ -855,8 +854,6 @@
       errorEl.hidden = true;
       socialError.hidden = true;
       websiteError.hidden = true;
-      countEl.hidden = true;
-      countEl.textContent = '';
       modal.querySelectorAll('[data-counter-for]').forEach((counter) => {
         counter.textContent = '0';
       });
@@ -868,20 +865,6 @@
         toggle.setAttribute('aria-expanded', 'false');
       });
       showStep(1);
-    }
-
-    async function loadApprovedCount() {
-      try {
-        const { count, error } = await window.tenGrandSupabase
-          .from('voices_heard')
-          .select('id', { count: 'exact', head: true })
-          .eq('status', 'approved');
-        if (error || typeof count !== 'number') return;
-        countEl.textContent = `${count.toLocaleString('en-US')} voices heard`;
-        countEl.hidden = false;
-      } catch (error) {
-        console.error('Ten Grand voice count failed', error);
-      }
     }
 
     modal.querySelectorAll('[data-amass-next]').forEach((button) => {
@@ -1055,7 +1038,6 @@
           await window.tenGrandSecureVoiceSubmit(payload, audioBlob, photoBlob);
           if (submittedVersion !== flowVersion) return;
           showStep(8);
-          loadApprovedCount();
           return;
         }
 
@@ -1106,7 +1088,6 @@
 
         if (submittedVersion !== flowVersion) return;
         showStep(8);
-        loadApprovedCount();
       } catch (error) {
         console.error('Ten Grand voice submission failed', error);
         if (submittedVersion === flowVersion) {
