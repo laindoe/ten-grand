@@ -689,7 +689,7 @@ main {
 }
 .archive-community__text { grid-area: auto; text-align: left; }
 .archive-community__title { display: block; font-size: 1rem; line-height: 1.2; }
-.archive-community__subtitle { display: block; margin-top: 4px; font-size: .85rem; line-height: 1.3; }
+.archive-community__subtitle { color: #fff; display: block; margin-top: 4px; font-size: .85rem; line-height: 1.3; }
 .archive-community__cta {
   grid-area: auto; align-self: center; justify-self: end; font-size: 1.5rem;
   line-height: 1; letter-spacing: 0; color: var(--color-text); animation: none;

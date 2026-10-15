@@ -13,6 +13,8 @@
     uniform float intensity;
     uniform float darkCenter;
     uniform float cta;
+    uniform vec2 ctaCenter;
+    uniform vec2 ctaRadius;
     uniform float wordmark;
     uniform float header;
     float field(vec2 p) {
@@ -59,12 +61,6 @@
         // Saturated thermal pools with a compact transition between color bands.
         v=smoothstep(.12,.88,v);
         color=thermal(v);
-        if (cta > .5) {
-          // Even darkening across the whole CTA keeps both text and artwork
-          // readable without introducing a darker patch in the heatmap.
-          gl_FragColor=vec4(color*.70,1.);
-          return;
-        }
         // Warp the shaded region with the same field as the colored pools.
         // Attenuate their color rather than painting a flat dark oval over it.
         vec2 flow=vec2(field(p*.65),field(p*.65+vec2(2.7,1.9)));
@@ -73,6 +69,15 @@
         float contours=.5+.5*sin(field(p)*.8);
         vec3 shaded=mix(color,vec3(.025,.24,.23),shade*.58);
         shaded*=1.-shade*(.72+.08*contours);
+        if (cta > .5) {
+          // Fit one soft dark pool around the icon and label together above,
+          // or just the centered label in the bottom dock.
+          vec2 pool=(uv-ctaCenter+flow*.018)/ctaRadius;
+          float distanceSquared=dot(pool,pool);
+          float coverage=exp(-distanceSquared*distanceSquared*.8);
+          shaded=mix(color,vec3(.025,.24,.23),coverage*.58);
+          shaded*=1.-coverage*(.72+.08*contours);
+        }
         gl_FragColor=vec4(shaded,1.);
         return;
       }
@@ -111,10 +116,28 @@
   const darkCenter = gl.getUniformLocation(program, 'darkCenter');
   const isCta = canvas.parentElement.matches('.archive-community, .archive-dock__wall');
   gl.uniform1f(gl.getUniformLocation(program, 'cta'), isCta ? 1 : 0);
+  const ctaCenter = gl.getUniformLocation(program, 'ctaCenter');
+  const ctaRadius = gl.getUniformLocation(program, 'ctaRadius');
+  const ctaContent = Array.from(canvas.parentElement.querySelectorAll(
+    '.archive-community__icon, .archive-community__text, .archive-dock__label'
+  ));
   const mobile = matchMedia('(max-width: 759px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let visible = false, lost = false, frameId = 0, elapsed = 0, previous = 0;
   function draw() {
+    if (isCta && ctaContent.length) {
+      const bounds = canvas.getBoundingClientRect();
+      const panels = ctaContent.map(element => element.getBoundingClientRect());
+      const left = Math.min(...panels.map(panel => panel.left));
+      const right = Math.max(...panels.map(panel => panel.right));
+      const top = Math.min(...panels.map(panel => panel.top));
+      const bottom = Math.max(...panels.map(panel => panel.bottom));
+      const width = Math.max(bounds.width, 1), height = Math.max(bounds.height, 1);
+      gl.uniform2f(ctaCenter, ((left + right) / 2 - bounds.left) / width,
+        1 - ((top + bottom) / 2 - bounds.top) / height);
+      gl.uniform2f(ctaRadius, (right - left) / (2 * width) + .15,
+        Math.max(1.1, (bottom - top) / (2 * height) + .5));
+    }
     // Broader thermal pools on desktop headers; preserve mobile sizing.
     gl.uniform1f(patternScaleUniform, patternScale * (isHeader && !mobile.matches ? 0.65 : 1));
     gl.uniform1f(darkCenter, .5);
