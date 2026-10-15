@@ -289,7 +289,7 @@
         whyTitle: 'WHY DO YOU CREATE?',
         whyPlaceholder: 'Tell us why you create...',
         accent: '#FFDC00',
-        accentBlend: '#B8EF00',
+        accentBlend: '#FFE94D',
         focusOptions: ['Music', 'Film', 'Animation', 'Design', 'Writing', 'Photography', 'Fashion', 'Visual Art', 'Games', 'Live Experiences', 'Other'],
       },
       build: {
