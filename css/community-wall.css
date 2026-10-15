@@ -108,36 +108,48 @@ main {
   isolation: isolate;
   overflow: hidden;
   border-bottom: 1px solid var(--color-card-border);
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding: clamp(28px, 4vw, 64px) 0 36px;
+  background: #062d30;
 }
 
-/* One centered stack: megaphone, wordmark, then subtitle. */
+/* Defined thermal pools: saturated centers, broad colored bands, no blur filter. */
+.cw-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse 47% 65% at 49% 66%, #08191beF 25%, #062b2bd9 52%, transparent 100%),
+    radial-gradient(ellipse 34% 55% at 3% -4%, #ff142a 12%, #ff3920 30%, #ffcf00 49%, #c9f000 61%, #16ca7a 77%, transparent 100%),
+    radial-gradient(ellipse 40% 58% at 94% 8%, #ff102f 8%, #ff4420 28%, #ffcd00 48%, #b5ed00 61%, #00ceab 79%, transparent 100%),
+    radial-gradient(ellipse 35% 53% at 0% 104%, #ff1730 14%, #ff4820 33%, #ffda00 53%, #9ddd00 65%, transparent 100%),
+    radial-gradient(ellipse 34% 57% at 103% 107%, #ff252b 12%, #ff6a00 32%, #ebee00 53%, #22df76 70%, transparent 100%),
+    radial-gradient(ellipse 32% 40% at 85% 70%, #009cfa 15%, #00c9d7 47%, transparent 100%),
+    radial-gradient(ellipse 33% 42% at 2% 48%, #00a9fa 17%, #00cdb8 53%, transparent 100%),
+    radial-gradient(ellipse 35% 45% at 39% -5%, #009bf1 15%, #00beaa 50%, transparent 100%);
+}
+
 .cw-hero__inner {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas: "icon" "heading" "subtitle";
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-items: center;
-  gap: 16px;
-  text-align: center;
+  gap: 12px;
+  max-width: 1400px;
 }
 
 .cw-hero__heading {
-  grid-area: heading;
-  width: 100%;
-  min-width: 0;
+  width: min(100%, 960px);
+  margin: 0;
+  line-height: 0;
 }
 
-.cw-hero__title {
+.cw-hero__art {
   display: block;
-  margin-bottom: 18px;
+  width: 100%;
+  height: auto;
 }
 
-/* Real text for search engines and screen readers -- the visible
-   wordmark graphic below is aria-hidden, same clip-path technique as
-   .broadcasts__status. */
-.cw-hero__title-text {
+.cw-hero__accessible-title {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -148,61 +160,14 @@ main {
   white-space: nowrap;
 }
 
-/* White PNG letterforms contain the organic thermal flow. */
-.cw-hero__wordmark-stage {
-  position: relative;
-  display: block;
-  width: 100%;
-  max-width: 720px;
-  margin-inline: auto;
-}
-.cw-hero__wordmark {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 1400 / 583;
-  background-color: #fff;
-  -webkit-mask-image: url('../assets/images/amass-community-wall-wordmark.png');
-  mask-image: url('../assets/images/amass-community-wall-wordmark.png');
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-}
-
-
-.cw-hero__heading .section-eyebrow {
-  color: var(--color-vandalism);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-}
-
 .cw-hero__subtitle {
-  grid-area: subtitle;
-  font-size: 1rem;
-  color: var(--color-text-muted);
+  max-width: 100%;
+  margin: 0;
+  font-size: clamp(0.85rem, 1.5vw, 1.15rem);
+  color: #e0e9e8;
   line-height: 1.5;
-}
-
-/* Only forced onto one line from 1024px up -- below that, the text
-   column isn't wide enough next to the globe for nowrap content
-   without squeezing the globe out of view (confirmed via testing at
-   760-900px), so it keeps its normal 2-line wrap there instead. */
-@media (min-width: 1024px) {
-  .cw-hero__subtitle {
-    white-space: nowrap;
-  }
-}
-
-.cw-hero__icon {
-  grid-area: icon;
-  flex-shrink: 0;
-  display: block;
-  width: clamp(100px, 18vw, 220px);
-  height: auto;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .cw-globe {
@@ -552,8 +517,7 @@ main {
 }
 
 /* The shader and its static fallback stay below all card content. */
-.cw-campaign__intro::before,
-.cw-hero::before {
+.cw-campaign__intro::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1362,53 +1326,20 @@ main {
     grid-row: 2;
   }
 
-  /* Single centered column: icon on top, then the eyebrow+title
-     heading, then the subtitle. */
+  .cw-hero {
+    padding: 28px 0;
+  }
+
   .cw-hero__inner {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "icon"
-      "heading"
-      "subtitle";
-    row-gap: 16px;
-  }
-
-  .cw-hero__heading {
-    text-align: center;
-  }
-
-  .cw-hero__title {
-    margin-bottom: 4px;
-  }
-
-  .cw-hero__wordmark-stage {
-    width: calc(100% + 24px);
-    margin: 0 -12px;
-  }
-
-  /* Same red solid-color-plus-pulse cue treatment as .amass__cue's
-     "Tap to Share" (dilemma-cue-pulse) -- scoped here instead of on
-     the shared .section-eyebrow class, which other pages still use
-     plain. Tighter margin so it sits close against the title. */
-  .cw-hero__heading .section-eyebrow {
-    color: var(--color-vandalism);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
+    gap: 16px;
+    padding-inline: 16px;
   }
 
   .cw-hero__subtitle {
-    font-size: 0.8rem;
-    text-align: center;
-    margin: 0 auto;
+    max-width: 34rem;
+    font-size: 0.85rem;
   }
 
-  .cw-hero__icon {
-    justify-self: center;
-    width: 40%;
-    max-width: 180px;
-  }
 }
 
 /* Centered Voices Heard profiles, with existing padding and 24px body gap. */
