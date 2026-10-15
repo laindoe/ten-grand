@@ -1830,4 +1830,4 @@ main {
 .cw-hero__subtitle { color: var(--color-text); text-align: center; }
 
 /* Continue to the full campaign after the three-profile wall preview. */
-.cw-campaign__view-all--profiles { width: min(100%, 280px); margin: 24px auto 0; }
+.cw-campaign__view-all--profiles { width: 100%; margin: 24px 0 0; }
