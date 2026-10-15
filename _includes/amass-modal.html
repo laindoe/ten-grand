@@ -1,8 +1,9 @@
   <!-- Share-your-voice modal for the AMASS Comm(unity) megaphone -->
   <div class="modal" id="amass-modal" aria-hidden="true">
     <div class="modal__backdrop" data-modal-close></div>
-    <div class="modal__panel amass-flow__panel" role="dialog" aria-modal="true" aria-labelledby="amass-modal-title">
-      <p class="amass-flow__progress" id="amass-step-progress" aria-live="polite">Step 1 of 7</p>
+    <div class="modal__panel amass-flow__panel" data-amass-screen="1" role="dialog" aria-modal="true" aria-labelledby="amass-modal-title">
+      <canvas class="amass-flow__heat" data-voices-heat data-heat-variant="header" aria-hidden="true"></canvas>
+      <p class="amass-flow__progress" id="amass-step-progress" aria-live="polite" hidden></p>
       <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
       <div class="amass-flow__screen">
       <h3 class="modal__title" id="amass-modal-title">AMASS Comm(unity) Wall</h3>
@@ -10,15 +11,36 @@
         <form id="amass-voice-form" novalidate>
           <section class="amass-flow__step" data-amass-step="1">
             <div class="amass-flow__content">
-              <img class="amass-flow__intro-icon" src="{{ '/assets/images/megaphone-signal-animation.svg' | relative_url }}?v=2" alt="" width="150" height="110" aria-hidden="true">
-              <p class="amass-flow__intro">Culture should be shaped by the people who participate.</p>
-              <p class="amass-flow__intro"><span class="amass-flow__campaign-label">VOICES HEARD</span> is an invitation to share what you contribute, why it matters, and who you hope to reach.</p>
+              <img class="amass-flow__brand" src="{{ '/assets/images/amass-comm-logo.svg' | relative_url }}?v=3" alt="Amass Comm(unity) Wall" width="2796" height="1950">
+              <p class="amass-flow__intro">A living record of the people building, creating, funding, and shaping the future of culture.</p>
             </div>
-            <button type="button" class="amass-flow__cta" data-amass-next>Leave Your Mark</button>
+            <button type="button" class="amass-flow__cta" data-amass-next>LEAVE YOUR MARK</button>
+          </section>
+
+          <section class="amass-flow__step" data-amass-step="0" hidden>
+            <div class="amass-flow__content">
+              <img class="amass-flow__brand amass-flow__brand--small" src="{{ '/assets/images/amass-comm-logo.svg' | relative_url }}?v=3" alt="Amass Comm(unity) Wall" width="2796" height="1950">
+              <p class="amass-flow__intro">Culture should be shaped by the people who participate.</p>
+              <p class="amass-flow__intro">Explore ways to contribute to the community.</p>
+              <button type="button" class="amass-campaign-card" data-amass-campaign="voices-heard">
+                <img src="{{ '/assets/images/voices-heard-bars.svg' | relative_url }}?v=2" alt="Voices Heard" width="600" height="160">
+                <span>Share what you contribute, why it matters, and who you hope to reach.</span>
+                <span class="amass-campaign-card__action">ADD YOUR VOICE &rarr;</span>
+              </button>
+              <div class="amass-campaign-card amass-campaign-card--coming">
+                <strong>MORE TO COME</strong>
+                <span>More campaigns coming soon.</span>
+              </div>
+            </div>
+            <button type="button" class="amass-flow__back" data-amass-back>Back</button>
           </section>
 
           <section class="amass-flow__step" data-amass-step="2" hidden>
             <div class="amass-flow__content">
+              <img class="amass-flow__voices-brand" src="{{ '/assets/images/voices-heard-bars.svg' | relative_url }}?v=2" alt="" width="600" height="160" aria-hidden="true">
+              <button type="button" class="amass-flow__read-more" data-amass-read-more aria-expanded="false" aria-controls="amass-campaign-details">READ MORE</button>
+              <p class="amass-flow__intro" id="amass-campaign-details" hidden>Voices Heard is an invitation to share what you contribute, why it matters, and who you hope to reach. Choose how you show up, tell us about your contribution, and share your story in writing or audio.</p>
+              <label class="amass-flow__name-label" for="amass-name">WHAT SHOULD WE CALL YOU?</label>
               <input class="amass-flow__field" id="amass-name" name="name" type="text" placeholder="Your name or alias" autocomplete="name" aria-label="Name / Alias" required>
             </div>
             <div class="amass-flow__actions">

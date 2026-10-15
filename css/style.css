@@ -5253,3 +5253,33 @@ body:has(:is(#archive-crumb, #voices-condensed, #broadcasts-condensed):not([hidd
   left: calc(var(--frame-margin) + 1px);
   right: calc(var(--frame-margin) + 1px);
 }
+
+/* Shared Amass entry and campaign chooser; submission fields keep their flow. */
+#amass-modal .amass-flow__panel { position: relative; isolation: isolate; }
+.amass-flow__heat { display: none; position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+#amass-modal [data-amass-screen="1"] {
+  background: radial-gradient(ellipse at 5% 15%, #00CDE8 0%, transparent 45%),
+    radial-gradient(ellipse at 95% 30%, #FF3220 0%, #FFDC00 15%, transparent 45%),
+    radial-gradient(ellipse at 10% 95%, #EB1528 0%, transparent 40%), #062d30;
+}
+#amass-modal [data-amass-screen="1"] .amass-flow__heat { display: block; }
+#amass-modal [data-amass-screen="0"] { background: #101314; }
+#amass-modal :is([data-amass-screen="0"], [data-amass-screen="1"], [data-amass-screen="2"]) > .amass-flow__screen > .modal__title {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0;
+}
+#amass-modal .amass-flow__progress[hidden],
+#amass-modal #amass-campaign-details[hidden] { display: none; }
+.amass-flow__brand { display: block; width: 100%; height: auto; margin: 0 auto 24px; }
+.amass-flow__brand--small { width: min(100%, 260px); }
+.amass-flow__voices-brand { display: block; width: 100%; height: auto; margin: 0 auto 18px; }
+#amass-modal :is([data-amass-screen="0"], [data-amass-screen="1"]) .amass-flow__intro { color: #f3f3f4; text-align: center; }
+.amass-campaign-card { display: flex; flex-direction: column; gap: 14px; width: 100%; margin-top: 24px; padding: 20px; border: 1px solid var(--color-card-border); background: #071a1d; color: var(--color-text); text-align: left; font: inherit; cursor: pointer; }
+.amass-campaign-card img { width: 100%; height: auto; }
+.amass-campaign-card span { font-size: .85rem; line-height: 1.5; }
+.amass-campaign-card__action { font-weight: 700; }
+.amass-campaign-card--coming { background: transparent; cursor: default; }
+.amass-flow__read-more { display: block; margin: 0 auto 24px; padding: 8px; border: 0; background: transparent; color: var(--color-text); text-decoration: underline; font: 700 .8rem var(--font-body); cursor: pointer; }
+.amass-flow__name-label { display: block; margin-bottom: 12px; font-weight: 700; }
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal :is([data-amass-screen="0"], [data-amass-screen="1"]) { padding-top: calc(72px + env(safe-area-inset-top)); }
+}

@@ -172,7 +172,7 @@
     canvas.width = Math.max(1, Math.round(rect.width * scale));
     canvas.height = Math.max(1, Math.round(rect.height * scale));
     sync();
-  }).observe(canvas.parentElement);
+  }).observe(canvas);
   new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }).observe(canvas);
   reduced.addEventListener('change', sync);
   document.addEventListener('visibilitychange', sync);
