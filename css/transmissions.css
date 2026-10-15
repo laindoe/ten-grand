@@ -1084,3 +1084,37 @@ main {
 }
 .archive-dock__heat { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .archive-dock__label { position: relative; z-index: 1; }
+
+/* Gentle separation from moving bright colors without a heavy dark patch. */
+.archive-community__text,
+.archive-community__cta,
+.archive-dock__label {
+  text-shadow: 0 1px 2px rgb(0 25 27 / 80%), 0 0 5px rgb(0 25 27 / 35%);
+}
+
+/* Mobile sticky controls open directly below their toolbar buttons. */
+@media (max-width: 759px) {
+  .archive-filter-panel { pointer-events: none; }
+  .archive-filter-panel__backdrop {
+    top: var(--archive-popup-top);
+    background: transparent;
+    pointer-events: auto;
+  }
+  .archive-filter-panel__sheet {
+    top: var(--archive-popup-top);
+    left: var(--archive-popup-left);
+    right: auto;
+    bottom: auto;
+    width: var(--archive-popup-width);
+    box-sizing: border-box;
+    border: 1px solid var(--color-card-border);
+    padding: 16px;
+    max-height: calc(100dvh - var(--archive-popup-top) - 12px);
+    pointer-events: auto;
+    animation: none;
+  }
+  .archive-filter-panel__sheet .archive-select,
+  .archive-search-panel .archive-search { display: block; width: 100%; min-width: 0; }
+  .archive-filter-panel__sheet :is(input, select) { font-size: 16px; }
+  .archive-filter-panel__sheet :is(button, input, select):focus { outline: none; box-shadow: none; }
+}

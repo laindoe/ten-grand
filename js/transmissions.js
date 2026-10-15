@@ -101,7 +101,10 @@
   const panelClose = document.getElementById('archive-filter-panel-close');
   const panelCategory = document.getElementById('panel-category-filter');
   const panelSeries = document.getElementById('panel-series-filter');
-  const panelSearch = document.getElementById('panel-search-input');
+  const searchPanel = document.getElementById('archive-search-panel');
+  const mobileSearch = document.getElementById('archive-mobile-search-input');
+  const searchBackdrop = document.getElementById('archive-search-panel-backdrop');
+  const searchClose = document.getElementById('archive-search-panel-close');
   const panelClear = document.getElementById('archive-filter-panel-clear');
   const panelApply = document.getElementById('archive-filter-panel-apply');
   const community = document.querySelector('.archive-community');
@@ -185,12 +188,14 @@
   if ('ResizeObserver' in window) new ResizeObserver(syncBottomClearance).observe(dock);
   window.addEventListener('resize', syncBottomClearance);
   function setCollapsed(value) {
+    // Live search can shorten the page; keep its toolbar in place while typing.
+    if (!value && (!panel.hidden || !searchPanel.hidden)) return;
     if (collapsed === value) return;
     collapsed = value;
     crumb.hidden = !value;
     dock.hidden = !value;
     syncBottomClearance();
-    if (!value) closePanel();
+    if (!value) { closePanel(); closeSearchPanel(); }
   }
   function setupObserver() {
     if (observer) { observer.disconnect(); observer = null; }
@@ -204,7 +209,8 @@
     // because it's always present and never hidden by filtering, unlike
     // the featured section.
     const navHeight = siteNav ? Math.round(siteNav.getBoundingClientRect().height) : 0;
-    const featuredLabel = document.querySelector('.archive-featured__label');
+    const featuredLabel = [...document.querySelectorAll('.archive-featured__label')]
+      .find(label => label.getClientRects().length > 0);
     const gap = featuredLabel
       ? Math.max(0, Math.round(featuredLabel.getBoundingClientRect().top - community.getBoundingClientRect().bottom))
       : 0;
@@ -217,40 +223,74 @@
   function syncPanelControls() {
     panelCategory.value = draft.category;
     panelSeries.value = draft.series;
-    panelSearch.value = draft.query;
   }
-  function panelFocusables() {
-    return [...panel.querySelectorAll('button, select, input, [href]')].filter(el => !el.disabled && el.offsetParent !== null);
+  function positionPopup(popup, button) {
+    const toolbar = crumb.getBoundingClientRect();
+    const trigger = button.getBoundingClientRect();
+    const leftEdge = toolbar.left + 12, rightEdge = toolbar.right - 12;
+    const width = Math.min(320, rightEdge - leftEdge);
+    const left = Math.max(leftEdge, Math.min(trigger.right - width, rightEdge - width));
+    popup.style.setProperty('--archive-popup-top', (toolbar.bottom + 6) + 'px');
+    popup.style.setProperty('--archive-popup-left', left + 'px');
+    popup.style.setProperty('--archive-popup-width', width + 'px');
   }
   function onPanelKeydown(e) {
-    if (e.key === 'Escape') { e.preventDefault(); closePanel(); return; }
-    if (e.key !== 'Tab') return;
-    const list = panelFocusables();
-    if (!list.length) return;
-    const first = list[0], last = list[list.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      if (!panel.hidden) closePanel();
+      else closeSearchPanel();
+    }
   }
-  function openPanel(focusTarget) {
-    draft = { category: state.category, series: state.series, query: state.query };
+  function openPanel() {
+    if (!panel.hidden) { closePanel(); return; }
+    closeSearchPanel(false);
+    draft = { category: state.category, series: state.series };
     syncPanelControls();
-    panelOpener = document.activeElement;
+    panelOpener = dockFilters;
     panel.hidden = false;
-    document.addEventListener('keydown', onPanelKeydown);
-    (focusTarget || panelCategory).focus();
+    dockFilters.setAttribute('aria-expanded', 'true');
+    positionPopup(panel, dockFilters);
+    panelCategory.focus();
   }
-  function closePanel() {
+  function closePanel(restoreFocus = true) {
     if (panel.hidden) return;
     panel.hidden = true;
-    document.removeEventListener('keydown', onPanelKeydown);
+    dockFilters.setAttribute('aria-expanded', 'false');
     draft = null;
-    if (panelOpener) panelOpener.focus();
+    if (restoreFocus && panelOpener) panelOpener.focus();
+    requestAnimationFrame(setupObserver);
   }
+  function openSearchPanel() {
+    if (!searchPanel.hidden) { closeSearchPanel(); return; }
+    closePanel(false);
+    mobileSearch.value = search.value;
+    searchPanel.hidden = false;
+    dockSearch.setAttribute('aria-expanded', 'true');
+    positionPopup(searchPanel, dockSearch);
+    mobileSearch.focus();
+  }
+  function closeSearchPanel(restoreFocus = true) {
+    if (searchPanel.hidden) return;
+    searchPanel.hidden = true;
+    dockSearch.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) dockSearch.focus();
+    requestAnimationFrame(setupObserver);
+  }
+  document.addEventListener('keydown', onPanelKeydown);
+  document.addEventListener('focusin', event => {
+    if (!panel.hidden && !panel.contains(event.target) && event.target !== dockFilters) closePanel(false);
+    if (!searchPanel.hidden && !searchPanel.contains(event.target) && event.target !== dockSearch) closeSearchPanel(false);
+  });
+  function repositionPopups() {
+    if (!media.matches || crumb.hidden) { closePanel(false); closeSearchPanel(false); return; }
+    if (!panel.hidden) positionPopup(panel, dockFilters);
+    if (!searchPanel.hidden) positionPopup(searchPanel, dockSearch);
+  }
+  window.addEventListener('resize', repositionPopups);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', repositionPopups);
   function applyPanel() {
     state.category = draft.category;
     state.series = draft.series;
-    state.query = draft.query;
-    search.value = draft.query;
     closePanel();
     reset();
     scrollToOpeningCard();
@@ -342,18 +382,31 @@
   crumbRoot.addEventListener('click', () => {
     state.category = 'all'; state.series = 'all'; state.query = ''; search.value = ''; reset();
   });
-  dockFilters.addEventListener('click', () => openPanel(panelCategory));
-  dockSearch.addEventListener('click', () => { if (!media.matches) stickyInput.focus(); else openPanel(panelSearch); });
+  dockFilters.addEventListener('click', openPanel);
+  dockSearch.addEventListener('click', () => { if (!media.matches) stickyInput.focus(); else openSearchPanel(); });
   stickyCategory.addEventListener('change', () => { selectCategory(stickyCategory.value); scrollToOpeningCard(); });
   stickySeries.addEventListener('change', () => { state.series = stickySeries.value; state.category = 'all'; reset(); });
   stickyInput.addEventListener('input', () => { state.query = stickyInput.value.trim().toLowerCase(); search.value = stickyInput.value; reset(); });
-  panelClose.addEventListener('click', closePanel);
-  panelBackdrop.addEventListener('click', closePanel);
-  panelClear.addEventListener('click', () => { draft = { category: 'all', series: 'all', query: '' }; syncPanelControls(); });
+  panelClose.addEventListener('click', () => closePanel());
+  panelBackdrop.addEventListener('click', () => closePanel());
+  panelClear.addEventListener('click', () => { draft = { category: 'all', series: 'all' }; syncPanelControls(); });
   panelApply.addEventListener('click', applyPanel);
   panelCategory.addEventListener('change', () => { draft.category = panelCategory.value; draft.series = 'all'; syncPanelControls(); });
   panelSeries.addEventListener('change', () => { draft.series = panelSeries.value; draft.category = 'all'; syncPanelControls(); });
-  panelSearch.addEventListener('input', () => { draft.query = panelSearch.value.trim().toLowerCase(); });
+  searchClose.addEventListener('click', () => closeSearchPanel());
+  searchBackdrop.addEventListener('click', () => closeSearchPanel());
+  mobileSearch.addEventListener('input', () => {
+    state.query = mobileSearch.value.trim().toLowerCase();
+    search.value = mobileSearch.value;
+    reset();
+  });
+  mobileSearch.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      closeSearchPanel();
+      scrollToOpeningCard();
+    }
+  });
   media.addEventListener('change', setupObserver);
   syncControls(); loadIndex(); setupObserver();
 })();

@@ -75,8 +75,9 @@
           vec2 pool=(uv-ctaCenter+flow*.018)/ctaRadius;
           float distanceSquared=dot(pool,pool);
           float coverage=exp(-distanceSquared*distanceSquared*.8);
-          shaded=mix(color,vec3(.025,.24,.23),coverage*.58);
-          shaded*=1.-coverage*(.72+.08*contours);
+          // Keep the thermal colors visible through a gentler teal shade.
+          shaded=mix(color,vec3(.025,.24,.23),coverage*.28);
+          shaded*=1.-coverage*(.42+.03*contours);
         }
         gl_FragColor=vec4(shaded,1.);
         return;
