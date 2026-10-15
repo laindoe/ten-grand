@@ -1077,7 +1077,7 @@ main {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: linear-gradient(110deg, #EB152880, #FF322080 18%, #FFDC0080 42%, #B8EF1980 58%, #14C98080 73%, #00CDE880 88%, #45CDF680);
+  background: linear-gradient(110deg, #EB152880, #FF322080 18%, #FFDC0080 42%, #B8EF0080 58%, #A8E00080 73%, #00CDE880 88%, #45CDF680);
 }
 .archive-dock__heat { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .archive-dock__label { position: relative; z-index: 1; }
@@ -1134,7 +1134,10 @@ main {
 }
 
 /* Place the tint above the canvas and below the sticky label. */
-.archive-dock__wall::after { z-index: 0; }
+.archive-dock__wall::after {
+  z-index: 0;
+  background: linear-gradient(90deg, transparent, rgba(1, 20, 23, .25) 18%, rgba(1, 20, 23, .52) 38%, rgba(1, 20, 23, .52) 62%, rgba(1, 20, 23, .25) 82%, transparent);
+}
 
 /* One fixed stack avoids a sticky/fixed handoff and keeps the divider inset
    from Safari's viewport edge. The slot reserves only the primary nav. */

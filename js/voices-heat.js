@@ -25,8 +25,8 @@
     vec3 thermal(float v) {
       vec3 c=vec3(69./255.,205./255.,246./255.);
       c=mix(c,vec3(0.,205./255.,232./255.),smoothstep(0.,.12,v));
-      c=mix(c,vec3(20./255.,201./255.,128./255.),smoothstep(.12,.27,v));
-      c=mix(c,vec3(184./255.,239./255.,25./255.),smoothstep(.27,.42,v));
+      c=mix(c,vec3(168./255.,224./255.,0.),smoothstep(.12,.27,v));
+      c=mix(c,vec3(184./255.,239./255.,0.),smoothstep(.27,.42,v));
       c=mix(c,vec3(1.,220./255.,0.),smoothstep(.42,.58,v));
       c=mix(c,vec3(1.,50./255.,32./255.),smoothstep(.58,.82,v));
       c=mix(c,vec3(235./255.,21./255.,40./255.),smoothstep(.82,1.,v));

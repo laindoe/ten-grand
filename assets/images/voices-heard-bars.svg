@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750.9 151.6">
 <defs>
-<linearGradient id="vhb-grad" x1="0" y1="0" x2="750.9" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#00CDE8"/><stop offset="0.22" stop-color="#14C980"/><stop offset="0.42" stop-color="#B8EF19"/><stop offset="0.5" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF19"/><stop offset="0.78" stop-color="#14C980"/><stop offset="1" stop-color="#00CDE8"/></linearGradient>
+<linearGradient id="vhb-grad" x1="0" y1="0" x2="750.9" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#00CDE8"/><stop offset="0.22" stop-color="#A8E000"/><stop offset="0.42" stop-color="#B8EF00"/><stop offset="0.5" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF00"/><stop offset="0.78" stop-color="#A8E000"/><stop offset="1" stop-color="#00CDE8"/></linearGradient>
 <filter id="vhb-glow" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="2.6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
 <g filter="url(#vhb-glow)" fill="url(#vhb-grad)">

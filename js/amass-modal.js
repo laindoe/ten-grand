@@ -290,7 +290,7 @@
         whyTitle: 'WHY DO YOU CREATE?',
         whyPlaceholder: 'Tell us why you create...',
         accent: '#FFDC00',
-        accentBlend: '#B8EF19',
+        accentBlend: '#B8EF00',
         focusOptions: ['Music', 'Film', 'Animation', 'Design', 'Writing', 'Photography', 'Fashion', 'Visual Art', 'Games', 'Live Experiences', 'Other'],
       },
       build: {
@@ -309,8 +309,8 @@
         whatTitle: 'WHAT DO YOU FUND?',
         whyTitle: 'WHY DO YOU FUND?',
         whyPlaceholder: 'Tell us why you fund...',
-        accent: '#14C980',
-        accentBlend: '#B8EF19',
+        accent: '#A8E000',
+        accentBlend: '#B8EF00',
         focusOptions: ['Artists', 'Music', 'Film', 'Media', 'Startups', 'Products', 'Events', 'Creative Spaces', 'Community Projects', 'Education', 'Other'],
       },
       support: {

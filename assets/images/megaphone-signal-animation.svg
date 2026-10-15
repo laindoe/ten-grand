@@ -26,7 +26,7 @@
       x2="877.37"
       y2="400.14"
       gradientUnits="userSpaceOnUse"
-    ><stop offset="0" stop-color="#EB1528"/><stop offset="0.18" stop-color="#FF3220"/><stop offset="0.42" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF19"/><stop offset="0.73" stop-color="#14C980"/><stop offset="0.88" stop-color="#00CDE8"/><stop offset="1" stop-color="#45CDF6"/></linearGradient>
+    ><stop offset="0" stop-color="#EB1528"/><stop offset="0.18" stop-color="#FF3220"/><stop offset="0.42" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF00"/><stop offset="0.73" stop-color="#A8E000"/><stop offset="0.88" stop-color="#00CDE8"/><stop offset="1" stop-color="#45CDF6"/></linearGradient>
     <radialGradient
       id="radial-gradient"
       cx="673.23"
@@ -36,8 +36,8 @@
       r="79.34"
       gradientTransform="translate(-10.68 -98.23) scale(1.04 1.64)"
       gradientUnits="userSpaceOnUse"
-    ><stop offset="0" stop-color="#EB1528"/><stop offset="0.18" stop-color="#FF3220"/><stop offset="0.42" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF19"/><stop offset="0.73" stop-color="#14C980"/><stop offset="0.88" stop-color="#00CDE8"/><stop offset="1" stop-color="#45CDF6"/></radialGradient>
-    <linearGradient id="signal-gradient" x1="770" y1="210" x2="1035" y2="560" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#EB1528"/><stop offset="0.18" stop-color="#FF3220"/><stop offset="0.42" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF19"/><stop offset="0.73" stop-color="#14C980"/><stop offset="0.88" stop-color="#00CDE8"/><stop offset="1" stop-color="#45CDF6"/></linearGradient>
+    ><stop offset="0" stop-color="#EB1528"/><stop offset="0.18" stop-color="#FF3220"/><stop offset="0.42" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF00"/><stop offset="0.73" stop-color="#A8E000"/><stop offset="0.88" stop-color="#00CDE8"/><stop offset="1" stop-color="#45CDF6"/></radialGradient>
+    <linearGradient id="signal-gradient" x1="770" y1="210" x2="1035" y2="560" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#EB1528"/><stop offset="0.18" stop-color="#FF3220"/><stop offset="0.42" stop-color="#FFDC00"/><stop offset="0.58" stop-color="#B8EF00"/><stop offset="0.73" stop-color="#A8E000"/><stop offset="0.88" stop-color="#00CDE8"/><stop offset="1" stop-color="#45CDF6"/></linearGradient>
   </defs>
   <path
     class="cls-2"

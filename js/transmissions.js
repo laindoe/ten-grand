@@ -245,7 +245,7 @@
     panel.hidden = false;
     dockFilters.setAttribute('aria-expanded', 'true');
     positionPopup(panel, dockFilters);
-    panelCategory.focus();
+    panelClose.focus({ preventScroll: true });
   }
   function closePanel(restoreFocus = true) {
     if (panel.hidden) return;

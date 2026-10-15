@@ -163,7 +163,7 @@
   width: 2px;
   height: 22px;
   transform: rotate(20deg);
-  background: linear-gradient(165deg, #EB1528 0%, #FF3220 18%, #FFDC00 42%, #B8EF19 58%, #14C980 73%, #00CDE8 88%, #45CDF6 100%);
+  background: linear-gradient(165deg, #EB1528 0%, #FF3220 18%, #FFDC00 42%, #B8EF00 58%, #A8E000 73%, #00CDE8 88%, #45CDF6 100%);
   background-size: 100% 220%;
   animation: broadcast-thermal-drift 16s ease-in-out infinite alternate;
 }
@@ -228,7 +228,7 @@
 /* Original thermal gradients, shared by the megaphone arcs and edge strips. */
 .broadcast-arc,
 .cw-broadcast-card::before {
-  background: linear-gradient(165deg, #EB1528 0%, #FF3220 18%, #FFDC00 42%, #B8EF19 58%, #14C980 73%, #00CDE8 88%, #45CDF6 100%);
+  background: linear-gradient(165deg, #EB1528 0%, #FF3220 18%, #FFDC00 42%, #B8EF00 58%, #A8E000 73%, #00CDE8 88%, #45CDF6 100%);
   background-size: 100% 220%;
   animation: broadcast-thermal-drift 16s ease-in-out infinite alternate;
 }
