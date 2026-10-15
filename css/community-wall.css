@@ -170,6 +170,16 @@ main {
   text-wrap: balance;
 }
 
+/* Desktop leaves room for navigation and the member-count strip. */
+@media (min-width: 760px) {
+  .cw-hero { padding: 16px 0; }
+  .cw-hero__inner { gap: 8px; }
+  .cw-hero__heading {
+    width: min(100%, calc(clamp(220px, 43svh, 360px) * 1.4336));
+  }
+  .cw-hero__subtitle { font-size: 0.95rem; }
+}
+
 .cw-globe {
   display: block;
   width: 100%;

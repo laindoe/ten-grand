@@ -58,11 +58,15 @@
         // Saturated thermal pools with a compact transition between color bands.
         v=smoothstep(.12,.88,v);
         color=thermal(v);
-        vec2 shelter=(uv-vec2(darkCenter,.43))/vec2(.43,.68);
-        float edge=length(shelter)+.07*field(p*.7);
-        float shade=1.-smoothstep(.42,1.16,edge);
-        vec3 ink=vec3(.018,.095,.098);
-        gl_FragColor=vec4(mix(color,ink,shade*.96),1.);
+        // Warp the shaded region with the same field as the colored pools.
+        // Attenuate their color rather than painting a flat dark oval over it.
+        vec2 flow=vec2(field(p*.65),field(p*.65+vec2(2.7,1.9)));
+        vec2 shelter=(uv-vec2(darkCenter,.43)+flow*.045)/vec2(.46,.72);
+        float shade=exp(-dot(shelter,shelter)*1.75);
+        float contours=.5+.5*sin(field(p)*.8);
+        vec3 shaded=mix(color,vec3(.025,.24,.23),shade*.58);
+        shaded*=1.-shade*(.72+.08*contours);
+        gl_FragColor=vec4(shaded,1.);
         return;
       }
       // A dark column follows the content on both narrow and wide cards.
