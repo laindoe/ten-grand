@@ -31,7 +31,7 @@ permalink: /transmissions/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=165" />
-  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=47" />
+  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=48" />
 </head>
 <body>
 
@@ -51,11 +51,14 @@ permalink: /transmissions/
     <button type="button" class="archive-dock__btn" id="archive-sticky-filters" aria-expanded="false" aria-haspopup="dialog" aria-controls="archive-filter-panel">
       FILTERS <span class="archive-dock__count" id="archive-sticky-count" hidden>0</span>
     </button>
-    <button type="button" class="archive-dock__btn archive-dock__btn--icon" id="archive-sticky-search" aria-expanded="false" aria-haspopup="dialog" aria-controls="archive-search-panel" aria-label="Search Transmissions">
+    <button type="button" class="archive-dock__btn archive-dock__btn--icon" id="archive-sticky-search" aria-expanded="false" aria-controls="archive-sticky-search-row" aria-label="Search Transmissions">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg>
     </button>
-        <input type="search" class="archive-search archive-sticky-input" id="archive-sticky-input" placeholder="SEARCH" aria-label="Search Transmissions" />
+
       </div>
+    </div>
+    <div class="archive-inner archive-sticky-search-row" id="archive-sticky-search-row" hidden>
+        <input type="search" class="archive-search archive-sticky-input" id="archive-sticky-input" placeholder="SEARCH" aria-label="Search Transmissions" />
     </div>
   </nav>
 
@@ -247,7 +250,7 @@ permalink: /transmissions/
 
 {% include site-footer.html %}
 
-  <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=20"></script>
-  <script src="{{ '/js/transmissions.js' | relative_url }}?v=12"></script>
+  <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=21"></script>
+  <script src="{{ '/js/transmissions.js' | relative_url }}?v=13"></script>
 </body>
 </html>

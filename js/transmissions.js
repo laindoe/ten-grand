@@ -260,22 +260,28 @@
     if (restoreFocus && panelOpener) panelOpener.focus();
     requestAnimationFrame(setupObserver);
   }
+  const stickySearchRow = document.getElementById('archive-sticky-search-row');
+  let searchScrollY = window.scrollY;
   function openSearchPanel() {
-    if (!searchPanel.hidden) { closeSearchPanel(); return; }
+    if (!stickySearchRow.hidden) { closeSearchPanel(); return; }
     closePanel(false);
-    mobileSearch.value = search.value;
-    searchPanel.hidden = false;
+    stickySearchRow.hidden = false;
     dockSearch.setAttribute('aria-expanded', 'true');
-    positionPopup(searchPanel, dockSearch);
-    mobileSearch.focus();
+    searchScrollY = window.scrollY;
+    stickyInput.focus({ preventScroll: true });
   }
   function closeSearchPanel(restoreFocus = true) {
-    if (searchPanel.hidden) return;
-    searchPanel.hidden = true;
+    if (stickySearchRow.hidden) return;
+    stickySearchRow.hidden = true;
     dockSearch.setAttribute('aria-expanded', 'false');
     if (restoreFocus) dockSearch.focus();
-    requestAnimationFrame(setupObserver);
   }
+  window.addEventListener('scroll', () => {
+    if (!stickySearchRow.hidden && Math.abs(window.scrollY - searchScrollY) > 24) closeSearchPanel(false);
+  }, { passive: true });
+  stickyInput.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeSearchPanel();
+  });
   document.addEventListener('keydown', onPanelKeydown);
   document.addEventListener('focusin', event => {
     if (!panel.hidden && !panel.contains(event.target) && event.target !== dockFilters) closePanel(false);
@@ -383,7 +389,7 @@
     state.category = 'all'; state.series = 'all'; state.query = ''; search.value = ''; reset();
   });
   dockFilters.addEventListener('click', openPanel);
-  dockSearch.addEventListener('click', () => { if (!media.matches) stickyInput.focus(); else openSearchPanel(); });
+  dockSearch.addEventListener('click', openSearchPanel);
   stickyCategory.addEventListener('change', () => { selectCategory(stickyCategory.value); scrollToOpeningCard(); });
   stickySeries.addEventListener('change', () => { state.series = stickySeries.value; state.category = 'all'; reset(); });
   stickyInput.addEventListener('input', () => { state.query = stickyInput.value.trim().toLowerCase(); search.value = stickyInput.value; reset(); });

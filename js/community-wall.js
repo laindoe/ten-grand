@@ -650,6 +650,7 @@
     window.addEventListener("resize", positionPanel);
     window.addEventListener("scroll", positionPanel, { passive: true });
     function openPanel(opener) {
+      closeSearch();
       if (!panel.hidden) { closePanel(); return; }
       draft = { role: voiceFilters.role, type: voiceFilters.type };
       syncDraftControls();
@@ -741,6 +742,11 @@
         }
       });
     }
+    var searchScrollPosition = window.scrollY;
+    window.addEventListener('scroll', function () {
+      if (searchRow && !searchRow.hidden && Math.abs(window.scrollY - searchScrollPosition) > 24) closeSearch();
+      searchScrollPosition = window.scrollY;
+    }, { passive: true });
     var searchDebounce = null;
     if (searchInput) {
       searchInput.addEventListener("input", function () {

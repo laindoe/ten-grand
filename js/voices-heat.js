@@ -61,6 +61,7 @@
         // Saturated thermal pools with a compact transition between color bands.
         v=smoothstep(.12,.88,v);
         color=thermal(v);
+        if (header > 1.5) { gl_FragColor=vec4(color,1.); return; }
         // Warp the shaded region with the same field as the colored pools.
         // Attenuate their color rather than painting a flat dark oval over it.
         vec2 flow=vec2(field(p*.65),field(p*.65+vec2(2.7,1.9)));
@@ -110,7 +111,7 @@
   const isWordmark = canvas.dataset.heatVariant === 'wordmark';
   gl.uniform1f(gl.getUniformLocation(program, 'wordmark'), isWordmark ? 1 : 0);
   const isHeader = canvas.parentElement.classList.contains('cw-hero') || canvas.dataset.heatVariant === 'header';
-  gl.uniform1f(gl.getUniformLocation(program, 'header'), isHeader ? 1 : 0);
+  gl.uniform1f(gl.getUniformLocation(program, 'header'), canvas.classList.contains('archive-dock__heat') ? 2 : (isHeader ? 1 : 0));
   const patternScale = Number(canvas.dataset.heatScale) || (isHeader ? 1.8 : 2.6);
   const patternScaleUniform = gl.getUniformLocation(program, 'patternScale');
   const intensity = gl.getUniformLocation(program, 'intensity');
