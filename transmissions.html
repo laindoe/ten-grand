@@ -6,7 +6,7 @@ permalink: /transmissions/
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script>
     // Decide before first paint whether this is a return to a saved archive.
     (() => {
@@ -31,12 +31,14 @@ permalink: /transmissions/
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=165" />
-  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=48" />
+  <link rel="stylesheet" href="{{ '/css/transmissions.css' | relative_url }}?v=49" />
 </head>
-<body>
+<body class="transmissions-page">
 
   <div class="site-frame">
 
+  <div class="archive-nav-slot">
+    <div class="archive-nav-stack" id="archive-nav-stack">
 {% include nav.html %}
 
   <nav class="archive-crumb" id="archive-crumb" aria-label="Breadcrumb" hidden>
@@ -61,6 +63,8 @@ permalink: /transmissions/
         <input type="search" class="archive-search archive-sticky-input" id="archive-sticky-input" placeholder="SEARCH" aria-label="Search Transmissions" />
     </div>
   </nav>
+    </div>
+  </div>
 
   <main>
     <section class="archive-community" aria-label="Explore the community">
@@ -251,6 +255,6 @@ permalink: /transmissions/
 {% include site-footer.html %}
 
   <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=21"></script>
-  <script src="{{ '/js/transmissions.js' | relative_url }}?v=13"></script>
+  <script src="{{ '/js/transmissions.js' | relative_url }}?v=14"></script>
 </body>
 </html>

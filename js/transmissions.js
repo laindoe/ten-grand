@@ -108,7 +108,8 @@
   const panelClear = document.getElementById('archive-filter-panel-clear');
   const panelApply = document.getElementById('archive-filter-panel-apply');
   const community = document.querySelector('.archive-community');
-  const siteNav = document.querySelector('.site-frame > .nav');
+  const navStack = document.getElementById('archive-nav-stack');
+  const siteNav = navStack.querySelector('.nav');
   let collapsed = false, draft = null, panelOpener = null, observer = null;
   function updateNavHeight() {
     if (siteNav) document.documentElement.style.setProperty('--t-nav-height', siteNav.getBoundingClientRect().height + 'px');
@@ -183,13 +184,15 @@
   }
   function syncBottomClearance() {
     const height = dock.hidden ? 0 : Math.ceil(dock.getBoundingClientRect().height);
-    document.documentElement.style.setProperty('--archive-bottom-clearance', height ? (height + 16) + 'px' : '0px');
+    const inset = dock.hidden ? 0 : Math.max(0, parseFloat(getComputedStyle(dock).bottom) || 0);
+    document.documentElement.style.setProperty('--archive-bottom-clearance', height ? (height + inset + 16) + 'px' : '0px');
   }
   if ('ResizeObserver' in window) new ResizeObserver(syncBottomClearance).observe(dock);
   window.addEventListener('resize', syncBottomClearance);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', syncBottomClearance);
   function setCollapsed(value) {
     // Live search can shorten the page; keep its toolbar in place while typing.
-    if (!value && (!panel.hidden || !searchPanel.hidden)) return;
+    if (!value && (!panel.hidden || !stickySearchRow.hidden)) return;
     if (collapsed === value) return;
     collapsed = value;
     crumb.hidden = !value;
@@ -214,7 +217,8 @@
     const gap = featuredLabel
       ? Math.max(0, Math.round(featuredLabel.getBoundingClientRect().top - community.getBoundingClientRect().bottom))
       : 0;
-    const margin = navHeight - gap;
+    const navTop = Math.max(0, parseFloat(getComputedStyle(navStack).top) || 0);
+    const margin = navTop + navHeight - gap;
     observer = new IntersectionObserver(entries => {
       entries.forEach(entry => setCollapsed(entry.boundingClientRect.bottom < margin));
     }, { threshold: 0, rootMargin: `${-margin}px 0px 0px 0px` });
@@ -365,9 +369,7 @@
     requestAnimationFrame(() => {
       const section = !intro.hidden ? intro : (welcome && !welcome.hidden ? welcome : null);
       const target = section ? section.querySelector('.featured-card') || section : grid;
-      const navHeight = siteNav ? siteNav.getBoundingClientRect().height : 0;
-      const toolbarHeight = crumb.hidden ? 0 : crumb.getBoundingClientRect().height;
-      const top = window.scrollY + target.getBoundingClientRect().top - navHeight - toolbarHeight - 16;
+      const top = window.scrollY + target.getBoundingClientRect().top - navStack.getBoundingClientRect().bottom - 16;
       window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion.matches ? 'auto' : 'smooth' });
     });
   }

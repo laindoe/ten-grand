@@ -1141,3 +1141,48 @@ main {
   pointer-events: none; border-radius: 50%;
   background: radial-gradient(ellipse, rgba(2, 22, 24, .32) 15%, transparent 74%);
 }
+
+/* One fixed stack avoids a sticky/fixed handoff and keeps the divider inset
+   from Safari's viewport edge. The slot reserves only the primary nav. */
+.transmissions-page {
+  --archive-nav-top: max(var(--frame-margin), env(safe-area-inset-top, 0px));
+  --archive-dock-inset: 0px;
+}
+.transmissions-page .site-frame {
+  border-top: 0;
+  padding-top: max(0px, calc(var(--archive-nav-top) - var(--frame-margin)));
+}
+body.transmissions-page:has(#archive-crumb:not([hidden])) .site-frame {
+  padding-top: max(0px, calc(var(--archive-nav-top) - var(--frame-margin)));
+}
+.archive-nav-slot { height: var(--t-nav-height, 64px); }
+.archive-nav-stack {
+  position: fixed;
+  top: var(--archive-nav-top);
+  left: calc(var(--frame-margin) + 1px);
+  right: calc(var(--frame-margin) + 1px);
+  z-index: 100;
+  background: var(--color-bg);
+}
+.archive-nav-stack::before {
+  content: "";
+  position: absolute;
+  bottom: 100%; left: -1px; right: -1px;
+  height: var(--archive-nav-top);
+  background: var(--color-bg);
+  pointer-events: none;
+}
+.archive-nav-stack > .nav { position: relative; top: auto; }
+.archive-nav-stack > .nav::before { content: none; }
+.archive-nav-stack > .archive-crumb {
+  position: relative;
+  top: auto; left: auto; right: auto;
+  border-left: 0; border-right: 0;
+}
+@media (max-width: 759px) {
+  .transmissions-page {
+    --archive-dock-inset: max(20px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+  }
+  .transmissions-page .archive-dock { bottom: var(--archive-dock-inset); }
+  .transmissions-page .archive-dock__wall { padding: 22px 0; }
+}
