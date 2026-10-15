@@ -99,7 +99,7 @@
   const isHeader = canvas.parentElement.classList.contains('cw-hero') || canvas.dataset.heatVariant === 'header';
   gl.uniform1f(gl.getUniformLocation(program, 'header'), isHeader ? 1 : 0);
   const patternScale = Number(canvas.dataset.heatScale) || (isHeader ? 1.8 : 2.6);
-  gl.uniform1f(gl.getUniformLocation(program, 'patternScale'), patternScale);
+  const patternScaleUniform = gl.getUniformLocation(program, 'patternScale');
   const intensity = gl.getUniformLocation(program, 'intensity');
   const darkCenter = gl.getUniformLocation(program, 'darkCenter');
   const mobile = matchMedia('(max-width: 759px)');
@@ -112,6 +112,8 @@
       const bounds = canvas.getBoundingClientRect(), panel = icon.getBoundingClientRect();
       center = (panel.left + panel.width / 2 - bounds.left) / Math.max(bounds.width, 1);
     }
+    // Broader thermal pools on desktop headers; preserve mobile sizing.
+    gl.uniform1f(patternScaleUniform, patternScale * (isHeader && !mobile.matches ? 0.65 : 1));
     gl.uniform1f(darkCenter, center);
     gl.uniform1f(intensity, isHeader ? (mobile.matches ? 1. : .85) : 1);
     gl.viewport(0, 0, canvas.width, canvas.height);
