@@ -116,7 +116,7 @@
     gl.uniform1f(intensity, isHeader ? (mobile.matches ? 1. : .85) : 1);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resolution, canvas.width, canvas.height);
-    gl.uniform1f(time, reduced.matches ? 0 : elapsed);
+    gl.uniform1f(time, reduced.matches ? 0 : elapsed * (isHeader ? 0.5 : 1));
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     if (isWordmark) canvas.parentElement.classList.add('has-heat');
   }
