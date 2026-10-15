@@ -964,9 +964,6 @@ main {
   .archive-dock__wall { width: 100%; }
 }
 
-/* Reserve the visible fixed CTA's measured height, including its safe area,
-   so the copyright can scroll completely above the bottom button. */
-.site-footer { margin-bottom: var(--archive-bottom-clearance, 0px); }
 
 /* Keep the intermediate archive layout out of view during a saved return.
    Visibility preserves the geometry needed to restore the card's position. */
@@ -1129,18 +1126,15 @@ main {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f3f3f4' stroke-width='1.8'%3E%3Ccircle cx='10.5' cy='10.5' r='7.5'/%3E%3Cpath d='m16 16 5 5'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: 16px center; background-size: 22px;
 }
-/* Local contrast behind the CTA megaphone, feathered into the live heat map. */
-.archive-community::after {
+/* Matching feathered tint over both community CTA heat maps. */
+.archive-community::after,
+.archive-dock__wall::after {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background: linear-gradient(90deg, rgba(1, 20, 23, .52), rgba(1, 20, 23, .25) 18%, transparent 42%);
 }
 
-/* Keep the sticky CTA's contrast treatment close to the lettering. */
-.archive-dock__label::before {
-  content: ""; position: absolute; inset: -7px -14px; z-index: -1;
-  pointer-events: none; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(2, 22, 24, .32) 15%, transparent 74%);
-}
+/* Place the tint above the canvas and below the sticky label. */
+.archive-dock__wall::after { z-index: 0; }
 
 /* One fixed stack avoids a sticky/fixed handoff and keeps the divider inset
    from Safari's viewport edge. The slot reserves only the primary nav. */
@@ -1193,4 +1187,19 @@ body.transmissions-page:has(#archive-crumb:not([hidden])) .site-frame {
   inset: auto;
   border: 0;
   border-bottom: 1px solid var(--color-card-border);
+}
+
+/* A slim label strip in the sticky navigation stack. */
+.archive-nav-stack .archive-dock .archive-dock__wall {
+  padding: 8px 12px;
+  line-height: 1.25;
+  align-items: center;
+}
+
+/* No bottom dock remains; finish the feed compactly with room for copyright. */
+.transmissions-page .archive-grid-section { padding-bottom: 24px; }
+.transmissions-page .site-frame { margin-bottom: 0; }
+.transmissions-page .site-footer {
+  margin-bottom: 0;
+  padding: 24px var(--frame-margin) max(24px, calc(env(safe-area-inset-bottom, 0px) + 12px));
 }
