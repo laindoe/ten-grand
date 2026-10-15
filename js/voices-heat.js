@@ -13,6 +13,7 @@
     uniform float intensity;
     uniform float darkCenter;
     uniform float wordmark;
+    uniform float header;
     float field(vec2 p) {
       return sin(p.x*3.1 + sin(p.y*2.4 + time*.16)*1.7 + time*.19)
         + sin(p.y*4.3 - time*.13 + cos(p.x*2.6-time*.11)*1.6)
@@ -53,6 +54,17 @@
       vec2 p=(uv-.5)*vec2(resolution.x/resolution.y,1.)*patternScale;
       float v=clamp(.5+field(p)*.20,0.,1.);
       vec3 color=thermal(v);
+      if (header > .5) {
+        // Saturated thermal pools with a compact transition between color bands.
+        v=smoothstep(.12,.88,v);
+        color=thermal(v);
+        vec2 shelter=(uv-vec2(darkCenter,.43))/vec2(.43,.68);
+        float edge=length(shelter)+.07*field(p*.7);
+        float shade=1.-smoothstep(.42,1.16,edge);
+        vec3 ink=vec3(.018,.095,.098);
+        gl_FragColor=vec4(mix(color,ink,shade*.96),1.);
+        return;
+      }
       // A dark column follows the content on both narrow and wide cards.
       float center=1.-smoothstep(.10,.49,abs(uv.x-darkCenter));
       float brightness=mix(.75,.08,center)*intensity;
@@ -81,7 +93,8 @@
   const isWordmark = canvas.dataset.heatVariant === 'wordmark';
   gl.uniform1f(gl.getUniformLocation(program, 'wordmark'), isWordmark ? 1 : 0);
   const isHeader = canvas.parentElement.classList.contains('cw-hero') || canvas.dataset.heatVariant === 'header';
-  const patternScale = Number(canvas.dataset.heatScale) || (isHeader ? 1.3 : 2.6);
+  gl.uniform1f(gl.getUniformLocation(program, 'header'), isHeader ? 1 : 0);
+  const patternScale = Number(canvas.dataset.heatScale) || (isHeader ? 1.8 : 2.6);
   gl.uniform1f(gl.getUniformLocation(program, 'patternScale'), patternScale);
   const intensity = gl.getUniformLocation(program, 'intensity');
   const darkCenter = gl.getUniformLocation(program, 'darkCenter');

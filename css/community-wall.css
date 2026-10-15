@@ -108,7 +108,7 @@ main {
   isolation: isolate;
   overflow: hidden;
   border-bottom: 1px solid var(--color-card-border);
-  padding: clamp(28px, 4vw, 64px) 0 36px;
+  padding: 32px 0;
   background: #062d30;
 }
 
@@ -138,7 +138,7 @@ main {
 }
 
 .cw-hero__heading {
-  width: min(100%, 960px);
+  width: min(100%, 720px);
   margin: 0;
   line-height: 0;
 }
