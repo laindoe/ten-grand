@@ -85,10 +85,11 @@
   function initCondensedHeader() {
     var opening = document.querySelector(".broadcasts--v2 .broadcasts__sticky");
     var condensed = document.getElementById("broadcasts-condensed");
-    var nav = document.querySelector(".site-frame > .nav");
+    var nav = document.querySelector(".site-frame > .nav, .archive-nav-stack > .nav");
     if (!opening || !condensed || !nav) return;
 
     function updateNavHeight() {
+      document.documentElement.style.setProperty("--primary-nav-height", nav.getBoundingClientRect().height + "px");
       document.documentElement.style.setProperty("--b-nav-height", nav.getBoundingClientRect().height + "px");
     }
     updateNavHeight();
@@ -133,7 +134,7 @@
     function setupObserver() {
       if (observer) { observer.disconnect(); observer = null; }
       if (!("IntersectionObserver" in window)) return;
-      var navHeight = Math.round(nav.getBoundingClientRect().height);
+      var navHeight = Math.round(nav.getBoundingClientRect().bottom);
       observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) { setCollapsed(entry.boundingClientRect.bottom < navHeight); });
       }, { threshold: 0, rootMargin: "-" + navHeight + "px 0px 0px 0px" });

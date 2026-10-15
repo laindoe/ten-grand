@@ -657,3 +657,6 @@
   z-index: -1;
   pointer-events: none;
 }
+
+/* The campaign filter disclosure continues directly from its toolbar. */
+.voices-filter-panel__sheet { border-top: 0; box-shadow: none; animation: none; }

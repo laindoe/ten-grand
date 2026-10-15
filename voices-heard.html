@@ -11,14 +11,16 @@ permalink: /voices-heard/
   <meta name="description" content="Meet the creators, builders, investors, and supporters sharing their voices with Ten Grand." />
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=172" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=173" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=147" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=41" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=43" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=48" />
 </head>
-<body>
+<body class="archive-stacked-page">
   <div class="site-frame">
+    <div class="archive-nav-slot">
+      <div class="archive-nav-stack">
     {% include nav.html %}
 
     <div class="broadcasts-condensed" id="voices-condensed" hidden>
@@ -54,6 +56,9 @@ permalink: /voices-heard/
       </div>
     </div>
 
+      </div>
+    </div>
+
     <main class="broadcasts broadcasts--v2 voices-page">
       <div class="broadcasts__sticky">
         <div class="voices-heat-band">
@@ -84,7 +89,7 @@ permalink: /voices-heard/
     <div class="voices-filter-panel__backdrop" id="voices-filter-panel-backdrop"></div>
     <div class="voices-filter-panel__sheet" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="voices-filter-panel-title">
       <div class="voices-filter-panel__header">
-        <h2 id="voices-filter-panel-title">Filters</h2>
+        <h2 id="voices-filter-panel-title">FILTERS</h2>
         <button type="button" class="voices-filter-panel__close" id="voices-filter-panel-close" aria-label="Close filters">&times;</button>
       </div>
       <div class="voices-filter-panel__body">
@@ -118,8 +123,8 @@ permalink: /voices-heard/
   <script src="{{ '/js/voices-secure-submit.js' | relative_url }}?v=3"></script>
   <script src="{{ '/js/amass-modal.js' | relative_url }}?v=21"></script>
   <script src="{{ '/js/voice-equalizer.js' | relative_url }}?v=3"></script>
-  <script src="{{ '/js/community-wall.js' | relative_url }}?v=35"></script>
-  <script src="{{ '/js/archive-header.js' | relative_url }}?v=2"></script>
+  <script src="{{ '/js/community-wall.js' | relative_url }}?v=38"></script>
+  <script src="{{ '/js/archive-header.js' | relative_url }}?v=3"></script>
   <script defer src="{{ '/js/voices-heat.js' | relative_url }}?v=23"></script>
 </body>
 </html>

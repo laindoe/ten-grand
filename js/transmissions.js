@@ -221,13 +221,9 @@
   }
   function positionPopup(popup, button) {
     const toolbar = crumb.getBoundingClientRect();
-    const trigger = button.getBoundingClientRect();
-    const leftEdge = toolbar.left + 12, rightEdge = toolbar.right - 12;
-    const width = Math.min(320, rightEdge - leftEdge);
-    const left = Math.max(leftEdge, Math.min(trigger.right - width, rightEdge - width));
-    popup.style.setProperty('--archive-popup-top', (toolbar.bottom + 6) + 'px');
-    popup.style.setProperty('--archive-popup-left', left + 'px');
-    popup.style.setProperty('--archive-popup-width', width + 'px');
+    popup.style.setProperty('--archive-popup-top', toolbar.bottom + 'px');
+    popup.style.setProperty('--archive-popup-left', toolbar.left + 'px');
+    popup.style.setProperty('--archive-popup-width', toolbar.width + 'px');
   }
   function onPanelKeydown(e) {
     if (e.key === 'Escape') {

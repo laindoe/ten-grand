@@ -1201,3 +1201,11 @@ body.transmissions-page:has(#archive-crumb:not([hidden])) .site-frame {
 
 /* No bottom dock remains; finish the feed compactly with room for copyright. */
 .transmissions-page .archive-grid-section { padding-bottom: 24px; }
+
+/* Match the Community Wall footer despite this page's edge-to-edge viewport. */
+.transmissions-page .site-footer { padding-bottom: 24px; }
+
+@media (max-width: 759px) {
+  .archive-filter-panel__sheet { border-top: 0; }
+  .archive-filter-panel__close { border: 0; }
+}

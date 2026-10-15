@@ -1,12 +1,13 @@
 (function () {
   "use strict";
-  var nav = document.querySelector(".site-frame > .nav");
+  var nav = document.querySelector(".site-frame > .nav, .archive-nav-stack > .nav");
   var archive = document.querySelector(".broadcasts");
   if (!nav || !archive) return;
 
   var header = archive.querySelector(".broadcasts__sticky");
 
   function updateNavHeight() {
+      document.documentElement.style.setProperty("--primary-nav-height", nav.getBoundingClientRect().height + "px");
     archive.style.setProperty("--archive-nav-height", nav.getBoundingClientRect().height + "px");
     archive.style.setProperty("--archive-header-height", (header ? header.getBoundingClientRect().height : 0) + "px");
   }

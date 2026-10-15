@@ -11,12 +11,14 @@ permalink: /broadcasts/
   <meta name="description" content="Official broadcasts from Ten Grand. Updates, opportunities, and news from the house." />
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=172" />
-  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=41" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=173" />
+  <link rel="stylesheet" href="{{ '/css/broadcasts.css' | relative_url }}?v=43" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=48" />
 </head>
-<body>
+<body class="archive-stacked-page">
   <div class="site-frame">
+    <div class="archive-nav-slot">
+      <div class="archive-nav-stack">
     {% include nav.html %}
 
     <div class="broadcasts-condensed" id="broadcasts-condensed" hidden>
@@ -37,6 +39,9 @@ permalink: /broadcasts/
           <input type="search" id="broadcasts-search-condensed" placeholder="SEARCH" aria-label="Search broadcasts" />
           <button type="button" class="house-search-clear" data-house-search-clear="broadcasts-search-condensed" aria-label="Clear search" hidden>&times;</button>
         </div>
+      </div>
+    </div>
+
       </div>
     </div>
 
@@ -72,7 +77,7 @@ permalink: /broadcasts/
   </div>
   {% include broadcast-modal.html %}
   {% include site-footer.html %}
-  <script src="{{ '/js/broadcasts.js' | relative_url }}?v=8"></script>
-  <script src="{{ '/js/archive-header.js' | relative_url }}?v=2"></script>
+  <script src="{{ '/js/broadcasts.js' | relative_url }}?v=9"></script>
+  <script src="{{ '/js/archive-header.js' | relative_url }}?v=3"></script>
 </body>
 </html>

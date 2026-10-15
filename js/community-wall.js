@@ -567,10 +567,11 @@
   function initVoicesHeardHeader() {
     var sticky = document.querySelector(".broadcasts--v2 .broadcasts__sticky");
     var condensed = document.getElementById("voices-condensed");
-    var nav = document.querySelector(".site-frame > .nav");
+    var nav = document.querySelector(".site-frame > .nav, .archive-nav-stack > .nav");
     if (!sticky || !condensed || !nav) return;
 
     function updateNavHeight() {
+      document.documentElement.style.setProperty("--primary-nav-height", nav.getBoundingClientRect().height + "px");
       document.documentElement.style.setProperty("--b-nav-height", nav.getBoundingClientRect().height + "px");
     }
     updateNavHeight();
@@ -588,7 +589,7 @@
     function setupObserver() {
       if (observer) { observer.disconnect(); observer = null; }
       if (!("IntersectionObserver" in window)) return;
-      var navHeight = Math.round(nav.getBoundingClientRect().height);
+      var navHeight = Math.round(nav.getBoundingClientRect().bottom);
       observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) { setCollapsed(entry.boundingClientRect.bottom < navHeight); });
       }, { threshold: 0, rootMargin: "-" + navHeight + "px 0px 0px 0px" });
@@ -638,13 +639,12 @@
     }
     function positionPanel() {
       if (panel.hidden || !toggleFull) return;
-      var button = toggleFull.getBoundingClientRect();
+      var header = condensed.getBoundingClientRect();
       var sheet = panel.querySelector(".voices-filter-panel__sheet");
-      var width = sheet.getBoundingClientRect().width;
-      var top = button.bottom + 8;
-      var left = Math.max(16, Math.min(button.right - width, window.innerWidth - width - 16));
+      var top = header.bottom;
       sheet.style.top = top + "px";
-      sheet.style.left = left + "px";
+      sheet.style.left = header.left + "px";
+      sheet.style.width = header.width + "px";
       sheet.style.maxHeight = Math.max(0, window.innerHeight - top - 16) + "px";
     }
     window.addEventListener("resize", positionPanel);

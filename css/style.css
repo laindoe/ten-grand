@@ -5309,3 +5309,30 @@ body:has(:is(#archive-crumb, #voices-condensed, #broadcasts-condensed):not([hidd
 /* Campaign artwork includes its own branding and copy; show the whole design. */
 #amass-modal .amass-campaign-card--image { padding: 0; gap: 0; background: #000; overflow: hidden; }
 #amass-modal .amass-campaign-card--image img { display: block; width: 100%; height: auto; }
+
+/* Archive secondary headers share the main nav's fixed coordinate system. */
+.archive-stacked-page { --archive-nav-top: max(var(--frame-margin), env(safe-area-inset-top, 0px)); }
+.archive-stacked-page .site-frame,
+body.archive-stacked-page:has(:is(#voices-condensed, #broadcasts-condensed):not([hidden])) .site-frame {
+  border-top: 0;
+  padding-top: max(0px, calc(var(--archive-nav-top) - var(--frame-margin)));
+}
+.archive-stacked-page .archive-nav-slot { height: var(--primary-nav-height, 64px); }
+.archive-stacked-page .archive-nav-stack {
+  position: fixed;
+  top: var(--archive-nav-top);
+  left: calc(var(--frame-margin) + 1px);
+  right: calc(var(--frame-margin) + 1px);
+  z-index: 100;
+  background: var(--color-bg);
+}
+.archive-stacked-page .archive-nav-stack::before {
+  content: ""; position: absolute; bottom: 100%; left: -1px; right: -1px;
+  height: var(--archive-nav-top); background: var(--color-bg); pointer-events: none;
+}
+.archive-stacked-page .archive-nav-stack > .nav { position: relative; top: auto; }
+.archive-stacked-page .archive-nav-stack > .nav::before { content: none; }
+.archive-stacked-page .archive-nav-stack > :is(#voices-condensed, #broadcasts-condensed) {
+  position: relative; top: auto; left: auto; right: auto;
+  border-left: 0; border-right: 0;
+}
