@@ -581,6 +581,7 @@
     var observer = null;
 
     function setCollapsed(value) {
+      if (!value && searchRow && !searchRow.hidden && document.activeElement === searchInput) return;
       if (condensed.hidden === !value) return;
       condensed.hidden = !value;
       if (!value) { closePanel(); closeSearch(); }
@@ -720,20 +721,21 @@
     var searchToggle = document.getElementById("voices-search-toggle");
     var searchRow = document.getElementById("voices-search-row");
     function closeSearch() {
-      if (!searchRow || !searchToggle) return;
+      if (!searchRow || !searchToggle || searchRow.hidden) return;
       searchRow.hidden = true;
       searchToggle.setAttribute("aria-expanded", "false");
+      requestAnimationFrame(setupObserver);
     }
     if (searchToggle && searchRow && searchInput) {
       searchToggle.addEventListener("click", function () {
         if (window.matchMedia("(min-width: 760px)").matches) {
-          searchInput.focus();
+          searchInput.focus({ preventScroll: true });
           return;
         }
         var opening = searchRow.hidden;
         searchRow.hidden = !opening;
         searchToggle.setAttribute("aria-expanded", String(opening));
-        if (opening) searchInput.focus();
+        if (opening) searchInput.focus({ preventScroll: true });
       });
       searchInput.addEventListener("keydown", function (event) {
         if (event.key === "Escape") {
@@ -742,11 +744,21 @@
         }
       });
     }
-    var searchScrollPosition = window.scrollY;
-    window.addEventListener('scroll', function () {
-      if (searchRow && !searchRow.hidden && Math.abs(window.scrollY - searchScrollPosition) > 24) closeSearch();
-      searchScrollPosition = window.scrollY;
+    // Keyboard/focus and filtered results can move the page automatically.
+    // Dismiss only for an intentional scroll gesture, as on Broadcasts.
+    window.addEventListener('wheel', function (event) {
+      if (!searchRow.hidden && Math.abs(event.deltaY) > 4) closeSearch();
     }, { passive: true });
+    var searchTouchY = null;
+    window.addEventListener('touchstart', function (event) {
+      searchTouchY = event.touches[0]?.clientY ?? null;
+    }, { passive: true });
+    window.addEventListener('touchmove', function (event) {
+      if (!searchRow.hidden && searchTouchY !== null && Math.abs(event.touches[0].clientY - searchTouchY) > 24) closeSearch();
+    }, { passive: true });
+    window.addEventListener('keydown', function (event) {
+      if (!searchRow.hidden && ['PageDown', 'PageUp'].includes(event.key)) closeSearch();
+    });
     var searchDebounce = null;
     if (searchInput) {
       searchInput.addEventListener("input", function () {
