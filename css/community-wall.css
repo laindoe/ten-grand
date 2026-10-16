@@ -1834,3 +1834,8 @@ main {
 
 /* Rounded profile photos on campaign and archive cards. */
 .cw-voice-card .cw-voice-card__photo { border-radius: 12px; }
+
+/* Preserve desktop identity spacing when optional profile links are absent. */
+@media (min-width: 760px) {
+  .cw-voice-card--library .cw-voice-card__links { min-height: 34px; }
+}
