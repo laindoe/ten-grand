@@ -2005,18 +2005,22 @@ main {
   box-shadow: 0 0 2px color-mix(in srgb, var(--cw-audio-color) 60%, transparent);
 }
 
-/* Saturated airbrush blooms echo the chrome wordmark palette. */
+/* The supplied airbrush artwork sits within a quiet black frame. */
 .cw-campaign .cw-campaign__intro--voices,
 .voices-page .voices-heat-band {
-  background:
-    radial-gradient(ellipse at 8% 18%, #00d9ff 0%, #00a9ff88 22%, transparent 53%),
-    radial-gradient(ellipse at 82% 10%, #ff42d8 0%, #d400ff88 22%, transparent 54%),
-    radial-gradient(ellipse at 43% 86%, #a8ef43 0%, #16d89899 20%, transparent 52%),
-    radial-gradient(ellipse at 96% 86%, #a340ff 0%, #6234ff99 25%, transparent 58%),
-    linear-gradient(130deg, #103ae6 0%, #1231aa 48%, #6815c8 100%);
+  background: #000;
   border-color: var(--color-card-border);
   box-shadow: none;
   animation: none;
+}
+.cw-campaign .cw-campaign__title-bars,
+.voices-page .voices-heat-band__wordmark {
+  display: block; width: 100%; max-width: 620px; height: auto;
+  aspect-ratio: 4 / 3; object-fit: cover; object-position: center 43%;
+  margin-inline: auto; filter: none;
+}
+@media (min-width: 900px) {
+  .cw-campaign .cw-campaign__title-bars { aspect-ratio: 16 / 9; }
 }
 
 /* Match the VOICES label typeface while preserving the four-digit tally. */

@@ -5346,7 +5346,7 @@ body.archive-stacked-page:has(:is(#voices-condensed, #broadcasts-condensed):not(
 .amass-flow__fine-print { margin-top: 24px; }
 
 /* Voices Heard: one supplied background, with replaceable transparent lettering. */
-:root { --voices-campaign-background: url('../assets/images/voices-heard-grid-background.jpg'); }
+:root { --voices-campaign-background: none; }
 #amass-modal .voices-campaign-surface { background: #000 var(--voices-campaign-background) center / cover no-repeat; }
 #amass-modal .amass-campaign-card--designed {
   aspect-ratio: 16 / 9;
@@ -5398,4 +5398,22 @@ input, textarea, [contenteditable]:not([contenteditable="false"]),
 }
 html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
   outline: none !important;
+}
+
+/* Campaign art keeps its original colors and black surround in every modal. */
+#amass-modal .voices-campaign-surface { background: #000; }
+#amass-modal .amass-campaign-card--designed {
+  aspect-ratio: auto; padding: 0; gap: 0; overflow: hidden;
+}
+#amass-modal .amass-campaign-card--designed .voices-campaign-wordmark {
+  display: block; width: 100%; height: auto; aspect-ratio: 16 / 9;
+  object-fit: cover; object-position: center 43%;
+}
+#amass-modal .amass-campaign-card--designed span { padding: 10px 16px 14px; color: #fff; }
+#amass-modal .amass-flow__campaign-header.voices-campaign-surface {
+  border: 1px solid var(--color-card-border); padding: 0; overflow: hidden;
+}
+#amass-modal .amass-flow__campaign-header .voices-campaign-wordmark {
+  display: block; width: 100%; height: auto; aspect-ratio: 4 / 3;
+  object-fit: cover; object-position: center 43%;
 }
