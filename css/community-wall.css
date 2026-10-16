@@ -1942,3 +1942,55 @@ main {
   width: 44px; height: 44px; flex: 0 0 44px; fill: currentColor;
 }
 .cw-voice-card--library .cw-voice-card__footer .amass-flow__review-play-icon[hidden] { display: none; }
+
+/* Match the portrait's role glow across the card and give identity more weight. */
+.cw-voice-card.cw-voice-card--library {
+  gap: 4px;
+  border: 2px solid color-mix(in srgb, var(--cw-audio-color) 45%, white);
+  box-shadow: 0 0 3px 1px var(--cw-audio-color),
+              0 0 8px color-mix(in srgb, var(--cw-audio-color) 85%, transparent),
+              0 0 14px color-mix(in srgb, var(--cw-audio-color) 45%, transparent);
+}
+.cw-voice-card--library .cw-voice-card__name {
+  font-size: clamp(20px, 4.2cqw, 38px); line-height: 1.15;
+}
+.cw-voice-card--library .cw-voice-card__title {
+  font-size: clamp(16px, 3cqw, 28px); line-height: 1.25;
+}
+.cw-voice-card--library .cw-voice-card__link-icon { width: 40px; height: 40px; }
+.cw-voice-card--library .cw-voice-card__links { min-height: 40px; }
+.cw-voice-card--library .cw-voice-card__audio-wave { height: 48px; padding-block: 0; }
+@media (max-width: 759px) {
+  .cw-voice-card--library .cw-voice-card__link-icon { width: 28px; height: 28px; }
+  .cw-voice-card--library .cw-voice-card__links { min-height: 28px; }
+}
+
+/* Player glow stays in its role color, with a stronger pulse during playback. */
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__audio-play {
+  animation: none;
+  color: var(--cw-audio-color);
+  filter: none;
+}
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__audio-play.is-playing {
+  color: var(--cw-audio-color);
+  box-shadow: 0 0 3px 1px var(--cw-audio-color),
+              0 0 8px color-mix(in srgb, var(--cw-audio-color) 85%, transparent),
+              0 0 14px color-mix(in srgb, var(--cw-audio-color) 45%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cw-voice-card--library .cw-voice-card__footer .cw-voice-card__audio-play.is-playing {
+    animation: cw-player-role-glow 2s ease-in-out infinite;
+  }
+}
+@keyframes cw-player-role-glow {
+  0%, 100% {
+    box-shadow: 0 0 3px 1px var(--cw-audio-color),
+                0 0 8px color-mix(in srgb, var(--cw-audio-color) 85%, transparent),
+                0 0 14px color-mix(in srgb, var(--cw-audio-color) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 4px 2px var(--cw-audio-color),
+                0 0 12px color-mix(in srgb, var(--cw-audio-color) 90%, transparent),
+                0 0 22px color-mix(in srgb, var(--cw-audio-color) 60%, transparent);
+  }
+}
