@@ -2005,10 +2005,15 @@ main {
   box-shadow: 0 0 2px color-mix(in srgb, var(--cw-audio-color) 60%, transparent);
 }
 
-/* A quiet chrome-inspired gradient behind the white campaign frame. */
+/* Saturated airbrush blooms echo the chrome wordmark palette. */
 .cw-campaign .cw-campaign__intro--voices,
 .voices-page .voices-heat-band {
-  background: linear-gradient(125deg, #073746 0%, #102a76 26%, #123f38 48%, #352057 72%, #632044 100%);
+  background:
+    radial-gradient(ellipse at 8% 18%, #00d9ff 0%, #00a9ff88 22%, transparent 53%),
+    radial-gradient(ellipse at 82% 10%, #ff42d8 0%, #d400ff88 22%, transparent 54%),
+    radial-gradient(ellipse at 43% 86%, #a8ef43 0%, #16d89899 20%, transparent 52%),
+    radial-gradient(ellipse at 96% 86%, #a340ff 0%, #6234ff99 25%, transparent 58%),
+    linear-gradient(130deg, #103ae6 0%, #1231aa 48%, #6815c8 100%);
   border-color: var(--color-card-border);
   box-shadow: none;
   animation: none;
@@ -2024,3 +2029,6 @@ main {
   letter-spacing: .08em;
   padding-left: .08em;
 }
+
+.cw-campaign .cw-campaign__subtitle,
+.voices-page .voices-subtitle { color: #fff; }
