@@ -1920,3 +1920,25 @@ main {
   .cw-campaign__intro--voices .cw-campaign__subtitle,
   .cw-campaign__intro--voices .cw-campaign__actions { grid-column: 2; justify-self: start; }
 }
+
+/* Plain campaign headers and a compact portrait beside the identity. */
+.cw-campaign .cw-campaign__intro--voices,
+.voices-page .voices-heat-band { background: var(--color-bg); }
+.cw-campaign .cw-campaign__intro--voices { border-top: 1px solid var(--color-text); }
+.cw-voice-card--library .cw-voice-card__top {
+  grid-template-columns: clamp(88px, 24%, 150px) minmax(0, 1fr);
+}
+.cw-voice-card--library .cw-voice-card__top > .cw-voice-card__avatar {
+  grid-column: 1; grid-row: 1; width: 100%; height: auto;
+  min-height: 0; aspect-ratio: 1;
+}
+.cw-voice-card--library .cw-voice-card__top > .cw-voice-card__identity {
+  grid-column: 2; grid-row: 1; min-width: 0;
+}
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__audio-play {
+  display: flex; align-items: center; justify-content: center; padding: 0;
+}
+.cw-voice-card--library .cw-voice-card__footer .amass-flow__review-play-icon {
+  width: 44px; height: 44px; flex: 0 0 44px; fill: currentColor;
+}
+.cw-voice-card--library .cw-voice-card__footer .amass-flow__review-play-icon[hidden] { display: none; }
