@@ -5,8 +5,6 @@
    the shared saturated thermal reference palette.
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap');
-
 :root {
   --cw-max-width: 1100px;
   /* Page-level accent -- replaces the site's default orange
@@ -2007,39 +2005,18 @@ main {
   box-shadow: 0 0 2px color-mix(in srgb, var(--cw-audio-color) 60%, transparent);
 }
 
-/* A slow thermal glow frames the campaign artwork without tinting the copy. */
-.cw-campaign .cw-campaign__intro--voices {
-  border-color: color-mix(in srgb, var(--thermal-cyan) 45%, white);
-  box-shadow: -3px -2px 9px color-mix(in srgb, var(--thermal-cyan) 65%, transparent),
-               3px -2px 9px color-mix(in srgb, var(--thermal-lime) 65%, transparent),
-               3px 2px 9px color-mix(in srgb, var(--thermal-yellow) 65%, transparent),
-              -3px 2px 9px color-mix(in srgb, var(--thermal-cherry) 65%, transparent);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .cw-campaign .cw-campaign__intro--voices { animation: cw-campaign-thermal-glow 24s ease-in-out infinite; }
-}
-@keyframes cw-campaign-thermal-glow {
-  0%, 100% {
-    border-color: color-mix(in srgb, var(--thermal-cyan) 45%, white);
-    box-shadow: -3px -2px 9px #00cde8a6, 3px -2px 9px #b8ef00a6, 3px 2px 9px #ffdC00a6, -3px 2px 9px #eb1528a6;
-  }
-  25% {
-    border-color: color-mix(in srgb, var(--thermal-lime) 45%, white);
-    box-shadow: -3px -2px 9px #b8ef00a6, 3px -2px 9px #ffdc00a6, 3px 2px 9px #eb1528a6, -3px 2px 9px #45cdf6a6;
-  }
-  50% {
-    border-color: color-mix(in srgb, var(--thermal-yellow) 45%, white);
-    box-shadow: -3px -2px 9px #ffdc00a6, 3px -2px 9px #eb1528a6, 3px 2px 9px #45cdf6a6, -3px 2px 9px #00cde8a6;
-  }
-  75% {
-    border-color: color-mix(in srgb, var(--thermal-cherry) 45%, white);
-    box-shadow: -3px -2px 9px #eb1528a6, 3px -2px 9px #45cdf6a6, 3px 2px 9px #00cde8a6, -3px 2px 9px #b8ef00a6;
-  }
+/* A quiet chrome-inspired gradient behind the white campaign frame. */
+.cw-campaign .cw-campaign__intro--voices,
+.voices-page .voices-heat-band {
+  background: linear-gradient(125deg, #073746 0%, #102a76 26%, #123f38 48%, #352057 72%, #632044 100%);
+  border-color: var(--color-card-border);
+  box-shadow: none;
+  animation: none;
 }
 
-/* A tall campaign tally; keep the existing four-digit, zero-padded count. */
+/* Match the VOICES label typeface while preserving the four-digit tally. */
 .cw-campaign__counter [data-stat="voices-total"] {
-  font-family: 'Barlow Condensed', 'Arial Narrow', var(--font-display);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: clamp(3.5rem, 7vw, 5rem);
   line-height: 1;
