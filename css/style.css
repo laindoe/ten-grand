@@ -5434,7 +5434,7 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
 #amass-modal .amass-flow__panel[data-amass-screen="9"] {
   width: 100%; max-width: none; height: 100%; max-height: none;
   padding: 0; border: 0; border-radius: 0; overflow: hidden;
-  background: #03030b url('../assets/images/voices-heard-intro-nebula.png') center top / min(100vw, 680px) auto no-repeat;
+  background: #03030b url('../assets/images/voices-heard-airbrush-refined.png') center top / min(100vw, 680px) auto no-repeat;
 }
 #amass-modal:has([data-amass-screen="9"]) { padding: 0; }
 #amass-modal [data-amass-screen="9"] .amass-flow__heat { display: none; }
@@ -5474,3 +5474,14 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
   background: linear-gradient(to bottom, transparent 85%, #03030b 100%);
 }
 #amass-modal [data-amass-screen="9"] .amass-flow__screen { position: relative; z-index: 1; }
+
+/* Give campaign copy and artwork breathing room inside their frames. */
+#amass-modal [data-amass-screen="9"] .amass-flow__content { padding-inline: clamp(32px, 8vw, 48px); }
+#amass-modal [data-amass-screen="9"] .amass-flow__intro { max-width: 36ch; align-self: center; }
+#amass-modal .amass-campaign-card--designed { aspect-ratio: 16 / 11; }
+#amass-modal .amass-campaign-card--designed span { left: 24px; right: 24px; bottom: 18px; }
+#amass-modal .amass-campaign-card--designed .voices-campaign-wordmark {
+  inset: 14px 24px 78px; width: calc(100% - 48px); height: calc(100% - 92px);
+}
+
+#amass-modal .amass-flow__panel[data-amass-screen="9"] { background-size: min(calc(100vw - 48px), 632px) auto; }

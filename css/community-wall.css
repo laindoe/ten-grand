@@ -2053,7 +2053,7 @@ main {
 
 /* Carry the extended campaign nebula behind the Community Wall invitation. */
 .cw-campaign .cw-campaign__intro--voices {
-  background: #03030b url('../assets/images/voices-heard-intro-nebula.png') center top / min(100%, 680px) auto no-repeat;
+  background: #03030b url('../assets/images/voices-heard-airbrush-refined.png') center top / min(100%, 680px) auto no-repeat;
   display: flex; flex-direction: column; text-align: center;
 }
 .cw-campaign .cw-campaign__intro--voices .cw-campaign__title { width: 100%; max-width: 620px; }
@@ -2067,4 +2067,21 @@ main {
   .cw-campaign .cw-campaign__intro--voices { align-items: center; }
   .cw-campaign .cw-campaign__intro--voices .cw-campaign__subtitle,
   .cw-campaign .cw-campaign__intro--voices .cw-campaign__actions { align-self: center; }
+}
+
+/* Wider archive artwork with a separate, comfortable reading gutter. */
+.voices-page .voices-heat-band__inner {
+  max-width: 1200px; padding: 36px clamp(20px, 4vw, 48px);
+}
+.voices-page .voices-heat-band__content { max-width: 900px; }
+.voices-page .voices-heat-band__content h1 { width: calc(100% + 16px); margin-inline: -8px; }
+.voices-page .voices-heat-band__wordmark { max-width: 900px; }
+.voices-page .voices-subtitle {
+  width: 100%; max-width: 38ch; padding-inline: 16px; margin-inline: auto;
+}
+.cw-campaign .cw-campaign__subtitle {
+  padding-inline: 12px; max-width: 30ch; margin-inline: auto;
+}
+.cw-campaign .cw-campaign__intro--voices {
+  background-size: min(calc(100% - 32px), 648px) auto;
 }
