@@ -5423,3 +5423,54 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
   display: block; width: 100%; height: auto; aspect-ratio: 4 / 3;
   object-fit: cover; object-position: center 43%;
 }
+
+/* A campaign can open directly, while the Amass route retains its chooser. */
+#amass-modal .amass-campaign-card__arrow { display: block; margin-top: 8px; font-size: 1.5rem; line-height: 1; }
+#amass-modal .amass-campaign-card--designed { aspect-ratio: 16 / 10; }
+#amass-modal .amass-campaign-card--designed .voices-campaign-wordmark {
+  inset: 8px 12px 56px; width: calc(100% - 24px); height: calc(100% - 64px);
+  object-fit: contain;
+}
+#amass-modal .amass-flow__panel[data-amass-screen="9"] {
+  width: 100%; max-width: none; height: 100%; max-height: none;
+  padding: 0; border: 0; border-radius: 0; overflow: hidden;
+  background: #03030b url('../assets/images/voices-heard-intro-nebula.png') center top / min(100vw, 680px) auto no-repeat;
+}
+#amass-modal:has([data-amass-screen="9"]) { padding: 0; }
+#amass-modal [data-amass-screen="9"] .amass-flow__heat { display: none; }
+#amass-modal [data-amass-screen="9"] .modal__title {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+#amass-modal [data-amass-screen="9"] .amass-flow__screen,
+#amass-modal [data-amass-screen="9"] .modal__body,
+#amass-modal [data-amass-screen="9"] #amass-voice-form { display: flex; flex: 1; min-height: 0; margin: 0; height: 100%; }
+#amass-modal [data-amass-screen="9"] .amass-flow__step { flex: 1; min-height: 0; overflow-y: auto; }
+#amass-modal [data-amass-screen="9"] .amass-flow__content {
+  display: flex; flex-direction: column; align-items: stretch;
+  flex: 1 0 auto; width: 100%; max-width: 600px; margin: 0 auto;
+  min-height: 100%; padding: clamp(350px, 103vw, 580px) 28px max(24px, env(safe-area-inset-bottom));
+  overflow: visible; scrollbar-gutter: auto;
+}
+#amass-modal [data-amass-screen="9"] .amass-flow__intro {
+  color: #fff; font-size: clamp(.95rem, 3.8vw, 1.1rem); line-height: 1.6;
+  text-shadow: 0 1px 5px #000; margin: auto 0 24px;
+}
+#amass-modal [data-amass-screen="9"] .amass-flow__cta { margin-top: 0; }
+#amass-modal .amass-flow__campaign-back {
+  align-self: center; margin-top: 14px; padding: 8px 12px; border: 0;
+  background: transparent; color: #fff; font: inherit; font-size: .75rem; cursor: pointer;
+}
+#amass-modal .amass-flow__campaign-back[hidden] { display: none; }
+
+#amass-modal [data-amass-screen="9"] .amass-flow__screen,
+#amass-modal [data-amass-screen="9"] .modal__body,
+#amass-modal [data-amass-screen="9"] #amass-voice-form { flex-direction: column; }
+#amass-modal [data-amass-screen="9"] .modal__close { z-index: 5; }
+#amass-modal [data-amass-screen="9"] .amass-flow__intro { text-align: center; }
+#amass-modal [data-amass-screen="9"]::after {
+  content: ''; position: absolute; pointer-events: none; inset: 0 0 auto;
+  height: min(177.872vw, 1209.53px);
+  background: linear-gradient(to bottom, transparent 85%, #03030b 100%);
+}
+#amass-modal [data-amass-screen="9"] .amass-flow__screen { position: relative; z-index: 1; }

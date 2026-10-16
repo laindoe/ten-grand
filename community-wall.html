@@ -12,9 +12,9 @@ permalink: /community-wall/
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=182" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=183" />
   <link rel="stylesheet" href="{{ '/css/cropper.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=167" />
+  <link rel="stylesheet" href="{{ '/css/community-wall.css' | relative_url }}?v=168" />
   <link rel="stylesheet" href="{{ '/css/broadcast-cards.css' | relative_url }}?v=48" />
 </head>
 <body>
@@ -128,14 +128,14 @@ permalink: /community-wall/
 
       <div class="cw-inner cw-campaign">
         <div class="cw-campaign__intro cw-campaign__intro--voices">
-          <h3 class="cw-campaign__title"><img class="cw-campaign__title-bars" src="{{ '/assets/images/voices-heard-airbrush-artwork.jpg' | relative_url }}" alt="Voices Heard" /></h3>
+          <h3 class="cw-campaign__title" aria-label="Voices Heard"><img class="cw-campaign__title-bars" src="{{ '/assets/images/voices-heard-airbrush-artwork.jpg' | relative_url }}" alt="Voices Heard" /></h3>
           <p class="cw-campaign__counter">
             <span data-stat="voices-total">0000</span>
             <span class="cw-campaign__counter-label">VOICES</span>
           </p>
           <p class="cw-campaign__subtitle">One voice can inspire an idea, spark a connection, or bring people together. Let yours be heard.</p>
           <div class="cw-campaign__actions">
-            <button type="button" class="cw-campaign__add-voice" data-modal-open="amass-modal">ADD YOURS <span aria-hidden="true">&rarr;</span></button>
+            <button type="button" class="cw-campaign__add-voice" data-modal-open="amass-modal" data-amass-entry="voices-heard">ADD YOURS <span aria-hidden="true">&rarr;</span></button>
           </div>
         </div>
 
@@ -249,7 +249,7 @@ permalink: /community-wall/
   <script src="{{ '/assets/js/cropper.min.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/voices-security-config.js' | relative_url }}?v=2"></script>
   <script src="{{ '/js/voices-secure-submit.js' | relative_url }}?v=5"></script>
-  <script src="{{ '/js/amass-modal.js' | relative_url }}?v=26"></script>
+  <script src="{{ '/js/amass-modal.js' | relative_url }}?v=27"></script>
   <script src="{{ '/js/voice-equalizer.js' | relative_url }}?v=4"></script>
   <script src="{{ '/js/kit-signup.js' | relative_url }}?v=2"></script>
   <script src="{{ '/js/community-wall.js' | relative_url }}?v=41"></script>

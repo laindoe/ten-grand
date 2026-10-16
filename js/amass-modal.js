@@ -168,6 +168,7 @@
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
       trackViewport();
+      modal.dispatchEvent(new CustomEvent('modal:open', { detail: { campaign: event.currentTarget.dataset.amassEntry || null } }));
       modal.querySelector('.modal__close').focus({ preventScroll: true });
     }
 
@@ -938,6 +939,7 @@
       form.hidden = step === 8;
       titleEl.textContent = titleForStep(step);
       modal.querySelector('.amass-flow__panel').dataset.amassScreen = String(step);
+      modal.querySelector('[data-campaign-back]').hidden = directCampaignEntry;
       const progress = modal.querySelector('#amass-step-progress');
       progress.hidden = step === 0 || step === 1 || step === 9;
       progress.textContent = step === 8 ? 'Complete' : `Step ${step - 1} of 6`;
@@ -969,6 +971,8 @@
         if (currentStep === step) dialogPanel.scrollTop = 0;
       });
     }
+
+    let directCampaignEntry = false;
 
     function resetFlow() {
       form.reset();
@@ -1124,7 +1128,11 @@
       setNextState();
     });
 
-    modal.addEventListener('modal:close', resetFlow);
+    modal.addEventListener('modal:close', () => { directCampaignEntry = false; resetFlow(); });
+    modal.addEventListener('modal:open', (event) => {
+      directCampaignEntry = event.detail.campaign === 'voices-heard';
+      showStep(directCampaignEntry ? 9 : 1);
+    });
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();

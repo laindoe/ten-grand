@@ -2050,3 +2050,21 @@ main {
 
 .cw-campaign .cw-campaign__subtitle,
 .voices-page .voices-subtitle { color: #fff; }
+
+/* Carry the extended campaign nebula behind the Community Wall invitation. */
+.cw-campaign .cw-campaign__intro--voices {
+  background: #03030b url('../assets/images/voices-heard-intro-nebula.png') center top / min(100%, 680px) auto no-repeat;
+  display: flex; flex-direction: column; text-align: center;
+}
+.cw-campaign .cw-campaign__intro--voices .cw-campaign__title { width: 100%; max-width: 620px; }
+.cw-campaign .cw-campaign__intro--voices .cw-campaign__title-bars { visibility: hidden; }
+.cw-campaign .cw-campaign__intro--voices .cw-campaign__counter { margin-top: max(-210px, -34%); }
+.cw-campaign .cw-campaign__intro--voices .cw-campaign__actions { justify-self: auto; }
+/* The wide archive artwork keeps all of its softened airbrush edges. */
+.voices-page .voices-heat-band .cw-campaign__counter { margin-top: 0; }
+.voices-page .voices-heat-band__wordmark { mask-image: none; -webkit-mask-image: none; }
+@media (min-width: 900px) {
+  .cw-campaign .cw-campaign__intro--voices { align-items: center; }
+  .cw-campaign .cw-campaign__intro--voices .cw-campaign__subtitle,
+  .cw-campaign .cw-campaign__intro--voices .cw-campaign__actions { align-self: center; }
+}
