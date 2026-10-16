@@ -2021,12 +2021,12 @@ main {
 }
 /* Tally overlaps the artwork's lower airbrush instead of following a crop. */
 .cw-campaign .cw-campaign__intro--voices .cw-campaign__counter {
-  position: relative; z-index: 1; margin-top: -28%;
+  position: relative; z-index: 1; margin-top: -34%;
 }
 .voices-page .voices-heat-band__content { width: 100%; max-width: 620px; }
 .voices-page .voices-heat-band__content h1 { width: 100%; }
 .voices-page .voices-heat-band .cw-campaign__counter {
-  position: relative; z-index: 1; margin-top: -28%;
+  position: relative; z-index: 1; margin-top: -34%;
 }
 .cw-campaign .cw-campaign__title-bars,
 .voices-page .voices-heat-band__wordmark {
