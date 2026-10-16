@@ -65,8 +65,9 @@
     return context;
   }
   window.tenGrandEqualizer = function (audio, wave) {
-    const desktop = matchMedia('(min-width: 760px)');
-    const visualBands = desktop.matches ? 64 : bands;
+    // Keep thin bars close together at the actual card width.
+    function barCount() { return Math.max(2, Math.floor((wave.clientWidth || 256) / 4)); }
+    const visualBands = barCount();
     let bars = Array.from({ length: visualBands }, () => {
       const bar = document.createElement('span');
       bar.className = 'cw-voice-card__audio-bar';
@@ -143,7 +144,7 @@
       } catch (_) { analyser = null; rest(); }
     }
     function resizeBands() {
-      const count = desktop.matches ? 64 : bands;
+      const count = barCount();
       if (count === bars.length) return;
       bars = Array.from({ length: count }, () => {
         const bar = document.createElement('span');
@@ -153,7 +154,8 @@
       wave.replaceChildren(...bars);
       paint(heights);
     }
-    desktop.addEventListener('change', resizeBands);
+    const sizeObserver = new ResizeObserver(resizeBands);
+    sizeObserver.observe(wave);
     const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) loadOpening(); sync(); });
     observer.observe(wave);
     audio.addEventListener('playing', sync);
@@ -161,7 +163,7 @@
     audio.addEventListener('waiting', stop);
     audio.addEventListener('ended', () => { stop(); rest(); });
     audio.addEventListener('error', () => { stop(); rest(); });
-    function dispose() { stop(); desktop.removeEventListener('change', resizeBands); observer.disconnect(); source?.disconnect(); analyser?.disconnect(); players.delete(player); }
+    function dispose() { stop(); sizeObserver.disconnect(); observer.disconnect(); source?.disconnect(); analyser?.disconnect(); players.delete(player); }
     const player = { sync, dispose, wave, audio };
     players.add(player);
     return { prepare };

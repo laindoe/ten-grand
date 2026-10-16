@@ -5,6 +5,8 @@
    the shared saturated thermal reference palette.
    ============================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap');
+
 :root {
   --cw-max-width: 1100px;
   /* Page-level accent -- replaces the site's default orange
@@ -1993,4 +1995,55 @@ main {
                 0 0 12px color-mix(in srgb, var(--cw-audio-color) 90%, transparent),
                 0 0 22px color-mix(in srgb, var(--cw-audio-color) 60%, transparent);
   }
+}
+
+/* Dense, thin live frequency bars, sized to each player's width. */
+.cw-voice-card--library .cw-voice-card__audio-wave {
+  justify-content: space-between; gap: 2px;
+}
+.cw-voice-card--library .cw-voice-card__audio-wave .cw-voice-card__audio-bar {
+  flex: 1 1 0; width: auto; min-width: 0; max-width: 2px;
+  border-radius: 1px; transform: none;
+  box-shadow: 0 0 2px color-mix(in srgb, var(--cw-audio-color) 60%, transparent);
+}
+
+/* A slow thermal glow frames the campaign artwork without tinting the copy. */
+.cw-campaign .cw-campaign__intro--voices {
+  border-color: color-mix(in srgb, var(--thermal-cyan) 45%, white);
+  box-shadow: -3px -2px 9px color-mix(in srgb, var(--thermal-cyan) 65%, transparent),
+               3px -2px 9px color-mix(in srgb, var(--thermal-lime) 65%, transparent),
+               3px 2px 9px color-mix(in srgb, var(--thermal-yellow) 65%, transparent),
+              -3px 2px 9px color-mix(in srgb, var(--thermal-cherry) 65%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cw-campaign .cw-campaign__intro--voices { animation: cw-campaign-thermal-glow 24s ease-in-out infinite; }
+}
+@keyframes cw-campaign-thermal-glow {
+  0%, 100% {
+    border-color: color-mix(in srgb, var(--thermal-cyan) 45%, white);
+    box-shadow: -3px -2px 9px #00cde8a6, 3px -2px 9px #b8ef00a6, 3px 2px 9px #ffdC00a6, -3px 2px 9px #eb1528a6;
+  }
+  25% {
+    border-color: color-mix(in srgb, var(--thermal-lime) 45%, white);
+    box-shadow: -3px -2px 9px #b8ef00a6, 3px -2px 9px #ffdc00a6, 3px 2px 9px #eb1528a6, -3px 2px 9px #45cdf6a6;
+  }
+  50% {
+    border-color: color-mix(in srgb, var(--thermal-yellow) 45%, white);
+    box-shadow: -3px -2px 9px #ffdc00a6, 3px -2px 9px #eb1528a6, 3px 2px 9px #45cdf6a6, -3px 2px 9px #00cde8a6;
+  }
+  75% {
+    border-color: color-mix(in srgb, var(--thermal-cherry) 45%, white);
+    box-shadow: -3px -2px 9px #eb1528a6, 3px -2px 9px #45cdf6a6, 3px 2px 9px #00cde8a6, -3px 2px 9px #b8ef00a6;
+  }
+}
+
+/* A tall campaign tally; keep the existing four-digit, zero-padded count. */
+.cw-campaign__counter [data-stat="voices-total"] {
+  font-family: 'Barlow Condensed', 'Arial Narrow', var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3.5rem, 7vw, 5rem);
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: .08em;
+  padding-left: .08em;
 }
