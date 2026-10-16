@@ -2016,11 +2016,25 @@ main {
 .cw-campaign .cw-campaign__title-bars,
 .voices-page .voices-heat-band__wordmark {
   display: block; width: 100%; max-width: 620px; height: auto;
-  aspect-ratio: 4 / 3; object-fit: cover; object-position: center 43%;
+  aspect-ratio: auto; object-fit: contain;
   margin-inline: auto; filter: none;
 }
+/* Tally overlaps the artwork's lower airbrush instead of following a crop. */
+.cw-campaign .cw-campaign__intro--voices .cw-campaign__counter {
+  position: relative; z-index: 1; margin-top: -28%;
+}
+.voices-page .voices-heat-band__content { width: 100%; max-width: 620px; }
+.voices-page .voices-heat-band__content h1 { width: 100%; }
+.voices-page .voices-heat-band .cw-campaign__counter {
+  position: relative; z-index: 1; margin-top: -28%;
+}
+.cw-campaign .cw-campaign__title-bars,
+.voices-page .voices-heat-band__wordmark {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 85%, transparent 100%);
+}
 @media (min-width: 900px) {
-  .cw-campaign .cw-campaign__title-bars { aspect-ratio: 16 / 9; }
+  .cw-campaign .cw-campaign__intro--voices .cw-campaign__counter { margin-top: 0; }
 }
 
 /* Match the VOICES label typeface while preserving the four-digit tally. */
