@@ -1840,16 +1840,16 @@ main {
   .cw-voice-card--library .cw-voice-card__links { min-height: 34px; }
 }
 
-/* Full-width campaign heading and rounded, spacious voice players. */
+/* Inset campaign heading and compact voice players. */
 .cw-inner.cw-campaign { max-width: none; padding-inline: 0; }
-.cw-campaign .cw-campaign__intro--voices { border: 0; border-bottom: 1px solid var(--color-text); margin: 0 0 20px; }
+.cw-campaign .cw-campaign__intro--voices { border: 1px solid var(--color-card-border); margin: 0 16px 20px; }
 .cw-campaign > .cw-voice-grid { margin-inline: 16px; }
 .cw-campaign > .cw-campaign__view-all--profiles { width: calc(100% - 32px); margin-inline: 16px; }
 .voices-page .broadcasts__results { max-width: none; padding: 20px 16px; }
 .voices-page .voices-heat-band { border-bottom: 1px solid var(--color-text); }
 .cw-voice-card.cw-voice-card--library {
-  display: flex; flex-direction: column; gap: 18px;
-  padding: 20px; border-radius: 22px; background: #08090a;
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 20px; border-radius: 0; background: #08090a;
 }
 .cw-voice-card--library .cw-voice-card__top {
   display: grid; grid-template-columns: minmax(80px, 28%) minmax(0, 1fr);
@@ -1859,7 +1859,7 @@ main {
   grid-column: auto; grid-row: auto; width: 100%; height: auto;
   min-height: 0; aspect-ratio: 1; align-self: start;
 }
-.cw-voice-card--library .cw-voice-card__photo { border-radius: 16px; }
+.cw-voice-card--library .cw-voice-card__photo { border-radius: 6px; }
 .cw-voice-card--library .cw-voice-card__identity {
   grid-column: auto; display: flex; flex-direction: column;
   min-height: 0; width: 100%; gap: 6px;
@@ -1869,12 +1869,12 @@ main {
 .cw-voice-card--library .cw-voice-card__links { margin: 0; padding: 0; min-height: 34px; }
 .cw-voice-card--library .cw-voice-card__body { display: block; }
 .cw-voice-card--library .cw-voice-card__audio {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin: 0;
 }
 .cw-voice-card--library .cw-voice-card__audio-wave {
   grid-column: 1 / -1; grid-row: 1; width: 100%; max-width: none;
-  height: 72px; cursor: pointer; touch-action: pan-y; user-select: none;
-  border-radius: 12px; padding-block: 8px;
+  height: 56px; cursor: pointer; touch-action: pan-y; user-select: none;
+  border-radius: 12px; padding-block: 4px;
 }
 .cw-voice-card--library .cw-voice-card__audio-wave:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 .cw-voice-card--library .cw-voice-card__audio-bar { opacity: .35; border-radius: 999px; }
@@ -1901,7 +1901,7 @@ main {
   border: 1px solid currentColor; background: transparent; color: var(--color-text);
 }
 @media (max-width: 759px) {
-  .cw-voice-card.cw-voice-card--library { padding: 16px; gap: 14px; }
+  .cw-voice-card.cw-voice-card--library { padding: 16px; gap: 8px; }
   .cw-voice-card--library .cw-voice-card__top { gap: 14px; grid-template-columns: minmax(80px, 32%) minmax(0, 1fr); }
   .cw-voice-card--library .cw-voice-card__links { min-height: 24px; }
 }
@@ -1924,7 +1924,7 @@ main {
 /* Plain campaign headers and a compact portrait beside the identity. */
 .cw-campaign .cw-campaign__intro--voices,
 .voices-page .voices-heat-band { background: var(--color-bg); }
-.cw-campaign .cw-campaign__intro--voices { border-top: 1px solid var(--color-text); }
+
 .cw-voice-card--library .cw-voice-card__top {
   grid-template-columns: clamp(88px, 24%, 150px) minmax(0, 1fr);
 }
