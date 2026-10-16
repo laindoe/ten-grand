@@ -110,7 +110,7 @@
 
           <section class="amass-flow__step" data-amass-step="5" hidden>
             <div class="amass-flow__content">
-              <p class="amass-flow__helper"><span class="amass-flow__helper-tag">Optional</span> Get to the heart of why you do what you do.</p>
+              <p class="amass-flow__helper">Get to the heart of why you do what you do. Record your voice or write a response to continue.</p>
 
               <div class="amass-record" id="amass-record">
                 <button type="button" class="amass-record__button" id="amass-record-button" aria-label="Record your voice, up to 30 seconds">
@@ -182,8 +182,8 @@
                 </div>
               </div>
 
-              <label class="amass-flow__label amass-flow__label--title" for="amass-response-title">Title — Optional</label>
-              <input class="amass-flow__field" id="amass-response-title" name="response_title" type="text" data-title-case autocapitalize="words" placeholder="Give your response a title" aria-describedby="amass-response-title-limit" maxlength="30" autocomplete="off">
+              <label class="amass-flow__label amass-flow__label--title" for="amass-response-title">Title</label>
+              <input class="amass-flow__field" id="amass-response-title" name="response_title" type="text" required data-title-case autocapitalize="words" placeholder="Give your response a title" aria-describedby="amass-response-title-limit" maxlength="30" autocomplete="off">
               <p class="amass-flow__counter" id="amass-response-title-limit"><span id="amass-response-title-count" data-counter-for="amass-response-title">0</span>/30</p>
             </div>
             <div class="amass-flow__actions">
@@ -236,8 +236,8 @@
 
           <section class="amass-flow__step" data-amass-step="7" hidden>
             <div class="amass-flow__content">
+              <div class="amass-flow__submission-error" id="amass-form-error" role="alert" tabindex="-1" hidden></div>
               <div class="amass-flow__review" id="amass-review"></div>
-              <p class="amass-flow__error" id="amass-form-error" role="alert" hidden>Something went wrong. Please try again.</p>
               <div id="amass-verification"></div>
             <div class="amass-flow__actions">
               <button type="button" class="amass-flow__back" data-amass-back>Back</button>

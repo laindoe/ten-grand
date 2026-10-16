@@ -1831,3 +1831,6 @@ main {
 
 /* Continue to the full campaign after the three-profile wall preview. */
 .cw-campaign__view-all--profiles { width: 100%; margin: 24px 0 0; }
+
+/* Rounded profile photos on campaign and archive cards. */
+.cw-voice-card .cw-voice-card__photo { border-radius: 12px; }

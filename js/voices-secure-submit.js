@@ -18,6 +18,7 @@
     const result=await response.json();if(!response.ok)throw new Error(result.error||'Submission failed.');return result;
   }
   window.tenGrandSecureVoiceSubmit=async(payload,audio,photo)=>{
+    if(typeof payload.response_title!=='string'||!payload.response_title.trim())throw new Error('Please give your response a title.');
     if(!token)throw new Error('Please complete the verification before submitting.');
     if((photo&&photo.size>2097152)||(audio&&audio.size>5242880))throw new Error('Photo must be at most 2 MB and audio at most 5 MB.');
     const verification=token;token='';

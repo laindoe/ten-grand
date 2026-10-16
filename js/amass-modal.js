@@ -503,6 +503,7 @@
         ? `Up to ${MAX_RECORDING_SECONDS} seconds.`
         : 'Recording isn’t supported in this browser.';
       recordButton.disabled = !micSupported;
+      setNextState();
     }
 
     function handleRecordingStopped() {
@@ -519,6 +520,7 @@
       // Enforces "audio or written, not both" -- recording a voice
       // response clears whatever was typed in the other field.
       clearWrittenResponse();
+      setNextState();
     }
 
     async function startRecording() {
@@ -545,6 +547,7 @@
           handleRecordingStopped();
         });
         mediaRecorder.start();
+        setNextState();
         recordingStartedAt = Date.now();
         recordButton.disabled = false;
         recordButton.classList.add('is-recording');
@@ -609,11 +612,17 @@
       try { normalizedWebsite(); return true; } catch { return false; }
     }
 
+    function hasResponse() {
+      const recording = mediaRecorder && mediaRecorder.state !== 'inactive';
+      return !recording && (Boolean(audioBlob && audioBlob.size > 0 && recordedSeconds >= 1) || Boolean(whyInput.value.trim()));
+    }
+
     function setNextState() {
       const next = modal.querySelector(`[data-amass-step="${currentStep}"] [data-amass-next]`);
       if (!next) return;
       if (currentStep === 2) next.disabled = !nameInput.value.trim();
       if (currentStep === 3) next.disabled = !selectedRole();
+      if (currentStep === 5) next.disabled = !hasResponse() || !responseTitleInput.value.trim();
       if (currentStep === 6) next.disabled = !socialIsValid() || !websiteIsValid();
     }
 
@@ -767,13 +776,130 @@
       reviewAudioEl = audio;
     }
 
+    const submissionFields = {
+      name: { label: 'Name', step: 2, input: nameInput, message: 'Enter your name or alias.' },
+      role: { label: 'Role', step: 3, input: roleInputs[0], message: 'Choose how you show up.' },
+      response_title: { label: 'Title', step: 5, input: responseTitleInput, message: 'Add a title for your response (up to 30 characters).' },
+      why_detail: { label: 'Response', step: 5, input: whyInput, message: 'Record your voice or write a response before submitting.' },
+      website: { label: 'Website', step: 6, input: websiteInput, message: 'Enter a public website address, such as https://example.com, or leave it blank.' },
+      photo: { label: 'Photo', step: 6, input: document.getElementById('amass-photo-preview'), message: 'Choose a different photo smaller than 2 MB, or remove your photo.' },
+      social_handle: { label: 'Find me', step: 6, input: handleInput, message: 'Choose a social platform and enter your handle, or clear both fields.' },
+    };
+
+    function editSubmissionField(key) {
+      const field = submissionFields[key];
+      showStep(field.step);
+      const target = key === 'why_detail' && !whyInput.value.trim() && micSupported ? recordButton : field.input;
+      if (key === 'why_detail' && target === whyInput) {
+        const toggle = form.querySelector('[aria-controls="amass-write-panel"]');
+        if (toggle && toggle.getAttribute('aria-expanded') !== 'true') toggle.click();
+      }
+      const message = document.createElement('p');
+      message.id = 'amass-field-correction';
+      message.className = 'amass-flow__field-error';
+      message.textContent = field.message;
+      form.querySelector('#amass-field-correction')?.remove();
+      target.insertAdjacentElement('afterend', message);
+      if (key === 'photo') target.setAttribute('tabindex', '-1');
+      const describedBy = target.getAttribute('aria-describedby');
+      target.setAttribute('aria-invalid', 'true');
+      target.setAttribute('aria-describedby', [describedBy, message.id].filter(Boolean).join(' '));
+      const clear = () => {
+        target.removeAttribute('aria-invalid');
+        if (describedBy) target.setAttribute('aria-describedby', describedBy);
+        else target.removeAttribute('aria-describedby');
+        message.remove();
+      };
+      target.addEventListener(target.type === 'radio' ? 'change' : 'input', clear, { once: true });
+      if (target === recordButton) target.addEventListener('click', clear, { once: true });
+      requestAnimationFrame(() => {
+        target.focus({ preventScroll: true });
+        target.scrollIntoView({ block: 'center', behavior: 'auto' });
+      });
+    }
+
+    function submissionIssues() {
+      const keys = [];
+      if (!nameInput.value.trim()) keys.push('name');
+      if (!selectedRole()) keys.push('role');
+      if (!responseTitleInput.value.trim() || responseTitleInput.value.length > 30) keys.push('response_title');
+      if (!hasResponse()) keys.push('why_detail');
+      if (!websiteIsValid()) keys.push('website');
+      if (!socialIsValid()) keys.push('social_handle');
+      return keys;
+    }
+
+    function showSubmissionError(message, keys = []) {
+      errorEl.replaceChildren();
+      reviewEl.querySelectorAll('[data-submission-error]').forEach((item) => item.remove());
+      reviewEl.querySelectorAll('.is-invalid').forEach((item) => item.classList.remove('is-invalid'));
+      const heading = document.createElement('strong');
+      heading.textContent = "Your entry wasn’t submitted.";
+      const detail = document.createElement('p');
+      detail.textContent = message;
+      errorEl.append(heading, detail);
+      keys.forEach((key) => {
+        const field = submissionFields[key];
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'amass-flow__error-edit';
+        button.textContent = `Edit ${field.label.toLowerCase()} →`;
+        button.addEventListener('click', () => editSubmissionField(key));
+        errorEl.append(button);
+        let item = Array.from(reviewEl.children).find((row) => row.querySelector('strong')?.textContent === field.label);
+        if (!item) {
+          item = document.createElement('div');
+          item.className = 'amass-flow__review-item';
+          item.dataset.submissionError = '';
+          const label = document.createElement('strong');
+          label.textContent = field.label;
+          item.append(label);
+          reviewEl.append(item);
+        }
+        item.classList.add('is-invalid');
+        const correction = document.createElement('div');
+        correction.dataset.submissionError = '';
+        const text = document.createElement('p');
+        text.textContent = field.message;
+        const edit = button.cloneNode(true);
+        edit.addEventListener('click', () => editSubmissionField(key));
+        correction.append(text, edit);
+        item.append(correction);
+      });
+      if (!keys.length) {
+        const retry = document.createElement('button');
+        retry.type = 'button';
+        retry.className = 'amass-flow__error-edit';
+        retry.textContent = 'Try Again';
+        retry.addEventListener('click', () => form.requestSubmit(submitButton));
+        errorEl.append(retry);
+      }
+      errorEl.hidden = false;
+      requestAnimationFrame(() => {
+        errorEl.focus({ preventScroll: true });
+        errorEl.scrollIntoView({ block: 'start', behavior: 'auto' });
+      });
+    }
+
+    function describeSubmissionFailure(error) {
+      const message = String(error?.message || '');
+      const field = Object.keys(submissionFields).find((key) => new RegExp(`\\b${key}\\b`, 'i').test(message));
+      if (/response title/i.test(message)) return showSubmissionError('Please add a title, then submit again.', ['response_title']);
+      if (field) return showSubmissionError('Please fix the highlighted item, then submit again.', [field]);
+      if (/verification|turnstile/i.test(message)) return showSubmissionError('Complete the security verification near Submit, then try again. If it has expired, wait for it to refresh.');
+      if (/rate|too many|429/i.test(message)) return showSubmissionError('There have been too many attempts. Wait a few minutes, then try again. Your answers are still saved here.');
+      if (/photo.*(size|large|MB)|oversized/i.test(message)) return showSubmissionError('Check your photo and recording sizes, then submit again.', ['photo', 'why_detail']);
+      if (/audio|recording/i.test(message)) return showSubmissionError('Try recording your response again, or write it instead.', ['why_detail']);
+      showSubmissionError('Check your connection, then select Try Again. If it still fails, try again later. Your answers are still saved here.');
+    }
+
     function buildReview() {
-      const config = roleConfig[selectedRole()];
+      const config = roleConfig[selectedRole()] || { verb: 'contribute', label: 'Not selected' };
       reviewEl.replaceChildren();
       reviewAudioEl = null;
       if (photoObjectUrl) addReviewPhoto();
       addReviewItem('Name', nameInput.value.trim());
-      addReviewItem('Role', config.label);
+      addReviewItem('Role', config?.label || 'Not selected');
       const otherValue = focusOtherInput.hidden ? '' : focusOtherInput.value.trim();
       const focusDisplay = selectedFocusButtons()
         .map((button) => button.dataset.value)
@@ -850,6 +976,13 @@
       flowVersion += 1;
       submitButton.disabled = isSubmitting;
       errorEl.hidden = true;
+      form.querySelectorAll('[aria-invalid="true"]').forEach((input) => {
+        input.removeAttribute('aria-invalid');
+        const ids = (input.getAttribute('aria-describedby') || '').split(' ').filter((id) => id && id !== 'amass-field-correction');
+        if (ids.length) input.setAttribute('aria-describedby', ids.join(' '));
+        else input.removeAttribute('aria-describedby');
+      });
+      form.querySelector('#amass-field-correction')?.remove();
       socialError.hidden = true;
       websiteError.hidden = true;
       modal.querySelectorAll('[data-counter-for]').forEach((counter) => {
@@ -869,6 +1002,7 @@
       button.addEventListener('click', () => {
         if (currentStep === 2 && !nameInput.value.trim()) return;
         if (currentStep === 3 && !selectedRole()) return;
+        if (currentStep === 5 && (!hasResponse() || !responseTitleInput.value.trim())) return;
         if (currentStep === 6 && !websiteIsValid()) {
           websiteError.hidden = false;
           return;
@@ -893,6 +1027,7 @@
 
     modal.querySelector('[data-amass-campaign="voices-heard"]').addEventListener('click', () => showStep(9));
     nameInput.addEventListener('input', setNextState);
+    responseTitleInput.addEventListener('input', setNextState);
     roleInputs.forEach((input) => input.addEventListener('change', setNextState));
     [platformInput, handleInput].forEach((input) => {
       input.addEventListener('input', () => {
@@ -986,6 +1121,7 @@
     // typing a written response discards any already-recorded audio.
     whyInput.addEventListener('input', () => {
       if (audioBlob) resetRecording();
+      setNextState();
     });
 
     modal.addEventListener('modal:close', resetFlow);
@@ -993,8 +1129,13 @@
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (currentStep !== 7 || isSubmitting) return;
+      const issues = submissionIssues();
+      if (issues.length) {
+        showSubmissionError('Please fix the highlighted items, then submit again.', issues);
+        return;
+      }
 
-      const hasAudio = Boolean(audioBlob);
+      const hasAudio = Boolean(audioBlob && audioBlob.size > 0 && recordedSeconds >= 1);
       const hasWritten = Boolean(whyInput.value.trim());
 
       const payload = {
@@ -1003,7 +1144,7 @@
         focus_areas: selectedFocusButtons().map((button) => button.dataset.value),
         focus_other: focusOtherInput.hidden ? null : focusOtherInput.value.trim() || null,
         response_type: hasAudio ? 'audio' : hasWritten ? 'written' : null,
-        response_title: responseTitleInput.value.trim() || null,
+        response_title: responseTitleInput.value.trim(),
         why_detail: hasAudio ? null : whyInput.value.trim() || null,
         audio_path: null,
         audio_duration: hasAudio ? recordedSeconds : null,
@@ -1082,8 +1223,7 @@
       } catch (error) {
         console.error('Ten Grand voice submission failed', error);
         if (submittedVersion === flowVersion) {
-          errorEl.textContent = window.tenGrandVoiceSecurity?.enabled ? error.message || 'Please try again.' : 'Your voice could not be added. Please try again.';
-          errorEl.hidden = false;
+          describeSubmissionFailure(error);
         }
       } finally {
         isSubmitting = false;

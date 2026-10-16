@@ -130,7 +130,7 @@ a {
 
 .site-footer {
   margin-bottom: 0;
-  padding: 24px var(--frame-margin) max(24px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+  padding: 24px var(--frame-margin);
   text-align: center;
 }
 
@@ -5303,6 +5303,7 @@ body:has(:is(#archive-crumb, #voices-condensed, #broadcasts-condensed):not([hidd
     padding-right: 0;
     scrollbar-gutter: auto;
   }
+  #amass-modal [data-amass-step="0"] .amass-campaign-card--coming { margin-top: 16px; }
   #amass-modal [data-amass-step="0"] .amass-flow__back { margin-top: 16px; flex-shrink: 0; }
 }
 
@@ -5364,3 +5365,26 @@ body.archive-stacked-page:has(:is(#voices-condensed, #broadcasts-condensed):not(
   padding: 28px 20px;
 }
 #amass-modal .amass-flow__campaign-header .voices-campaign-wordmark { transform: none; width: 100%; height: auto; }
+
+/* Submission errors stay at the start of review, with direct correction links. */
+#amass-modal .amass-flow__submission-error {
+  border: 2px solid #ff7066;
+  background: #301619;
+  color: #fff;
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: left;
+  scroll-margin-top: 12px;
+}
+#amass-modal .amass-flow__submission-error[hidden] { display: none; }
+#amass-modal .amass-flow__submission-error strong { display: block; margin-bottom: 8px; }
+#amass-modal .amass-flow__submission-error p { font-size: .85rem; line-height: 1.5; }
+#amass-modal .amass-flow__error-edit {
+  display: block; padding: 12px 0; border: 0; background: transparent;
+  color: #fff; text-decoration: underline; font: inherit; font-weight: 700;
+  cursor: pointer; min-height: 44px; text-align: left;
+}
+#amass-modal .amass-flow__review-item.is-invalid { border: 2px solid #ff7066; padding: 12px; }
+#amass-modal .amass-flow__review-item.is-invalid p,
+#amass-modal .amass-flow__field-error { color: #ffb2ac; font-size: .85rem; line-height: 1.5; }
+#amass-modal [aria-invalid="true"] { outline: 2px solid #ff7066; outline-offset: 3px; }
