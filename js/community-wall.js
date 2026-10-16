@@ -283,7 +283,6 @@
       if (event.button !== 0 || !duration()) return;
       drag = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
       wave.setPointerCapture(event.pointerId);
-      wave.focus({ preventScroll: true });
     });
     wave.addEventListener('pointermove', function (event) {
       if (!drag || drag.id !== event.pointerId) return;

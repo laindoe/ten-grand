@@ -6,6 +6,17 @@
 // ============================================================
 
 (() => {
+  // Pointer taps should not leave a focus ring; keyboard navigation still should.
+  const root = document.documentElement;
+  document.addEventListener('pointerdown', () => {
+    root.dataset.inputModality = 'pointer';
+  }, true);
+  document.addEventListener('keydown', (event) => {
+    if (['Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+      root.dataset.inputModality = 'keyboard';
+    }
+  }, true);
+
   function initNavDropdown() {
     const trigger = document.getElementById('nav-philosophy-trigger');
     const menu = document.getElementById('nav-philosophy-menu');

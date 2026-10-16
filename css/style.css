@@ -5388,3 +5388,14 @@ body.archive-stacked-page:has(:is(#voices-condensed, #broadcasts-condensed):not(
 #amass-modal .amass-flow__review-item.is-invalid p,
 #amass-modal .amass-flow__field-error { color: #ffb2ac; font-size: .85rem; line-height: 1.5; }
 #amass-modal [aria-invalid="true"] { outline: 2px solid #ff7066; outline-offset: 3px; }
+
+/* Suppress touch selection and tap rings while retaining keyboard focus. */
+* { -webkit-tap-highlight-color: transparent; }
+body { -webkit-user-select: none; user-select: none; }
+input, textarea, [contenteditable]:not([contenteditable="false"]),
+[contenteditable]:not([contenteditable="false"]) * {
+  -webkit-user-select: text; user-select: text;
+}
+html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
+  outline: none !important;
+}
