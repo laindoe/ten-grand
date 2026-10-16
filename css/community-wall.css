@@ -1774,7 +1774,7 @@ main {
 /* Voices Heard uses the supplied textured artwork on both entry points. */
 .cw-campaign__intro--voices,
 .voices-heat-band {
-  background: #08090a url('../assets/images/voices-heard-background.jpg') center / cover no-repeat;
+  background: #08090a var(--voices-campaign-background) center / cover no-repeat;
 }
 .cw-campaign__intro--voices::before { content: none; }
 .cw-campaign__counter [data-stat="voices-total"] {

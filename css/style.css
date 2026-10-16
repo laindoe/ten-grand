@@ -5343,3 +5343,24 @@ body.archive-stacked-page:has(:is(#voices-condensed, #broadcasts-condensed):not(
 
 /* Verification stays above submission; optional policy details follow it. */
 .amass-flow__fine-print { margin-top: 24px; }
+
+/* Voices Heard: one supplied background, with replaceable transparent lettering. */
+:root { --voices-campaign-background: url('../assets/images/voices-heard-grid-background.jpg'); }
+#amass-modal .voices-campaign-surface { background: #000 var(--voices-campaign-background) center / cover no-repeat; }
+#amass-modal .amass-campaign-card--designed {
+  aspect-ratio: 16 / 9;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 8px;
+  text-align: center;
+}
+#amass-modal .amass-campaign-card--designed .voices-campaign-wordmark { width: 68%; height: auto; }
+#amass-modal .amass-campaign-card--designed span { color: var(--color-text); font-size: .72rem; line-height: 1.4; text-wrap: balance; }
+#amass-modal .amass-flow__campaign-header.voices-campaign-surface {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  padding: 28px 20px;
+}
+#amass-modal .amass-flow__campaign-header .voices-campaign-wordmark { transform: none; width: 100%; height: auto; }
