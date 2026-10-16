@@ -245,6 +245,74 @@
   var WEBSITE_ICON_HTML =
     '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/>';
 
+  function enableWaveSeeking(audio, wave, time, fallbackDuration) {
+    wave.removeAttribute('aria-hidden');
+    wave.setAttribute('role', 'slider');
+    wave.setAttribute('aria-label', 'Recording position');
+    wave.setAttribute('aria-valuemin', '0');
+    wave.setAttribute('aria-orientation', 'horizontal');
+    wave.tabIndex = 0;
+    var pending = null, drag = null;
+    function duration() { return Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : fallbackDuration; }
+    function update() {
+      var total = duration(), current = pending === null ? audio.currentTime : pending;
+      wave.setAttribute('aria-valuemax', String(total || 0));
+      wave.setAttribute('aria-valuenow', String(Math.round(current || 0)));
+      wave.setAttribute('aria-valuetext', formatClock(current || 0) + ' of ' + formatClock(total || 0));
+      time.textContent = formatClock(current || 0);
+      var bars = wave.querySelectorAll('.cw-voice-card__audio-bar');
+      bars.forEach(function (bar, i) { bar.classList.toggle('is-played', total > 0 && i / bars.length < current / total); });
+    }
+    function seek(value) {
+      var total = duration();
+      if (!total) return;
+      value = Math.max(0, Math.min(total, value));
+      if (audio.readyState < 1) {
+        var needsLoad = pending === null;
+        pending = value;
+        if (needsLoad) { audio.preload = 'metadata'; audio.load(); }
+      }
+      else { pending = null; audio.currentTime = value; }
+      update();
+    }
+    function seekAt(x) {
+      var rect = wave.getBoundingClientRect();
+      if (rect.width) seek((x - rect.left) / rect.width * duration());
+    }
+    wave.addEventListener('pointerdown', function (event) {
+      if (event.button !== 0 || !duration()) return;
+      drag = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
+      wave.setPointerCapture(event.pointerId);
+      wave.focus({ preventScroll: true });
+    });
+    wave.addEventListener('pointermove', function (event) {
+      if (!drag || drag.id !== event.pointerId) return;
+      var dx = Math.abs(event.clientX - drag.x), dy = Math.abs(event.clientY - drag.y);
+      if (!drag.moved && dy > dx && dy > 8) { drag = null; return; }
+      if (dx > 6) drag.moved = true;
+      if (drag.moved) seekAt(event.clientX);
+    });
+    wave.addEventListener('pointerup', function (event) {
+      if (drag && drag.id === event.pointerId) seekAt(event.clientX);
+      drag = null;
+    });
+    wave.addEventListener('pointercancel', function () { drag = null; });
+    wave.addEventListener('lostpointercapture', function () { drag = null; });
+    wave.addEventListener('keydown', function (event) {
+      var current = pending === null ? audio.currentTime : pending;
+      var value = { ArrowLeft: current - 5, ArrowDown: current - 5, ArrowRight: current + 5, ArrowUp: current + 5, Home: 0, End: duration() }[event.key];
+      if (value === undefined) return;
+      event.preventDefault(); seek(value);
+    });
+    audio.addEventListener('loadedmetadata', function () {
+      if (pending !== null) { var value = pending; pending = null; audio.currentTime = Math.min(value, duration()); }
+      update();
+    });
+    ['timeupdate', 'seeked', 'durationchange', 'ended'].forEach(function (event) { audio.addEventListener(event, update); });
+    new MutationObserver(update).observe(wave, { childList: true });
+    update();
+  }
+
   function buildAudioBody(row) {
     var url = publicStorageUrl("voices-heard-audio", row.audio_path, row.id);
     var durationSeconds = row.audio_duration || 0;
@@ -312,6 +380,7 @@
     duration.className = "cw-voice-card__audio-duration";
     duration.textContent = formatClock(durationSeconds);
     duration.setAttribute("aria-hidden", "true");
+    enableWaveSeeking(audio, wave, time, durationSeconds);
     wrap.append(audio, time, wave, duration, button);
     return wrap;
   }
@@ -330,6 +399,7 @@
     var article = document.createElement("article");
     article.className = "cw-voice-card cw-voice-card--library";
     article.id = "voice-" + row.id;
+    article.style.setProperty("--cw-audio-color", "var(--cw-color-" + row.role + ")");
     article.tabIndex = -1;
     var number = document.createElement("span");
     number.className = "cw-voice-card__number";
@@ -410,7 +480,13 @@
       body.appendChild(buildQuoteBody(row));
     }
 
-    article.append(top, body);
+    var footer = document.createElement('div');
+    footer.className = 'cw-voice-card__footer';
+    footer.appendChild(badgeCol);
+    var play = body.querySelector('.cw-voice-card__audio-play');
+    if (play) footer.appendChild(play);
+    footer.appendChild(number);
+    article.append(top, body, footer);
     return article;
   }
 

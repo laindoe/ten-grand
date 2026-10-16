@@ -1839,3 +1839,84 @@ main {
 @media (min-width: 760px) {
   .cw-voice-card--library .cw-voice-card__links { min-height: 34px; }
 }
+
+/* Full-width campaign heading and rounded, spacious voice players. */
+.cw-inner.cw-campaign { max-width: none; padding-inline: 0; }
+.cw-campaign .cw-campaign__intro--voices { border: 0; border-bottom: 1px solid var(--color-text); margin: 0 0 20px; }
+.cw-campaign > .cw-voice-grid { margin-inline: 16px; }
+.cw-campaign > .cw-campaign__view-all--profiles { width: calc(100% - 32px); margin-inline: 16px; }
+.voices-page .broadcasts__results { max-width: none; padding: 20px 16px; }
+.voices-page .voices-heat-band { border-bottom: 1px solid var(--color-text); }
+.cw-voice-card.cw-voice-card--library {
+  display: flex; flex-direction: column; gap: 18px;
+  padding: 20px; border-radius: 22px; background: #08090a;
+}
+.cw-voice-card--library .cw-voice-card__top {
+  display: grid; grid-template-columns: minmax(80px, 28%) minmax(0, 1fr);
+  gap: 18px; align-items: center;
+}
+.cw-voice-card--library .cw-voice-card__avatar {
+  grid-column: auto; grid-row: auto; width: 100%; height: auto;
+  min-height: 0; aspect-ratio: 1; align-self: start;
+}
+.cw-voice-card--library .cw-voice-card__photo { border-radius: 16px; }
+.cw-voice-card--library .cw-voice-card__identity {
+  grid-column: auto; display: flex; flex-direction: column;
+  min-height: 0; width: 100%; gap: 6px;
+}
+.cw-voice-card--library .cw-voice-card__name { white-space: normal; font-size: clamp(16px, 3cqw, 30px); line-height: 1.2; }
+.cw-voice-card--library .cw-voice-card__title { margin: 0; font-size: clamp(14px, 2.2cqw, 22px); }
+.cw-voice-card--library .cw-voice-card__links { margin: 0; padding: 0; min-height: 34px; }
+.cw-voice-card--library .cw-voice-card__body { display: block; }
+.cw-voice-card--library .cw-voice-card__audio {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0;
+}
+.cw-voice-card--library .cw-voice-card__audio-wave {
+  grid-column: 1 / -1; grid-row: 1; width: 100%; max-width: none;
+  height: 72px; cursor: pointer; touch-action: pan-y; user-select: none;
+  border-radius: 12px; padding-block: 8px;
+}
+.cw-voice-card--library .cw-voice-card__audio-wave:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.cw-voice-card--library .cw-voice-card__audio-bar { opacity: .35; border-radius: 999px; }
+.cw-voice-card--library .cw-voice-card__audio-bar.is-played { opacity: 1; }
+.cw-voice-card--library .cw-voice-card__audio-time { grid-column: 1; grid-row: 2; justify-self: start; }
+.cw-voice-card--library .cw-voice-card__audio-duration { grid-column: 2; grid-row: 2; justify-self: end; }
+.cw-voice-card--library .cw-voice-card__footer {
+  display: grid; grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr);
+  align-items: center; gap: 10px; min-height: 64px;
+}
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__badge-col {
+  grid-column: 1; grid-row: 1; display: flex; align-items: center;
+  gap: 8px; width: auto; padding: 0; margin: 0; min-height: 0;
+}
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__role-text { display: block; }
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__role-icon { width: 28px; height: 28px; flex-shrink: 0; }
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__role-label { font-size: clamp(9px, 1.7cqw, 14px); letter-spacing: .08em; }
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__number {
+  position: static; grid-column: 3; grid-row: 1; justify-self: end; margin: 0;
+  font-size: .8rem; letter-spacing: .12em;
+}
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__audio-play {
+  grid-column: 2; grid-row: 1; width: 64px; height: 64px; border-radius: 50%;
+  border: 1px solid currentColor; background: transparent; color: var(--color-text);
+}
+@media (max-width: 759px) {
+  .cw-voice-card.cw-voice-card--library { padding: 16px; gap: 14px; }
+  .cw-voice-card--library .cw-voice-card__top { gap: 14px; grid-template-columns: minmax(80px, 32%) minmax(0, 1fr); }
+  .cw-voice-card--library .cw-voice-card__links { min-height: 24px; }
+}
+
+.cw-voice-card.cw-voice-card--library { border-color: color-mix(in srgb, var(--cw-audio-color) 55%, white); }
+.cw-voice-card--library .cw-voice-card__footer .cw-voice-card__audio-play {
+  color: var(--cw-audio-color); box-shadow: 0 0 12px color-mix(in srgb, var(--cw-audio-color) 35%, transparent);
+}
+@media (min-width: 900px) {
+  .cw-campaign .cw-campaign__intro--voices {
+    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    column-gap: 40px; padding: 32px; text-align: left;
+  }
+  .cw-campaign__intro--voices .cw-campaign__title { grid-column: 1; grid-row: 1 / 4; margin: 0; }
+  .cw-campaign__intro--voices .cw-campaign__counter,
+  .cw-campaign__intro--voices .cw-campaign__subtitle,
+  .cw-campaign__intro--voices .cw-campaign__actions { grid-column: 2; justify-self: start; }
+}
