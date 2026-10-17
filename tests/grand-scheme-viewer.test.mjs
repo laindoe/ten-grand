@@ -14,7 +14,7 @@ after(async () => { await browser?.close(); await new Promise((resolve) => serve
 async function ready(page) {
   await page.goto(url);
   await page.waitForFunction(() => document.querySelector('#page-picker').options.length === 5 && !document.querySelector('#page-picker').disabled);
-  await page.waitForSelector('#blueprint-cover canvas');
+  await page.waitForSelector('[data-page="1"] canvas');
 }
 async function scrollToFraction(page, fraction) {
   await page.evaluate((fraction) => {
@@ -36,11 +36,13 @@ async function stageMetrics(page) {
   });
 }
 
-test('PDF-only cover, continuous strip, reverse scroll, Invitation endpoint, resize, and history', async () => {
+test('All five pages in one horizontal strip from the first scroll, Invitation endpoint, resize, and history', async () => {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   const errors = []; page.on('pageerror', (error) => errors.push(error.message));
   await ready(page);
-  assert.equal(await page.locator('.blueprint-sheet').count(), 5);
+  assert.equal(await page.locator('#blueprint-strip > .blueprint-sheet').count(), 5);
+  await page.evaluate(() => scrollTo(0, 80)); await page.waitForTimeout(100);
+  assert.ok(Math.abs((await stageMetrics(page)).x + 80) < 1.1, 'The first vertical scroll immediately moves the cover horizontally');
   for (const fraction of [0, .5, .25, 1]) {
     await scrollToFraction(page, fraction);
     const m = await stageMetrics(page);
@@ -116,7 +118,7 @@ test('PDF loading failure is visible and retry recovers at the same base path', 
   assert.match(await page.locator('#load-message').textContent(), /could not load/);
   assert.match(await page.locator('#notice-download').getAttribute('href'), /\/ten-grand\/assets\/pdfs\//);
   await page.unroute('**/grand_scheme_blueprint_prototype.pdf'); await page.locator('#retry-load').click();
-  await page.waitForSelector('#blueprint-cover canvas');
+  await page.waitForSelector('[data-page="1"] canvas');
   await page.waitForFunction(() => document.querySelector('#load-notice').hidden);
   await page.close();
 });
@@ -128,7 +130,7 @@ test('slow loading stays actionable without blocking normal page controls', asyn
   await page.goto(url); await page.waitForFunction(() => document.querySelector('#load-message').textContent.includes('still loading'), { timeout: 15000 });
   assert.equal(await page.locator('#notice-download').isVisible(), true);
   assert.equal(await page.locator('#viewer-toolbar').isVisible(), false);
-  release(); await page.waitForSelector('#blueprint-cover canvas'); await page.close();
+  release(); await page.waitForSelector('[data-page="1"] canvas'); await page.close();
 });
 
 test('native PDF annotation activates, and normalized HTML hotspots open accessible details', async () => {
@@ -170,7 +172,7 @@ test('a canvas rendering failure shows retry and recovers without reloading the 
   await page.waitForSelector('#retry-load:not([hidden])');
   assert.match(await page.locator('#load-message').textContent(), /panel could not load/);
   await page.locator('#retry-load').click();
-  await page.waitForSelector('#blueprint-cover canvas');
+  await page.waitForSelector('[data-page="1"] canvas');
   await page.waitForFunction(() => document.querySelector('#load-notice').hidden);
   await page.close();
 });

@@ -1,6 +1,6 @@
 // Standalone PDF.js reader. The Kit signup modal and its settings are independent.
 const $ = (id) => document.getElementById(id);
-const toolbar = $('viewer-toolbar'), cover = $('blueprint-cover');
+const toolbar = $('viewer-toolbar');
 const track = $('blueprint-track'), viewport = $('blueprint-viewport'), strip = $('blueprint-strip');
 const picker = $('page-picker'), modeButton = $('reading-mode'), progress = $('reading-progress');
 const notice = $('load-notice'), message = $('load-message'), retry = $('retry-load');
@@ -65,7 +65,7 @@ function goToPage(number) {
   let y;
   if (number === 1) y = 0;
   else if (mode === 'vertical') y = records[number - 1].element.getBoundingClientRect().top + scrollY - geometry.toolbar;
-  else y = geometry.start + geometry.travel * (number - 2) / Math.max(1, records.length - 2);
+  else y = geometry.start + geometry.travel * (number - 1) / Math.max(1, records.length - 1);
   window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
   scheduleUpdate();
 }
@@ -142,7 +142,7 @@ function makeRecord(page, number) {
   surface.className = 'pdf-page-surface';
   element.append(surface);
   const record = { page, number, base, element, surface, placeholder, width: 0, height: 0, canvas: null, task: null, rendered: false, failed: false };
-  (number === 1 ? cover : strip).append(element);
+  strip.append(element);
   addHotspots(record);
   return record;
 }
@@ -186,9 +186,6 @@ function layout(preserve = true, savedPosition = null) {
     } else if (width <= 760 || matchMedia('(pointer: coarse)').matches) {
       record.width = width;
       record.height = height;
-    } else if (record.number === 1) {
-      record.width = Math.round(Math.min(width, height * ratio));
-      record.height = Math.round(record.width / ratio);
     } else {
       record.height = height;
       record.width = Math.round(height * ratio);
@@ -200,7 +197,7 @@ function layout(preserve = true, savedPosition = null) {
     Object.assign(record.surface.style, { width: `${record.artWidth}px`, height: `${record.artHeight}px`, left: `${(record.width - record.artWidth) / 2}px`, top: `${(record.height - record.artHeight) / 2}px` });
     record.failed = false;
   }
-  const stripWidth = records.slice(1).reduce((sum, record) => sum + record.width, 0);
+  const stripWidth = records.reduce((sum, record) => sum + record.width, 0);
   const travel = Math.max(0, stripWidth - width);
   track.style.height = mode === 'horizontal' ? `${height + travel}px` : 'auto';
   const start = track.getBoundingClientRect().top + scrollY - toolbarHeight;
@@ -294,8 +291,8 @@ function update() {
     const offset = Math.max(0, Math.min(geometry.travel, scrollY - geometry.start));
     strip.style.transform = `translate3d(${-offset}px,0,0)`;
     fraction = geometry.travel ? offset / geometry.travel : scrollY >= geometry.start ? 1 : 0;
-    currentPage = scrollY < geometry.start - 1 ? 1 : Math.min(records.length, 2 + Math.round(fraction * Math.max(0, records.length - 2)));
-    progress.value = currentPage === 1 ? Math.min(1 / records.length, scrollY / Math.max(1, geometry.start) / records.length) : (1 + fraction * (records.length - 1)) / records.length;
+    currentPage = Math.min(records.length, 1 + Math.round(fraction * Math.max(0, records.length - 1)));
+    progress.value = fraction;
   } else {
     const first = records.find((record) => record.element.getBoundingClientRect().bottom > geometry.toolbar + 1);
     currentPage = first?.number || records.length;
@@ -335,7 +332,7 @@ async function load() {
     pdf = await loadingTask.promise;
     if (pdf.numPages < 2) throw new Error('The blueprint needs a cover and at least one reading panel.');
     const pages = await Promise.all(Array.from({ length: pdf.numPages }, (_, i) => pdf.getPage(i + 1)));
-    cover.replaceChildren(); strip.replaceChildren(); $('panel-descriptions').replaceChildren();
+    strip.replaceChildren(); $('panel-descriptions').replaceChildren();
     records = pages.map((page, i) => makeRecord(page, i + 1));
     picker.replaceChildren(...records.map((record) => new Option(`${record.number}. ${title(record.number)}`, record.number)));
     picker.disabled = modeButton.disabled = false;

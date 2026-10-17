@@ -16,7 +16,7 @@ The viewer is a public static page; an email confirmation redirect is not an acc
 
    Do not include `/ten-grand` here. Jekyll's `relative_url` filter supplies the deployed base path.
    This one setting also drives the download and no-JavaScript fallback links.
-3. Keep the cover as page 1. Every remaining page joins the horizontal strip, in order.
+3. Keep the cover as page 1. All pages join the same horizontal strip, in order, including the cover.
    Matching PDF page heights and artwork edges give the best visual continuity.
 4. Update the panel names/descriptions in `assets/js/grand-scheme-config.js` if the contents change.
 
@@ -46,7 +46,7 @@ To upgrade the PDF.js dependency, update its pinned npm version, run `npm run bu
 
 ## Behavior and performance
 
-- The cover is separate. Pages 2 onward share an equal-height, borderless, zero-gap strip.
+- All five pages, including the cover, share an equal-height, borderless, zero-gap strip. The first downward scroll immediately moves the strip horizontally.
 - The sticky track is exactly `viewport height + max(0, strip width - viewport width)` tall.
   Scroll distance maps 1:1 to horizontal translation. Nothing snaps or changes the browser's wheel/touch behavior.
 - The document ends at the Invitation panel. The final sticky viewport remains on screen: there is no closing section or extra vertical scroll. Reverse scrolling follows the same path.
@@ -107,7 +107,7 @@ For an existing system Chromium:
 CHROMIUM_PATH=/usr/bin/chromium npm run test:pdf
 ```
 
-Tests use the actual PDF, local worker, and `/ten-grand/` path. They cover cover-to-strip geometry, forward/reverse linear movement, the Invitation endpoint, no added gaps/overflow, resize, browser history, mobile layout and pixel caps, reading mode, keyboard navigation, reduced motion, loading failure/retry, slow loads, native PDF links, and normalized hotspot dialogs.
+Tests use the actual PDF, local worker, and `/ten-grand/` path. They cover the immediate cover-to-Invitation horizontal geometry, forward/reverse linear movement, the Invitation endpoint, no added gaps/overflow, resize, browser history, mobile layout and pixel caps, reading mode, keyboard navigation, reduced motion, loading failure/retry, slow loads, native PDF links, and normalized hotspot dialogs.
 The mobile test uses Chromium's mobile/touch emulation; it does **not** certify real iOS Safari. Before publishing, check an iPhone for touch scrolling, browser-bar expansion/collapse, pinch zoom, rotation, and history restoration.
 
 ## Build and deploy

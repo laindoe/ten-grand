@@ -11,7 +11,7 @@ permalink: /grand-scheme/
   <title>The Grand Scheme — Ten Grand</title>
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/pdfjs/pdf_viewer.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/css/grand-scheme-viewer.css' | relative_url }}?v=2">
+  <link rel="stylesheet" href="{{ '/css/grand-scheme-viewer.css' | relative_url }}?v=3">
 </head>
 <body class="blueprint" data-mode="horizontal" data-pdf-url="{{ site.data.grand_scheme.PDF_URL | relative_url }}">
   <a class="skip-link" href="#blueprint-reader">Skip to blueprint</a>
@@ -34,8 +34,7 @@ permalink: /grand-scheme/
     <a id="notice-download" hidden>Open PDF directly</a>
   </div>
   <main id="blueprint-reader" tabindex="-1" aria-busy="true">
-    <section class="blueprint-cover" id="blueprint-cover" aria-label="Opening cover"></section>
-    <section class="blueprint-track" id="blueprint-track" aria-label="Continuous blueprint panels">
+    <section class="blueprint-track" id="blueprint-track" aria-label="Continuous blueprint, from cover to Invitation">
       <div class="blueprint-viewport" id="blueprint-viewport">
         <div class="blueprint-strip" id="blueprint-strip"></div>
       </div>
@@ -50,6 +49,6 @@ permalink: /grand-scheme/
     <form method="dialog"><button>Close</button></form>
   </dialog>
   <noscript><p class="no-script">Please enable JavaScript to read the interactive blueprint, or <a href="{{ site.data.grand_scheme.PDF_URL | relative_url }}">open the prototype PDF</a>.</p></noscript>
-  <script type="module" src="{{ '/js/grand-scheme-viewer.js' | relative_url }}?v=2"></script>
+  <script type="module" src="{{ '/js/grand-scheme-viewer.js' | relative_url }}?v=3"></script>
 </body>
 </html>
