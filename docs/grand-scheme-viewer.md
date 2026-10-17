@@ -49,18 +49,19 @@ To upgrade the PDF.js dependency, update its pinned npm version, run `npm run bu
 - The cover is separate. Pages 2 onward share an equal-height, borderless, zero-gap strip.
 - The sticky track is exactly `viewport height + max(0, strip width - viewport width)` tall.
   Scroll distance maps 1:1 to horizontal translation. Nothing snaps or changes the browser's wheel/touch behavior.
-- The final panel releases the sticky stage. Reverse scrolling follows the same path.
+- The document ends at the Invitation panel. The final sticky viewport remains on screen: there is no closing section or extra vertical scroll. Reverse scrolling follows the same path.
 - CSS sheet widths are rounded to integer pixels; all strip sheets have the same CSS height.
   PDF rendering is capped at DPR 2 and approximately 2.5 million pixels per mobile canvas / 5 million per desktop canvas.
 - Rendering is queued. Nearby pages are prioritized; mobile retains at most three canvas surfaces.
   Obsolete render tasks are cancelled and old canvas backing stores released on resize/replacement.
 - Resize preserves the relative stage position. Page history/reload restoration uses session storage, with BFCache handling.
-- The panel menu, Previous/Next buttons, and Left/Right keys provide an alternative to continuous scrolling.
-  Arrow keys are only handled outside links, form controls, and dialogs.
-- `Read vertically` switches to normal document flow and preserves the current panel.
-  Reduced motion starts in vertical mode. Readers may choose horizontal mode explicitly.
+- The presentation has no visible header or controls. Left/Right keys navigate panels; V switches reading orientation.
+  Shortcuts are only handled outside links, form controls, and dialogs.
+- Pressing V switches to normal vertical document flow and preserves the current panel.
+  Reduced motion starts in vertical mode. Readers may choose horizontal mode explicitly with V.
 - Native browser pinch zoom remains available. The viewer does not cancel touch events or remap wheel gestures.
-- Loading and per-page errors provide retry and direct PDF access. Download uses the configured PDF URL.
+  On mobile, each panel occupies the full viewport. PDF proportions are preserved without cropping; white space may remain where page and screen shapes differ.
+- Loading and per-page errors provide retry and direct access to the configured PDF.
 
 ## Links and optional HTML hotspots
 
@@ -106,7 +107,7 @@ For an existing system Chromium:
 CHROMIUM_PATH=/usr/bin/chromium npm run test:pdf
 ```
 
-Tests use the actual PDF, local worker, and `/ten-grand/` path. They cover cover-to-strip geometry, forward/reverse linear movement, sticky release, no added gaps/overflow, resize, browser history, mobile layout and pixel caps, reading mode, keyboard navigation, reduced motion, loading failure/retry, slow loads, native PDF links, and normalized hotspot dialogs.
+Tests use the actual PDF, local worker, and `/ten-grand/` path. They cover cover-to-strip geometry, forward/reverse linear movement, the Invitation endpoint, no added gaps/overflow, resize, browser history, mobile layout and pixel caps, reading mode, keyboard navigation, reduced motion, loading failure/retry, slow loads, native PDF links, and normalized hotspot dialogs.
 The mobile test uses Chromium's mobile/touch emulation; it does **not** certify real iOS Safari. Before publishing, check an iPhone for touch scrolling, browser-bar expansion/collapse, pinch zoom, rotation, and history restoration.
 
 ## Build and deploy

@@ -36,7 +36,7 @@ async function stageMetrics(page) {
   });
 }
 
-test('cover, continuous strip, linear reverse scroll, release, resize, and history', async () => {
+test('PDF-only cover, continuous strip, reverse scroll, Invitation endpoint, resize, and history', async () => {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   const errors = []; page.on('pageerror', (error) => errors.push(error.message));
   await ready(page);
@@ -52,11 +52,13 @@ test('cover, continuous strip, linear reverse scroll, release, resize, and histo
     assert.equal(m.horizontalOverflow, false);
   }
   await page.evaluate(() => scrollBy(0, 150)); await page.waitForTimeout(100);
-  let m = await stageMetrics(page); assert.ok(m.top < m.toolbar - 100, 'Sticky stage must release');
+  let m = await stageMetrics(page); assert.ok(Math.abs(m.top) < 1.1, 'Invitation remains at the document endpoint');
+  assert.equal(await page.locator('#viewer-toolbar').isVisible(), false);
+  assert.ok(await page.evaluate(() => Math.abs(scrollY + innerHeight - document.documentElement.scrollHeight) < 2), 'No trailing vertical section');
   await scrollToFraction(page, .5);
   await page.setViewportSize({ width: 1050, height: 780 }); await page.waitForTimeout(450);
   m = await stageMetrics(page); assert.ok(Math.abs(m.x / m.travel + .5) < .025, 'Resize must preserve progress');
-  await page.locator('.viewer-home').click(); await page.waitForURL(`${origin}/ten-grand/`);
+  await page.goto(`${origin}/ten-grand/`);
   await page.goBack(); await page.waitForSelector('.blueprint-strip canvas'); await page.waitForTimeout(450);
   m = await stageMetrics(page); assert.ok(Math.abs(m.x / m.travel + .5) < .04, 'History must restore reading progress');
   assert.deepEqual(errors, []); await page.close();
@@ -65,7 +67,9 @@ test('cover, continuous strip, linear reverse scroll, release, resize, and histo
 test('mobile touch layout, bounded canvas memory, vertical toggle, and keyboard controls', async () => {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
   const page = await context.newPage(); await ready(page);
-  await page.locator('#next-page').tap(); await page.waitForTimeout(200);
+  await page.locator('#blueprint-reader').focus(); await page.keyboard.press('ArrowRight'); await page.waitForTimeout(200);
+  const frame = await page.locator('[data-page="2"]').boundingBox();
+  assert.equal(frame.width, 390); assert.equal(frame.height, 844);
   let m = await stageMetrics(page); assert.ok(Math.abs(m.top - m.toolbar) < 2); assert.equal(m.horizontalOverflow, false);
   const beforeTouch = await page.evaluate(() => scrollY);
   const touch = await context.newCDPSession(page);
@@ -82,16 +86,16 @@ test('mobile touch layout, bounded canvas memory, vertical toggle, and keyboard 
   m = await stageMetrics(page); assert.ok(m.canvases <= 3, `Retained ${m.canvases} canvases`);
   const maxPixels = await page.locator('canvas').evaluateAll((canvases) => Math.max(...canvases.map((canvas) => canvas.width * canvas.height)));
   assert.ok(maxPixels <= 2_510_000, 'Mobile raster scale cap');
-  await page.locator('#reading-mode').tap();
+  await page.locator('#blueprint-reader').focus(); await page.keyboard.press('v');
   await page.waitForFunction(() => document.body.dataset.mode === 'vertical');
   assert.equal(await page.locator('#blueprint-viewport').evaluate((node) => getComputedStyle(node).position), 'static');
   const positions = await page.locator('#blueprint-strip > div').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().top));
   assert.ok(positions.every((value, i) => i === 0 || value > positions[i - 1]));
-  await page.locator('#reading-mode').tap();
-  await page.locator('#page-picker').selectOption('1'); await page.waitForTimeout(100);
+  await page.locator('#blueprint-reader').focus(); await page.keyboard.press('v');
+  await page.evaluate(() => { const p = document.querySelector('#page-picker'); p.value = '1'; p.dispatchEvent(new Event('change')); }); await page.waitForTimeout(100);
   await page.locator('#blueprint-reader').focus(); await page.keyboard.press('ArrowRight');
   await page.waitForFunction(() => document.querySelector('#page-picker').value === '2');
-  await page.locator('#next-page').focus(); await page.keyboard.press('Enter');
+  await page.keyboard.press('ArrowRight');
   await page.waitForFunction(() => document.querySelector('#page-picker').value === '3');
   await context.close();
 });
@@ -123,7 +127,7 @@ test('slow loading stays actionable without blocking normal page controls', asyn
   await page.route('**/grand_scheme_blueprint_prototype.pdf', async (route) => { await hold; await route.continue(); });
   await page.goto(url); await page.waitForFunction(() => document.querySelector('#load-message').textContent.includes('still loading'), { timeout: 15000 });
   assert.equal(await page.locator('#notice-download').isVisible(), true);
-  assert.equal(await page.locator('.viewer-home').isVisible(), true);
+  assert.equal(await page.locator('#viewer-toolbar').isVisible(), false);
   release(); await page.waitForSelector('#blueprint-cover canvas'); await page.close();
 });
 
@@ -134,7 +138,7 @@ test('native PDF annotation activates, and normalized HTML hotspots open accessi
     const body = (await response.text()).replace('export const HOTSPOTS = {};', "export const HOTSPOTS = {3:[{label:'About the network',rect:[.2,.3,.2,.1],description:'Network hotspot test.'}]};");
     await route.fulfill({ response, body });
   });
-  await ready(page); await page.locator('#page-picker').selectOption('3'); await page.waitForTimeout(100);
+  await ready(page); await page.evaluate(() => { const p = document.querySelector('#page-picker'); p.value = '3'; p.dispatchEvent(new Event('change')); }); await page.waitForTimeout(100);
   const hotspot = page.getByRole('button', { name: 'About the network' });
   const coordinates = await hotspot.evaluate((element) => {
     const p = element.closest('.blueprint-sheet').getBoundingClientRect(), r = element.getBoundingClientRect();
@@ -144,7 +148,7 @@ test('native PDF annotation activates, and normalized HTML hotspots open accessi
   await hotspot.click(); assert.equal(await page.locator('#hotspot-dialog').isVisible(), true);
   assert.equal(await page.locator('#hotspot-description').textContent(), 'Network hotspot test.');
   await page.keyboard.press('Escape'); assert.equal(await page.locator('#hotspot-dialog').isVisible(), false);
-  await page.locator('#page-picker').selectOption('5');
+  await page.evaluate(() => { const p = document.querySelector('#page-picker'); p.value = '5'; p.dispatchEvent(new Event('change')); });
   const link = page.locator('[data-page="5"] .annotationLayer a'); await link.waitFor();
   const target = 'https://laindoe.github.io/ten-grand/'; assert.equal(await link.getAttribute('href'), target);
   await page.route(target, (route) => route.fulfill({ contentType: 'text/html', body: '<h1>Ten Grand link destination</h1>' }));

@@ -11,6 +11,7 @@ const vendor = new URL('../assets/pdfjs/', import.meta.url);
 const storageKey = `ten-grand-blueprint:${location.pathname}`;
 let pdfjs, config, loadingTask, pdf, records = [], generation = 0, queue = [], processing = false;
 let frame = 0, resizeTimer = 0, geometry = null, currentPage = 1, desired = new Set();
+let readingPosition = null, resizePosition = null;
 let failure = false, destroyed = false, starting = true, lastLayout = '';
 let mode = reducedMotion.matches ? 'vertical' : 'horizontal';
 try { if (localStorage.getItem(`${storageKey}:mode`) === 'vertical') mode = 'vertical'; } catch {}
@@ -123,7 +124,7 @@ function addHotspots(record) {
     }
     layer.append(element);
   }
-  record.element.append(layer);
+  record.surface.append(layer);
 }
 function makeRecord(page, number) {
   const base = page.getViewport({ scale: 1 });
@@ -137,7 +138,10 @@ function makeRecord(page, number) {
   placeholder.textContent = `Loading ${title(number)}…`;
   element.append(placeholder);
   addDescription(number);
-  const record = { page, number, base, element, placeholder, width: 0, height: 0, canvas: null, task: null, rendered: false, failed: false };
+  const surface = document.createElement('div');
+  surface.className = 'pdf-page-surface';
+  element.append(surface);
+  const record = { page, number, base, element, surface, placeholder, width: 0, height: 0, canvas: null, task: null, rendered: false, failed: false };
   (number === 1 ? cover : strip).append(element);
   addHotspots(record);
   return record;
@@ -153,7 +157,7 @@ function dispose(record) {
   record.task?.cancel();
   record.task = null;
   if (record.canvas) { record.canvas.width = 0; record.canvas.height = 0; record.canvas.remove(); record.canvas = null; }
-  record.element.querySelector('.annotationLayer')?.remove();
+  record.surface.querySelector('.annotationLayer')?.remove();
   record.rendered = false;
   record.placeholder.hidden = false;
   record.page.cleanup();
@@ -163,9 +167,9 @@ function cancelRendering() {
   queue = [];
   for (const record of records) dispose(record);
 }
-function layout(preserve = true) {
+function layout(preserve = true, savedPosition = null) {
   if (!pdf || destroyed) return;
-  const position = preserve ? capturePosition() : null;
+  const position = preserve ? savedPosition || capturePosition() : null;
   const toolbarHeight = Math.ceil(toolbar.getBoundingClientRect().height);
   document.documentElement.style.setProperty('--toolbar-height', `${toolbarHeight}px`);
   const width = document.documentElement.clientWidth;
@@ -179,6 +183,9 @@ function layout(preserve = true) {
     if (mode === 'vertical') {
       record.width = Math.round(Math.min(width, 1000));
       record.height = Math.round(record.width / ratio);
+    } else if (width <= 760 || matchMedia('(pointer: coarse)').matches) {
+      record.width = width;
+      record.height = height;
     } else if (record.number === 1) {
       record.width = Math.round(Math.min(width, height * ratio));
       record.height = Math.round(record.width / ratio);
@@ -187,6 +194,10 @@ function layout(preserve = true) {
       record.width = Math.round(height * ratio);
     }
     Object.assign(record.element.style, { width: `${record.width}px`, height: `${record.height}px` });
+    const scale = Math.min(record.width / record.base.width, record.height / record.base.height);
+    record.artWidth = record.base.width * scale;
+    record.artHeight = record.base.height * scale;
+    Object.assign(record.surface.style, { width: `${record.artWidth}px`, height: `${record.artHeight}px`, left: `${(record.width - record.artWidth) / 2}px`, top: `${(record.height - record.artHeight) / 2}px` });
     record.failed = false;
   }
   const stripWidth = records.slice(1).reduce((sum, record) => sum + record.width, 0);
@@ -199,7 +210,7 @@ function layout(preserve = true) {
 }
 async function renderRecord(record, token) {
   if (record.rendered || record.failed || token !== generation) return;
-  const cssScale = record.height / record.base.height;
+  const cssScale = Math.min(record.width / record.base.width, record.height / record.base.height);
   const pdfViewport = record.page.getViewport({ scale: cssScale });
   const maxPixels = smallDevice ? 2_500_000 : 5_000_000;
   const outputScale = Math.min(devicePixelRatio || 1, 2, Math.sqrt(maxPixels / (record.width * record.height)));
@@ -214,7 +225,7 @@ async function renderRecord(record, token) {
     await task.promise;
     if (token !== generation || destroyed || !desired.has(record)) { canvas.width = canvas.height = 0; return; }
     record.canvas = canvas;
-    record.element.prepend(canvas);
+    record.surface.prepend(canvas);
     record.placeholder.hidden = true;
     record.rendered = true;
     record.element.style.setProperty('--total-scale-factor', String(cssScale * (record.base.userUnit || 1)));
@@ -225,7 +236,7 @@ async function renderRecord(record, token) {
     if (annotations.length) {
       const div = document.createElement('div');
       div.className = 'annotationLayer';
-      record.element.append(div);
+      record.surface.append(div);
       const layer = new pdfjs.AnnotationLayer({ div, page: record.page, viewport: pdfViewport.clone({ dontFlip: true }), linkService });
       await layer.render({ annotations, renderForms: false, enableScripting: false, imageResourcesPath: new URL('images/', vendor).href });
       div.querySelectorAll('a').forEach((link) => {
@@ -293,6 +304,7 @@ function update() {
   picker.value = String(currentPage);
   previous.disabled = currentPage <= 1;
   next.disabled = currentPage >= records.length;
+  if (!resizePosition && document.documentElement.clientWidth === geometry.width && (mode === 'vertical' || Math.round(viewport.clientHeight) === geometry.height)) readingPosition = capturePosition();
   scheduleRendering();
 }
 function scheduleUpdate() { if (!frame) frame = requestAnimationFrame(update); }
@@ -361,13 +373,20 @@ retry.addEventListener('click', () => {
   } else void load();
 });
 window.addEventListener('scroll', scheduleUpdate, { passive: true });
-window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => layout(), 140); }, { passive: true });
+window.addEventListener('resize', () => {
+  resizePosition ||= readingPosition || capturePosition();
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    const position = resizePosition; resizePosition = null; layout(true, position);
+  }, 140);
+}, { passive: true });
 new ResizeObserver(() => {
   if (geometry && Math.ceil(toolbar.getBoundingClientRect().height) !== geometry.toolbar) layout();
 }).observe(toolbar);
 reducedMotion.addEventListener('change', () => { if (reducedMotion.matches && mode !== 'vertical') changeMode(); });
 document.addEventListener('keydown', (event) => {
   if (!pdf || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.target.closest('input, select, textarea, button, a, dialog')) return;
+  if (event.key.toLowerCase() === 'v') { event.preventDefault(); changeMode(); return; }
   if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
     event.preventDefault(); goToPage(currentPage + (event.key === 'ArrowRight' ? 1 : -1));
   }

@@ -11,11 +11,11 @@ permalink: /grand-scheme/
   <title>The Grand Scheme — Ten Grand</title>
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/pdfjs/pdf_viewer.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/css/grand-scheme-viewer.css' | relative_url }}?v=1">
+  <link rel="stylesheet" href="{{ '/css/grand-scheme-viewer.css' | relative_url }}?v=2">
 </head>
 <body class="blueprint" data-mode="horizontal" data-pdf-url="{{ site.data.grand_scheme.PDF_URL | relative_url }}">
   <a class="skip-link" href="#blueprint-reader">Skip to blueprint</a>
-  <header class="viewer-toolbar" id="viewer-toolbar" aria-label="Blueprint controls">
+  <header class="viewer-toolbar" id="viewer-toolbar" aria-label="Blueprint controls" hidden>
     <a href="{{ '/' | relative_url }}" class="viewer-home">← Back to Ten Grand</a>
     <nav class="viewer-controls" aria-label="Reading controls">
       <button id="previous-page" type="button" aria-label="Previous panel" disabled>←</button>
@@ -40,23 +40,16 @@ permalink: /grand-scheme/
         <div class="blueprint-strip" id="blueprint-strip"></div>
       </div>
     </section>
-    <footer class="viewer-ending" id="viewer-ending" hidden>
-      <p class="viewer-eyebrow">TEN GRAND / THE GRAND SCHEME</p>
-      <h1>From idea to impact.</h1>
-      <p>Scroll back to revisit the blueprint, or return to Ten Grand.</p>
-      <a href="{{ '/' | relative_url }}">Back to Ten Grand →</a>
-      <details class="blueprint-descriptions">
-        <summary>About the blueprint panels</summary>
-        <p>This prototype contains image-based pages. These short descriptions provide context; a complete text transcript is not yet included.</p>
-        <ol id="panel-descriptions"></ol>
-      </details>
-    </footer>
+    <aside class="sr-only" id="viewer-ending" hidden aria-label="Blueprint descriptions">
+      <p>This prototype contains image-based pages. The following short descriptions provide context.</p>
+      <ol id="panel-descriptions"></ol>
+    </aside>
   </main>
   <dialog id="hotspot-dialog" aria-labelledby="hotspot-title">
     <h2 id="hotspot-title"></h2><p id="hotspot-description"></p>
     <form method="dialog"><button>Close</button></form>
   </dialog>
   <noscript><p class="no-script">Please enable JavaScript to read the interactive blueprint, or <a href="{{ site.data.grand_scheme.PDF_URL | relative_url }}">open the prototype PDF</a>.</p></noscript>
-  <script type="module" src="{{ '/js/grand-scheme-viewer.js' | relative_url }}?v=1"></script>
+  <script type="module" src="{{ '/js/grand-scheme-viewer.js' | relative_url }}?v=2"></script>
 </body>
 </html>

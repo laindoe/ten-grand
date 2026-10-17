@@ -62,3 +62,12 @@ body[data-mode="vertical"] .blueprint-strip { display: flex; flex-direction: col
 @media (prefers-reduced-motion: reduce) { .blueprint-strip { will-change: auto; } }
 /* Keep link hit areas tied to their sheet, including older Safari CSS support. */
 .blueprint-sheet > .annotationLayer { width: 100% !important; height: 100% !important; }
+
+/* An uninterrupted PDF-only presentation, ending at the Invitation. */
+:root { --toolbar-height: 0px; }
+html, body { overscroll-behavior-y: none; }
+.pdf-page-surface { position: absolute; }
+.pdf-page-surface canvas { display: block; width: 100%; height: 100%; }
+.pdf-page-surface > .annotationLayer { width: 100% !important; height: 100% !important; }
+.blueprint-cover { height: 100svh; min-height: 100svh; overflow: hidden; }
+body[data-mode="vertical"] .blueprint-cover { height: auto; min-height: 0; }
