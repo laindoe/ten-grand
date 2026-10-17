@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.pdf': 'application/pdf', '.wasm': 'application/wasm', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg' };
-export function createViewerServer(base = '/ten-grand') {
+export function createViewerServer(base = '/ten-grand', publication = {}) {
   return http.createServer(async (request, response) => {
     try {
       const url = new URL(request.url, 'http://localhost');
@@ -24,8 +24,20 @@ export function createViewerServer(base = '/ten-grand') {
         const relative = (value) => /^https?:\/\//.test(value) ? value : `${base}/${value.replace(/^\//, '')}`;
         html = html.replace(/^---\n[\s\S]*?\n---\n/, '')
           .replace(/\{\{\s*'([^']+)'\s*\|\s*relative_url\s*\}\}/g, (_, value) => relative(value))
+          .replace(/\{\{\s*site.github.build_revision.*?\}\}/g, publication.revision || 'local-preview')
           .replace(/\{\{\s*site.data.grand_scheme.PDF_URL\s*\|\s*relative_url\s*\}\}/g, relative(pdf));
         response.setHeader('Content-Type', 'text/html; charset=utf-8'); response.end(html); return;
+      }
+      if (pathname === '/assets/pdfs/grand-scheme.pdf' && publication.pdf) {
+        const bytes = publication.pdf();
+        const { createHash } = await import('node:crypto');
+        const etag = '"' + createHash('sha256').update(bytes).digest('hex') + '"';
+        response.setHeader('ETag', etag);
+        response.setHeader('Cache-Control', 'public, max-age=600');
+        publication.requests?.push({ validator: request.headers['if-none-match'], etag, url: request.url });
+        if (request.headers['if-none-match'] === etag) { response.writeHead(304).end(); return; }
+        response.writeHead(200, { 'Content-Type': 'application/pdf', 'Content-Length': bytes.length });
+        response.end(bytes); return;
       }
       const target = path.resolve(root, `.${pathname}`);
       if (!target.startsWith(`${root}${path.sep}`) || pathname.includes('/node_modules/') || pathname.includes('/.git/')) { response.writeHead(403).end(); return; }

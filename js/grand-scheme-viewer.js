@@ -327,10 +327,18 @@ async function load() {
     for (const id of ['download-pdf', 'notice-download']) { $(id).href = config.PDF_URL; $(id).hidden = false; }
     pdfjs ||= await import(new URL('pdf.min.mjs', vendor).href);
     pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdf.worker.min.mjs', vendor).href;
-    loadingTask = pdfjs.getDocument({ url: config.PDF_URL, cMapUrl: new URL('cmaps/', vendor).href, cMapPacked: true, standardFontDataUrl: new URL('standard_fonts/', vendor).href, wasmUrl: new URL('wasm/', vendor).href, iccUrl: new URL('iccs/', vendor).href, isEvalSupported: false });
+    // Revalidate cached bytes on every open/refresh. The deployment revision also
+    // gives each GitHub Pages deployment a fresh CDN key, without manual versions.
+    const source = new URL(config.PDF_URL);
+    const revision = document.body.dataset.pdfRevision;
+    if (revision) source.searchParams.set('publication', revision);
+    const response = await fetch(source, { cache: 'no-cache' });
+    if (!response.ok) throw new Error(`PDF request failed: ${response.status}`);
+    const data = new Uint8Array(await response.arrayBuffer());
+    // Supply one validated snapshot: PDF.js must not mix cached range responses.
+    loadingTask = pdfjs.getDocument({ data, cMapUrl: new URL('cmaps/', vendor).href, cMapPacked: true, standardFontDataUrl: new URL('standard_fonts/', vendor).href, wasmUrl: new URL('wasm/', vendor).href, iccUrl: new URL('iccs/', vendor).href, isEvalSupported: false });
     loadingTask.onProgress = ({ loaded, total }) => { if (starting && total) message.textContent = `Loading the blueprint… ${Math.min(100, Math.round(100 * loaded / total))}%`; };
     pdf = await loadingTask.promise;
-    if (pdf.numPages < 2) throw new Error('The blueprint needs a cover and at least one reading panel.');
     const pages = await Promise.all(Array.from({ length: pdf.numPages }, (_, i) => pdf.getPage(i + 1)));
     strip.replaceChildren(); $('panel-descriptions').replaceChildren();
     records = pages.map((page, i) => makeRecord(page, i + 1));
@@ -406,6 +414,6 @@ window.addEventListener('pagehide', (event) => {
     void loadingTask?.destroy();
   }
 });
-window.addEventListener('pageshow', (event) => { if (event.persisted) { destroyed = false; layout(); } });
+window.addEventListener('pageshow', (event) => { if (event.persisted) { location.reload(); } });
 document.addEventListener('visibilitychange', () => { if (document.hidden) savePosition(); });
 void load();

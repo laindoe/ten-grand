@@ -7,20 +7,38 @@ The viewer is a public static page; an email confirmation redirect is not an acc
 
 ## Replace the PDF
 
-1. Upload the replacement under `assets/pdfs/` (a new filename avoids stale browser caches).
-2. Set **`PDF_URL` in `_data/grand_scheme.yml`** to its site-relative path, for example:
+1. Export from InDesign as **`grand-scheme.pdf`**.
+2. Open **`assets/pdfs/`** in the GitHub repository, upload the replacement, and commit.
+3. Wait for GitHub Pages deployment to finish, then open or refresh the viewer.
 
-   ```yaml
-   PDF_URL: /assets/pdfs/grand_scheme_blueprint_v2.pdf
-   ```
+Permanent repository path: **`assets/pdfs/grand-scheme.pdf`**.
+Published PDF: https://laindoe.github.io/ten-grand/assets/pdfs/grand-scheme.pdf
+No code edits, manual version numbers, viewer rebuild, or Codex session are needed.
+The existing GitHub Pages deployment still runs automatically after committing.
+`PDF_URL` in `_data/grand_scheme.yml` documents this permanent path; leave it unchanged.
 
-   Do not include `/ten-grand` here. Jekyll's `relative_url` filter supplies the deployed base path.
-   This one setting also drives the download and no-JavaScript fallback links.
-3. Keep the cover as page 1. All pages join the same horizontal strip, in order, including the cover.
-   Matching PDF page heights and artwork edges give the best visual continuity.
-4. Update the panel names/descriptions in `assets/js/grand-scheme-config.js` if the contents change.
+Every open/refresh fetches with HTTP `cache: 'no-cache'`, allowing ETag/Last-Modified
+conditional validation and reuse of unchanged cached bytes. An automatic GitHub Pages
+build revision supplies a deployment-specific cache key, avoiding reuse of a previous
+deployment's PDF cache entry. An unrelated site deployment may therefore cause one
+fresh PDF download. PDF.js receives the validated bytes as one snapshot, rather than
+making separate potentially stale range requests. Returning from the browser's
+back/forward cache reloads the viewer to validate again; reading progress is restored.
+There is no background polling while someone is reading.
 
-No application code or PDF.js rebuild is needed just to replace the PDF. No Adobe service is used.
+GitHub Pages/CDN deployment propagation can briefly serve the previous HTML or file.
+If that happens, wait for deployment propagation and refresh. This static site cannot
+force GitHub's edge servers to update instantly. No custom caching headers are assumed.
+
+Page count, aspect ratios, frames, and scroll distance come from the loaded PDF,
+including single-page files. Page 1 remains the opening scene; all pages join the
+existing continuous horizontal strip. Matching artwork edges give best continuity.
+PDF link annotations are read anew from each replacement. No custom hotspots are
+currently configured. Future `HOTSPOTS` in `assets/js/grand-scheme-config.js` use page
+numbers and normalized coordinates: review them if pages move or artwork changes.
+Optional panel names/descriptions in that file describe the prototype; update those
+if you want new accessible descriptions after changing the publication's contents.
+No Adobe service is used.
 
 ## Local development
 

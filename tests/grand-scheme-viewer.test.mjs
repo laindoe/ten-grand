@@ -113,11 +113,11 @@ test('reduced motion starts in an ordinary non-pinned vertical layout', async ()
 
 test('PDF loading failure is visible and retry recovers at the same base path', async () => {
   const page = await browser.newPage();
-  await page.route('**/grand_scheme_blueprint_prototype.pdf', (route) => route.fulfill({ status: 404, body: 'Missing PDF' }));
+  await page.route('**/grand-scheme.pdf*', (route) => route.fulfill({ status: 404, body: 'Missing PDF' }));
   await page.goto(url); await page.waitForSelector('#retry-load:not([hidden])');
   assert.match(await page.locator('#load-message').textContent(), /could not load/);
   assert.match(await page.locator('#notice-download').getAttribute('href'), /\/ten-grand\/assets\/pdfs\//);
-  await page.unroute('**/grand_scheme_blueprint_prototype.pdf'); await page.locator('#retry-load').click();
+  await page.unroute('**/grand-scheme.pdf*'); await page.locator('#retry-load').click();
   await page.waitForSelector('[data-page="1"] canvas');
   await page.waitForFunction(() => document.querySelector('#load-notice').hidden);
   await page.close();
@@ -126,7 +126,7 @@ test('PDF loading failure is visible and retry recovers at the same base path', 
 test('slow loading stays actionable without blocking normal page controls', async () => {
   const page = await browser.newPage(); let release;
   const hold = new Promise((resolve) => { release = resolve; });
-  await page.route('**/grand_scheme_blueprint_prototype.pdf', async (route) => { await hold; await route.continue(); });
+  await page.route('**/grand-scheme.pdf*', async (route) => { await hold; await route.continue(); });
   await page.goto(url); await page.waitForFunction(() => document.querySelector('#load-message').textContent.includes('still loading'), { timeout: 15000 });
   assert.equal(await page.locator('#notice-download').isVisible(), true);
   assert.equal(await page.locator('#viewer-toolbar').isVisible(), false);
@@ -175,4 +175,60 @@ test('a canvas rendering failure shows retry and recovers without reloading the 
   await page.waitForSelector('[data-page="1"] canvas');
   await page.waitForFunction(() => document.querySelector('#load-notice').hidden);
   await page.close();
+});
+
+// Small real PDFs let updates vary page count and MediaBox without touching the publication.
+function publicationPDF(sizes) {
+  const objects = ['<< /Type /Catalog /Pages 2 0 R >>', ''];
+  const kids = [];
+  for (const [width, height] of sizes) {
+    kids.push(`${objects.length + 1} 0 R`);
+    objects.push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${width} ${height}] /Resources << >> >>`);
+  }
+  objects[1] = `<< /Type /Pages /Count ${sizes.length} /Kids [${kids.join(' ')}] >>`;
+  let text = '%PDF-1.4\n'; const offsets = [0];
+  objects.forEach((object, i) => { offsets.push(Buffer.byteLength(text)); text += `${i + 1} 0 obj\n${object}\nendobj\n`; });
+  const xref = Buffer.byteLength(text);
+  text += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  text += offsets.slice(1).map((offset) => `${String(offset).padStart(10, '0')} 00000 n \n`).join('');
+  text += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  return Buffer.from(text);
+}
+
+test('Same-filename PDF revalidates unchanged bytes and detects page count and dimension replacements', async () => {
+  let bytes = publicationPDF([[432, 724], [432, 724]]);
+  const requests = [];
+  let revision = 'deployment-one';
+  const updateServer = createViewerServer('/ten-grand', { pdf: () => bytes, requests, get revision() { return revision; } });
+  await new Promise((resolve) => updateServer.listen(0, '127.0.0.1', resolve));
+  const address = `http://127.0.0.1:${updateServer.address().port}/ten-grand/grand-scheme/`;
+  const context = await browser.newContext({ viewport: { width: 1200, height: 800 } });
+  const page = await context.newPage();
+  const waitPages = async (count) => {
+    await page.waitForFunction((count) => document.querySelector('#page-picker').options.length === count && !document.querySelector('#page-picker').disabled, count);
+    await page.waitForSelector('[data-page="1"] canvas');
+  };
+  try {
+    await page.goto(address); await waitPages(2);
+    await page.reload(); await waitPages(2);
+    assert.equal(requests.at(-1).validator, requests[0].etag, 'Unchanged cached PDF is conditionally validated (304)');
+    bytes = publicationPDF([[600, 400], [300, 700], [700, 500]]);
+    await page.reload(); await waitPages(3);
+    const metrics = await stageMetrics(page);
+    assert.ok(metrics.seams.every((gap) => Math.abs(gap) < .01));
+    await scrollToFraction(page, .5);
+    assert.ok(Math.abs((await stageMetrics(page)).x + metrics.travel * .5) < 1.1);
+    assert.notEqual(requests.at(-1).etag, requests[0].etag);
+    const fresh = await browser.newContext(); const freshPage = await fresh.newPage();
+    await freshPage.goto(address);
+    await freshPage.waitForFunction(() => document.querySelector('#page-picker').options.length === 3);
+    await fresh.close();
+    revision = 'deployment-two';
+    bytes = publicationPDF([[500, 500]]);
+    await page.reload(); await waitPages(1);
+    assert.equal(await page.locator('.blueprint-sheet').count(), 1);
+    assert.ok(requests.at(-1).url.includes('publication=deployment-two'), 'New deployment automatically changes the cache key');
+  } finally {
+    await context.close(); await new Promise((resolve) => updateServer.close(resolve));
+  }
 });

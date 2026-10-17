@@ -1,2 +1,2 @@
-# Change only this setting to replace the viewer's PDF (site-relative path).
-PDF_URL: /assets/pdfs/grand_scheme_blueprint_prototype.pdf
+# Permanent publication path. Replace this PDF in GitHub; no setting changes needed.
+PDF_URL: /assets/pdfs/grand-scheme.pdf

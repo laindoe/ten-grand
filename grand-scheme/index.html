@@ -13,7 +13,7 @@ permalink: /grand-scheme/
   <link rel="stylesheet" href="{{ '/assets/pdfjs/pdf_viewer.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/css/grand-scheme-viewer.css' | relative_url }}?v=3">
 </head>
-<body class="blueprint" data-mode="horizontal" data-pdf-url="{{ site.data.grand_scheme.PDF_URL | relative_url }}">
+<body class="blueprint" data-mode="horizontal" data-pdf-revision="{{ site.github.build_revision | default: site.time | escape }}" data-pdf-url="{{ site.data.grand_scheme.PDF_URL | relative_url }}">
   <a class="skip-link" href="#blueprint-reader">Skip to blueprint</a>
   <header class="viewer-toolbar" id="viewer-toolbar" aria-label="Blueprint controls" hidden>
     <a href="{{ '/' | relative_url }}" class="viewer-home">← Back to Ten Grand</a>
@@ -49,6 +49,6 @@ permalink: /grand-scheme/
     <form method="dialog"><button>Close</button></form>
   </dialog>
   <noscript><p class="no-script">Please enable JavaScript to read the interactive blueprint, or <a href="{{ site.data.grand_scheme.PDF_URL | relative_url }}">open the prototype PDF</a>.</p></noscript>
-  <script type="module" src="{{ '/js/grand-scheme-viewer.js' | relative_url }}?v=3"></script>
+  <script type="module" src="{{ '/js/grand-scheme-viewer.js' | relative_url }}?revision={{ site.github.build_revision | default: site.time | escape }}"></script>
 </body>
 </html>

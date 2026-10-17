@@ -145,5 +145,5 @@ Edit category and series introduction copy and optional artwork paths in `_data/
 ## Grand Scheme PDF viewer
 
 The self-hosted blueprint reader lives at `/grand-scheme/` (under the site's `/ten-grand` base path).
-Set `PDF_URL` in `_data/grand_scheme.yml` to replace its PDF. See [viewer setup, controls, hotspots, testing, and deployment](docs/grand-scheme-viewer.md).
+Replace `assets/pdfs/grand-scheme.pdf` and commit to update the publication automatically. See [viewer setup, controls, hotspots, testing, and deployment](docs/grand-scheme-viewer.md).
 The existing Kit signup modal and Kit settings are independent and unchanged.
