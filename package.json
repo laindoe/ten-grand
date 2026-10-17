@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "scripts": {
+    "build:pdf": "node tools/build-pdf-viewer.mjs",
+    "test:pdf": "node --test tests/grand-scheme-viewer.test.mjs",
+    "dev:pdf": "node tools/pdf-viewer-server.mjs"
+  },
+  "dependencies": {
+    "pdfjs-dist": "6.4.299"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

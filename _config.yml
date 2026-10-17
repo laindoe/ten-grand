@@ -24,6 +24,12 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
+  - node_modules
+  - package.json
+  - package-lock.json
+  - tools
+  - docs
+  - tests
 
 # Keep the welcome pinned even when another post is marked featured.
 welcome_transmission: /transmissions/the-next-horizon/

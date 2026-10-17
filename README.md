@@ -141,3 +141,9 @@ Set an explicit `maxlength` when a title field needs a different limit.
 Mobile category and series selections replace one another; search uses post titles and excerpts. The first three matching stories appear initially, and Load More appends ten. Desktop keeps its existing controls.
 
 Edit category and series introduction copy and optional artwork paths in `_data/transmission_intros.json`. Series entries use the slug of the published series name; newly published series get a draft fallback introduction until configured. Set `welcome_transmission` in `_config.yml` to the pinned welcome post URL. That post appears in search but is excluded from regular chronological results. The archive uses a generated metadata-only JSON index, without fetching article bodies.
+
+## Grand Scheme PDF viewer
+
+The self-hosted blueprint reader lives at `/grand-scheme/` (under the site's `/ten-grand` base path).
+Set `PDF_URL` in `_data/grand_scheme.yml` to replace its PDF. See [viewer setup, controls, hotspots, testing, and deployment](docs/grand-scheme-viewer.md).
+The existing Kit signup modal and Kit settings are independent and unchanged.

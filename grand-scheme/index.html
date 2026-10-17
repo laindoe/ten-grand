@@ -1,0 +1,62 @@
+---
+layout: null
+permalink: /grand-scheme/
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Read The Grand Scheme: Ten Grand's blueprint for a new creative economy.">
+  <title>The Grand Scheme — Ten Grand</title>
+  <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ '/assets/pdfjs/pdf_viewer.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/css/grand-scheme-viewer.css' | relative_url }}?v=1">
+</head>
+<body class="blueprint" data-mode="horizontal" data-pdf-url="{{ site.data.grand_scheme.PDF_URL | relative_url }}">
+  <a class="skip-link" href="#blueprint-reader">Skip to blueprint</a>
+  <header class="viewer-toolbar" id="viewer-toolbar" aria-label="Blueprint controls">
+    <a href="{{ '/' | relative_url }}" class="viewer-home">← Back to Ten Grand</a>
+    <nav class="viewer-controls" aria-label="Reading controls">
+      <button id="previous-page" type="button" aria-label="Previous panel" disabled>←</button>
+      <label class="sr-only" for="page-picker">Go to panel</label>
+      <select id="page-picker" disabled><option>Loading…</option></select>
+      <button id="next-page" type="button" aria-label="Next panel" disabled>→</button>
+      <button id="reading-mode" type="button" aria-pressed="false" disabled>Read vertically</button>
+      <a id="download-pdf" download hidden>Download PDF</a>
+    </nav>
+    <div class="viewer-progress"><progress id="reading-progress" max="1" value="0" aria-label="Blueprint reading progress"></progress></div>
+  </header>
+
+  <div class="viewer-notice" id="load-notice" role="status" aria-live="polite">
+    <span id="load-message">Loading the blueprint…</span>
+    <button type="button" id="retry-load" hidden>Try again</button>
+    <a id="notice-download" hidden>Open PDF directly</a>
+  </div>
+  <main id="blueprint-reader" tabindex="-1" aria-busy="true">
+    <section class="blueprint-cover" id="blueprint-cover" aria-label="Opening cover"></section>
+    <section class="blueprint-track" id="blueprint-track" aria-label="Continuous blueprint panels">
+      <div class="blueprint-viewport" id="blueprint-viewport">
+        <div class="blueprint-strip" id="blueprint-strip"></div>
+      </div>
+    </section>
+    <footer class="viewer-ending" id="viewer-ending" hidden>
+      <p class="viewer-eyebrow">TEN GRAND / THE GRAND SCHEME</p>
+      <h1>From idea to impact.</h1>
+      <p>Scroll back to revisit the blueprint, or return to Ten Grand.</p>
+      <a href="{{ '/' | relative_url }}">Back to Ten Grand →</a>
+      <details class="blueprint-descriptions">
+        <summary>About the blueprint panels</summary>
+        <p>This prototype contains image-based pages. These short descriptions provide context; a complete text transcript is not yet included.</p>
+        <ol id="panel-descriptions"></ol>
+      </details>
+    </footer>
+  </main>
+  <dialog id="hotspot-dialog" aria-labelledby="hotspot-title">
+    <h2 id="hotspot-title"></h2><p id="hotspot-description"></p>
+    <form method="dialog"><button>Close</button></form>
+  </dialog>
+  <noscript><p class="no-script">Please enable JavaScript to read the interactive blueprint, or <a href="{{ site.data.grand_scheme.PDF_URL | relative_url }}">open the prototype PDF</a>.</p></noscript>
+  <script type="module" src="{{ '/js/grand-scheme-viewer.js' | relative_url }}?v=1"></script>
+</body>
+</html>
