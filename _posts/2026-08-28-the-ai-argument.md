@@ -1,17 +1,17 @@
 ---
 layout: transmission
-title: "The AI Argument"
+title: Ten Grand Network
 date: 2026-08-28
-series: "The AI Argument"
-format: "Video Essay"
+format: Video Essay
 pillars:
   - Technology
-featured_image: "/assets/images/samples/the-ai-argument.svg"
-excerpt: "A clear-eyed look at what AI changes, what it doesn't, and what still depends on us."
+featured_image: /assets/images/samples/the-ai-argument.svg
+excerpt: A clear-eyed look at what AI changes, what it doesn't, and what still
+  depends on us.
 featured: false
+sample: false
 ---
 
-<!-- SAMPLE TRANSMISSION — replace this post with real editorial content before launch. -->
 
 Every wave of automation comes with the same two overreactions: it changes nothing, or it changes everything. The truth, as usual, sits in between.
 
