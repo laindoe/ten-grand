@@ -1,18 +1,14 @@
 ---
 layout: transmission
-title: The Next Horizon
+title: Ten Grand Doesn’t Need a Grand Opening
 date: 2026-09-04
 format: Essay
-pillars:
-  - Technology
-  - Entertainment
 featured_image: /assets/images/IMG_6404.png
 excerpt: On what comes after the breakthrough — and how we build a more human
   future from here.
 featured: true
+sample: false
 ---
-
-
 Every era of technology promises the same thing: that this time, the tools will finally get out of the way and let people build. Rarely does it happen cleanly, and rarely all at once.
 
 What comes after a breakthrough matters more than the breakthrough itself. The next horizon isn't a new tool — it's what independent creators choose to build with the tools they already have, once the novelty wears off and the real work begins.
