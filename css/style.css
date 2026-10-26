@@ -3109,7 +3109,24 @@ a {
 }
 
 .director__bio:last-of-type {
-  margin-bottom: 64px;
+  margin-bottom: 32px;
+}
+
+/* Same red pulse cue as the site's other "not live yet" labels
+   (Doors Open 2027, Tap to Share) -- dilemma-cue-pulse by name. */
+.director__coming-soon {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-vandalism);
+  margin-bottom: 16px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .director__coming-soon {
+    animation: dilemma-cue-pulse 2s ease-in-out infinite;
+  }
 }
 
 .director__cta {
@@ -3130,6 +3147,15 @@ a {
     background: var(--color-text);
     color: var(--color-bg);
   }
+}
+
+/* Temporarily disabled -- href/target are left in place so re-enabling
+   later is just removing this attribute, same pattern as
+   .cw-network__login/.cw-section-header__link[aria-disabled]. */
+.director__cta[aria-disabled="true"] {
+  color: var(--color-text-muted);
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 /* ---------- Quote section ---------- */
