@@ -1,0 +1,55 @@
+name: Ten Grand Full Branch Backup
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fetch all branches and tags
+        run: |
+          git fetch origin \
+            '+refs/heads/*:refs/remotes/origin/*' \
+            '+refs/tags/*:refs/tags/*'
+
+      - name: Create complete Git bundle
+        run: |
+          set -euo pipefail
+
+          mkdir -p backup
+
+          git bundle create \
+            backup/ten-grand-full-backup.bundle \
+            --all
+
+          git bundle verify \
+            backup/ten-grand-full-backup.bundle
+
+          git branch -r > backup/branch-list.txt
+
+          echo "## Ten Grand Backup" >> "$GITHUB_STEP_SUMMARY"
+          echo "Complete Git bundle created and verified." >> "$GITHUB_STEP_SUMMARY"
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Branches included" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat backup/branch-list.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: ten-grand-complete-git-backup
+          path: backup/
+          retention-days: 30
