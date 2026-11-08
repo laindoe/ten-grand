@@ -1,0 +1,223 @@
+name: Ten Grand Archive Cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type DELETE 64 ARCHIVED BRANCHES to authorize deletion"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verify and clean up archived branches
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const confirmation = '${{ inputs.confirmation }}';
+
+            const branches = await github.paginate(
+              github.rest.repos.listBranches,
+              { owner, repo, per_page: 100 }
+            );
+
+            const candidates = branches.filter(
+              branch =>
+                branch.name.startsWith('claude/') ||
+                branch.name.startsWith('codex/')
+            );
+
+            core.info(`Found ${candidates.length} archive candidates.`);
+
+            // Never touch the current website or backup.
+            if (candidates.some(
+              branch =>
+                branch.name === 'main' ||
+                branch.name === 'backup-before-hq-cleanup'
+            )) {
+              throw new Error('Protected branch detected. Stopping.');
+            }
+
+            // Verify the expected number of historical branches.
+            if (candidates.length !== 64) {
+              throw new Error(
+                `Expected 64 branches, found ${candidates.length}. Stopping.`
+              );
+            }
+
+            // Stop if any candidate is protected.
+            if (candidates.some(branch => branch.protected)) {
+              throw new Error('A candidate branch is protected. Stopping.');
+            }
+
+            // Check for open pull requests.
+            const pulls = await github.paginate(
+              github.rest.pulls.list,
+              { owner, repo, state: 'open', per_page: 100 }
+            );
+
+            const activeBranches = candidates.filter(
+              branch => pulls.some(
+                pr =>
+                  pr.head.repo?.full_name === `${owner}/${repo}` &&
+                  pr.head.ref === branch.name
+              )
+            );
+
+            if (activeBranches.length > 0) {
+              throw new Error(
+                'Some branches have open pull requests. Stopping.'
+              );
+            }
+
+            // Require explicit confirmation.
+            if (confirmation !== 'DELETE 64 ARCHIVED BRANCHES') {
+              core.info('Confirmation not provided. No branches deleted.');
+
+              await core.summary
+                .addHeading('Ten Grand Cleanup Preview')
+                .addRaw(`Found ${candidates.length} branches.\n\n`)
+                .addRaw('No branches were deleted.')
+                .write();
+
+              return;
+            }
+
+            // Delete only the 64 Claude/Codex branches.
+            let deleted = 0;
+
+            for (const branch of candidates) {
+              await github.rest.git.deleteRef({
+                owner,
+                repo,
+                ref: `heads/${branch.name}`
+              });
+
+              core.info(`Deleted: ${branch.name}`);
+              deleted++;
+            }
+
+            await core.summary
+              .addHeading('Ten Grand Cleanup Complete')
+              .addRaw(`${deleted} historical branches deleted.\n\n`)
+              .addRaw('Main and backup branches were preserved.')
+              .write();name: Ten Grand Archive Cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type DELETE 64 ARCHIVED BRANCHES to authorize deletion"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verify and clean up archived branches
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const confirmation = '${{ inputs.confirmation }}';
+
+            const branches = await github.paginate(
+              github.rest.repos.listBranches,
+              { owner, repo, per_page: 100 }
+            );
+
+            const candidates = branches.filter(
+              branch =>
+                branch.name.startsWith('claude/') ||
+                branch.name.startsWith('codex/')
+            );
+
+            core.info(`Found ${candidates.length} archive candidates.`);
+
+            // Never touch the current website or backup.
+            if (candidates.some(
+              branch =>
+                branch.name === 'main' ||
+                branch.name === 'backup-before-hq-cleanup'
+            )) {
+              throw new Error('Protected branch detected. Stopping.');
+            }
+
+            // Verify the expected number of historical branches.
+            if (candidates.length !== 64) {
+              throw new Error(
+                `Expected 64 branches, found ${candidates.length}. Stopping.`
+              );
+            }
+
+            // Stop if any candidate is protected.
+            if (candidates.some(branch => branch.protected)) {
+              throw new Error('A candidate branch is protected. Stopping.');
+            }
+
+            // Check for open pull requests.
+            const pulls = await github.paginate(
+              github.rest.pulls.list,
+              { owner, repo, state: 'open', per_page: 100 }
+            );
+
+            const activeBranches = candidates.filter(
+              branch => pulls.some(
+                pr =>
+                  pr.head.repo?.full_name === `${owner}/${repo}` &&
+                  pr.head.ref === branch.name
+              )
+            );
+
+            if (activeBranches.length > 0) {
+              throw new Error(
+                'Some branches have open pull requests. Stopping.'
+              );
+            }
+
+            // Require explicit confirmation.
+            if (confirmation !== 'DELETE 64 ARCHIVED BRANCHES') {
+              core.info('Confirmation not provided. No branches deleted.');
+
+              await core.summary
+                .addHeading('Ten Grand Cleanup Preview')
+                .addRaw(`Found ${candidates.length} branches.\n\n`)
+                .addRaw('No branches were deleted.')
+                .write();
+
+              return;
+            }
+
+            // Delete only the 64 Claude/Codex branches.
+            let deleted = 0;
+
+            for (const branch of candidates) {
+              await github.rest.git.deleteRef({
+                owner,
+                repo,
+                ref: `heads/${branch.name}`
+              });
+
+              core.info(`Deleted: ${branch.name}`);
+              deleted++;
+            }
+
+            await core.summary
+              .addHeading('Ten Grand Cleanup Complete')
+              .addRaw(`${deleted} historical branches deleted.\n\n`)
+              .addRaw('Main and backup branches were preserved.')
+              .write();
