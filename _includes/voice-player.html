@@ -1,21 +1,31 @@
 <div class="vp" id="voice-player" role="dialog" aria-modal="true" aria-labelledby="vp-title" aria-hidden="true" hidden>
   <div class="vp__panel" tabindex="-1">
-    <header class="vp__header">
-      <button type="button" class="vp__icon-btn" data-vp-close aria-label="Close player">
+    <header class="vp__banner" style="--vp-art: url('{{ '/assets/images/voices-heard-airbrush-artwork.jpg' | relative_url }}')">
+      <div class="vp__banner-art" role="img" aria-label="Voices Heard"><h2 class="vp__sr" id="vp-title">Voices Heard</h2></div>
+      <button type="button" class="vp__icon-btn vp__close" data-vp-close aria-label="Close player">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
       </button>
-      <div class="vp__header-text">
-        <h2 class="vp__title" id="vp-title">VOICES HEARD</h2>
-        <p class="vp__playing-from" data-vp-from>Playing from All Voices</p>
+      <div class="vp__stats">
+        <p class="vp__total"><span class="vp__total-num" data-vp-total-count>0000</span> <span class="vp__total-label">VOICES</span></p>
+        <ul class="vp__role-stats" aria-label="Voices by role">
+          <li style="--dot: var(--cw-color-create)"><b data-vp-role-count="create">0</b><span>Creators</span></li>
+          <li style="--dot: var(--cw-color-build)"><b data-vp-role-count="build">0</b><span>Builders</span></li>
+          <li style="--dot: var(--cw-color-fund)"><b data-vp-role-count="fund">0</b><span>Investors</span></li>
+          <li style="--dot: var(--cw-color-support)"><b data-vp-role-count="support">0</b><span>Supporters</span></li>
+        </ul>
       </div>
-      <button type="button" class="vp__icon-btn vp__view-toggle" data-vp-view-toggle aria-label="Browse playlists" aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg>
-      </button>
     </header>
+
+    <div class="vp__tabs vp__tabs--main" role="tablist" aria-label="Albums or player">
+      <button type="button" class="vp__tab is-active" role="tab" id="vp-main-albums" aria-selected="true" aria-controls="vp-view-albums" data-vp-main="albums">ALBUMS</button>
+      <button type="button" class="vp__tab" role="tab" id="vp-main-player" aria-selected="false" aria-controls="vp-view-player" tabindex="-1" data-vp-main="player">PLAYER</button>
+    </div>
 
     <p class="vp__status" data-vp-status role="status" hidden></p>
 
-    <section class="vp__now" data-vp-now aria-label="Now playing">
+    <div class="vp__scroll">
+    <section class="vp__now" data-vp-now id="vp-view-player" role="tabpanel" aria-labelledby="vp-main-player" hidden>
+      <p class="vp__playing-from" data-vp-from>Playing from All Voices</p>
       <div class="vp__art" data-vp-art aria-hidden="true"></div>
       <div class="vp__meta">
         <p class="vp__role" data-vp-role></p>
@@ -59,10 +69,11 @@
       </div>
     </section>
 
-    <section class="vp__playlists" data-vp-playlists aria-label="Playlists" hidden>
-      <h3 class="vp__section-title">PLAYLISTS</h3>
+    <section class="vp__playlists" data-vp-playlists id="vp-view-albums" role="tabpanel" aria-labelledby="vp-main-albums">
       <div class="vp__grid" data-vp-grid></div>
     </section>
+
+    </div>
 
     <audio data-vp-audio preload="none"></audio>
   </div>

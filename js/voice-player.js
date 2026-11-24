@@ -11,7 +11,8 @@
   var elTrack = $("track"), elArtist = $("artist"), elRole = $("role"), elFrom = $("from");
   var elElapsed = $("elapsed"), elTotal = $("total"), elStatus = $("status");
   var elNow = $("now"), elPlaylists = $("playlists"), elGrid = $("grid"), elQueue = $("queue");
-  var btnPlay = $("play"), btnShuffle = $("shuffle"), btnToggle = $("view-toggle");
+  var btnPlay = $("play"), btnShuffle = $("shuffle");
+  var mainTabs = Array.from(root.querySelectorAll("[data-vp-main]"));
 
   var ROLES = {
     create: { label: "CREATOR", name: "Creators", a: "var(--cw-color-create)", b: "var(--cw-color-create-blend)" },
@@ -35,6 +36,7 @@
   }));
 
   var rows = null;          // playable audio voices, newest first
+  var allCount = 0;
   var written = [];         // written responses, newest first
   var writtenRole = "";     // category filter for the Written tab ("" = all)
   var loading = null;
@@ -99,6 +101,8 @@
         .limit(1000);
       if (result.error) throw result.error;
       var all = (result.data || []).filter(function (r) { return ROLES[r.role] && r.name; });
+      allCount = all.length;
+      renderStats(all);
       written = all.filter(function (r) { return r.response_type === "written" && r.why_detail; });
       rows = all.filter(function (r) { return r.response_type === "audio" && r.audio_path; });
       return rows;
@@ -128,15 +132,47 @@
     }).filter(Boolean));
   }
 
-  function showView(view) {
-    var browsing = view === "playlists";
-    elNow.hidden = browsing;
-    elPlaylists.hidden = !browsing;
-    btnToggle.setAttribute("aria-pressed", String(browsing));
-    btnToggle.setAttribute("aria-label", browsing ? "Back to now playing" : "Browse playlists");
-    if (browsing) renderPlaylists();
-    panel.scrollTop = 0;
+  function renderStats(all) {
+    $("total-count").textContent = String(all.length).padStart(4, "0");
+    Object.keys(ROLES).forEach(function (role) {
+      root.querySelector('[data-vp-role-count="' + role + '"]').textContent =
+        all.filter(function (r) { return r.role === role; }).length;
+    });
   }
+
+  // Two top-level views: "playlists" (the albums grid, shown first) and
+  // "now" (the player). The header stays put above both.
+  function showView(view) {
+    var player = view === "now";
+    elNow.hidden = !player;
+    elPlaylists.hidden = player;
+    mainTabs.forEach(function (tab) {
+      var on = (tab.getAttribute("data-vp-main") === "player") === player;
+      tab.classList.toggle("is-active", on);
+      tab.setAttribute("aria-selected", String(on));
+      tab.tabIndex = on ? 0 : -1;
+    });
+    if (!player) renderPlaylists();
+    root.querySelector(".vp__scroll").scrollTop = 0;
+  }
+
+  mainTabs.forEach(function (tab, i) {
+    function go() {
+      if (!rows) return;
+      var player = tab.getAttribute("data-vp-main") === "player";
+      if (player && !queue.length && rows.length) startPlaylist(PLAYLISTS[0]);
+      if (player && !rows.length) showTab("written");
+      showView(player ? "now" : "playlists");
+    }
+    tab.addEventListener("click", go);
+    tab.addEventListener("keydown", function (event) {
+      var next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: mainTabs.length - 1 }[event.key];
+      if (next === undefined) return;
+      event.preventDefault();
+      var target = mainTabs[(next + mainTabs.length) % mainTabs.length];
+      target.focus(); target.click();
+    });
+  });
 
   function startPlaylist(p) {
     playlist = p;
@@ -345,7 +381,6 @@
     showTab("queue");
     root.querySelector(".vp__queue").scrollIntoView({ behavior: "smooth", block: "start" });
   });
-  btnToggle.addEventListener("click", function () { showView(elPlaylists.hidden ? "playlists" : "now"); });
 
   if ("mediaSession" in navigator) {
     try {
@@ -361,8 +396,8 @@
     root.classList.add("is-open");
     document.body.classList.add("modal-open");
     panel.focus({ preventScroll: true });
-    if (audio.getAttribute("src")) { showView("now"); return; }
-    say("Loading voices…");
+    if (rows) { showView("playlists"); return; }
+    say("Loading voices\u2026");
     try {
       await loadRows();
     } catch (error) {
@@ -370,12 +405,10 @@
       say("Voices could not be loaded. Please try again.");
       return;
     }
-    if (!rows.length && !written.length) { say("Voices are coming soon. Be the first to add yours."); return; }
+    if (!allCount) { say("Voices are coming soon. Be the first to add yours."); return; }
     say("");
-    showView("now");
     renderWritten();
-    if (!rows.length) { say("No audio voices yet. Read the written responses below."); showTab("written"); return; }
-    startPlaylist(PLAYLISTS[0]);
+    showView("playlists");
   }
 
   function close() {
