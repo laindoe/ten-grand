@@ -11,13 +11,12 @@
   --vp-accent: var(--cw-color-accent, #fb2f7b);
   position: relative;
   width: min(100%, 560px);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--vp-accent) 38%, #141414) 0, #141414 46%);
+  background: #08090a;
   color: var(--color-text);
   display: flex; flex-direction: column;
   overflow: hidden;
   padding: 0;
   outline: none;
-  transition: background .4s ease;
 }
 .vp__panel[data-role="create"] { --vp-accent: var(--cw-color-create); }
 .vp__panel[data-role="build"] { --vp-accent: var(--cw-color-build); }
@@ -38,7 +37,7 @@
 .vp__role-stats li { display: flex; flex-direction: column; gap: 2px; padding-left: 8px; border-left: 3px solid var(--dot); min-width: 0; }
 .vp__role-stats b { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
 .vp__role-stats span { font-size: .62rem; letter-spacing: 0; text-transform: uppercase; color: var(--color-text-muted); overflow: hidden; text-overflow: ellipsis; }
-.vp__tabs--main { flex: none; margin: 0; padding: 0 20px; background: #141414; }
+.vp__tabs--main { flex: none; margin: 0; padding: 0 20px; background: #08090a; }
 .vp__scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 18px 20px 28px; }
 .vp__playing-from { margin: 0 0 4px; text-align: center; font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-muted); }
 
