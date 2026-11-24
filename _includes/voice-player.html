@@ -44,9 +44,18 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
         </button>
       </div>
-      <div class="vp__queue">
-        <h4 class="vp__queue-title">UP NEXT</h4>
-        <ol class="vp__queue-list" data-vp-queue></ol>
+      <div class="vp__queue" data-vp-tabs-wrap>
+        <div class="vp__tabs" role="tablist" aria-label="Up next and written responses">
+          <button type="button" class="vp__tab is-active" role="tab" id="vp-tab-queue" aria-selected="true" aria-controls="vp-panel-queue" data-vp-tab="queue">UP NEXT</button>
+          <button type="button" class="vp__tab" role="tab" id="vp-tab-written" aria-selected="false" aria-controls="vp-panel-written" tabindex="-1" data-vp-tab="written">WRITTEN <span class="vp__tab-count" data-vp-written-count></span></button>
+        </div>
+        <div class="vp__tabpanel" role="tabpanel" id="vp-panel-queue" aria-labelledby="vp-tab-queue">
+          <ol class="vp__queue-list" data-vp-queue></ol>
+        </div>
+        <div class="vp__tabpanel" role="tabpanel" id="vp-panel-written" aria-labelledby="vp-tab-written" hidden>
+          <div class="vp__chips" role="group" aria-label="Sort written responses by category" data-vp-chips></div>
+          <ul class="vp__written-list" data-vp-written></ul>
+        </div>
       </div>
     </section>
 

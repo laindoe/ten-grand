@@ -76,7 +76,30 @@
 .vp__times { display: flex; justify-content: space-between; font-size: .75rem; color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
 .vp__controls { display: flex; align-items: center; justify-content: space-between; margin: 12px 0 28px; }
 
-.vp__queue-title, .vp__section-title { margin: 0 0 10px; font-size: .8rem; letter-spacing: .12em; font-weight: 800; }
+.vp__section-title { margin: 0 0 10px; font-size: .8rem; letter-spacing: .12em; font-weight: 800; }
+.vp__tabs { display: flex; border-bottom: 1px solid rgba(243,243,244,.3); margin-bottom: 12px; }
+.vp__tab {
+  flex: 1; min-height: 44px; background: transparent; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px;
+  color: var(--color-text-muted); font: inherit; font-size: .8rem; font-weight: 800; letter-spacing: .12em; cursor: pointer;
+}
+.vp__tab.is-active { color: var(--color-text); border-bottom-color: var(--vp-accent); }
+.vp__tab:focus-visible { outline: 2px solid var(--color-text); outline-offset: -2px; }
+.vp__tab-count { font-weight: 600; opacity: .7; }
+.vp__tabpanel[hidden] { display: none; }
+.vp__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.vp__chip {
+  min-height: 36px; padding: 6px 12px; background: transparent; color: var(--color-text); cursor: pointer;
+  border: 1px solid rgba(243,243,244,.45); font: inherit; font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+}
+.vp__chip[aria-pressed="true"] { background: var(--color-text); color: var(--color-bg); border-color: var(--color-text); }
+.vp__chip:focus-visible { outline: 2px solid var(--color-text); outline-offset: 2px; }
+.vp__written-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.vp__written-card { padding: 14px; border: 1px solid rgba(243,243,244,.3); border-left: 4px solid var(--card-accent, #888); }
+.vp__written-role { margin: 0 0 6px; font-size: .7rem; font-weight: 800; letter-spacing: .12em; color: var(--card-accent, inherit); }
+.vp__written-title { margin: 0 0 6px; font-size: 1rem; font-weight: 800; }
+.vp__written-quote { margin: 0; line-height: 1.45; overflow-wrap: anywhere; }
+.vp__written-name { margin: 8px 0 0; font-size: .85rem; color: var(--color-text-muted); }
+.vp__written-empty { color: var(--color-text-muted); font-size: .9rem; }
 .vp__queue-list { list-style: none; margin: 0; padding: 0; }
 .vp__queue-item button {
   display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 12px; width: 100%;

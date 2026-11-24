@@ -34,7 +34,9 @@
       match: function (row) { return row.role === role; } };
   }));
 
-  var rows = null;          // all playable voices, newest first
+  var rows = null;          // playable audio voices, newest first
+  var written = [];         // written responses, newest first
+  var writtenRole = "";     // category filter for the Written tab ("" = all)
   var loading = null;
   var playlist = PLAYLISTS[0];
   var shuffleOn = true;
@@ -91,12 +93,14 @@
       if (!window.tenGrandSupabase) throw new Error("Supabase unavailable");
       var result = await window.tenGrandSupabase
         .from("voices_heard")
-        .select("id,name,role,response_title,audio_path,audio_duration,photo_path,created_at")
-        .eq("status", "approved").eq("response_type", "audio").not("audio_path", "is", null)
+        .select("id,name,role,response_type,response_title,why_detail,audio_path,audio_duration,photo_path,created_at")
+        .eq("status", "approved")
         .order("created_at", { ascending: false }).order("id", { ascending: false })
         .limit(1000);
       if (result.error) throw result.error;
-      rows = (result.data || []).filter(function (r) { return ROLES[r.role] && r.name; });
+      var all = (result.data || []).filter(function (r) { return ROLES[r.role] && r.name; });
+      written = all.filter(function (r) { return r.response_type === "written" && r.why_detail; });
+      rows = all.filter(function (r) { return r.response_type === "audio" && r.audio_path; });
       return rows;
     })();
     try { return await loading; } finally { loading = null; }
@@ -113,7 +117,8 @@
       tile.style.setProperty("--tile-b", p.b);
       var name = document.createElement("span"); name.className = "vp__tile-name"; name.textContent = p.name;
       var n = document.createElement("span"); n.className = "vp__tile-count";
-      n.textContent = count + (count === 1 ? " voice" : " voices");
+      var writtenCount = written.filter(p.match).length;
+      n.textContent = count + (count === 1 ? " voice" : " voices") + (writtenCount ? " \u00b7 " + writtenCount + " written" : "");
       tile.append(name, n);
       if (p.icon) {
         tile.insertAdjacentHTML("afterbegin", '<svg class="vp__tile-icon" viewBox="0 0 24 24" aria-hidden="true">' + p.icon + "</svg>");
@@ -138,6 +143,8 @@
     base = rows.filter(p.match);
     if (p.id === "newest") shuffleOn = false;
     else if (p.shuffle) shuffleOn = true;
+    writtenRole = p.role || "";
+    renderWritten();
     buildQueue(null);
     elFrom.textContent = "Playing from " + (p.id === "all" ? "All Voices" : p.name);
     play(0);
@@ -198,6 +205,65 @@
       btn.append(thumb, text, d);
       btn.addEventListener("click", function () { play(i); });
       li.appendChild(btn);
+      return li;
+    }));
+  }
+
+  var tabs = Array.from(root.querySelectorAll("[data-vp-tab]"));
+  var elWritten = $("written"), elChips = $("chips"), elWrittenCount = $("written-count");
+
+  function showTab(name) {
+    tabs.forEach(function (tab) {
+      var on = tab.getAttribute("data-vp-tab") === name;
+      tab.classList.toggle("is-active", on);
+      tab.setAttribute("aria-selected", String(on));
+      tab.tabIndex = on ? 0 : -1;
+      root.querySelector("#" + tab.getAttribute("aria-controls")).hidden = !on;
+    });
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener("click", function () { showTab(tab.getAttribute("data-vp-tab")); });
+    tab.addEventListener("keydown", function (event) {
+      var next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[event.key];
+      if (next === undefined) return;
+      event.preventDefault();
+      var target = tabs[(next + tabs.length) % tabs.length];
+      target.focus(); showTab(target.getAttribute("data-vp-tab"));
+    });
+  });
+
+  // Written responses follow the category picked in the playlists (or the
+  // chips here), mirroring how audio playlists are sorted by role.
+  function renderWritten() {
+    elWrittenCount.textContent = written.length ? "(" + written.length + ")" : "";
+    var options = [{ id: "", label: "All" }].concat(Object.keys(ROLES).map(function (r) {
+      return { id: r, label: ROLES[r].name };
+    })).filter(function (o) { return !o.id || written.some(function (w) { return w.role === o.id; }); });
+    elChips.replaceChildren.apply(elChips, options.map(function (o) {
+      var chip = document.createElement("button");
+      chip.type = "button"; chip.className = "vp__chip"; chip.textContent = o.label;
+      chip.setAttribute("aria-pressed", String(o.id === writtenRole));
+      chip.addEventListener("click", function () { writtenRole = o.id; renderWritten(); });
+      return chip;
+    }));
+    var list = written.filter(function (w) { return !writtenRole || w.role === writtenRole; });
+    if (!list.length) {
+      var empty = document.createElement("li"); empty.className = "vp__written-empty";
+      empty.textContent = written.length ? "No written responses in this category yet." : "No written responses yet.";
+      elWritten.replaceChildren(empty);
+      return;
+    }
+    elWritten.replaceChildren.apply(elWritten, list.map(function (w) {
+      var li = document.createElement("li"); li.className = "vp__written-card";
+      li.style.setProperty("--card-accent", ROLES[w.role].a);
+      var role = document.createElement("p"); role.className = "vp__written-role"; role.textContent = ROLES[w.role].label;
+      li.appendChild(role);
+      if (w.response_title) {
+        var t = document.createElement("h5"); t.className = "vp__written-title"; t.textContent = titleCase(w.response_title); li.appendChild(t);
+      }
+      var q = document.createElement("p"); q.className = "vp__written-quote"; q.textContent = "\u201c" + w.why_detail + "\u201d";
+      var n = document.createElement("p"); n.className = "vp__written-name"; n.textContent = w.name;
+      li.append(q, n);
       return li;
     }));
   }
@@ -276,6 +342,7 @@
     renderQueue();
   });
   $("queue-jump").addEventListener("click", function () {
+    showTab("queue");
     root.querySelector(".vp__queue").scrollIntoView({ behavior: "smooth", block: "start" });
   });
   btnToggle.addEventListener("click", function () { showView(elPlaylists.hidden ? "playlists" : "now"); });
@@ -303,9 +370,11 @@
       say("Voices could not be loaded. Please try again.");
       return;
     }
-    if (!rows.length) { say("Voices are coming soon. Be the first to add yours."); return; }
+    if (!rows.length && !written.length) { say("Voices are coming soon. Be the first to add yours."); return; }
     say("");
     showView("now");
+    renderWritten();
+    if (!rows.length) { say("No audio voices yet. Read the written responses below."); showTab("written"); return; }
     startPlaylist(PLAYLISTS[0]);
   }
 
