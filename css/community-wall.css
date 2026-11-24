@@ -2053,7 +2053,7 @@ main {
 
 /* Carry the extended campaign nebula behind the Community Wall invitation. */
 .cw-campaign .cw-campaign__intro--voices {
-  background: #03030b url('../assets/images/voices-heard-airbrush-refined.png') center top / min(100%, 680px) auto no-repeat;
+  background: #03030b url('../assets/images/voices-heard-airbrush-extended.png') center top / min(100%, 680px) auto no-repeat;
   display: flex; flex-direction: column; text-align: center;
 }
 .cw-campaign .cw-campaign__intro--voices .cw-campaign__title { width: 100%; max-width: 620px; }
@@ -2083,5 +2083,5 @@ main {
   padding-inline: 12px; max-width: 30ch; margin-inline: auto;
 }
 .cw-campaign .cw-campaign__intro--voices {
-  background-size: min(calc(100% - 32px), 648px) auto;
+  background-size: min(100%, 680px) auto;
 }

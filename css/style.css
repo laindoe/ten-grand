@@ -5467,7 +5467,7 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
 #amass-modal .amass-flow__panel[data-amass-screen="9"] {
   width: 100%; max-width: none; height: 100%; max-height: none;
   padding: 0; border: 0; border-radius: 0; overflow: hidden;
-  background: #03030b url('../assets/images/voices-heard-airbrush-refined.png') center top / min(100vw, 680px) auto no-repeat;
+  background: #03030b url('../assets/images/voices-heard-airbrush-extended.png') center top / min(100vw, 680px) auto no-repeat;
 }
 #amass-modal:has([data-amass-screen="9"]) { padding: 0; }
 #amass-modal [data-amass-screen="9"] .amass-flow__heat { display: none; }
