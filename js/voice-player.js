@@ -27,7 +27,7 @@
   var PLAYLISTS = [
     { id: "all", name: "Shuffle All", a: "#fb2f7b", b: "#ff9a3c", shuffle: true, match: function () { return true; },
       icon: '<path d="M3 7h3c5 0 6 10 11 10h4M3 17h3c1.6 0 2.8-.9 3.8-2.2M21 7h-4c-1.6 0-2.8.9-3.8 2.2M18 4l3 3-3 3M18 14l3 3-3 3"/>' },
-    { id: "newest", name: "Newest", a: "#f3f3f4", b: "#9aa0a6", shuffle: false, match: function () { return true; },
+    { id: "newest", name: "Latest", a: "#f3f3f4", b: "#9aa0a6", shuffle: false, match: function () { return true; },
       icon: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>' }
   ].concat(Object.keys(ROLES).map(function (role) {
     return { id: role, name: ROLES[role].name, a: ROLES[role].a, b: ROLES[role].b, shuffle: true, role: role,
