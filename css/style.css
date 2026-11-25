@@ -5588,3 +5588,12 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
   margin: 0 auto 24px; text-shadow: 0 1px 8px #000, 0 0 3px #000;
 }
 #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] { justify-content: center; padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+
+/* Intro slide: the soft airbrush nebula comes back along the bottom, behind the
+   copy and button, and the copy now sits lower with only a light overlap. */
+#amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] {
+  background: #000 url('../assets/images/voices-heard-nebula-bottom.jpg') center bottom / min(135%, 980px) auto no-repeat;
+}
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__screen {
+  margin-top: calc(min(112vw, 660px) * -.07);
+}
