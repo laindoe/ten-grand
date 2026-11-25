@@ -5637,3 +5637,29 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
   #amass-modal .amass-flow__panel[data-campaign="voices-heard"] { background-size: 150% auto; background-position: center bottom -120px; }
   #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] { background-size: min(140%, 1100px) auto; background-position: center bottom -100px; }
 }
+
+/* Phone spacing for the Voices Heard form: reclaim room so the fields and the
+   BACK / NEXT row fit without scrolling whenever the screen allows. */
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal .amass-flow__panel[data-campaign="voices-heard"]:not([data-amass-screen="9"]) {
+    padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+    background-position: center bottom -132px;
+  }
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__progress { min-height: 32px; line-height: 32px; margin-bottom: 0; }
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__campaign-logo { width: min(74%, 300px); margin-bottom: 0; }
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .modal__title {
+    font-size: clamp(1.5rem, 6.2vw, 1.9rem); margin: 0 auto 12px; line-height: 1.05;
+  }
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__actions { padding-top: 12px; }
+}
+
+/* BACK / NEXT stay pinned and visible: only the fields area scrolls, and only
+   when the screen is too short to show everything. */
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__step { overflow: hidden; }
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__content {
+    flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    margin-inline: -4px; padding-inline: 4px; padding-bottom: 6px;
+  }
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__actions { flex: none; }
+}
