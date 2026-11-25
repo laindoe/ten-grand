@@ -2085,3 +2085,28 @@ main {
 .cw-campaign .cw-campaign__intro--voices {
   background-size: min(100%, 680px) auto;
 }
+
+/* Digital readout for the Voices Heard tally: self-hosted Orbitron (SIL OFL,
+   see assets/fonts/Orbitron-OFL.txt) with a soft cyan/magenta glow. */
+@font-face {
+  font-family: "Orbitron";
+  src: url('../assets/fonts/Orbitron-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --font-digital: "Orbitron", "Share Tech Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --digital-glow:
+    0 0 4px rgba(255, 255, 255, .9),
+    0 0 14px rgba(63, 214, 255, .75),
+    0 0 30px rgba(251, 47, 123, .55);
+}
+.cw-campaign__counter [data-stat="voices-total"] {
+  font-family: var(--font-digital);
+  font-weight: 800;
+  letter-spacing: .06em;
+  padding-left: .06em;
+  color: #fff;
+  text-shadow: var(--digital-glow);
+}
