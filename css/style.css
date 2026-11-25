@@ -5528,7 +5528,7 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
 #amass-modal [data-campaign="voices-heard"] .amass-flow__heat { display: none; }
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"]::after { content: none; }
 #amass-modal [data-campaign="voices-heard"] .amass-flow__campaign-logo {
-  display: block; flex: none; width: min(64%, 260px); height: auto; margin: 0 auto 4px; pointer-events: none;
+  display: block; flex: none; width: min(82%, 330px); height: auto; margin: 0 auto 4px; pointer-events: none;
 }
 #amass-modal [data-campaign="voices-heard"] .amass-flow__campaign-logo[hidden] { display: none; }
 #amass-modal [data-campaign="voices-heard"] .amass-flow__success .amass-flow__brand { display: none; }
@@ -5574,11 +5574,11 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
 /* Intro slide: a much larger circle that nearly meets the screen edges, with
    the invitation copy overlapping its lower glow and GET STARTED right below. */
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__campaign-logo--intro {
-  width: min(112vw, 660px); max-width: none; align-self: center; margin: 0; position: relative;
+  width: min(120vw, 700px); max-width: none; align-self: center; margin: 0; position: relative;
 }
 #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] { padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__screen {
-  flex: 0 0 auto; margin-top: calc(min(112vw, 660px) * -.2);
+  flex: 0 0 auto; margin-top: calc(min(120vw, 700px) * -.2);
 }
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .modal__body,
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] #amass-voice-form,
@@ -5597,7 +5597,7 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
   background: #000 url('../assets/images/voices-heard-nebula-bottom.jpg') center bottom / min(135%, 980px) auto no-repeat;
 }
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__screen {
-  margin-top: calc(min(112vw, 660px) * -.07);
+  margin-top: calc(min(120vw, 700px) * -.07);
 }
 
 /* The bottom nebula runs behind every slide of the Voices Heard flow. */
@@ -5607,4 +5607,21 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
 @media (min-width: 901px) and (pointer: fine) {
   /* The desktop dialog is shorter, so keep the nebula low behind the buttons. */
   #amass-modal .amass-flow__panel[data-campaign="voices-heard"] { background-size: min(100%, 780px) auto; }
+}
+
+
+/* Nebula in the bottom corners only. The button row is lifted above it, so the
+   splotches never sit behind a field or button. */
+#amass-modal .amass-flow__panel[data-campaign="voices-heard"] {
+  background: #000 url('../assets/images/voices-heard-nebula-bottom.jpg') center bottom -44px / 100% auto no-repeat;
+  padding-bottom: calc(116px + env(safe-area-inset-bottom, 0px));
+}
+#amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] {
+  background-position: center bottom -44px;
+  background-size: min(135%, 980px) auto;
+  padding-bottom: calc(116px + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 901px) and (pointer: fine) {
+  #amass-modal .amass-flow__panel[data-campaign="voices-heard"] { background-size: min(100%, 780px) auto; padding-bottom: 150px; background-position: center bottom -60px; }
+  #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] { background-size: min(135%, 980px) auto; padding-bottom: 116px; background-position: center bottom -44px; }
 }
