@@ -5625,3 +5625,15 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
   #amass-modal .amass-flow__panel[data-campaign="voices-heard"] { background-size: min(100%, 780px) auto; padding-bottom: 150px; background-position: center bottom -60px; }
   #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] { background-size: min(135%, 980px) auto; padding-bottom: 116px; background-position: center bottom -44px; }
 }
+
+/* The nebula bleeds off the bottom and sides: the panel's edges crop it. */
+#amass-modal .amass-flow__panel[data-campaign="voices-heard"] {
+  background-size: 128% auto; background-position: center bottom -96px;
+}
+#amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] {
+  background-size: min(140%, 1100px) auto; background-position: center bottom -100px;
+}
+@media (min-width: 901px) and (pointer: fine) {
+  #amass-modal .amass-flow__panel[data-campaign="voices-heard"] { background-size: 150% auto; background-position: center bottom -120px; }
+  #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] { background-size: min(140%, 1100px) auto; background-position: center bottom -100px; }
+}
