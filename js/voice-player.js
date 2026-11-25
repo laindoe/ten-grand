@@ -15,7 +15,6 @@
   var btnPlay = $("play"), btnShuffle = $("shuffle");
   var addButtons = Array.from(root.querySelectorAll("[data-vp-add]"));
   var mainTabs = Array.from(root.querySelectorAll("[data-vp-main]"));
-  var roleButtons = Array.from(root.querySelectorAll("[data-vp-role-filter]"));
   var scroller = root.querySelector(".vp__scroll");
 
   var ROLES = {
@@ -128,18 +127,6 @@
 
   function renderStats(all) {
     $("total-count").textContent = String(all.length).padStart(4, "0");
-    Object.keys(ROLES).forEach(function (role) {
-      root.querySelector('[data-vp-role-count="' + role + '"]').textContent =
-        all.filter(function (r) { return r.role === role; }).length;
-    });
-  }
-
-  // Highlights the role count that matches what's being browsed.
-  function syncRoleButtons() {
-    var active = view === "written" ? writtenRole : view === "now" ? (playlist.role || "") : "";
-    roleButtons.forEach(function (btn) {
-      btn.setAttribute("aria-pressed", String(Boolean(active) && btn.getAttribute("data-vp-role-filter") === active));
-    });
   }
 
   function renderPlaylists() {
@@ -180,7 +167,6 @@
     });
     if (next === "playlists") renderPlaylists();
     if (next === "written") renderWritten();
-    syncRoleButtons();
     scroller.scrollTop = 0;
   }
 
@@ -203,24 +189,6 @@
       event.preventDefault();
       var target = mainTabs[(next + mainTabs.length) % mainTabs.length];
       target.focus(); target.click();
-    });
-  });
-
-  // Clicking a role count browses that role: the player cues that role's
-  // playlist, or, from the Written tab, the written list narrows to it.
-  roleButtons.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      if (!rows) return;
-      var role = btn.getAttribute("data-vp-role-filter");
-      var hasAudio = rows.some(function (r) { return r.role === role; });
-      say("");
-      if (view === "written" || !hasAudio) {
-        writtenRole = role;
-        showView("written");
-        return;
-      }
-      startPlaylist(PLAYLISTS.filter(function (p) { return p.id === role; })[0], false);
-      showView("now");
     });
   });
 
@@ -330,7 +298,7 @@
       var chip = document.createElement("button");
       chip.type = "button"; chip.className = "vp__chip"; chip.textContent = o.label;
       chip.setAttribute("aria-pressed", String(o.id === writtenRole));
-      chip.addEventListener("click", function () { writtenRole = o.id; renderWritten(); syncRoleButtons(); });
+      chip.addEventListener("click", function () { writtenRole = o.id; renderWritten(); });
       return chip;
     }));
     var list = written.filter(function (w) { return !writtenRole || w.role === writtenRole; });
