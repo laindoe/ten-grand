@@ -5518,3 +5518,44 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
 }
 
 #amass-modal .amass-flow__panel[data-amass-screen="9"] { background-size: min(calc(100vw - 48px), 632px) auto; }
+
+/* ---------- Voices Heard campaign modal ----------
+   Every slide of the Voices Heard flow shares a black surface and the
+   horizontal logo across the top (the script sets data-campaign on the
+   panel for these steps). Other campaigns can add their own variants. */
+#amass-modal .amass-flow__campaign-logo { display: none; }
+#amass-modal .amass-flow__panel[data-campaign="voices-heard"] { background: #000; }
+#amass-modal [data-campaign="voices-heard"] .amass-flow__heat { display: none; }
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"]::after { content: none; }
+#amass-modal [data-campaign="voices-heard"] .amass-flow__campaign-logo {
+  display: block; flex: none; width: min(64%, 260px); height: auto; margin: 0 auto 4px; pointer-events: none;
+}
+#amass-modal [data-campaign="voices-heard"] .amass-flow__campaign-logo[hidden] { display: none; }
+#amass-modal [data-campaign="voices-heard"] .amass-flow__success .amass-flow__brand { display: none; }
+/* Intro slide: the logo is large and sits above the invitation copy. */
+#amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] {
+  background: #000; padding-top: calc(48px + env(safe-area-inset-top, 0px));
+}
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__campaign-logo {
+  width: min(100%, 520px); margin: 8px auto 0;
+}
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__content { padding-top: 0; }
+/* Copy sits right under the logo; GET STARTED stays pinned to the bottom. */
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__intro { margin: 8px auto auto; }
+
+/* Form slides: heading and fields start just below the logo, with the
+   BACK / NEXT row at the bottom on the same black surface. */
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__screen {
+    margin-block: 0; flex: 1 1 auto;
+  }
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .modal__body { flex: 1 1 auto; }
+  #amass-modal [data-campaign="voices-heard"] .modal__title { margin-top: 12px; }
+}
+#amass-modal [data-campaign="voices-heard"] .amass-flow__actions { background: transparent; margin-top: auto; }
+/* Desktop intro: the logo shares the column with the screen, so the screen
+   fills the remaining height instead of the whole panel height. */
+#amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] { display: flex; flex-direction: column; }
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__screen,
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .modal__body,
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] #amass-voice-form { height: auto; }
