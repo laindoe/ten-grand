@@ -5673,3 +5673,9 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
     margin-bottom: 14px;
   }
 }
+
+/* Whole-screen black while the Voices Heard modal is open (see setBlackChrome). */
+html.amass-black-chrome,
+html.amass-black-chrome body,
+html.amass-black-chrome #amass-modal,
+html.amass-black-chrome #amass-modal .modal__backdrop { background: #000; }

@@ -173,6 +173,7 @@
     }
 
     function closeModal() {
+      setBlackChrome(false);
       stopTrackingViewport();
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
@@ -189,6 +190,30 @@
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
     });
+  }
+
+  // Voices Heard runs on solid black. While it's open, the page behind the
+  // modal and the browser bars (status bar, Safari toolbar) go black too, so
+  // no gray strip shows at the top or bottom. Everything is restored on close.
+  let savedThemeColor;
+  function setBlackChrome(on) {
+    document.documentElement.classList.toggle('amass-black-chrome', on);
+    let meta = document.querySelector('meta[name="theme-color"]');
+    if (on) {
+      if (savedThemeColor === undefined) savedThemeColor = meta ? meta.getAttribute('content') : null;
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', '#000000');
+    } else if (savedThemeColor !== undefined) {
+      if (meta) {
+        if (savedThemeColor === null) meta.remove();
+        else meta.setAttribute('content', savedThemeColor);
+      }
+      savedThemeColor = undefined;
+    }
   }
 
   // Matches the bar count js/community-wall.js draws a stored
@@ -943,6 +968,7 @@
       const campaign = step === 9 || (step >= 2 && step <= 8) ? 'voices-heard' : '';
       modal.querySelector('.amass-flow__panel').dataset.campaign = campaign;
       modal.querySelectorAll('[data-campaign-logo]').forEach((logo) => { logo.hidden = !campaign; });
+      setBlackChrome(Boolean(campaign) && modal.classList.contains('is-open'));
       modal.querySelector('[data-campaign-back]').hidden = directCampaignEntry;
       const progress = modal.querySelector('#amass-step-progress');
       progress.hidden = step === 0 || step === 1 || step === 9;
