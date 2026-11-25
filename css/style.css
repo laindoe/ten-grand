@@ -5663,3 +5663,13 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
   }
   #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__actions { flex: none; }
 }
+
+/* Form headings: sized from the screen width so even the longest titles
+   ("READY TO LEAVE YOUR MARK?") sit on one line on typical phones. */
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .modal__title {
+    font-size: min(1.55rem, calc((100vw - 56px) / 16.6));
+    letter-spacing: .01em;
+    margin-bottom: 14px;
+  }
+}
