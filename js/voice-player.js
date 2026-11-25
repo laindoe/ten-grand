@@ -8,11 +8,14 @@
   var panel = root.querySelector(".vp__panel");
   var $ = function (name) { return root.querySelector("[data-vp-" + name + "]"); };
   var audio = $("audio"), art = $("art"), seek = $("seek");
-  var elTrack = $("track"), elArtist = $("artist"), elRole = $("role"), elFrom = $("from");
+  var elTrack = $("track"), elArtist = $("artist"), elRole = $("role"), elFrom = $("from"), elLinks = $("links");
   var elElapsed = $("elapsed"), elTotal = $("total"), elStatus = $("status");
-  var elNow = $("now"), elPlaylists = $("playlists"), elGrid = $("grid"), elQueue = $("queue");
-  var btnPlay = $("play"), btnShuffle = $("shuffle");
+  var elNow = $("now"), elPlaylists = $("playlists"), elWrittenView = $("written-view"), elGrid = $("grid"), elQueue = $("queue");
+  var elWritten = $("written"), elChips = $("chips"), elWrittenCount = $("written-count");
+  var btnPlay = $("play"), btnShuffle = $("shuffle"), btnAdd = $("add");
   var mainTabs = Array.from(root.querySelectorAll("[data-vp-main]"));
+  var roleButtons = Array.from(root.querySelectorAll("[data-vp-role-filter]"));
+  var scroller = root.querySelector(".vp__scroll");
 
   var ROLES = {
     create: { label: "CREATOR", name: "Creators", a: "var(--cw-color-create)", b: "var(--cw-color-create-blend)" },
@@ -21,9 +24,19 @@
     support: { label: "SUPPORTER", name: "Supporters", a: "var(--cw-color-support)", b: "var(--cw-color-support-blend)" }
   };
 
-  // Each playlist is { id, name, a, b, icon, shuffle, match(row) }. Rows with
-  // no matches are hidden, so adding Top Picks / Fan Favs later (once the
-  // admin side can tag voices) is one more entry here, e.g.
+  var SOCIAL_URL_PREFIX = {
+    Instagram: "https://instagram.com/",
+    Facebook: "https://facebook.com/",
+    X: "https://x.com/",
+    Threads: "https://threads.net/@",
+    TikTok: "https://tiktok.com/@"
+  };
+  var GLOBE_ICON = '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/>';
+  var HANDLE_ICON = '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>';
+
+  // Each playlist is { id, name, a, b, icon, shuffle, match(row) }. Playlists
+  // with no audio voices are hidden, so adding Top Picks / Fan Favs later
+  // (once the admin side can tag voices) is one more entry here, e.g.
   // { id: "top", name: "Top Picks", match: function (r) { return r.featured; } }.
   var PLAYLISTS = [
     { id: "all", name: "Shuffle All", a: "#fb2f7b", b: "#ff9a3c", shuffle: true, match: function () { return true; },
@@ -36,16 +49,18 @@
   }));
 
   var rows = null;          // playable audio voices, newest first
-  var allCount = 0;
   var written = [];         // written responses, newest first
+  var allCount = 0;
   var writtenRole = "";     // category filter for the Written tab ("" = all)
   var loading = null;
   var playlist = PLAYLISTS[0];
   var shuffleOn = true;
+  var view = "playlists";   // "playlists" | "now" | "written"
   var base = [];            // current playlist in natural order
   var queue = [];           // play order
   var index = 0;
   var lastFocus = null;
+  var seeking = false;
 
   function mediaUrl(row, kind) {
     var path = kind === "photo" ? row.photo_path : row.audio_path;
@@ -95,7 +110,7 @@
       if (!window.tenGrandSupabase) throw new Error("Supabase unavailable");
       var result = await window.tenGrandSupabase
         .from("voices_heard")
-        .select("id,name,role,response_type,response_title,why_detail,audio_path,audio_duration,photo_path,created_at")
+        .select("id,name,role,response_type,response_title,why_detail,audio_path,audio_duration,photo_path,website,social_platform,social_handle,created_at")
         .eq("status", "approved")
         .order("created_at", { ascending: false }).order("id", { ascending: false })
         .limit(1000);
@@ -110,19 +125,35 @@
     try { return await loading; } finally { loading = null; }
   }
 
+  function renderStats(all) {
+    $("total-count").textContent = String(all.length).padStart(4, "0");
+    Object.keys(ROLES).forEach(function (role) {
+      root.querySelector('[data-vp-role-count="' + role + '"]').textContent =
+        all.filter(function (r) { return r.role === role; }).length;
+    });
+  }
+
+  // Highlights the role count that matches what's being browsed.
+  function syncRoleButtons() {
+    var active = view === "written" ? writtenRole : view === "now" ? (playlist.role || "") : "";
+    roleButtons.forEach(function (btn) {
+      btn.setAttribute("aria-pressed", String(Boolean(active) && btn.getAttribute("data-vp-role-filter") === active));
+    });
+  }
+
   function renderPlaylists() {
     elGrid.replaceChildren.apply(elGrid, PLAYLISTS.map(function (p) {
       var count = rows.filter(p.match).length;
       if (!count) return null;
       var tile = document.createElement("button");
       tile.type = "button";
-      tile.className = "vp__tile" + (p.id === playlist.id ? " is-active" : "");
+      tile.className = "vp__tile" + (p.id === playlist.id && queue.length ? " is-active" : "");
       tile.style.setProperty("--tile-a", p.a);
       tile.style.setProperty("--tile-b", p.b);
       var name = document.createElement("span"); name.className = "vp__tile-name"; name.textContent = p.name;
       var n = document.createElement("span"); n.className = "vp__tile-count";
       var writtenCount = written.filter(p.match).length;
-      n.textContent = count + (count === 1 ? " voice" : " voices") + (writtenCount ? " \u00b7 " + writtenCount + " written" : "");
+      n.textContent = count + (count === 1 ? " voice" : " voices") + (writtenCount ? " · " + writtenCount + " written" : "");
       tile.append(name, n);
       if (p.icon) {
         tile.insertAdjacentHTML("afterbegin", '<svg class="vp__tile-icon" viewBox="0 0 24 24" aria-hidden="true">' + p.icon + "</svg>");
@@ -132,39 +163,39 @@
     }).filter(Boolean));
   }
 
-  function renderStats(all) {
-    $("total-count").textContent = String(all.length).padStart(4, "0");
-    Object.keys(ROLES).forEach(function (role) {
-      root.querySelector('[data-vp-role-count="' + role + '"]').textContent =
-        all.filter(function (r) { return r.role === role; }).length;
-    });
-  }
-
-  // Two top-level views: "playlists" (the albums grid, shown first) and
-  // "now" (the player). The header stays put above both.
-  function showView(view) {
-    var player = view === "now";
-    elNow.hidden = !player;
-    elPlaylists.hidden = player;
+  // Three top-level views under the persistent header: the albums grid
+  // (shown first), the player, and the written responses.
+  function showView(next) {
+    view = next;
+    elPlaylists.hidden = next !== "playlists";
+    elNow.hidden = next !== "now";
+    elWrittenView.hidden = next !== "written";
+    var tabFor = { playlists: "albums", now: "player", written: "written" }[next];
     mainTabs.forEach(function (tab) {
-      var on = (tab.getAttribute("data-vp-main") === "player") === player;
+      var on = tab.getAttribute("data-vp-main") === tabFor;
       tab.classList.toggle("is-active", on);
       tab.setAttribute("aria-selected", String(on));
       tab.tabIndex = on ? 0 : -1;
     });
-    if (!player) renderPlaylists();
-    root.querySelector(".vp__scroll").scrollTop = 0;
+    if (next === "playlists") renderPlaylists();
+    if (next === "written") renderWritten();
+    syncRoleButtons();
+    scroller.scrollTop = 0;
   }
 
   mainTabs.forEach(function (tab, i) {
-    function go() {
+    tab.addEventListener("click", function () {
       if (!rows) return;
-      var player = tab.getAttribute("data-vp-main") === "player";
-      if (player && !queue.length && rows.length) startPlaylist(PLAYLISTS[0]);
-      if (player && !rows.length) showTab("written");
-      showView(player ? "now" : "playlists");
-    }
-    tab.addEventListener("click", go);
+      var target = tab.getAttribute("data-vp-main");
+      if (target === "player") {
+        // Opening the player never starts audio; it just cues something up.
+        if (!queue.length && rows.length) startPlaylist(PLAYLISTS[0], false);
+        if (!queue.length) { say("No audio voices yet. Read the written responses."); showView("written"); return; }
+        showView("now");
+      } else {
+        showView(target === "written" ? "written" : "playlists");
+      }
+    });
     tab.addEventListener("keydown", function (event) {
       var next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: mainTabs.length - 1 }[event.key];
       if (next === undefined) return;
@@ -174,16 +205,34 @@
     });
   });
 
-  function startPlaylist(p) {
+  // Clicking a role count browses that role: the player cues that role's
+  // playlist, or, from the Written tab, the written list narrows to it.
+  roleButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      if (!rows) return;
+      var role = btn.getAttribute("data-vp-role-filter");
+      var hasAudio = rows.some(function (r) { return r.role === role; });
+      say("");
+      if (view === "written" || !hasAudio) {
+        writtenRole = role;
+        showView("written");
+        return;
+      }
+      startPlaylist(PLAYLISTS.filter(function (p) { return p.id === role; })[0], false);
+      showView("now");
+    });
+  });
+
+  // autoplay=false cues the first voice without playing it.
+  function startPlaylist(p, autoplay) {
     playlist = p;
     base = rows.filter(p.match);
     if (p.id === "newest") shuffleOn = false;
     else if (p.shuffle) shuffleOn = true;
     writtenRole = p.role || "";
-    renderWritten();
     buildQueue(null);
     elFrom.textContent = "Playing from " + (p.id === "all" ? "All Voices" : p.name);
-    play(0);
+    load(0, autoplay === true);
   }
 
   function buildQueue(current) {
@@ -198,7 +247,7 @@
   }
 
   function addBars() {
-    for (var i = 0; i < 9; i++) {
+    for (var i = 0; i < 5; i++) {
       var bar = document.createElement("span"); bar.className = "vp__art-bar"; art.appendChild(bar);
     }
   }
@@ -207,7 +256,6 @@
   // artwork with equalizer bars.
   function setArt(row) {
     art.replaceChildren();
-    art.classList.remove("has-photo");
     art.style.backgroundImage = "";
     var photo = mediaUrl(row, "photo");
     if (!photo) { addBars(); return; }
@@ -215,12 +263,37 @@
     probe.onload = function () {
       if (queue[index] !== row) return;
       art.replaceChildren();
-      art.classList.add("has-photo");
       art.style.backgroundImage = 'url("' + photo.replace(/"/g, "%22") + '")';
     };
     probe.onerror = function () { if (queue[index] === row) addBars(); };
     addBars();
     probe.src = photo;
+  }
+
+  function linkEl(href, label, icon, text) {
+    var a = document.createElement("a");
+    a.className = "vp__link";
+    a.href = href; a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.setAttribute("aria-label", label);
+    a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + icon + "</svg>";
+    if (text) {
+      var span = document.createElement("span"); span.textContent = text; a.appendChild(span);
+    }
+    return a;
+  }
+
+  function renderLinks(row) {
+    var items = [];
+    if (row.website) {
+      var href = /^https?:\/\//i.test(row.website) ? row.website : "https://" + row.website;
+      items.push(linkEl(href, "Website: " + row.website, GLOBE_ICON, "Website"));
+    }
+    if (row.social_platform && row.social_handle) {
+      var handle = row.social_handle.trim().replace(/^@/, "");
+      var prefix = SOCIAL_URL_PREFIX[row.social_platform] || SOCIAL_URL_PREFIX.Instagram;
+      items.push(linkEl(prefix + encodeURIComponent(handle), row.social_platform + ": @" + handle, HANDLE_ICON, ""));
+    }
+    elLinks.replaceChildren.apply(elLinks, items);
   }
 
   function renderQueue() {
@@ -235,41 +308,18 @@
       if (photo) thumb.style.backgroundImage = 'url("' + photo.replace(/"/g, "%22") + '")';
       var text = document.createElement("span");
       var t = document.createElement("span"); t.className = "vp__q-title"; t.textContent = titleCase(row.response_title) || row.name;
-      var s = document.createElement("span"); s.className = "vp__q-sub"; s.textContent = row.name + " \u00b7 " + ROLES[row.role].label;
+      var s = document.createElement("span"); s.className = "vp__q-sub"; s.textContent = row.name + " · " + ROLES[row.role].label;
       text.append(t, s);
       var d = document.createElement("span"); d.className = "vp__q-dur"; d.textContent = clock(row.audio_duration);
       btn.append(thumb, text, d);
-      btn.addEventListener("click", function () { play(i); });
+      btn.addEventListener("click", function () { load(i, true); });
       li.appendChild(btn);
       return li;
     }));
   }
 
-  var tabs = Array.from(root.querySelectorAll("[data-vp-tab]"));
-  var elWritten = $("written"), elChips = $("chips"), elWrittenCount = $("written-count");
-
-  function showTab(name) {
-    tabs.forEach(function (tab) {
-      var on = tab.getAttribute("data-vp-tab") === name;
-      tab.classList.toggle("is-active", on);
-      tab.setAttribute("aria-selected", String(on));
-      tab.tabIndex = on ? 0 : -1;
-      root.querySelector("#" + tab.getAttribute("aria-controls")).hidden = !on;
-    });
-  }
-  tabs.forEach(function (tab, i) {
-    tab.addEventListener("click", function () { showTab(tab.getAttribute("data-vp-tab")); });
-    tab.addEventListener("keydown", function (event) {
-      var next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[event.key];
-      if (next === undefined) return;
-      event.preventDefault();
-      var target = tabs[(next + tabs.length) % tabs.length];
-      target.focus(); showTab(target.getAttribute("data-vp-tab"));
-    });
-  });
-
-  // Written responses follow the category picked in the playlists (or the
-  // chips here), mirroring how audio playlists are sorted by role.
+  // Written responses follow the category picked via the role counts or the
+  // chips here, mirroring how audio playlists are sorted by role.
   function renderWritten() {
     elWrittenCount.textContent = written.length ? "(" + written.length + ")" : "";
     var options = [{ id: "", label: "All" }].concat(Object.keys(ROLES).map(function (r) {
@@ -279,7 +329,7 @@
       var chip = document.createElement("button");
       chip.type = "button"; chip.className = "vp__chip"; chip.textContent = o.label;
       chip.setAttribute("aria-pressed", String(o.id === writtenRole));
-      chip.addEventListener("click", function () { writtenRole = o.id; renderWritten(); });
+      chip.addEventListener("click", function () { writtenRole = o.id; renderWritten(); syncRoleButtons(); });
       return chip;
     }));
     var list = written.filter(function (w) { return !writtenRole || w.role === writtenRole; });
@@ -297,14 +347,15 @@
       if (w.response_title) {
         var t = document.createElement("h5"); t.className = "vp__written-title"; t.textContent = titleCase(w.response_title); li.appendChild(t);
       }
-      var q = document.createElement("p"); q.className = "vp__written-quote"; q.textContent = "\u201c" + w.why_detail + "\u201d";
+      var q = document.createElement("p"); q.className = "vp__written-quote"; q.textContent = "“" + w.why_detail + "”";
       var n = document.createElement("p"); n.className = "vp__written-name"; n.textContent = w.name;
       li.append(q, n);
       return li;
     }));
   }
 
-  function play(i) {
+  // Loads queue[i] into the player. Only plays when autoplay is true.
+  function load(i, autoplay) {
     if (!queue.length) return;
     index = (i + queue.length) % queue.length;
     var row = queue[index];
@@ -317,11 +368,14 @@
     elElapsed.textContent = "0:00";
     seek.value = 0;
     setArt(row);
+    renderLinks(row);
     renderQueue();
     say("");
-    if (!url) { say("This voice can't be played right now."); return; }
+    audio.pause();
+    if (!url) { audio.removeAttribute("src"); setPlaying(false); say("This voice can't be played right now."); return; }
     audio.src = url;
-    audio.play().catch(function () { setPlaying(false); });
+    if (autoplay) audio.play().catch(function () { setPlaying(false); });
+    else setPlaying(false);
     if ("mediaSession" in navigator && window.MediaMetadata) {
       navigator.mediaSession.metadata = new MediaMetadata({ title: elTrack.textContent, artist: row.name, album: "Voices Heard" });
     }
@@ -341,11 +395,11 @@
 
   audio.addEventListener("play", function () { setPlaying(true); });
   audio.addEventListener("pause", function () { setPlaying(false); });
-  audio.addEventListener("ended", function () { play(index + 1); });
+  audio.addEventListener("ended", function () { load(index + 1, true); });
   audio.addEventListener("error", function () {
     if (!audio.getAttribute("src")) return;
     say("That voice couldn't be loaded. Skipping ahead…");
-    window.setTimeout(function () { if (root.classList.contains("is-open")) play(index + 1); }, 1200);
+    window.setTimeout(function () { if (root.classList.contains("is-open")) load(index + 1, true); }, 1200);
   });
   audio.addEventListener("loadedmetadata", function () { elTotal.textContent = clock(duration()); });
   audio.addEventListener("timeupdate", function () {
@@ -353,7 +407,6 @@
     elElapsed.textContent = clock(audio.currentTime);
     if (!seeking && total) seek.value = Math.round(audio.currentTime / total * 1000);
   });
-  var seeking = false;
   seek.addEventListener("input", function () {
     seeking = true;
     elElapsed.textContent = clock(seek.value / 1000 * duration());
@@ -364,13 +417,14 @@
   });
 
   btnPlay.addEventListener("click", function () {
-    if (!audio.getAttribute("src")) play(index);
+    if (!audio.getAttribute("src")) load(index, true);
     else if (audio.paused) audio.play().catch(function () {});
     else audio.pause();
   });
-  $("next").addEventListener("click", function () { play(index + 1); });
+  // Skipping keeps the current state: it only plays on if something was playing.
+  $("next").addEventListener("click", function () { load(index + 1, !audio.paused); });
   $("prev").addEventListener("click", function () {
-    if (audio.currentTime > 3) audio.currentTime = 0; else play(index - 1);
+    if (audio.currentTime > 3) audio.currentTime = 0; else load(index - 1, !audio.paused);
   });
   btnShuffle.addEventListener("click", function () {
     shuffleOn = !shuffleOn;
@@ -378,14 +432,13 @@
     renderQueue();
   });
   $("queue-jump").addEventListener("click", function () {
-    showTab("queue");
     root.querySelector(".vp__queue").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   if ("mediaSession" in navigator) {
     try {
-      navigator.mediaSession.setActionHandler("nexttrack", function () { play(index + 1); });
-      navigator.mediaSession.setActionHandler("previoustrack", function () { play(index - 1); });
+      navigator.mediaSession.setActionHandler("nexttrack", function () { load(index + 1, true); });
+      navigator.mediaSession.setActionHandler("previoustrack", function () { load(index - 1, true); });
     } catch (e) { /* unsupported action */ }
   }
 
@@ -397,7 +450,7 @@
     document.body.classList.add("modal-open");
     panel.focus({ preventScroll: true });
     if (rows) { showView("playlists"); return; }
-    say("Loading voices\u2026");
+    say("Loading voices…");
     try {
       await loadRows();
     } catch (error) {
@@ -407,27 +460,29 @@
     }
     if (!allCount) { say("Voices are coming soon. Be the first to add yours."); return; }
     say("");
-    renderWritten();
     showView("playlists");
   }
 
-  function close() {
+  function close(skipFocus) {
     audio.pause();
     root.classList.remove("is-open");
     root.hidden = true;
     root.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
-    if (lastFocus) lastFocus.focus({ preventScroll: true });
+    if (!skipFocus && lastFocus) lastFocus.focus({ preventScroll: true });
   }
 
   openers.forEach(function (el) { el.addEventListener("click", open); });
-  $("close").addEventListener("click", close);
+  $("close").addEventListener("click", function () { close(); });
+  // ADD YOURS opens the submission modal, which sits beneath this dialog, so
+  // step the player out of the way (amass-modal.js handles the click itself).
+  btnAdd.addEventListener("click", function () { close(true); });
   root.addEventListener("click", function (event) { if (event.target === root) close(); });
   document.addEventListener("keydown", function (event) {
     if (!root.classList.contains("is-open")) return;
     if (event.key === "Escape") { close(); return; }
     if (event.key !== "Tab") return;
-    var items = Array.from(root.querySelectorAll("button:not([disabled]), input:not([disabled])"))
+    var items = Array.from(root.querySelectorAll("button:not([disabled]), input:not([disabled]), a[href]"))
       .filter(function (el) { return el.getClientRects().length > 0; });
     var first = items[0], last = items[items.length - 1];
     if (!first) return;

@@ -1,78 +1,81 @@
 <div class="vp" id="voice-player" role="dialog" aria-modal="true" aria-labelledby="vp-title" aria-hidden="true" hidden>
   <div class="vp__panel" tabindex="-1">
     <header class="vp__banner" style="--vp-art: url('{{ '/assets/images/voices-heard-airbrush-artwork.jpg' | relative_url }}')">
-      <div class="vp__banner-art" role="img" aria-label="Voices Heard"><h2 class="vp__sr" id="vp-title">Voices Heard</h2></div>
+      <div class="vp__banner-row">
+        <div class="vp__banner-art" role="img" aria-label="Voices Heard"><h2 class="vp__sr" id="vp-title">Voices Heard</h2></div>
+        <div class="vp__banner-info">
+          <p class="vp__total"><span class="vp__total-num" data-vp-total-count>0000</span></p>
+          <p class="vp__total-label">VOICES HEARD</p>
+          <button type="button" class="cw-campaign__add-voice vp__add" data-modal-open="amass-modal" data-amass-entry="voices-heard" data-vp-add>ADD YOURS <span aria-hidden="true">&rarr;</span></button>
+        </div>
+      </div>
       <button type="button" class="vp__icon-btn vp__close" data-vp-close aria-label="Close player">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
       </button>
-      <div class="vp__stats">
-        <p class="vp__total"><span class="vp__total-num" data-vp-total-count>0000</span> <span class="vp__total-label">VOICES</span></p>
-        <ul class="vp__role-stats" aria-label="Voices by role">
-          <li style="--dot: var(--cw-color-create)"><b data-vp-role-count="create">0</b><span>Creators</span></li>
-          <li style="--dot: var(--cw-color-build)"><b data-vp-role-count="build">0</b><span>Builders</span></li>
-          <li style="--dot: var(--cw-color-fund)"><b data-vp-role-count="fund">0</b><span>Investors</span></li>
-          <li style="--dot: var(--cw-color-support)"><b data-vp-role-count="support">0</b><span>Supporters</span></li>
-        </ul>
-      </div>
+      <ul class="vp__role-stats" aria-label="Browse voices by role">
+        <li style="--dot: var(--cw-color-create)"><button type="button" data-vp-role-filter="create" aria-pressed="false"><b data-vp-role-count="create">0</b><span>Creators</span></button></li>
+        <li style="--dot: var(--cw-color-build)"><button type="button" data-vp-role-filter="build" aria-pressed="false"><b data-vp-role-count="build">0</b><span>Builders</span></button></li>
+        <li style="--dot: var(--cw-color-fund)"><button type="button" data-vp-role-filter="fund" aria-pressed="false"><b data-vp-role-count="fund">0</b><span>Investors</span></button></li>
+        <li style="--dot: var(--cw-color-support)"><button type="button" data-vp-role-filter="support" aria-pressed="false"><b data-vp-role-count="support">0</b><span>Supporters</span></button></li>
+      </ul>
     </header>
 
-    <div class="vp__tabs vp__tabs--main" role="tablist" aria-label="Albums or player">
+    <div class="vp__tabs" role="tablist" aria-label="Albums, player or written">
       <button type="button" class="vp__tab is-active" role="tab" id="vp-main-albums" aria-selected="true" aria-controls="vp-view-albums" data-vp-main="albums">ALBUMS</button>
       <button type="button" class="vp__tab" role="tab" id="vp-main-player" aria-selected="false" aria-controls="vp-view-player" tabindex="-1" data-vp-main="player">PLAYER</button>
+      <button type="button" class="vp__tab" role="tab" id="vp-main-written" aria-selected="false" aria-controls="vp-view-written" tabindex="-1" data-vp-main="written">WRITTEN <span class="vp__tab-count" data-vp-written-count></span></button>
     </div>
 
     <p class="vp__status" data-vp-status role="status" hidden></p>
 
     <div class="vp__scroll">
-    <section class="vp__now" data-vp-now id="vp-view-player" role="tabpanel" aria-labelledby="vp-main-player" hidden>
-      <p class="vp__playing-from" data-vp-from>Playing from All Voices</p>
-      <div class="vp__art" data-vp-art aria-hidden="true"></div>
-      <div class="vp__meta">
-        <p class="vp__role" data-vp-role></p>
-        <h3 class="vp__track" data-vp-track>&nbsp;</h3>
-        <p class="vp__artist" data-vp-artist></p>
-      </div>
-      <div class="vp__seek">
-        <input type="range" class="vp__range" data-vp-seek min="0" max="1000" value="0" step="1" aria-label="Seek" />
-        <div class="vp__times"><span data-vp-elapsed>0:00</span><span data-vp-total>0:00</span></div>
-      </div>
-      <div class="vp__controls">
-        <button type="button" class="vp__icon-btn" data-vp-shuffle aria-pressed="true" aria-label="Shuffle on">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h3c5 0 6 10 11 10h4M3 17h3c1.6 0 2.8-.9 3.8-2.2M21 7h-4c-1.6 0-2.8.9-3.8 2.2M18 4l3 3-3 3M18 14l3 3-3 3"/></svg>
-        </button>
-        <button type="button" class="vp__icon-btn" data-vp-prev aria-label="Previous voice">
-          <svg viewBox="0 0 24 24" aria-hidden="true" class="vp__fill"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
-        </button>
-        <button type="button" class="vp__play" data-vp-play aria-label="Play">
-          <svg viewBox="0 0 24 24" aria-hidden="true" class="vp__fill" data-vp-icon-play><path d="M8 5l12 7-12 7z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true" class="vp__fill" data-vp-icon-pause hidden><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
-        </button>
-        <button type="button" class="vp__icon-btn" data-vp-next aria-label="Next voice">
-          <svg viewBox="0 0 24 24" aria-hidden="true" class="vp__fill"><path d="M16 5h2v14h-2zM4 5l11 7L4 19z"/></svg>
-        </button>
-        <button type="button" class="vp__icon-btn vp__icon-btn--ghost" data-vp-queue-jump aria-label="Show up next">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-        </button>
-      </div>
-      <div class="vp__queue" data-vp-tabs-wrap>
-        <div class="vp__tabs" role="tablist" aria-label="Up next and written responses">
-          <button type="button" class="vp__tab is-active" role="tab" id="vp-tab-queue" aria-selected="true" aria-controls="vp-panel-queue" data-vp-tab="queue">UP NEXT</button>
-          <button type="button" class="vp__tab" role="tab" id="vp-tab-written" aria-selected="false" aria-controls="vp-panel-written" tabindex="-1" data-vp-tab="written">WRITTEN <span class="vp__tab-count" data-vp-written-count></span></button>
+      <section class="vp__now" data-vp-now id="vp-view-player" role="tabpanel" aria-labelledby="vp-main-player" hidden>
+        <p class="vp__playing-from" data-vp-from>Playing from All Voices</p>
+        <div class="vp__id">
+          <div class="vp__art" data-vp-art aria-hidden="true"></div>
+          <div class="vp__meta">
+            <p class="vp__role" data-vp-role></p>
+            <p class="vp__artist" data-vp-artist></p>
+            <p class="vp__links" data-vp-links></p>
+          </div>
         </div>
-        <div class="vp__tabpanel" role="tabpanel" id="vp-panel-queue" aria-labelledby="vp-tab-queue">
+        <h3 class="vp__track" data-vp-track>&nbsp;</h3>
+        <div class="vp__seek">
+          <input type="range" class="vp__range" data-vp-seek min="0" max="1000" value="0" step="1" aria-label="Seek" />
+          <div class="vp__times"><span data-vp-elapsed>0:00</span><span data-vp-total>0:00</span></div>
+        </div>
+        <div class="vp__controls">
+          <button type="button" class="vp__icon-btn" data-vp-shuffle aria-pressed="true" aria-label="Shuffle on">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h3c5 0 6 10 11 10h4M3 17h3c1.6 0 2.8-.9 3.8-2.2M21 7h-4c-1.6 0-2.8.9-3.8 2.2M18 4l3 3-3 3M18 14l3 3-3 3"/></svg>
+          </button>
+          <button type="button" class="vp__icon-btn" data-vp-prev aria-label="Previous voice">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="vp__fill"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
+          </button>
+          <button type="button" class="vp__play" data-vp-play aria-label="Play">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="vp__fill" data-vp-icon-play><path d="M8 5l12 7-12 7z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="vp__fill" data-vp-icon-pause hidden><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+          </button>
+          <button type="button" class="vp__icon-btn" data-vp-next aria-label="Next voice">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="vp__fill"><path d="M16 5h2v14h-2zM4 5l11 7L4 19z"/></svg>
+          </button>
+          <button type="button" class="vp__icon-btn vp__icon-btn--ghost" data-vp-queue-jump aria-label="Show up next">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          </button>
+        </div>
+        <div class="vp__queue" data-vp-queue-wrap>
+          <h4 class="vp__section-title">UP NEXT</h4>
           <ol class="vp__queue-list" data-vp-queue></ol>
         </div>
-        <div class="vp__tabpanel" role="tabpanel" id="vp-panel-written" aria-labelledby="vp-tab-written" hidden>
-          <div class="vp__chips" role="group" aria-label="Sort written responses by category" data-vp-chips></div>
-          <ul class="vp__written-list" data-vp-written></ul>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="vp__playlists" data-vp-playlists id="vp-view-albums" role="tabpanel" aria-labelledby="vp-main-albums">
-      <div class="vp__grid" data-vp-grid></div>
-    </section>
+      <section class="vp__playlists" data-vp-playlists id="vp-view-albums" role="tabpanel" aria-labelledby="vp-main-albums">
+        <div class="vp__grid" data-vp-grid></div>
+      </section>
 
+      <section class="vp__written" data-vp-written-view id="vp-view-written" role="tabpanel" aria-labelledby="vp-main-written" hidden>
+        <div class="vp__chips" role="group" aria-label="Sort written responses by category" data-vp-chips></div>
+        <ul class="vp__written-list" data-vp-written></ul>
+      </section>
     </div>
 
     <audio data-vp-audio preload="none"></audio>
