@@ -24,16 +24,15 @@
 .vp__panel[data-role="support"] { --vp-accent: var(--cw-color-support); }
 
 .vp__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
-.vp__banner { position: relative; flex: none; background: #08090a; padding: 12px 16px 0; }
-.vp__banner-row { display: grid; grid-template-columns: minmax(0, 46%) minmax(0, 1fr); gap: 16px; align-items: center; padding-right: 36px; }
-.vp__banner-art { aspect-ratio: 1.6; background: #08090a var(--vp-art) center 40% / 100% auto no-repeat; }
-.vp__banner-info { min-width: 0; }
-.vp__total { margin: 0; line-height: 1; }
-.vp__total-num { font-size: 1.9rem; font-weight: 400; letter-spacing: .14em; font-variant-numeric: tabular-nums; }
-.vp__total-label { margin: 4px 0 8px; font-size: .7rem; font-weight: 800; letter-spacing: .12em; color: var(--color-text-muted); }
-.vp__add { width: auto; min-height: 36px; padding: 6px 12px; gap: 8px; font-size: .72rem; }
-.vp__add span { font-size: 1.1rem; }
-.vp__close { position: absolute; top: 4px; right: 4px; }
+.vp__banner { position: relative; flex: none; background: #08090a; padding: 10px 16px 0; }
+.vp__banner-art { aspect-ratio: 3.4; background: #08090a var(--vp-art) center 48% / 100% auto no-repeat; }
+.vp__close { position: absolute; top: 14px; right: 20px; width: 36px; height: 36px; background: rgba(8,9,10,.6); border-radius: 50%; }
+.vp__close svg { width: 20px; height: 20px; }
+.vp__total { margin: 12px 0 0; display: flex; align-items: baseline; justify-content: center; gap: 12px; line-height: 1; }
+.vp__total-num { font-size: 1.7rem; font-weight: 400; letter-spacing: .14em; font-variant-numeric: tabular-nums; }
+.vp__total-label { font-size: .72rem; font-weight: 800; letter-spacing: .12em; color: var(--color-text-muted); }
+.vp__footer { flex: none; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: #08090a; border-top: 1px solid rgba(243,243,244,.3); }
+.vp__add { width: 100%; }
 .vp__role-stats { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .vp__role-stats li { border-left: 3px solid var(--dot); min-width: 0; }
 .vp__role-stats button {

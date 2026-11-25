@@ -1,17 +1,11 @@
 <div class="vp" id="voice-player" role="dialog" aria-modal="true" aria-labelledby="vp-title" aria-hidden="true" hidden>
   <div class="vp__panel" tabindex="-1">
-    <header class="vp__banner" style="--vp-art: url('{{ '/assets/images/voices-heard-airbrush-artwork.jpg' | relative_url }}')">
-      <div class="vp__banner-row">
-        <div class="vp__banner-art" role="img" aria-label="Voices Heard"><h2 class="vp__sr" id="vp-title">Voices Heard</h2></div>
-        <div class="vp__banner-info">
-          <p class="vp__total"><span class="vp__total-num" data-vp-total-count>0000</span></p>
-          <p class="vp__total-label">VOICES HEARD</p>
-          <button type="button" class="cw-campaign__add-voice vp__add" data-modal-open="amass-modal" data-amass-entry="voices-heard" data-vp-add>ADD YOURS <span aria-hidden="true">&rarr;</span></button>
-        </div>
-      </div>
+    <header class="vp__banner">
+      <div class="vp__banner-art" style="--vp-art: url('{{ '/assets/images/voices-heard-horizontal.png' | relative_url }}')" role="img" aria-label="Voices Heard"><h2 class="vp__sr" id="vp-title">Voices Heard</h2></div>
       <button type="button" class="vp__icon-btn vp__close" data-vp-close aria-label="Close player">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
       </button>
+      <p class="vp__total"><span class="vp__total-num" data-vp-total-count>0000</span> <span class="vp__total-label">VOICES HEARD</span></p>
       <ul class="vp__role-stats" aria-label="Browse voices by role">
         <li style="--dot: var(--cw-color-create)"><button type="button" data-vp-role-filter="create" aria-pressed="false"><b data-vp-role-count="create">0</b><span>Creators</span></button></li>
         <li style="--dot: var(--cw-color-build)"><button type="button" data-vp-role-filter="build" aria-pressed="false"><b data-vp-role-count="build">0</b><span>Builders</span></button></li>
@@ -77,6 +71,10 @@
         <ul class="vp__written-list" data-vp-written></ul>
       </section>
     </div>
+
+    <footer class="vp__footer">
+      <button type="button" class="cw-campaign__add-voice vp__add" data-modal-open="amass-modal" data-amass-entry="voices-heard" data-vp-add>ADD YOURS <span aria-hidden="true">&rarr;</span></button>
+    </footer>
 
     <audio data-vp-audio preload="none"></audio>
   </div>
