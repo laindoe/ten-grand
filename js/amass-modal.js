@@ -942,7 +942,7 @@
       // Steps 9 and 2-8 are the Voices Heard flow; steps 0-1 are the generic AMASS chooser.
       const campaign = step === 9 || (step >= 2 && step <= 8) ? 'voices-heard' : '';
       modal.querySelector('.amass-flow__panel').dataset.campaign = campaign;
-      modal.querySelector('[data-campaign-logo]').hidden = !campaign;
+      modal.querySelectorAll('[data-campaign-logo]').forEach((logo) => { logo.hidden = !campaign; });
       modal.querySelector('[data-campaign-back]').hidden = directCampaignEntry;
       const progress = modal.querySelector('#amass-step-progress');
       progress.hidden = step === 0 || step === 1 || step === 9;

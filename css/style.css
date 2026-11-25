@@ -5559,3 +5559,12 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__screen,
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .modal__body,
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] #amass-voice-form { height: auto; }
+
+/* Intro slide uses the round logo; every later slide keeps the horizontal one. */
+#amass-modal .amass-flow__campaign-logo--intro { display: none; }
+#amass-modal [data-campaign="voices-heard"] .amass-flow__campaign-logo--intro { display: none; }
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__campaign-logo:not(.amass-flow__campaign-logo--intro) { display: none; }
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__campaign-logo--intro {
+  display: block; width: min(80%, 380px); margin: 0 auto;
+}
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__campaign-logo--intro[hidden] { display: none; }
