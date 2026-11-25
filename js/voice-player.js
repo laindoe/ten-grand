@@ -8,7 +8,7 @@
   var panel = root.querySelector(".vp__panel");
   var $ = function (name) { return root.querySelector("[data-vp-" + name + "]"); };
   var audio = $("audio"), art = $("art"), seek = $("seek");
-  var elTrack = $("track"), elArtist = $("artist"), elRole = $("role"), elFrom = $("from"), elLinks = $("links");
+  var elTrack = $("track"), elArtist = $("artist"), elRole = $("role"), elNum = $("num"), elLinks = $("links");
   var elElapsed = $("elapsed"), elTotal = $("total"), elStatus = $("status");
   var elNow = $("now"), elPlaylists = $("playlists"), elWrittenView = $("written-view"), elGrid = $("grid"), elQueue = $("queue");
   var elWritten = $("written"), elChips = $("chips"), elWrittenCount = $("written-count");
@@ -110,7 +110,7 @@
       if (!window.tenGrandSupabase) throw new Error("Supabase unavailable");
       var result = await window.tenGrandSupabase
         .from("voices_heard")
-        .select("id,name,role,response_type,response_title,why_detail,audio_path,audio_duration,photo_path,website,social_platform,social_handle,created_at")
+        .select("id,name,role,response_type,response_title,why_detail,audio_path,audio_duration,photo_path,website,social_platform,social_handle,created_at,campaign_number")
         .eq("status", "approved")
         .order("created_at", { ascending: false }).order("id", { ascending: false })
         .limit(1000);
@@ -200,7 +200,6 @@
     else if (p.shuffle) shuffleOn = true;
     writtenRole = p.role || "";
     buildQueue(null);
-    elFrom.textContent = "Playing from " + (p.id === "all" ? "All Voices" : p.name);
     load(0, autoplay === true);
   }
 
@@ -331,6 +330,9 @@
     var url = mediaUrl(row, "audio");
     panel.dataset.role = row.role;
     elRole.textContent = ROLES[row.role].label;
+    var hasNumber = row.campaign_number !== null && row.campaign_number !== undefined;
+    elNum.hidden = !hasNumber;
+    elNum.textContent = hasNumber ? String(row.campaign_number).padStart(4, "0") : "";
     elTrack.textContent = titleCase(row.response_title) || "Untitled";
     elArtist.textContent = row.name;
     elTotal.textContent = clock(row.audio_duration);

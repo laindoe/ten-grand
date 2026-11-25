@@ -2086,17 +2086,18 @@ main {
   background-size: min(100%, 680px) auto;
 }
 
-/* Digital readout for the Voices Heard tally: self-hosted Orbitron (SIL OFL,
-   see assets/fonts/Orbitron-OFL.txt) with a soft cyan/magenta glow. */
+/* Digital readout for the Voices Heard tally: self-hosted DSEG7 Modern Bold, a
+   seven-segment face (SIL OFL, see assets/fonts/DSEG-OFL.txt), with a soft
+   cyan/magenta glow. */
 @font-face {
-  font-family: "Orbitron";
-  src: url('../assets/fonts/Orbitron-ExtraBold.woff2') format('woff2');
-  font-weight: 800;
+  font-family: "DSEG7";
+  src: url('../assets/fonts/DSEG7Modern-Bold.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 :root {
-  --font-digital: "Orbitron", "Share Tech Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-digital: "DSEG7", ui-monospace, "SF Mono", Menlo, monospace;
   --digital-glow:
     0 0 4px rgba(255, 255, 255, .9),
     0 0 14px rgba(63, 214, 255, .75),
@@ -2104,9 +2105,9 @@ main {
 }
 .cw-campaign__counter [data-stat="voices-total"] {
   font-family: var(--font-digital);
-  font-weight: 800;
-  letter-spacing: .06em;
-  padding-left: .06em;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding-left: .08em;
   color: #fff;
   text-shadow: var(--digital-glow);
 }
@@ -2124,4 +2125,23 @@ main {
 }
 @media (min-width: 900px) {
   .cw-campaign .cw-campaign__intro--voices .cw-campaign__counter { margin-top: -36px; }
+}
+
+/* Corner nebula on the Voices Heard campaign card: it bleeds off the bottom and
+   sides, and the extra bottom padding keeps the buttons above it. */
+.cw-campaign .cw-campaign__intro--voices {
+  background: #000 url('../assets/images/voices-heard-nebula-bottom.jpg') center bottom -80px / 128% auto no-repeat;
+  padding-bottom: 108px;
+}
+@media (min-width: 900px) {
+  .cw-campaign .cw-campaign__intro--voices {
+    background-size: min(128%, 1300px) auto; background-position: center bottom -90px; padding-bottom: 96px;
+  }
+}
+/* Seven-segment digits are taller than their line box, so give them room. */
+.cw-campaign__counter [data-stat="voices-total"] {
+  font-size: clamp(2.6rem, 9.5vw, 3.8rem);
+  line-height: 1.25;
+  letter-spacing: .06em;
+  padding-left: .06em;
 }
