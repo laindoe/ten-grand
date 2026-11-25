@@ -12,7 +12,8 @@
   var elElapsed = $("elapsed"), elTotal = $("total"), elStatus = $("status");
   var elNow = $("now"), elPlaylists = $("playlists"), elWrittenView = $("written-view"), elGrid = $("grid"), elQueue = $("queue");
   var elWritten = $("written"), elChips = $("chips"), elWrittenCount = $("written-count");
-  var btnPlay = $("play"), btnShuffle = $("shuffle"), btnAdd = $("add");
+  var btnPlay = $("play"), btnShuffle = $("shuffle");
+  var addButtons = Array.from(root.querySelectorAll("[data-vp-add]"));
   var mainTabs = Array.from(root.querySelectorAll("[data-vp-main]"));
   var roleButtons = Array.from(root.querySelectorAll("[data-vp-role-filter]"));
   var scroller = root.querySelector(".vp__scroll");
@@ -476,7 +477,7 @@
   $("close").addEventListener("click", function () { close(); });
   // ADD YOURS opens the submission modal, which sits beneath this dialog, so
   // step the player out of the way (amass-modal.js handles the click itself).
-  btnAdd.addEventListener("click", function () { close(true); });
+  addButtons.forEach(function (btn) { btn.addEventListener("click", function () { close(true); }); });
   root.addEventListener("click", function (event) { if (event.target === root) close(); });
   document.addEventListener("keydown", function (event) {
     if (!root.classList.contains("is-open")) return;
