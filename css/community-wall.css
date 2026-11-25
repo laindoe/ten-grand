@@ -2086,18 +2086,17 @@ main {
   background-size: min(100%, 680px) auto;
 }
 
-/* Digital readout for the Voices Heard tally: self-hosted DSEG7 Modern Bold, a
-   seven-segment face (SIL OFL, see assets/fonts/DSEG-OFL.txt), with a soft
-   cyan/magenta glow. */
+/* Technical readout for the Voices Heard tally: self-hosted Oxanium Bold (SIL
+   OFL, see assets/fonts/Oxanium-OFL.txt) with a soft cyan/magenta glow. */
 @font-face {
-  font-family: "DSEG7";
-  src: url('../assets/fonts/DSEG7Modern-Bold.woff2') format('woff2');
+  font-family: "Oxanium";
+  src: url('../assets/fonts/Oxanium-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 :root {
-  --font-digital: "DSEG7", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-digital: "Oxanium", "Share Tech Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --digital-glow:
     0 0 4px rgba(255, 255, 255, .9),
     0 0 14px rgba(63, 214, 255, .75),
@@ -2138,10 +2137,19 @@ main {
     background-size: min(128%, 1300px) auto; background-position: center bottom -90px; padding-bottom: 96px;
   }
 }
-/* Seven-segment digits are taller than their line box, so give them room. */
 .cw-campaign__counter [data-stat="voices-total"] {
-  font-size: clamp(2.6rem, 9.5vw, 3.8rem);
-  line-height: 1.25;
+  font-size: clamp(3.4rem, 15vw, 4.8rem);
+  line-height: 1.1;
   letter-spacing: .06em;
   padding-left: .06em;
+}
+
+/* Larger campaign logo: it runs a little past the card's padding, and the
+   card's border crops the soft edge. */
+.cw-campaign .cw-campaign__intro--voices .cw-campaign__title { max-width: none; }
+.cw-campaign .cw-campaign__intro--voices .cw-campaign__title-bars {
+  width: calc(100% + 64px); max-width: 760px; margin: 0; position: relative; left: 50%; transform: translateX(-50%);
+}
+@media (max-width: 899.98px) {
+  .cw-campaign .cw-campaign__intro--voices .cw-campaign__counter { margin-top: -16%; }
 }
