@@ -439,6 +439,7 @@
     root.hidden = false;
     root.setAttribute("aria-hidden", "false");
     root.classList.add("is-open");
+    document.documentElement.classList.add("vp-black-chrome");
     document.body.classList.add("modal-open");
     panel.focus({ preventScroll: true });
     if (rows) { showView("playlists"); return; }
@@ -458,6 +459,7 @@
   function close(skipFocus) {
     audio.pause();
     root.classList.remove("is-open");
+    document.documentElement.classList.remove("vp-black-chrome");
     root.hidden = true;
     root.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");

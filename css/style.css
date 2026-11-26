@@ -5696,3 +5696,12 @@ html.amass-black-chrome #amass-modal.is-open,
 html.amass-black-chrome #amass-modal .modal__backdrop,
 html.amass-black-chrome #amass-modal .modal__panel { transition: none; }
 html.amass-black-chrome #amass-modal .modal__panel { transform: none; }
+
+/* While a full-black overlay is open, take the site header out of Safari's sight.
+   Its gray page-colored band (.nav::before, painted above the header) is what the
+   browser reads for its status-bar tint, and it only re-reads on the next change.
+   The overlay fully covers the header, so nothing visibly changes. */
+html.amass-black-chrome .nav,
+html.vp-black-chrome .nav { visibility: hidden; }
+html.vp-black-chrome,
+html.vp-black-chrome body { background: #000; }
