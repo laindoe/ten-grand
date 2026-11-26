@@ -5679,3 +5679,11 @@ html.amass-black-chrome,
 html.amass-black-chrome body,
 html.amass-black-chrome #amass-modal,
 html.amass-black-chrome #amass-modal .modal__backdrop { background: #000; }
+
+/* Voices Heard: while the keyboard is open the fields area gains scroll room
+   equal to the keyboard, so a field near the bottom can be lifted above it. */
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__content {
+    padding-bottom: calc(6px + var(--amass-keyboard-height, 0px));
+  }
+}

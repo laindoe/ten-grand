@@ -150,15 +150,22 @@
 
 .vp__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .vp__tile {
-  position: relative; aspect-ratio: 1; padding: 14px; text-align: left; cursor: pointer;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  border: 1px solid var(--color-card-border); color: #08090a; font: inherit;
-  background: linear-gradient(135deg, var(--tile-a), var(--tile-b));
+  position: relative; aspect-ratio: 1; padding: 0; text-align: left; cursor: pointer; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end; isolation: isolate;
+  border: 1px solid var(--color-card-border); color: #fff; font: inherit; background: #08090a;
 }
+.vp__cover { position: absolute; inset: 0; z-index: -2; display: grid; grid-template: 1fr 1fr / 1fr 1fr; }
+.vp__cover.is-single { grid-template: 1fr / 1fr; }
+.vp__cover.is-single .vp__cover-cell:not(:first-child) { display: none; }
+.vp__cover-cell { background-size: cover; background-position: center; background-repeat: no-repeat; }
+/* Darkens the lower part of the cover so the album name stays readable. */
+.vp__tile::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to bottom, transparent 38%, rgba(0,0,0,.88) 100%); }
 .vp__tile.is-active { outline: 3px solid var(--color-text); outline-offset: 2px; }
-.vp__tile-name { font-size: 1.15rem; font-weight: 900; line-height: 1.1; letter-spacing: .02em; text-transform: uppercase; }
-.vp__tile-count { margin-top: 4px; font-size: .8rem; font-weight: 700; opacity: .75; }
-.vp__tile-icon { position: absolute; top: 12px; right: 12px; width: 28px; height: 28px; fill: none; stroke: #08090a; stroke-width: 2; }
+.vp__tile-name, .vp__tile-count { position: relative; padding-inline: 12px; }
+.vp__tile-name { display: block; font-size: 1.05rem; font-weight: 900; line-height: 1.1; letter-spacing: .02em; text-transform: uppercase; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+.vp__tile-name::before { content: ""; display: block; width: 28px; height: 3px; margin-bottom: 7px; background: var(--tile-a); }
+.vp__tile-count { padding-top: 4px; padding-bottom: 12px; font-size: .75rem; font-weight: 700; color: rgba(255,255,255,.82); }
+.vp__tile-icon { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; padding: 5px; box-sizing: border-box; border-radius: 50%; background: rgba(8,9,10,.62); fill: none; stroke: #fff; stroke-width: 2; }
 
 @media (min-width: 900px) {
   .vp { align-items: center; padding: 24px; }

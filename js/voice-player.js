@@ -129,9 +129,35 @@
     $("total-count").textContent = String(all.length).padStart(4, "0");
   }
 
+  // 2x2 cover built from the photos of the newest four voices in the album;
+  // voices without a photo show their role color, and empty cells (albums with
+  // fewer than four voices) fall back to the album's own gradient.
+  function buildCover(p, list) {
+    var cover = document.createElement("span");
+    cover.className = "vp__cover";
+    cover.setAttribute("aria-hidden", "true");
+    var latest = list.slice(0, 4);
+    for (var i = 0; i < 4; i++) {
+      var cell = document.createElement("span");
+      cell.className = "vp__cover-cell";
+      var row = latest[i];
+      if (row) {
+        cell.style.backgroundColor = ROLES[row.role].a;
+        var photo = mediaUrl(row, "photo");
+        if (photo) cell.style.backgroundImage = 'url("' + photo.replace(/"/g, "%22") + '")';
+      } else {
+        cell.style.background = "linear-gradient(135deg, " + p.a + ", " + p.b + ")";
+      }
+      cover.appendChild(cell);
+    }
+    if (latest.length === 1) cover.classList.add("is-single");
+    return cover;
+  }
+
   function renderPlaylists() {
     elGrid.replaceChildren.apply(elGrid, PLAYLISTS.map(function (p) {
-      var count = rows.filter(p.match).length;
+      var list = rows.filter(p.match);
+      var count = list.length;
       if (!count) return null;
       var tile = document.createElement("button");
       tile.type = "button";
@@ -141,10 +167,10 @@
       var name = document.createElement("span"); name.className = "vp__tile-name"; name.textContent = p.name;
       var n = document.createElement("span"); n.className = "vp__tile-count";
       var writtenCount = written.filter(p.match).length;
-      n.textContent = count + (count === 1 ? " voice" : " voices") + (writtenCount ? " · " + writtenCount + " written" : "");
-      tile.append(name, n);
+      n.textContent = count + (count === 1 ? " voice" : " voices") + (writtenCount ? " \u00b7 " + writtenCount + " written" : "");
+      tile.append(buildCover(p, list), name, n);
       if (p.icon) {
-        tile.insertAdjacentHTML("afterbegin", '<svg class="vp__tile-icon" viewBox="0 0 24 24" aria-hidden="true">' + p.icon + "</svg>");
+        tile.insertAdjacentHTML("beforeend", '<svg class="vp__tile-icon" viewBox="0 0 24 24" aria-hidden="true">' + p.icon + "</svg>");
       }
       tile.addEventListener("click", function () { startPlaylist(p); showView("now"); });
       return tile;

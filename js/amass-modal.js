@@ -42,7 +42,10 @@
       };
       rect.height = rect.bottom - rect.top;
       const top = bounds.top + 8;
-      const bottom = bounds.bottom - 8;
+      let bottom = bounds.bottom - 8;
+      // Frozen layout: the keyboard overlays the panel, so only scroll when
+      // the field would sit underneath it.
+      if (isFrozenLayout() && viewport) bottom = Math.min(bottom, viewport.offsetTop + viewport.height - 8);
       if (counter && rect.bottom > bottom) {
         content.scrollTop += rect.bottom - bottom;
       } else if (rect.height > bottom - top) {
@@ -51,6 +54,14 @@
         if (Math.abs(rect.top - top) > 1) content.scrollTop += rect.top - top;
       } else if (rect.bottom > bottom) content.scrollTop += rect.bottom - bottom;
       else if (rect.top < top) content.scrollTop -= top - rect.top;
+    }
+
+    // The Voices Heard flow keeps its layout still while you type: the keyboard
+    // simply covers the bottom of the screen instead of the panel resizing,
+    // re-centering and squeezing the fields.
+    function isFrozenLayout() {
+      const panel = modal.querySelector('.amass-flow__panel');
+      return Boolean(panel && panel.dataset.campaign === 'voices-heard');
     }
 
     // iOS keyboards shrink/pan the visual viewport without necessarily
@@ -66,10 +77,20 @@
       restingViewportHeight = Math.max(restingViewportHeight, viewport.height);
       const fieldFocused = modal.contains(document.activeElement) &&
         document.activeElement.matches('.amass-flow__field');
-      modal.classList.toggle('is-keyboard-active', fieldFocused ||
-        restingViewportHeight - viewport.height > 150);
-      modal.style.setProperty('--amass-viewport-height', `${viewport.height}px`);
-      modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
+      if (isFrozenLayout()) {
+        const covered = Math.max(0, restingViewportHeight - viewport.height - viewport.offsetTop);
+        modal.classList.remove('is-keyboard-active');
+        modal.style.setProperty('--amass-viewport-height', `${restingViewportHeight}px`);
+        // Follow any native pan so the panel stays put on screen.
+        modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
+        modal.style.setProperty('--amass-keyboard-height', `${covered > 150 ? covered : 0}px`);
+      } else {
+        modal.classList.toggle('is-keyboard-active', fieldFocused ||
+          restingViewportHeight - viewport.height > 150);
+        modal.style.setProperty('--amass-viewport-height', `${viewport.height}px`);
+        modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
+        modal.style.removeProperty('--amass-keyboard-height');
+      }
       // Reveal on focus or when the keyboard reduces available space.
       // Keyboard dismissal expands the form; preserve its scroll position
       // even if Safari still reports the input as the active element.
@@ -114,6 +135,7 @@
       modal.classList.remove('is-keyboard-active');
       modal.style.removeProperty('--amass-viewport-height');
       modal.style.removeProperty('--amass-viewport-top');
+      modal.style.removeProperty('--amass-keyboard-height');
     }
 
     // Same body-lock technique used elsewhere on the site: position:fixed
@@ -1162,6 +1184,17 @@
     modal.addEventListener('modal:open', (event) => {
       directCampaignEntry = event.detail.campaign === 'voices-heard';
       showStep(directCampaignEntry ? 9 : 1);
+    });
+
+    // With the keyboard covering BACK / NEXT, Return on a one-line field moves on.
+    form.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' || event.isComposing) return;
+      const field = event.target;
+      if (!field.matches || !field.matches('input.amass-flow__field') || currentStep === 7) return;
+      const next = field.closest('.amass-flow__step')?.querySelector('[data-amass-next]');
+      if (!next) return;
+      event.preventDefault();
+      if (!next.disabled) next.click();
     });
 
     form.addEventListener('submit', async (event) => {
