@@ -9,6 +9,8 @@
 }
 .vp__panel {
   --vp-accent: var(--cw-color-accent, #fb2f7b);
+  /* The Voices Heard logo's spectrum, shared by the tab underline and plus button. */
+  --vp-gradient: linear-gradient(90deg, #fb2f7b 0%, #ff9a3c 20%, #ffdc00 38%, #a8e000 56%, #00cde8 78%, #3d5bff 100%);
   position: relative;
   width: min(100%, 560px);
   background: #08090a;
@@ -39,27 +41,23 @@
 .vp__total { margin: 0; display: flex; align-items: baseline; gap: 12px; line-height: 1; }
 .vp__plus {
   position: relative; flex: none; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; padding: 0;
-  border: 0; border-radius: 50%; cursor: pointer; color: #08090a;
-  background: var(--plus-color);
-  box-shadow: 0 0 10px var(--plus-color), 0 0 22px var(--plus-color);
-  /* One solid color at a time, fading from one to the next. */
-  animation: vp-plus-cycle 12s linear infinite;
+  border: 0; border-radius: 50%; cursor: pointer; color: #08090a; background: #08090a; isolation: isolate;
+  box-shadow: 0 0 10px rgba(251, 47, 123, .55), 0 0 22px rgba(0, 205, 232, .4);
   transition: transform .18s ease;
+}
+/* The full Voices Heard spectrum (same colors as the tab underline), slowly
+   turning inside the circle so every color stays visible. */
+.vp__plus::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 50%;
+  background: linear-gradient(90deg, #fb2f7b 0%, #ff9a3c 20%, #ffdc00 38%, #a8e000 56%, #00cde8 78%, #3d5bff 100%);
+  animation: vp-plus-spin 9s linear infinite;
 }
 /* Keeps a 44px tap target around the smaller visible circle. */
 .vp__plus::before { content: ""; position: absolute; inset: -4px; border-radius: 50%; }
-.vp__plus svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
-@keyframes vp-plus-cycle {
-  0%, 100% { background-color: #fb2f7b; box-shadow: 0 0 10px #fb2f7b, 0 0 22px #fb2f7b99; }  /* pink */
-  17%      { background-color: #ff3220; box-shadow: 0 0 10px #ff3220, 0 0 22px #ff322099; }  /* red */
-  33%      { background-color: #ffdc00; box-shadow: 0 0 10px #ffdc00, 0 0 22px #ffdc0099; }  /* yellow */
-  50%      { background-color: #a8e000; box-shadow: 0 0 10px #a8e000, 0 0 22px #a8e00099; }  /* green */
-  67%      { background-color: #00cde8; box-shadow: 0 0 10px #00cde8, 0 0 22px #00cde899; }  /* blue */
-  83%      { background-color: #1f4dff; box-shadow: 0 0 10px #1f4dff, 0 0 22px #1f4dff99; }  /* cobalt */
-}
-}
+.vp__plus svg { position: relative; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
+@keyframes vp-plus-spin { to { transform: rotate(360deg); } }
 @media (hover: hover) and (pointer: fine) { .vp__plus:hover { transform: scale(1.1); } }
-@media (prefers-reduced-motion: reduce) { .vp__plus { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .vp__plus::after { animation: none; } }
 .vp__plus:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
 .vp__total-num { font-family: var(--font-digital, monospace); font-size: 2.2rem; font-weight: 700; letter-spacing: .05em; font-variant-numeric: tabular-nums; color: #fff; text-shadow: var(--digital-glow, none); }
 .vp__total-label { font-size: .72rem; font-weight: 800; letter-spacing: .12em; color: var(--color-text-muted); }
@@ -119,7 +117,7 @@
   flex: 1; min-height: 44px; background: transparent; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px;
   color: var(--color-text-muted); font: inherit; font-size: .8rem; font-weight: 800; letter-spacing: .12em; cursor: pointer;
 }
-.vp__tab.is-active { color: var(--color-text); border-bottom-color: var(--vp-accent); }
+.vp__tab.is-active { color: var(--color-text); border-bottom-color: transparent; border-image: var(--vp-gradient) 1; }
 .vp__tab:focus-visible { outline: 2px solid var(--color-text); outline-offset: -2px; }
 .vp__tab-count { font-weight: 600; opacity: .7; }
 .vp__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
@@ -163,7 +161,6 @@
 .vp__tile.is-active { outline: 3px solid var(--color-text); outline-offset: 2px; }
 .vp__tile-name, .vp__tile-count { position: relative; padding-inline: 12px; }
 .vp__tile-name { display: block; font-size: 1.05rem; font-weight: 900; line-height: 1.1; letter-spacing: .02em; text-transform: uppercase; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
-.vp__tile-name::before { content: ""; display: block; width: 28px; height: 3px; margin-bottom: 7px; background: var(--tile-a); }
 .vp__tile-count { padding-top: 4px; padding-bottom: 12px; font-size: .75rem; font-weight: 700; color: rgba(255,255,255,.82); }
 .vp__tile-icon { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; padding: 5px; box-sizing: border-box; border-radius: 50%; background: rgba(8,9,10,.62); fill: none; stroke: #fff; stroke-width: 2; }
 
