@@ -1,6 +1,19 @@
 /* Voices Heard listening player: full-screen dialog opened from the
    Community Wall's LISTEN button. Square corners and white outlines to
    match the rest of the wall. */
+/* One shared color clock: the tab underline and the plus button both read
+   --vp-cycle, so they always show the same color at the same moment. */
+@property --vp-cycle { syntax: "<color>"; inherits: true; initial-value: #fb2f7b; }
+.vp { animation: vp-cycle 12s linear infinite; }
+@keyframes vp-cycle {
+  0%, 100% { --vp-cycle: #fb2f7b; }  /* pink */
+  17%      { --vp-cycle: #ff9a3c; }  /* orange */
+  33%      { --vp-cycle: #ffdc00; }  /* yellow */
+  50%      { --vp-cycle: #a8e000; }  /* green */
+  67%      { --vp-cycle: #00cde8; }  /* cyan */
+  83%      { --vp-cycle: #3d5bff; }  /* blue */
+}
+@media (prefers-reduced-motion: reduce) { .vp { animation: none; } }
 .vp[hidden] { display: none; }
 .vp {
   position: fixed; inset: 0; z-index: 1000;
@@ -39,23 +52,15 @@
 .vp__total { margin: 0; display: flex; align-items: baseline; gap: 12px; line-height: 1; }
 .vp__plus {
   position: relative; flex: none; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; padding: 0;
-  border: 0; border-radius: 50%; cursor: pointer; color: #08090a; background: #08090a; isolation: isolate;
-  box-shadow: 0 0 10px rgba(251, 47, 123, .55), 0 0 22px rgba(0, 205, 232, .4);
+  border: 0; border-radius: 50%; cursor: pointer; color: #08090a;
+  background: var(--vp-cycle, #fb2f7b);
+  box-shadow: 0 0 10px var(--vp-cycle, #fb2f7b), 0 0 22px color-mix(in srgb, var(--vp-cycle, #fb2f7b) 60%, transparent);
   transition: transform .18s ease;
-}
-/* The full Voices Heard spectrum (same colors as the tab underline), slowly
-   turning inside the circle so every color stays visible. */
-.vp__plus::after {
-  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 50%;
-  background: linear-gradient(90deg, #fb2f7b 0%, #ff9a3c 20%, #ffdc00 38%, #a8e000 56%, #00cde8 78%, #3d5bff 100%);
-  animation: vp-plus-spin 9s linear infinite;
 }
 /* Keeps a 44px tap target around the smaller visible circle. */
 .vp__plus::before { content: ""; position: absolute; inset: -4px; border-radius: 50%; }
-.vp__plus svg { position: relative; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
-@keyframes vp-plus-spin { to { transform: rotate(360deg); } }
+.vp__plus svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
 @media (hover: hover) and (pointer: fine) { .vp__plus:hover { transform: scale(1.1); } }
-@media (prefers-reduced-motion: reduce) { .vp__plus::after { animation: none; } }
 .vp__plus:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
 .vp__total-num { font-family: var(--font-digital, monospace); font-size: 2.2rem; font-weight: 700; letter-spacing: .05em; font-variant-numeric: tabular-nums; color: #fff; text-shadow: var(--digital-glow, none); }
 .vp__total-label { font-size: .72rem; font-weight: 800; letter-spacing: .12em; color: var(--color-text-muted); }
@@ -115,17 +120,7 @@
   flex: 1; min-height: 44px; background: transparent; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px;
   color: var(--color-text-muted); font: inherit; font-size: .8rem; font-weight: 800; letter-spacing: .12em; cursor: pointer;
 }
-.vp__tab.is-active { color: var(--color-text); border-bottom-color: #fb2f7b; animation: vp-tab-cycle 12s linear infinite; }
-/* One solid color at a time, fading through the Voices Heard spectrum. */
-@keyframes vp-tab-cycle {
-  0%, 100% { border-bottom-color: #fb2f7b; }  /* pink */
-  17%      { border-bottom-color: #ff9a3c; }  /* orange */
-  33%      { border-bottom-color: #ffdc00; }  /* yellow */
-  50%      { border-bottom-color: #a8e000; }  /* green */
-  67%      { border-bottom-color: #00cde8; }  /* cyan */
-  83%      { border-bottom-color: #3d5bff; }  /* blue */
-}
-@media (prefers-reduced-motion: reduce) { .vp__tab.is-active { animation: none; } }
+.vp__tab.is-active { color: var(--color-text); border-bottom-color: var(--vp-cycle, #fb2f7b); }
 .vp__tab:focus-visible { outline: 2px solid var(--color-text); outline-offset: -2px; }
 .vp__tab-count { font-weight: 600; opacity: .7; }
 .vp__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
