@@ -170,7 +170,6 @@
 .vp__tile-name, .vp__tile-count { position: relative; padding-inline: 12px; }
 .vp__tile-name { display: block; font-size: 1.05rem; font-weight: 900; line-height: 1.1; letter-spacing: .02em; text-transform: uppercase; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
 .vp__tile-count { padding-top: 4px; padding-bottom: 12px; font-size: .75rem; font-weight: 700; color: rgba(255,255,255,.82); }
-.vp__tile-icon { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; padding: 5px; box-sizing: border-box; border-radius: 50%; background: rgba(8,9,10,.62); fill: none; stroke: #fff; stroke-width: 2; }
 
 @media (min-width: 900px) {
   .vp { align-items: center; padding: 24px; }
