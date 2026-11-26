@@ -9,8 +9,6 @@
 }
 .vp__panel {
   --vp-accent: var(--cw-color-accent, #fb2f7b);
-  /* The Voices Heard logo's spectrum, shared by the tab underline and plus button. */
-  --vp-gradient: linear-gradient(90deg, #fb2f7b 0%, #ff9a3c 20%, #ffdc00 38%, #a8e000 56%, #00cde8 78%, #3d5bff 100%);
   position: relative;
   width: min(100%, 560px);
   background: #08090a;
@@ -117,7 +115,17 @@
   flex: 1; min-height: 44px; background: transparent; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px;
   color: var(--color-text-muted); font: inherit; font-size: .8rem; font-weight: 800; letter-spacing: .12em; cursor: pointer;
 }
-.vp__tab.is-active { color: var(--color-text); border-bottom-color: transparent; border-image: var(--vp-gradient) 1; }
+.vp__tab.is-active { color: var(--color-text); border-bottom-color: #fb2f7b; animation: vp-tab-cycle 12s linear infinite; }
+/* One solid color at a time, fading through the Voices Heard spectrum. */
+@keyframes vp-tab-cycle {
+  0%, 100% { border-bottom-color: #fb2f7b; }  /* pink */
+  17%      { border-bottom-color: #ff9a3c; }  /* orange */
+  33%      { border-bottom-color: #ffdc00; }  /* yellow */
+  50%      { border-bottom-color: #a8e000; }  /* green */
+  67%      { border-bottom-color: #00cde8; }  /* cyan */
+  83%      { border-bottom-color: #3d5bff; }  /* blue */
+}
+@media (prefers-reduced-motion: reduce) { .vp__tab.is-active { animation: none; } }
 .vp__tab:focus-visible { outline: 2px solid var(--color-text); outline-offset: -2px; }
 .vp__tab-count { font-weight: 600; opacity: .7; }
 .vp__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
