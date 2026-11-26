@@ -45,7 +45,10 @@
       let bottom = bounds.bottom - 8;
       // Frozen layout: the keyboard overlays the panel, so only scroll when
       // the field would sit underneath it.
-      if (isFrozenLayout() && viewport) bottom = Math.min(bottom, viewport.offsetTop + viewport.height - 8);
+      if (isFrozenLayout() && viewport) {
+        const accessory = keyboardCoverage() ? KEYBOARD_ACCESSORY_ALLOWANCE : 0;
+        bottom = Math.min(bottom, viewport.offsetTop + viewport.height - 8 - accessory);
+      }
       if (counter && rect.bottom > bottom) {
         content.scrollTop += rect.bottom - bottom;
       } else if (rect.height > bottom - top) {
@@ -59,6 +62,16 @@
     // The Voices Heard flow keeps its layout still while you type: the keyboard
     // simply covers the bottom of the screen instead of the panel resizing,
     // re-centering and squeezing the fields.
+    // iOS floats the field-navigation bar (arrows / Done) and Safari's address
+    // pill just above the keys, and neither is counted in visualViewport.height.
+    // Keep fields clear of that band as well.
+    const KEYBOARD_ACCESSORY_ALLOWANCE = 108;
+    function keyboardCoverage() {
+      if (!viewport) return 0;
+      const covered = Math.max(0, restingViewportHeight - viewport.height - viewport.offsetTop);
+      return covered > 150 ? covered + KEYBOARD_ACCESSORY_ALLOWANCE : 0;
+    }
+
     function isFrozenLayout() {
       const panel = modal.querySelector('.amass-flow__panel');
       return Boolean(panel && panel.dataset.campaign === 'voices-heard');
@@ -78,12 +91,11 @@
       const fieldFocused = modal.contains(document.activeElement) &&
         document.activeElement.matches('.amass-flow__field');
       if (isFrozenLayout()) {
-        const covered = Math.max(0, restingViewportHeight - viewport.height - viewport.offsetTop);
         modal.classList.remove('is-keyboard-active');
         modal.style.setProperty('--amass-viewport-height', `${restingViewportHeight}px`);
         // Follow any native pan so the panel stays put on screen.
         modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
-        modal.style.setProperty('--amass-keyboard-height', `${covered > 150 ? covered : 0}px`);
+        modal.style.setProperty('--amass-keyboard-height', `${keyboardCoverage()}px`);
       } else {
         modal.classList.toggle('is-keyboard-active', fieldFocused ||
           restingViewportHeight - viewport.height > 150);
