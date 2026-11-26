@@ -5687,3 +5687,12 @@ html.amass-black-chrome #amass-modal .modal__backdrop { background: #000; }
     padding-bottom: calc(6px + var(--amass-keyboard-height, 0px));
   }
 }
+
+/* Black-chrome mode (Voices Heard): appear instantly and fully opaque. A fade-in
+   leaves the gray page and header showing through for ~0.2s, which is when
+   Safari picks the colors for its status bar and toolbar. */
+html.amass-black-chrome #amass-modal,
+html.amass-black-chrome #amass-modal.is-open,
+html.amass-black-chrome #amass-modal .modal__backdrop,
+html.amass-black-chrome #amass-modal .modal__panel { transition: none; }
+html.amass-black-chrome #amass-modal .modal__panel { transform: none; }
