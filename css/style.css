@@ -5705,3 +5705,9 @@ html.amass-black-chrome .nav,
 html.vp-black-chrome .nav { visibility: hidden; }
 html.vp-black-chrome,
 html.vp-black-chrome body { background: #000; }
+
+/* Invisible 2px size nudge of the full-screen backdrop (see nudgeEdgeSampling in
+   js/amass-modal.js); the backdrop already extends far beyond the screen. */
+#amass-modal .modal__backdrop {
+  inset: calc(-100vh - var(--amass-edge-nudge, 0px)) calc(0px - var(--amass-edge-nudge, 0px));
+}

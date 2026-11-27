@@ -42,13 +42,7 @@
       };
       rect.height = rect.bottom - rect.top;
       const top = bounds.top + 8;
-      let bottom = bounds.bottom - 8;
-      // Frozen layout: the keyboard overlays the panel, so only scroll when
-      // the field would sit underneath it.
-      if (isFrozenLayout() && viewport) {
-        const accessory = keyboardCoverage() ? KEYBOARD_ACCESSORY_ALLOWANCE : 0;
-        bottom = Math.min(bottom, viewport.offsetTop + viewport.height - 8 - accessory);
-      }
+      const bottom = bounds.bottom - 8;
       if (counter && rect.bottom > bottom) {
         content.scrollTop += rect.bottom - bottom;
       } else if (rect.height > bottom - top) {
@@ -66,10 +60,48 @@
     // pill just above the keys, and neither is counted in visualViewport.height.
     // Keep fields clear of that band as well.
     const KEYBOARD_ACCESSORY_ALLOWANCE = 108;
-    function keyboardCoverage() {
+    let lastKeyboardHeight = 0;
+    function rawKeyboardHeight() {
+      // Deliberately ignores viewport.offsetTop: iOS reports ~60px there while the
+      // keyboard animates away, and following it made the whole modal slide down.
       if (!viewport) return 0;
-      const covered = Math.max(0, restingViewportHeight - viewport.height - viewport.offsetTop);
-      return covered > 150 ? covered + KEYBOARD_ACCESSORY_ALLOWANCE : 0;
+      const covered = Math.max(0, restingViewportHeight - viewport.height);
+      return covered > 150 ? covered : 0;
+    }
+
+    // Lifts a focused field above the keyboard, and only when it would otherwise be
+    // covered. A field that already fits never causes any scroll or extra scroll room,
+    // so short forms (like the name step) stay perfectly still.
+    function revealFocusedFieldFrozen() {
+      const setPad = (px) => modal.style.setProperty('--amass-keyboard-height', `${px}px`);
+      const field = document.activeElement;
+      if (!viewport || !field || !modal.contains(field) || !field.matches('.amass-flow__field')) { setPad(0); return; }
+      const content = field.closest('.amass-flow__content');
+      if (!content || getComputedStyle(content).overflowY !== 'auto') { setPad(0); return; }
+      const keyboard = rawKeyboardHeight();
+      if (keyboard) lastKeyboardHeight = keyboard;
+      // Before the keyboard has appeared, plan for the last one we saw (or a typical one).
+      const expected = keyboard || lastKeyboardHeight || 336;
+      const visibleBottom = restingViewportHeight - expected - KEYBOARD_ACCESSORY_ALLOWANCE - 8;
+      // Measure everything first: changing the scroll room changes what we measure.
+      const basePad = parseFloat(modal.style.getPropertyValue('--amass-keyboard-height')) || 0;
+      const baseMax = Math.max(0, content.scrollHeight - basePad - content.clientHeight);
+      const scrollTop = content.scrollTop;
+      const counter = modal.querySelector(`[data-counter-for="${field.id}"]`);
+      const fieldBox = field.getBoundingClientRect();
+      const counterBox = counter && counter.closest('.amass-flow__counter').getBoundingClientRect();
+      const bottom = counterBox ? Math.max(fieldBox.bottom, counterBox.bottom) : fieldBox.bottom;
+      const need = Math.ceil(bottom - visibleBottom);
+      // Already clear of the keyboard: nothing moves. Keep any scroll room we are
+      // still relying on so a lifted field is not pulled back down.
+      if (need <= 0) { if (scrollTop <= baseMax) setPad(0); return; }
+      // Lift by just what is needed, never pushing the top of a tall field out of view.
+      const roomAbove = fieldBox.top - (content.getBoundingClientRect().top + 8);
+      const lift = Math.min(need, Math.max(0, roomAbove));
+      if (lift <= 0) return;
+      const target = scrollTop + lift;
+      setPad(Math.max(0, target - baseMax) + 4);
+      content.scrollTop = target;
     }
 
     function isFrozenLayout() {
@@ -93,9 +125,12 @@
       if (isFrozenLayout()) {
         modal.classList.remove('is-keyboard-active');
         modal.style.setProperty('--amass-viewport-height', `${restingViewportHeight}px`);
-        // Follow any native pan so the panel stays put on screen.
-        modal.style.setProperty('--amass-viewport-top', `${viewport.offsetTop}px`);
-        modal.style.setProperty('--amass-keyboard-height', `${keyboardCoverage()}px`);
+        // Pinned to the top of the screen. (Following viewport.offsetTop made the
+        // modal jump down ~60px every time the keyboard closed.)
+        modal.style.setProperty('--amass-viewport-top', '0px');
+        revealFocusedFieldFrozen();
+        revealOnFocus = false;
+        return;
       } else {
         modal.classList.toggle('is-keyboard-active', fieldFocused ||
           restingViewportHeight - viewport.height > 150);
@@ -230,8 +265,29 @@
   // modal and the browser bars (status bar, Safari toolbar) go black too, so
   // no gray strip shows at the top or bottom. Everything is restored on close.
   let savedThemeColor;
+  // Safari picks the colors of its status bar and toolbar from the fixed elements
+  // that touch the screen edges, and only looks again when one of them changes.
+  // Right after the black overlay appears, make a few tiny, invisible size changes
+  // to its full-screen backdrop so Safari re-reads black instead of the gray page.
+  let edgeNudgeTimers = [];
+  function nudgeEdgeSampling(on) {
+    edgeNudgeTimers.forEach(clearTimeout);
+    edgeNudgeTimers = [];
+    const modal = document.getElementById('amass-modal');
+    if (!modal) return;
+    if (!on) { modal.style.removeProperty('--amass-edge-nudge'); return; }
+    [0, 120, 400].forEach((delay) => {
+      edgeNudgeTimers.push(setTimeout(() => {
+        if (!document.documentElement.classList.contains('amass-black-chrome')) return;
+        modal.style.setProperty('--amass-edge-nudge', '2px');
+        requestAnimationFrame(() => requestAnimationFrame(() => modal.style.removeProperty('--amass-edge-nudge')));
+      }, delay));
+    });
+  }
+
   function setBlackChrome(on) {
     document.documentElement.classList.toggle('amass-black-chrome', on);
+    nudgeEdgeSampling(on);
     let meta = document.querySelector('meta[name="theme-color"]');
     if (on) {
       if (savedThemeColor === undefined) savedThemeColor = meta ? meta.getAttribute('content') : null;
