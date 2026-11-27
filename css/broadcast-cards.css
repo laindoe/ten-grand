@@ -8,7 +8,8 @@
     linear-gradient(var(--color-card-border), var(--color-card-border)) top right / 100% 1px no-repeat,
     linear-gradient(var(--color-card-border), var(--color-card-border)) bottom right / 100% 1px no-repeat,
     linear-gradient(var(--color-card-border), var(--color-card-border)) top right / 1px 100% no-repeat;
-  padding: 19px 19px 19px 36px;
+  /* Same 36px inset on both sides: left clears the color strip, right mirrors it. */
+  padding: 19px 36px;
   color: var(--color-text);
   overflow-wrap: anywhere;
 }
@@ -210,7 +211,7 @@
 .broadcast-modal__back:hover { color: var(--color-vandalism); }
 .broadcast-modal__body,
 .broadcast-modal__attachments {
-  padding-left: 36px;
+  padding-inline: 36px;
   margin-top: 20px;
   line-height: 1.7;
   overflow-wrap: anywhere;
