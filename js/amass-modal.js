@@ -60,7 +60,6 @@
     // pill just above the keys, and neither is counted in visualViewport.height.
     // Keep fields clear of that band as well.
     const KEYBOARD_ACCESSORY_ALLOWANCE = 108;
-    let lastKeyboardHeight = 0;
     function rawKeyboardHeight() {
       // Deliberately ignores viewport.offsetTop: iOS reports ~60px there while the
       // keyboard animates away, and following it made the whole modal slide down.
@@ -69,20 +68,22 @@
       return covered > 150 ? covered : 0;
     }
 
-    // Lifts a focused field above the keyboard, and only when it would otherwise be
-    // covered. A field that already fits never causes any scroll or extra scroll room,
-    // so short forms (like the name step) stay perfectly still.
+    // Brings a focused field into the part of the screen the user can actually see.
+    // The visible part comes straight from the visual viewport (its top edge and height),
+    // so it works whether or not iOS has already panned the screen up to reveal the field
+    // (assuming it had not, then lifting again, threw the field off the top of the screen).
+    // A field that already fits never causes any scroll or extra scroll room, so short
+    // forms (like the name step) stay perfectly still.
     function revealFocusedFieldFrozen() {
       const setPad = (px) => modal.style.setProperty('--amass-keyboard-height', `${px}px`);
       const field = document.activeElement;
       if (!viewport || !field || !modal.contains(field) || !field.matches('.amass-flow__field')) { setPad(0); return; }
       const content = field.closest('.amass-flow__content');
       if (!content || getComputedStyle(content).overflowY !== 'auto') { setPad(0); return; }
-      const keyboard = rawKeyboardHeight();
-      if (keyboard) lastKeyboardHeight = keyboard;
-      // Before the keyboard has appeared, plan for the last one we saw (or a typical one).
-      const expected = keyboard || lastKeyboardHeight || 336;
-      const visibleBottom = restingViewportHeight - expected - KEYBOARD_ACCESSORY_ALLOWANCE - 8;
+      const keyboardUp = rawKeyboardHeight() > 0;
+      // Visible window, in the same coordinates as getBoundingClientRect().
+      const winTop = Math.max(viewport.offsetTop, content.getBoundingClientRect().top) + 8;
+      const winBottom = viewport.offsetTop + viewport.height - (keyboardUp ? KEYBOARD_ACCESSORY_ALLOWANCE : 0) - 8;
       // Measure everything first: changing the scroll room changes what we measure.
       const basePad = parseFloat(modal.style.getPropertyValue('--amass-keyboard-height')) || 0;
       const baseMax = Math.max(0, content.scrollHeight - basePad - content.clientHeight);
@@ -90,18 +91,18 @@
       const counter = modal.querySelector(`[data-counter-for="${field.id}"]`);
       const fieldBox = field.getBoundingClientRect();
       const counterBox = counter && counter.closest('.amass-flow__counter').getBoundingClientRect();
+      const top = fieldBox.top;
       const bottom = counterBox ? Math.max(fieldBox.bottom, counterBox.bottom) : fieldBox.bottom;
-      const need = Math.ceil(bottom - visibleBottom);
-      // Already clear of the keyboard: nothing moves. Keep any scroll room we are
-      // still relying on so a lifted field is not pulled back down.
-      if (need <= 0) { if (scrollTop <= baseMax) setPad(0); return; }
-      // Lift by just what is needed, never pushing the top of a tall field out of view.
-      const roomAbove = fieldBox.top - (content.getBoundingClientRect().top + 8);
-      const lift = Math.min(need, Math.max(0, roomAbove));
-      if (lift <= 0) return;
-      const target = scrollTop + lift;
-      setPad(Math.max(0, target - baseMax) + 4);
-      content.scrollTop = target;
+      // Positive delta = scroll down (field moves up on screen).
+      const lo = bottom - winBottom;   // how far the bottom is below the window
+      const hi = top - winTop;         // how far the top may move up before leaving the window
+      let delta = 0;
+      if (lo > 0) delta = Math.min(lo, hi);   // lift, but never push the top out of view
+      else if (hi < 0) delta = hi;            // already above the window: bring it back down
+      const next = Math.max(0, scrollTop + Math.round(delta));
+      // Keep exactly the scroll room needed to hold this position (none when it fits).
+      setPad(next > baseMax ? next - baseMax + 4 : 0);
+      if (next !== scrollTop) content.scrollTop = next;
     }
 
     function isFrozenLayout() {
