@@ -2172,8 +2172,8 @@ main {
   /* Wide card: the glow image runs the full width of the card at its natural proportions
      (never stretched), so the pink and blue blobs reach both edges. It is slid down so only
      the band with the pink / green / blue peaks shows above the bottom edge; the shift scales
-     with the card's width (~0.55 x width keeps the same slice at any screen size). */
+     with the card's width (~0.67 x width keeps the same slice at any screen size). */
   .cw-campaign .cw-campaign__intro--voices {
-    background: #000 url('../assets/images/voices-heard-modal-bg.jpg?v=1') center calc(100% + 56vw - 25px) / 100% auto no-repeat;
+    background: #000 url('../assets/images/voices-heard-modal-bg.jpg?v=1') center calc(100% + 68vw - 25px) / 100% auto no-repeat;
   }
 }
