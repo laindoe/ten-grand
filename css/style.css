@@ -5778,3 +5778,9 @@ html.amass-black-chrome #amass-modal {
   position: relative;
   top: clamp(0px, 3vh, 26px);
 }
+
+/* First slide: the space under the paragraph matches the space between the bottom of the
+   logo's circle and the top of the paragraph (about 42px, measured to the circle's visible edge). */
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__intro {
+  margin: 0 auto 36px;
+}
