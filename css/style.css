@@ -5720,7 +5720,7 @@ html.vp-black-chrome body { background: #000; }
 #amass-modal .amass-flow__panel[data-campaign="voices-heard"],
 #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"],
 #amass-modal .amass-flow__panel[data-campaign="voices-heard"]:not([data-amass-screen="9"]) {
-  --vh-bg-shift: 120px;
+  --vh-bg-shift: 230px;
   background: #000 url('../assets/images/voices-heard-modal-bg.jpg') center calc(100% + var(--vh-bg-shift)) / 100% auto no-repeat;
 }
 @media (min-width: 901px) and (pointer: fine) {
@@ -5728,4 +5728,20 @@ html.vp-black-chrome body { background: #000; }
   #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] {
     background-size: cover; background-position: center bottom;
   }
+}
+
+/* No visible scroll bars inside the Voices Heard modal (content still scrolls when needed). */
+#amass-modal [data-campaign="voices-heard"],
+#amass-modal [data-campaign="voices-heard"] * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#amass-modal [data-campaign="voices-heard"]::-webkit-scrollbar,
+#amass-modal [data-campaign="voices-heard"] *::-webkit-scrollbar {
+  display: none; width: 0; height: 0;
+}
+#amass-modal .amass-flow__panel[data-campaign="voices-heard"] { scrollbar-gutter: auto; }
+/* The room that was kept free for a scroll bar is no longer needed. */
+@media (max-width: 900px), (pointer: coarse) {
+  #amass-modal [data-campaign="voices-heard"] .amass-flow__step:is([data-amass-step="5"], [data-amass-step="6"]) { padding-right: 0; }
 }
