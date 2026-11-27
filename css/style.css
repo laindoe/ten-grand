@@ -5776,5 +5776,5 @@ html.amass-black-chrome #amass-modal {
    (the logo itself stays where it is; only this block shifts). */
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__screen {
   position: relative;
-  top: clamp(0px, 5.5vh, 48px);
+  top: clamp(0px, 3vh, 26px);
 }
