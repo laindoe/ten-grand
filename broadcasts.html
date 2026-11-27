@@ -8,7 +8,7 @@ permalink: /broadcasts/
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Broadcast — Ten Grand</title>
-  <meta name="description" content="Official broadcasts from Ten Grand. Updates, opportunities, and news from the house." />
+  <meta name="description" content="Official broadcasts from Ten Grand. Updates, opportunities, and news on the 10G Frequency." />
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}?v=186" />
@@ -30,7 +30,7 @@ permalink: /broadcasts/
           <span aria-current="page">BROADCASTS</span>
         </nav>
         <div class="broadcasts-condensed__row">
-          <h2 class="broadcasts-condensed__title">FROM THE HOUSE</h2>
+          <h2 class="broadcasts-condensed__title">10G FREQUENCY</h2>
           <button type="button" class="broadcasts-condensed__search-toggle" id="broadcasts-search-toggle" aria-expanded="false" aria-controls="broadcasts-search-condensed" aria-label="Show search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg>
           </button>
@@ -49,7 +49,7 @@ permalink: /broadcasts/
       <div class="broadcasts__sticky">
         <div class="broadcasts__sticky-inner">
         <header class="broadcasts__header">
-          <h1 id="house-title">FROM THE HOUSE</h1>
+          <h1 id="house-title">10G FREQUENCY</h1>
           <p>Official broadcasts from Ten Grand.</p>
         </header>
         <div class="broadcasts__controls" role="group" aria-label="Broadcast search">
@@ -68,7 +68,7 @@ permalink: /broadcasts/
           {% include broadcast-card.html broadcast=broadcast heading='h2' %}
           {% endfor %}
         </div>
-        {% if broadcasts.size == 0 %}<p class="broadcasts__empty">Broadcasts from the house are coming soon.</p>{% endif %}
+        {% if broadcasts.size == 0 %}<p class="broadcasts__empty">Broadcasts on the 10G Frequency are coming soon.</p>{% endif %}
         <p class="broadcasts__empty" id="broadcast-search-empty" hidden>No broadcasts match your search.</p>
         <button type="button" class="broadcasts__load" id="broadcast-load-more" aria-controls="broadcast-list" hidden>LOAD MORE <span aria-hidden="true">↓</span></button>
         <p class="broadcasts__status" id="broadcast-status" role="status" aria-live="polite"></p>
