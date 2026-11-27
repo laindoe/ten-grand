@@ -115,8 +115,10 @@
 }
 .broadcast-modal[open] { display: flex; flex-direction: column; }
 .broadcast-modal::backdrop { background: var(--color-bg); }
+/* Reversed breadcrumb row: white band, dark text, and no divider line beneath. */
 .broadcast-modal__toolbar {
-  border-bottom: 1px solid var(--color-card-border);
+  background: var(--color-text);
+  color: var(--color-bg);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -146,12 +148,12 @@
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--color-text-muted);
+  color: rgba(20, 20, 20, 0.62);
   min-width: 0;
 }
-.broadcast-modal__crumb a { color: var(--color-text); text-decoration: none; }
-.broadcast-modal__crumb a:hover { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; }
-.broadcast-modal__crumb-current { color: var(--color-text); border: 0; padding: 0; background: transparent; font: inherit; letter-spacing: inherit; cursor: pointer; }
+.broadcast-modal__crumb a { color: var(--color-bg); text-decoration: none; }
+.broadcast-modal__crumb a:hover { color: var(--color-bg); text-decoration: underline; text-underline-offset: 3px; }
+.broadcast-modal__crumb-current { color: var(--color-bg); border: 0; padding: 0; background: transparent; font: inherit; letter-spacing: inherit; cursor: pointer; }
 /* Same thermal gradient/animation as the broadcast card edge strips
    (.cw-broadcast-card::before / .broadcast-arc below), just thin and
    rotated into a forward-slash instead of a wide vertical bar. Shared
@@ -176,6 +178,7 @@
   align-items: center;
   justify-content: center;
 }
+.broadcast-modal__toolbar .broadcast-modal__close { color: var(--color-bg); }
 .broadcast-modal__close span { font-size: 1.3rem; line-height: 1; }
 .broadcast-modal__scroll { overflow-y: auto; overscroll-behavior: contain; min-height: 0; flex: 1; }
 .broadcast-modal__content {
