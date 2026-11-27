@@ -8,8 +8,8 @@
 .vh-sparkle {
   position: absolute;
   aspect-ratio: 24 / 26.9;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
+  transform: translate(-50%, -50%) scale(.72);
+  opacity: .8;
   animation-name: vh-glint;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
@@ -17,13 +17,14 @@
   filter: drop-shadow(0 0 2px currentColor) drop-shadow(0 0 5px currentColor);
 }
 .vh-sparkle svg { display: block; width: 100%; height: 100%; }
-/* A quick flash, then a long rest: only a couple of glints are ever visible at once. */
+/* Always visible at a normal size: each glint swells a little, then settles back, with a
+   long rest in between so only one or two are moving at any moment. */
 @keyframes vh-glint {
-  0%   { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-  7%   { transform: translate(-50%, -50%) scale(1); opacity: .85; }
-  16%  { transform: translate(-50%, -50%) scale(.15); opacity: 0; }
-  100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  0%   { transform: translate(-50%, -50%) scale(.72); opacity: .8; }
+  9%   { transform: translate(-50%, -50%) scale(.94); opacity: 1; }
+  22%  { transform: translate(-50%, -50%) scale(.72); opacity: .8; }
+  100% { transform: translate(-50%, -50%) scale(.72); opacity: .8; }
 }
-@media (prefers-reduced-motion: reduce) { .vh-sparkles { display: none !important; } }
+@media (prefers-reduced-motion: reduce) { .vh-sparkle { animation: none; } }
 /* No point animating while the modal is closed. */
 .modal:not(.is-open) .vh-sparkle { animation-play-state: paused; }
