@@ -5642,8 +5642,9 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
    BACK / NEXT row fit without scrolling whenever the screen allows. */
 @media (max-width: 900px), (pointer: coarse) {
   #amass-modal .amass-flow__panel[data-campaign="voices-heard"]:not([data-amass-screen="9"]) {
-    padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
-    background-position: center bottom -132px;
+    /* BACK / NEXT sit close to the bottom edge so the fields get as much room as possible. */
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    background-position: center bottom -150px;
   }
   #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__progress { min-height: 32px; line-height: 32px; margin-bottom: 0; }
   #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__campaign-logo { width: min(74%, 300px); margin-bottom: 0; }
