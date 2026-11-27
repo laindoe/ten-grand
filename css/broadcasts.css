@@ -195,7 +195,8 @@
   background: transparent;
   color: var(--color-text-muted);
   font: inherit;
-  font-size: 0.9rem;
+  /* 16px minimum: smaller text makes iOS Safari zoom the page when the field is focused. */
+  font-size: max(16px, 0.9rem);
   opacity: 1;
   -webkit-text-fill-color: var(--color-text-muted);
   outline: none;
@@ -226,7 +227,7 @@
   .broadcasts__sticky-inner { padding-top: 28px; padding-bottom: 28px; }
   .broadcasts__filter { padding: 12px; font-size: 0.75rem; }
   .broadcasts__search { gap: 8px; padding: 12px; }
-  .broadcasts__search input { font-size: 0.8rem; }
+  .broadcasts__search input { font-size: 16px; }
 }
 
 /* ---------- Voices Heard artwork band ---------- */

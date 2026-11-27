@@ -34,6 +34,7 @@
   background: #111;
   color: inherit;
   font: inherit;
+  font-size: max(16px, 1em);
 }
 @media (max-width: 600px) {
   .voices-preview-filters { grid-template-columns: 1fr; }
