@@ -5702,8 +5702,10 @@ html.amass-black-chrome #amass-modal .modal__panel { transform: none; }
    Its gray page-colored band (.nav::before, painted above the header) is what the
    browser reads for its status-bar tint, and it only re-reads on the next change.
    The overlay fully covers the header, so nothing visibly changes. */
+/* display:none, not just hidden: the header's gray mask above it sits exactly behind the status
+   bar, and Safari can still take its tint from an invisible element. */
 html.amass-black-chrome .nav,
-html.vp-black-chrome .nav { visibility: hidden; }
+html.vp-black-chrome .nav { display: none !important; }
 html.vp-black-chrome,
 html.vp-black-chrome body { background: #000; }
 
