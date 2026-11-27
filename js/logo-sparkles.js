@@ -14,22 +14,23 @@
   var SPOTS = {
     round: [
       [58.7, 33.2, 5.2, 0.4, 7.2, 0],
-      [71.6, 36.3, 4.4, 2.9, 8.4, 1],
-      [35.0, 39.6, 4.6, 5.1, 7.8, 2],
-      [63.6, 54.8, 4.8, 1.7, 9.0, 1],
+      [71.6, 36.3, 4.4, 2.9, 8.4, 0],
+      [35.0, 39.6, 4.6, 5.1, 7.8, 0],
+      [63.6, 54.8, 4.8, 1.7, 9.0, 0],
       [78.6, 57.8, 4.2, 4.2, 8.0, 0],
-      [26.9, 56.3, 4.4, 6.3, 8.6, 2]
+      [26.9, 56.3, 4.4, 6.3, 8.6, 0]
     ],
     horizontal: [
       [6.9, 35.8, 3.4, 0.6, 7.6, 0],
-      [21.9, 44.5, 3.2, 3.3, 8.4, 2],
-      [48.4, 48.2, 3.4, 5.2, 7.2, 1],
+      [21.9, 44.5, 3.2, 3.3, 8.4, 0],
+      [48.4, 48.2, 3.4, 5.2, 7.2, 0],
       [59.7, 40.5, 3.2, 1.8, 8.8, 0],
-      [73.3, 57.6, 3.4, 4.4, 8.0, 2],
-      [88.4, 43.0, 3.2, 6.6, 9.2, 1]
+      [73.3, 57.6, 3.4, 4.4, 8.0, 0],
+      [88.4, 43.0, 3.2, 6.6, 9.2, 0]
     ]
   };
-  // The three glint colours (blue, pink, pale lime), taken from the reference stars.
+  // Glint colours (taken from the reference stars). Every glint currently uses the blue (index 0);
+  // set the last number of a spot to 1 (pink) or 2 (pale lime) to change an individual one.
   var COLORS = ["#1fb8ff", "#ff3ec0", "#d4ee3c"];
 
   // Compass-style four-point star with needle-thin arms (north-south arm a little
