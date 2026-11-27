@@ -2144,3 +2144,17 @@ main {
 @media (max-width: 899.98px) {
   .cw-campaign .cw-campaign__intro--voices .cw-campaign__counter { margin-top: -16%; }
 }
+
+/* Compact campaign card on phones: ~19px of black above the logo's glow and
+   ~44px below the LISTEN button. The logo image has transparent padding of
+   about 11.3% of its size at the top, so pull it up by that amount. */
+@media (max-width: 899.98px) {
+  .cw-campaign .cw-campaign__intro--voices {
+    padding-top: 0;
+    padding-bottom: 43px;
+    background-position: center bottom -100px;
+  }
+  .cw-campaign .cw-campaign__intro--voices .cw-campaign__title-bars {
+    margin-top: calc(19px - 0.113 * min(100% + 64px, 760px));
+  }
+}
