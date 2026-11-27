@@ -5746,7 +5746,3 @@ html.vp-black-chrome body { background: #000; }
   #amass-modal [data-campaign="voices-heard"] .amass-flow__step:is([data-amass-step="5"], [data-amass-step="6"]) { padding-right: 0; }
 }
 
-/* Soft light glow around the AMASS Comm(unity) Wall logo in the sign-up modal. */
-.amass-flow__brand {
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, .55)) drop-shadow(0 0 18px rgba(255, 255, 255, .32));
-}

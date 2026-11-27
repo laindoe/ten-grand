@@ -2178,8 +2178,3 @@ main {
   }
 }
 
-/* Soft light glow around the AMASS Comm(unity) Wall logo in the hero
-   (the sign-up modal's copy is styled in style.css). */
-.cw-hero__art {
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, .55)) drop-shadow(0 0 18px rgba(255, 255, 255, .32));
-}
