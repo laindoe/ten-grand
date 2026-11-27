@@ -5647,7 +5647,7 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
     background-position: center bottom -150px;
   }
   #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__progress { min-height: 32px; line-height: 32px; margin-bottom: 0; }
-  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__campaign-logo { width: min(74%, 300px); margin-bottom: 0; }
+  #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .amass-flow__campaign-logo { width: min(96%, 380px); margin: -8px auto 0; padding-bottom: 14px; box-sizing: content-box; }
   #amass-modal [data-campaign="voices-heard"]:not([data-amass-screen="9"]) .modal__title {
     font-size: clamp(1.5rem, 6.2vw, 1.9rem); margin: 0 auto 12px; line-height: 1.05;
   }
