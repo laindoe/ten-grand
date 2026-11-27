@@ -285,8 +285,30 @@
     });
   }
 
+  // By default iPhone Safari keeps the page between its status bar and toolbar, and paints
+  // those strips itself (gray). viewport-fit=cover lets the page draw edge to edge, so the black
+  // overlay reaches the real top and bottom of the screen. It is only on while the black flow is
+  // open: the page behind is untouched, and the original tag is restored after the fade-out.
+  let savedViewport;
+  let viewportRestoreTimer = 0;
+  function setViewportCover(on) {
+    const meta = document.querySelector('meta[name="viewport"]');
+    if (!meta) return;
+    clearTimeout(viewportRestoreTimer);
+    if (on) {
+      if (savedViewport === undefined) savedViewport = meta.getAttribute('content') || '';
+      if (!/viewport-fit\s*=/.test(savedViewport)) meta.setAttribute('content', savedViewport + ', viewport-fit=cover');
+    } else if (savedViewport !== undefined) {
+      viewportRestoreTimer = setTimeout(() => {
+        meta.setAttribute('content', savedViewport);
+        savedViewport = undefined;
+      }, 320);
+    }
+  }
+
   function setBlackChrome(on) {
     document.documentElement.classList.toggle('amass-black-chrome', on);
+    setViewportCover(on);
     nudgeEdgeSampling(on);
     let meta = document.querySelector('meta[name="theme-color"]');
     if (on) {
