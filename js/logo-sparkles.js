@@ -30,7 +30,8 @@
     ]
   };
 
-  var STAR = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 0C12.7 7.6 16.4 11.3 24 12 16.4 12.7 12.7 16.4 12 24 11.3 16.4 7.6 12.7 0 12 7.6 11.3 11.3 7.6 12 0Z"/></svg>';
+  // Compass-style four-point star: thin arms pointing up, down, left and right.
+  var STAR = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 0C12.22 9.2 14.8 11.78 24 12 14.8 12.22 12.22 14.8 12 24 11.78 14.8 9.2 12.22 0 12 9.2 11.78 11.78 9.2 12 0Z"/></svg>';
 
   function build(kind) {
     var layer = document.createElement("span");
