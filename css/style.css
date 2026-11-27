@@ -5574,11 +5574,11 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
 /* Intro slide: a much larger circle that nearly meets the screen edges, with
    the invitation copy overlapping its lower glow and GET STARTED right below. */
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__campaign-logo--intro {
-  width: min(111vw, 660px); max-width: none; align-self: center; margin: 0; position: relative;
+  width: min(100vw, 600px); max-width: none; align-self: center; margin: 0; position: relative;
 }
 #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] { padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__screen {
-  flex: 0 0 auto; margin-top: calc(min(111vw, 660px) * -.2);
+  flex: 0 0 auto; margin-top: calc(min(100vw, 600px) * -.2);
 }
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .modal__body,
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] #amass-voice-form,
@@ -5597,7 +5597,7 @@ html[data-input-modality="pointer"] :focus:not([aria-invalid="true"]) {
   background: #000 url('../assets/images/voices-heard-nebula-bottom.jpg') center bottom / min(135%, 980px) auto no-repeat;
 }
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__screen {
-  margin-top: calc(min(111vw, 660px) * -.07);
+  margin-top: calc(min(100vw, 600px) * -.07);
 }
 
 /* The bottom nebula runs behind every slide of the Voices Heard flow. */
