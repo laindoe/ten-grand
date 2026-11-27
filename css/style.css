@@ -5771,3 +5771,10 @@ html.amass-black-chrome #amass-modal {
       #000 url('../assets/images/voices-heard-modal-bg.jpg') center calc(100% + var(--vh-bg-shift)) / 100% auto no-repeat;
   }
 }
+
+/* First slide: move the invitation text and GET STARTED lower, away from the logo
+   (the logo itself stays where it is; only this block shifts). */
+#amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__screen {
+  position: relative;
+  top: clamp(0px, 5.5vh, 48px);
+}
