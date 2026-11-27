@@ -5712,3 +5712,20 @@ html.vp-black-chrome body { background: #000; }
 #amass-modal .modal__backdrop {
   inset: calc(-100vh - var(--amass-edge-nudge, 0px)) calc(0px - var(--amass-edge-nudge, 0px));
 }
+
+/* ---------- Voices Heard modal background (try-out) ----------
+   The supplied pink / green / blue glow image replaces the corner nebula behind
+   every slide. It bleeds off the left and right edges by design. Shift it with
+   --vh-bg-shift to move the glow up (negative) or down (positive). */
+#amass-modal .amass-flow__panel[data-campaign="voices-heard"],
+#amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"],
+#amass-modal .amass-flow__panel[data-campaign="voices-heard"]:not([data-amass-screen="9"]) {
+  --vh-bg-shift: 120px;
+  background: #000 url('../assets/images/voices-heard-modal-bg.jpg') center calc(100% + var(--vh-bg-shift)) / 100% auto no-repeat;
+}
+@media (min-width: 901px) and (pointer: fine) {
+  #amass-modal .amass-flow__panel[data-campaign="voices-heard"],
+  #amass-modal .amass-flow__panel[data-amass-screen="9"][data-campaign="voices-heard"] {
+    background-size: cover; background-position: center bottom;
+  }
+}
