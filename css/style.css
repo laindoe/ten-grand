@@ -5786,3 +5786,11 @@ html.amass-black-chrome #amass-modal {
 #amass-modal [data-amass-screen="9"][data-campaign="voices-heard"] .amass-flow__intro {
   margin: 0 auto 36px;
 }
+
+
+/* Pages with the Voices Heard overlays (sign-up modal, LISTEN player): the root background is
+   black from the first paint. Safari takes the color of its status-bar strip from the page
+   background when the page loads and does not re-read it when an overlay turns the page black
+   later, so it has to be black up front. The body keeps its own gray, so the page looks the same. */
+html:has(#amass-modal),
+html:has(#voice-player) { background-color: #000; }
