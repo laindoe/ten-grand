@@ -47,8 +47,15 @@
   position: relative; left: 50%; transform: translateX(-50%);
   background: var(--vp-art) center / contain no-repeat;
 }
-.vp__close { position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: 20px; width: 36px; height: 36px; background: rgba(8,9,10,.6); border-radius: 50%; }
-.vp__close svg { width: 20px; height: 20px; }
+/* Small BACK text, top left, in place of the close button. */
+.vp__back {
+  position: absolute; z-index: 2;
+  top: calc(8px + env(safe-area-inset-top, 0px)); left: 6px;
+  min-height: 44px; padding: 0 12px;
+  background: transparent; border: 0; color: var(--color-text); cursor: pointer;
+  font: inherit; font-size: .72rem; font-weight: 800; letter-spacing: .12em;
+}
+.vp__back:focus-visible { outline: 2px solid var(--color-text); outline-offset: -2px; }
 .vp__total-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: -26px; position: relative; z-index: 1; }
 .vp__total { margin: 0; display: flex; align-items: baseline; gap: 12px; line-height: 1; }
 .vp__plus {
