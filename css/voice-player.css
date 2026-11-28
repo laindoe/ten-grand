@@ -127,7 +127,6 @@
 }
 .vp__tab.is-active { color: var(--color-text); border-bottom-color: var(--vp-cycle, #fb2f7b); }
 .vp__tab:focus-visible { outline: 2px solid var(--color-text); outline-offset: -2px; }
-.vp__tab-count { font-weight: 600; opacity: .7; }
 .vp__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .vp__chip {
   min-height: 36px; padding: 6px 12px; background: transparent; color: var(--color-text); cursor: pointer;

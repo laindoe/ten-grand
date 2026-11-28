@@ -11,7 +11,7 @@
   var elTrack = $("track"), elArtist = $("artist"), elRole = $("role"), elNum = $("num"), elLinks = $("links");
   var elElapsed = $("elapsed"), elTotal = $("total"), elStatus = $("status");
   var elNow = $("now"), elPlaylists = $("playlists"), elWrittenView = $("written-view"), elGrid = $("grid"), elQueue = $("queue");
-  var elWritten = $("written"), elChips = $("chips"), elWrittenCount = $("written-count");
+  var elWritten = $("written"), elChips = $("chips");
   var btnPlay = $("play");
   var addButtons = Array.from(root.querySelectorAll("[data-vp-add]"));
   var mainTabs = Array.from(root.querySelectorAll("[data-vp-main]"));
@@ -337,7 +337,6 @@
   // Written responses follow the category picked via the role counts or the
   // chips here, mirroring how audio playlists are sorted by role.
   function renderWritten() {
-    elWrittenCount.textContent = written.length ? "(" + written.length + ")" : "";
     var options = [{ id: "", label: "All" }].concat(Object.keys(ROLES).map(function (r) {
       return { id: r, label: ROLES[r].name };
     })).filter(function (o) { return !o.id || written.some(function (w) { return w.role === o.id; }); });
