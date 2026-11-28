@@ -159,7 +159,7 @@
       if (!count) return null;
       var tile = document.createElement("button");
       tile.type = "button";
-      tile.className = "vp__tile" + (p.id === playlist.id && queue.length ? " is-active" : "");
+      tile.className = "vp__tile";
       tile.style.setProperty("--tile-a", p.a);
       tile.style.setProperty("--tile-b", p.b);
       var name = document.createElement("span"); name.className = "vp__tile-name"; name.textContent = p.name;
@@ -174,7 +174,9 @@
 
   // Three top-level views under the persistent header: the albums grid
   // (shown first), the player, and the written responses.
+  var VIEW_ORDER = ["playlists", "now", "written"];
   function showView(next) {
+    var previous = view;
     view = next;
     elPlaylists.hidden = next !== "playlists";
     elNow.hidden = next !== "now";
@@ -189,6 +191,13 @@
     if (next === "playlists") renderPlaylists();
     if (next === "written") renderWritten();
     scroller.scrollTop = 0;
+    // Slide the new screen in from the side it sits on (not on the first opening).
+    if (previous !== next && root.classList.contains("is-open") && rows) {
+      var shown = { playlists: elPlaylists, now: elNow, written: elWrittenView }[next];
+      shown.classList.remove("vp-in-left", "vp-in-right");
+      void shown.offsetWidth;
+      shown.classList.add(VIEW_ORDER.indexOf(next) > VIEW_ORDER.indexOf(previous) ? "vp-in-right" : "vp-in-left");
+    }
   }
 
   mainTabs.forEach(function (tab, i) {
@@ -212,6 +221,26 @@
       target.focus(); target.click();
     });
   });
+
+  // Swipe left / right to move between Albums, Player and Written. Mostly-horizontal flicks only,
+  // so scrolling up and down, and dragging the seek bar, are never mistaken for a swipe.
+  var swipe = null;
+  panel.addEventListener("touchstart", function (event) {
+    if (event.touches.length !== 1 || (event.target.closest && event.target.closest('input[type="range"]'))) { swipe = null; return; }
+    var touch = event.touches[0];
+    swipe = { x: touch.clientX, y: touch.clientY, time: Date.now() };
+  }, { passive: true });
+  panel.addEventListener("touchcancel", function () { swipe = null; }, { passive: true });
+  panel.addEventListener("touchend", function (event) {
+    if (!swipe || !rows) return;
+    var touch = event.changedTouches[0];
+    var dx = touch.clientX - swipe.x, dy = touch.clientY - swipe.y, quick = Date.now() - swipe.time < 800;
+    swipe = null;
+    if (!quick || Math.abs(dx) < 56 || Math.abs(dx) < Math.abs(dy) * 1.6) return;
+    var current = mainTabs.findIndex(function (tab) { return tab.classList.contains("is-active"); });
+    var next = current + (dx < 0 ? 1 : -1);
+    if (next >= 0 && next < mainTabs.length) mainTabs[next].click();
+  }, { passive: true });
 
   // autoplay=false cues the first voice without playing it.
   function startPlaylist(p, autoplay) {

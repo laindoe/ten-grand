@@ -73,7 +73,7 @@
 .vp__total-num { font-family: var(--font-digital, monospace); font-size: 2.2rem; font-weight: 700; letter-spacing: .05em; font-variant-numeric: tabular-nums; color: #fff; text-shadow: var(--digital-glow, none); }
 .vp__total-label { font-size: .72rem; font-weight: 800; letter-spacing: .12em; color: var(--color-text-muted); }
 .vp__tabs { flex: none; padding: 0 16px; background: #000; border-top: 1px solid rgba(243,243,244,.3); }
-.vp__scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 16px 16px calc(28px + env(safe-area-inset-bottom, 0px)); }
+.vp__scroll { touch-action: pan-y pinch-zoom; flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 16px 16px calc(28px + env(safe-area-inset-bottom, 0px)); }
 
 .vp__icon-btn, .vp__play {
   display: inline-flex; align-items: center; justify-content: center;
@@ -167,7 +167,6 @@
 .vp__cover-cell { background-size: cover; background-position: center; background-repeat: no-repeat; }
 /* Darkens the lower part of the cover so the album name stays readable. */
 .vp__tile::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to bottom, transparent 38%, rgba(0,0,0,.88) 100%); }
-.vp__tile.is-active { outline: 3px solid var(--color-text); outline-offset: 2px; }
 .vp__tile-name, .vp__tile-count { position: relative; padding-inline: 12px; }
 .vp__tile-name { display: block; font-size: 1.05rem; font-weight: 900; line-height: 1.1; letter-spacing: .02em; text-transform: uppercase; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
 .vp__tile-count { padding-top: 4px; padding-bottom: 12px; font-size: .75rem; font-weight: 700; color: rgba(255,255,255,.82); }
@@ -181,3 +180,10 @@
   .vp.is-playing .vp__art-bar { animation: none; height: 36%; }
   .vp__panel { transition: none; }
 }
+
+/* Swiping (or tapping) between Albums / Player / Written slides the new screen in from the side. */
+@keyframes vp-in-right { from { transform: translateX(32px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes vp-in-left  { from { transform: translateX(-32px); opacity: 0; } to { transform: none; opacity: 1; } }
+.vp-in-right { animation: vp-in-right .24s ease-out; }
+.vp-in-left  { animation: vp-in-left .24s ease-out; }
+@media (prefers-reduced-motion: reduce) { .vp-in-right, .vp-in-left { animation: none; } }
