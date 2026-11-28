@@ -12,7 +12,7 @@
   var elElapsed = $("elapsed"), elTotal = $("total"), elStatus = $("status");
   var elNow = $("now"), elPlaylists = $("playlists"), elWrittenView = $("written-view"), elGrid = $("grid"), elQueue = $("queue");
   var elWritten = $("written"), elChips = $("chips"), elWrittenCount = $("written-count");
-  var btnPlay = $("play"), btnShuffle = $("shuffle");
+  var btnPlay = $("play");
   var addButtons = Array.from(root.querySelectorAll("[data-vp-add]"));
   var mainTabs = Array.from(root.querySelectorAll("[data-vp-main]"));
   var scroller = root.querySelector(".vp__scroll");
@@ -260,8 +260,6 @@
       queue.unshift(current);
       index = 0;
     }
-    btnShuffle.setAttribute("aria-pressed", String(shuffleOn));
-    btnShuffle.setAttribute("aria-label", shuffleOn ? "Shuffle on" : "Shuffle off");
   }
 
   function addBars() {
@@ -304,7 +302,7 @@
     var items = [];
     if (row.website) {
       var href = /^https?:\/\//i.test(row.website) ? row.website : "https://" + row.website;
-      items.push(linkEl(href, "Website: " + row.website, GLOBE_ICON, "Website"));
+      items.push(linkEl(href, "Website: " + row.website, GLOBE_ICON, ""));
     }
     if (row.social_platform && row.social_handle) {
       var handle = row.social_handle.trim().replace(/^@/, "");
@@ -326,7 +324,7 @@
       if (photo) thumb.style.backgroundImage = 'url("' + photo.replace(/"/g, "%22") + '")';
       var text = document.createElement("span");
       var t = document.createElement("span"); t.className = "vp__q-title"; t.textContent = titleCase(row.response_title) || row.name;
-      var s = document.createElement("span"); s.className = "vp__q-sub"; s.textContent = row.name + " · " + ROLES[row.role].label;
+      var s = document.createElement("span"); s.className = "vp__q-sub"; s.textContent = row.name;
       text.append(t, s);
       var d = document.createElement("span"); d.className = "vp__q-dur"; d.textContent = clock(row.audio_duration);
       btn.append(thumb, text, d);
@@ -446,14 +444,6 @@
   $("next").addEventListener("click", function () { load(index + 1, !audio.paused); });
   $("prev").addEventListener("click", function () {
     if (audio.currentTime > 3) audio.currentTime = 0; else load(index - 1, !audio.paused);
-  });
-  btnShuffle.addEventListener("click", function () {
-    shuffleOn = !shuffleOn;
-    buildQueue(queue[index]);
-    renderQueue();
-  });
-  $("queue-jump").addEventListener("click", function () {
-    root.querySelector(".vp__queue").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   if ("mediaSession" in navigator) {

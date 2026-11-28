@@ -83,7 +83,6 @@
 .vp__icon-btn svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; }
 .vp__icon-btn svg.vp__fill, .vp__play svg { fill: currentColor; stroke: none; }
 .vp__icon-btn[aria-pressed="true"] { color: var(--vp-accent); }
-.vp__icon-btn--ghost { opacity: .75; }
 .vp__play { width: 68px; height: 68px; background: var(--color-text); color: var(--color-bg); border-radius: 50%; }
 .vp__play svg { width: 30px; height: 30px; }
 .vp__icon-btn:focus-visible, .vp__play:focus-visible, .vp__tile:focus-visible, .vp__queue-item button:focus-visible {
@@ -106,7 +105,7 @@
 @keyframes vp-bar { from { height: 12%; } to { height: 62%; } }
 
 .vp__meta { min-width: 0; }
-.vp__role-row { display: flex; align-items: center; gap: 10px; margin: 0 0 6px; }
+.vp__role-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 6px; }
 .vp__num { padding: 1px 8px; border: 1px solid var(--vp-accent); color: var(--vp-accent); font-family: var(--font-digital, monospace); font-size: .8rem; font-weight: 700; letter-spacing: .08em; line-height: 1.5; }
 .vp__role { margin: 0; font-size: .75rem; font-weight: 800; letter-spacing: .12em; color: var(--vp-accent); }
 .vp__artist { margin: 0; font-size: 1.3rem; line-height: 1.2; font-weight: 800; overflow-wrap: anywhere; }
@@ -118,7 +117,7 @@
 
 .vp__range { width: 100%; height: 20px; margin: 0; background: transparent; accent-color: var(--vp-accent); cursor: pointer; }
 .vp__times { display: flex; justify-content: space-between; font-size: .75rem; color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
-.vp__controls { display: flex; align-items: center; justify-content: space-between; margin: 12px 0 28px; }
+.vp__controls { display: flex; align-items: center; justify-content: center; gap: 44px; margin: 12px 0 28px; }
 
 .vp__section-title { margin: 0 0 10px; font-size: .8rem; letter-spacing: .12em; font-weight: 800; }
 .vp__tabs { display: flex; border-bottom: 1px solid rgba(243,243,244,.3); }
