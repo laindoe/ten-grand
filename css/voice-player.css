@@ -54,7 +54,9 @@
   min-height: 44px; padding: 0 12px;
   background: transparent; border: 0; color: var(--color-text); cursor: pointer;
   font: inherit; font-size: .72rem; font-weight: 800; letter-spacing: .12em;
+  display: inline-flex; align-items: center; gap: 7px;
 }
+.vp__back span { font-size: 1rem; line-height: 1; letter-spacing: 0; }
 .vp__back:focus-visible { outline: 2px solid var(--color-text); outline-offset: -2px; }
 .vp__total-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: -26px; position: relative; z-index: 1; }
 .vp__total { margin: 0; display: flex; align-items: baseline; gap: 12px; line-height: 1; }
