@@ -307,6 +307,9 @@
     }
   }
 
+  // Shared with the LISTEN player (js/voice-player.js) so both overlays use one saved copy of the tag.
+  window.tenGrandViewportCover = setViewportCover;
+
   function setBlackChrome(on) {
     document.documentElement.classList.toggle('amass-black-chrome', on);
     setViewportCover(on);

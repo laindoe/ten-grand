@@ -440,6 +440,8 @@
     root.setAttribute("aria-hidden", "false");
     root.classList.add("is-open");
     document.documentElement.classList.add("vp-black-chrome");
+    // Let the page draw edge to edge so the black reaches the real top and bottom of the screen.
+    if (window.tenGrandViewportCover) window.tenGrandViewportCover(true);
     document.body.classList.add("modal-open");
     panel.focus({ preventScroll: true });
     if (rows) { showView("playlists"); return; }
@@ -460,6 +462,7 @@
     audio.pause();
     root.classList.remove("is-open");
     document.documentElement.classList.remove("vp-black-chrome");
+    if (window.tenGrandViewportCover) window.tenGrandViewportCover(false);
     root.hidden = true;
     root.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
