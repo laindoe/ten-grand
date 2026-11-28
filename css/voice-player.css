@@ -125,7 +125,7 @@
   flex: 1; min-height: 44px; background: transparent; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px;
   color: var(--color-text-muted); font: inherit; font-size: .8rem; font-weight: 800; letter-spacing: .12em; cursor: pointer;
 }
-.vp__tab.is-active { color: var(--color-text); border-bottom-color: var(--vp-cycle, #fb2f7b); }
+.vp__tab.is-active { color: var(--color-text); border-bottom-color: var(--color-text); }
 .vp__tab:focus-visible { outline: 2px solid var(--color-text); outline-offset: -2px; }
 .vp__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .vp__chip {
